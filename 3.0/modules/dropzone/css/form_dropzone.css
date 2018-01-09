@@ -1,0 +1,8 @@
+/* different named form for dropzone uploads */
+#gAddPhotosForm .g-breadcrumbs {
+  margin: 0;
+}
+
+#gAddPhotosForm p {
+  margin-bottom: 0
+}

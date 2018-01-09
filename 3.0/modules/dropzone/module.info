@@ -1,0 +1,7 @@
+name = "DropZone JS upload"
+description = "Replace built in flash uploader with a javascript uploader"
+version = 1
+author_name = "Brad Dutton"
+author_url = ""
+info_url = ""
+discuss_url = ""
