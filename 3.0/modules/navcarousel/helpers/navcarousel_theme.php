@@ -20,6 +20,16 @@
 class navcarousel_theme_Core {
   static function head($theme) {
    if ($theme->page_type == "item") {
+      return
+        $theme->script("jquery.jcarousel.js")
+        . $theme->css("skin.css");
+    }
+  }
+  
+  static function photo_bottom($theme) {
+   $content = '';
+
+   if ($theme->page_type == "item") {
       if (locales::is_rtl()) {
         $rtl_support = "rtl: true,\n";
       } else {
@@ -62,10 +72,8 @@ class navcarousel_theme_Core {
         $onwinload = "});\n
                   $(window).load(function () {\n";
       }
-      return
-        $theme->script("jquery.jcarousel.min.js")
-        . $theme->css("skin.css")
-        . "\n<!-- Navcarousel -->
+
+      $content = "\n<!-- Navcarousel -->
                 <style type=\"text/css\">\n
                 ". $containerwidth ."
                 .jcarousel-skin-tango .jcarousel-clip-horizontal {\n
@@ -107,14 +115,14 @@ class navcarousel_theme_Core {
                 </script>\n
                 <!-- Navcaoursel -->";
     }
-  }
-  
-  static function photo_bottom($theme) {
+
     if (!module::get_var("navcarousel", "abovephoto", false)) {
       if ($theme->page_type == "item") {
-        return new View("navcarousel.html");
+        $content .= new View("navcarousel.html");
       }
     }
+
+    return $content;
   }
   
   static function photo_top($theme) {
