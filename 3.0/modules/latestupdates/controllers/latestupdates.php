@@ -430,7 +430,6 @@ class latestupdates_Controller extends Controller {
           $count = $item
             ->viewable()
             ->where("type", "!=", "album")
-            ->order_by("created", "DESC")
             ->descendants_count();
         } else {
           $count = ORM::factory("item")
@@ -525,7 +524,6 @@ class latestupdates_Controller extends Controller {
         ->viewable()
         ->merge_where($str_where)
         ->where($str_orderby_field, ">", $item->$str_orderby_field)
-        ->order_by($str_orderby_field, "DESC")
         ->count_all();
     } else {
       if ($str_display_type == "descendants") {
@@ -534,7 +532,6 @@ class latestupdates_Controller extends Controller {
           ->viewable()
           ->where("type", "!=", "album")
           ->where("created", ">", $item->created)
-          ->order_by("created", "DESC")
           ->descendants_count();
       } else {
         $position = ORM::factory("item")
@@ -542,7 +539,6 @@ class latestupdates_Controller extends Controller {
           ->where("owner_id", "=", $user_id)
           ->merge_where($str_where)
           ->where($str_orderby_field, ">", $item->$str_orderby_field)
-          ->order_by($str_orderby_field, "DESC")
           ->count_all();
       }
     }
