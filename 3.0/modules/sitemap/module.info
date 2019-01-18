@@ -1,0 +1,3 @@
+name = "Sitemap"
+description = "Build an XML sitemap for Gallery 3. By Niklas Dougherty."
+version = 4
