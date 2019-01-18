@@ -24,6 +24,7 @@ class Admin_Sitemap_Controller extends Admin_Controller {
 			module::set_var("sitemap", "ping_ask", $form->sitemap->sitemap_ping_ask->value);
 			module::set_var("sitemap", "robots_txt", $form->sitemap->sitemap_robots_txt->value);
 			module::set_var("sitemap", "albums", $form->albums->sitemap_albums->value);
+			module::set_var("sitemap", "albums_images", $form->albums->sitemap_albums_images->value);
 			module::set_var("sitemap", "albums_freq", $form->albums->sitemap_albums_freq->value);
 			module::set_var("sitemap", "albums_prio", $form->albums->sitemap_albums_prio->value);
 			module::set_var("sitemap", "photos", $form->photos->sitemap_photos->value);
@@ -95,6 +96,8 @@ class Admin_Sitemap_Controller extends Admin_Controller {
 		$group = $form->group("albums")->label(t("Albums"));
 		$group->checkbox("sitemap_albums")->label(t("Include albums"))
 			->checked(module::get_var("sitemap", "albums"));
+		$group->checkbox("sitemap_albums_images")->label(t("Include album images"))
+			->checked(module::get_var("sitemap", "albums_images"));
 		$group->dropdown("sitemap_albums_freq")->label(t("Frequency"))
 			->options($freq_range)
 			->selected(module::get_var("sitemap", "albums_freq", "weekly"));
@@ -202,6 +205,10 @@ EOT;
 		return;
 	}
 
+	/*
+	 * does this need to do any kind of permissions check for public items only? this is problem using the
+	 * admin permissions which will have access to everything?
+	 */
 	private function _add_to_sitemap($type, $freq, $prio, $base_url) {
 		$locations = '';
 		foreach (ORM::factory("item")
@@ -216,12 +223,42 @@ EOT;
 			else
 				$url = str_replace("/index.php", '', $url);
 			$updated = date(DATE_ATOM, $item->updated);
+
+			$images = null;
+			$image_xml = '';
+
+			if ($type == 'album' && module::get_var("sitemap", "albums_images")) {
+				$images = $item
+					->viewable()
+					->where("type", "!=", "album")
+					->limit(999) // google doesn't want any more than this
+					->children();
+			} elseif ($type == 'photo') {
+				$images = array($item);
+			}
+
+			if ($images) {
+				foreach ($images as $image) {
+					$resize_url = $image->resize_url(true);
+					// remove the cache buster stuff
+					$image_url = preg_replace('/\?.*$/', '', $resize_url);
+
+					$image_xml .= <<< EOT
+		<image:image>
+			<image:loc>$image_url</image:loc>
+		</image:image>
+
+EOT;
+				}
+			}
+
 			$locations .= <<< EOT
 	<url>
 		<loc>$url</loc>
 		<lastmod>$updated</lastmod>
 		<changefreq>$freq</changefreq>
 		<priority>$prio</priority>
+$image_xml
 	</url>
 
 EOT;
@@ -300,8 +337,8 @@ EOT;
 		curl_setopt($ch, CURLOPT_HEADER, 0);
 		curl_exec($ch);
 		$info = curl_getinfo($ch); 
-        $http_url = $info['url'];
-        $http_code = $info['http_code'];
+		$http_url = $info['url'];
+		$http_code = $info['http_code'];
 		curl_close($ch);
 		if ($http_code == "200") {
 			message::success(t("$service has been notified about your sitemap $http_url"));
