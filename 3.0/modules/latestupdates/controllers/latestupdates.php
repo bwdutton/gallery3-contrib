@@ -116,11 +116,11 @@ class latestupdates_Controller extends Controller {
     // Set up the previous and next page buttons.
     if ($page > 1) {
       $previous_page = $page - 1;
-      $view->previous_page_link = url::site("latestupdates/users/{$str_display_type}/{$user_id}?page={$previous_page}");
+#      $view->previous_page_link = url::site("latestupdates/users/{$str_display_type}/{$user_id}?page={$previous_page}");
     }
     if ($page < $max_pages) {
       $next_page = $page + 1;
-      $view->next_page_link = url::site("latestupdates/users/{$str_display_type}/{$user_id}?page={$next_page}");
+#      $view->next_page_link = url::site("latestupdates/users/{$str_display_type}/{$user_id}?page={$next_page}");
     }
 
     // Set up and display the actual page.
@@ -201,11 +201,11 @@ class latestupdates_Controller extends Controller {
     // Set up the previous and next page buttons.
     if ($page > 1) {
       $previous_page = $page - 1;
-      $view->previous_page_link = url::site("latestupdates/albums/{$item->id}?page={$previous_page}");
+#      $view->previous_page_link = url::site("latestupdates/albums/{$item->id}?page={$previous_page}");
     }
     if ($page < $max_pages) {
       $next_page = $page + 1;
-      $view->next_page_link = url::site("latestupdates/albums/{$item->id}?page={$next_page}");
+#      $view->next_page_link = url::site("latestupdates/albums/{$item->id}?page={$next_page}");
     }
 
     // Set up breadcrumbs.
@@ -290,11 +290,11 @@ class latestupdates_Controller extends Controller {
     // Set up the previous and next page buttons.
     if ($page > 1) {
       $previous_page = $page - 1;
-      $view->previous_page_link = url::site("latestupdates/updates?page={$previous_page}");
+#      $view->previous_page_link = url::site("latestupdates/updates?page={$previous_page}");
     }
     if ($page < $max_pages) {
       $next_page = $page + 1;
-      $view->next_page_link = url::site("latestupdates/updates?page={$next_page}");
+#      $view->next_page_link = url::site("latestupdates/updates?page={$next_page}");
     }
 
     // Set up and display the actual page.
