@@ -28,6 +28,7 @@ class Admin_Sitemap_Controller extends Admin_Controller {
 			module::set_var("sitemap", "albums_freq", $form->albums->sitemap_albums_freq->value);
 			module::set_var("sitemap", "albums_prio", $form->albums->sitemap_albums_prio->value);
 			module::set_var("sitemap", "photos", $form->photos->sitemap_photos->value);
+			module::set_var("sitemap", "photos_images", $form->photos->sitemap_photos_images->value);
 			module::set_var("sitemap", "photos_freq", $form->photos->sitemap_photos_freq->value);
 			module::set_var("sitemap", "photos_prio", $form->photos->sitemap_photos_prio->value);
 			module::set_var("sitemap", "movies", $form->movies->sitemap_movies->value);
@@ -108,6 +109,8 @@ class Admin_Sitemap_Controller extends Admin_Controller {
 		$group = $form->group("photos")->label(t("Photos"));
 		$group->checkbox("sitemap_photos")->label(t("Include photo pages"))
 			->checked(module::get_var("sitemap", "photos"));
+		$group->checkbox("sitemap_photos_images")->label(t("Include photo images"))
+			->checked(module::get_var("sitemap", "photos_images"));
 		$group->dropdown("sitemap_photos_freq")->label(t("Frequency"))
 			->options($freq_range)
 			->selected(module::get_var("sitemap", "photos_freq", "monthly"));
@@ -233,7 +236,7 @@ EOT;
 					->where("type", "!=", "album")
 					->limit(999) // google doesn't want any more than this
 					->children();
-			} elseif ($type == 'photo') {
+			} elseif ($type == 'photo' && module::get_var("sitemap", "photos_images")) {
 				$images = array($item);
 			}
 
