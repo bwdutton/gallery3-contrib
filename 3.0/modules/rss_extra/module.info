@@ -1,0 +1,7 @@
+name        = "RSS Feeds Extra"
+description = "Adds New RSS feeds.<br />Version 1.7 | By <a href=http://blog.dragonsoft.us>Serguei Dosyukov</a> | <a href=http://codex.gallery2.org/Gallery3:Modules:rss_extra>Visit plugin Site</a> | <a href=http://gallery.menalto.com/node/95073>Support</a> | <a href=rss_extra>Settings</a>"
+version     = 17
+author_name = "Serguei Dosyukov"
+author_url  = "http://blog.dragonsoft.us/gallery-3/"
+info_url    = "http://codex.gallery2.org/Gallery3:Modules:rss_extra"
+discuss_url = "http://gallery.menalto.com/node/95073"
