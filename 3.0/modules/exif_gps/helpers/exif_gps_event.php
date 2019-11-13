@@ -120,13 +120,11 @@ class exif_gps_event_Core {
     $album_items_count = ORM::factory("item", $album_id)
       ->join("exif_coordinates", "items.id", "exif_coordinates.item_id")
       ->viewable()
-      ->order_by("exif_coordinates.latitude", "ASC")
       ->descendants_count();
     $user_items_count = ORM::factory("item")
       ->join("exif_coordinates", "items.id", "exif_coordinates.item_id")
       ->where("items.owner_id", "=", $item->owner_id)
       ->viewable()
-      ->order_by("exif_coordinates.latitude", "ASC")
       ->count_all();
 
     if (($album_items_count > 0) && (module::get_var("exif_gps", "toolbar_map_album") == true)) {
@@ -167,13 +165,11 @@ class exif_gps_event_Core {
     $album_items_count = ORM::factory("item", $album_id)
       ->join("exif_coordinates", "items.id", "exif_coordinates.item_id")
       ->viewable()
-      ->order_by("exif_coordinates.latitude", "ASC")
       ->descendants_count();
     $user_items_count = ORM::factory("item")
       ->join("exif_coordinates", "items.id", "exif_coordinates.item_id")
       ->where("items.owner_id", "=", $item->owner_id)
       ->viewable()
-      ->order_by("exif_coordinates.latitude", "ASC")
       ->count_all();
 
     if (($album_items_count > 0) && (module::get_var("exif_gps", "toolbar_map_album") == true)) {
@@ -214,13 +210,11 @@ class exif_gps_event_Core {
     $album_items_count = ORM::factory("item", $album_id)
       ->join("exif_coordinates", "items.id", "exif_coordinates.item_id")
       ->viewable()
-      ->order_by("exif_coordinates.latitude", "ASC")
       ->descendants_count();
     $user_items_count = ORM::factory("item")
       ->join("exif_coordinates", "items.id", "exif_coordinates.item_id")
       ->where("items.owner_id", "=", $item->owner_id)
       ->viewable()
-      ->order_by("exif_coordinates.latitude", "ASC")
       ->count_all();
 
     if (($album_items_count > 0) && (module::get_var("exif_gps", "toolbar_map_album") == true)) {
@@ -252,7 +246,6 @@ class exif_gps_event_Core {
       ->join("exif_coordinates", "items.id", "exif_coordinates.item_id")
       ->where("items.owner_id", "=", $data->user->id)
       ->viewable()
-      ->order_by("exif_coordinates.latitude", "ASC")
       ->count_all();
     if ($items_count == 0) {
       return;

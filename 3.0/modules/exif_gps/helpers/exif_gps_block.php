@@ -53,13 +53,11 @@ class exif_gps_block_Core {
         $album_items_count = ORM::factory("item", $album_id)
                ->join("exif_coordinates", "items.id", "exif_coordinates.item_id")
                ->viewable()
-               ->order_by("exif_coordinates.latitude", "ASC")
-               ->descendants_count(1);
+               ->descendants_count();
         $user_items_count = ORM::factory("item")
                ->join("exif_coordinates", "items.id", "exif_coordinates.item_id")
                ->where("items.owner_id", "=", $item->owner_id)
                ->viewable()
-               ->order_by("exif_coordinates.latitude", "ASC")
                ->count_all(1);
 
         if (($album_items_count > 0) || ($user_items_count > 0)) {
@@ -138,7 +136,6 @@ class exif_gps_block_Core {
         $items_count = ORM::factory("item", $theme->item->id)
                  ->join("exif_coordinates", "items.id", "exif_coordinates.item_id")
                  ->viewable()
-                 ->order_by("exif_coordinates.latitude", "ASC")
                  ->descendants_count();
         if ($items_count > 0) {
           $block = new Block();

@@ -9,7 +9,9 @@
   }
 ?>
 <?
+  $my_album_id = 0;
   if (isset($album_id)) {
+    $my_album_id = $album_id;
     print "  var album_id = " . $album_id . ";\n";
   } else {
     print "  var album_id = 0;\n";
@@ -67,7 +69,7 @@
     function get_xml() {
       // This function uses ajax requests to download and process a chunck of records, in XML format.
       jQuery.ajax({
-        url:    '<?=url::abs_site("exif_gps/xml/album/{$album_id}/"); ?>/' + int_offset,
+        url:    '<?=url::abs_site("exif_gps/xml/album/{$my_album_id}/"); ?>/' + int_offset,
         success: function(data) {
           jQuery(data).find("marker").each(function() {
             // Loop through the retrieved records and add each one to the map.
