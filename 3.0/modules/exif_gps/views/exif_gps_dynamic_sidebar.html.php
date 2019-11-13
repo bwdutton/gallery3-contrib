@@ -3,9 +3,9 @@
 <script type="text/javascript">
 <?
   if (module::get_var("exif_gps", "googlemap_api_key", "") != "") {
-    print "google.load(\"maps\", \"3\",  {other_params:\"key=" . module::get_var("exif_gps", "googlemap_api_key") . "&sensor=false\"});";
+    print "google.load(\"maps\", \"3\",  {other_params:\"key=" . module::get_var("exif_gps", "googlemap_api_key") . "\"});";
   } else {
-    print "google.load(\"maps\", \"3\",  {other_params:\"sensor=false\"});";
+    print "google.load(\"maps\", \"3\",  {other_params:\"\"});";
   }
 ?>
 <?
