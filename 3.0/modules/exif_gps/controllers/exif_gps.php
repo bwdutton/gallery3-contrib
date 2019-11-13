@@ -78,7 +78,6 @@ class EXIF_GPS_Controller extends Controller {
       $items_count = ORM::factory("item", $type_id)
                ->join("exif_coordinates", "items.id", "exif_coordinates.item_id")
                ->viewable()
-               ->order_by("exif_coordinates.latitude", "ASC")
                ->descendants_count();
     } elseif ($map_type == "user") {
       $curr_user = ORM::factory("user")->where("id", "=", $type_id)->find_all();
@@ -87,7 +86,6 @@ class EXIF_GPS_Controller extends Controller {
                ->join("exif_coordinates", "items.id", "exif_coordinates.item_id")
                ->where("items.owner_id", "=", $type_id)
                ->viewable()
-               ->order_by("exif_coordinates.latitude", "ASC")
                ->count_all();
     }
 
