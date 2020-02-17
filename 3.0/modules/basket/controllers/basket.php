@@ -25,7 +25,7 @@ class Basket_Controller extends Controller {
   }
   public function view_basket($pp="") {
 
-    $template = new Theme_View("page.html", "basket");
+    $template = new Theme_View("page.html", "basket", 'basket');
 
     $basket = Session_Basket::get();
     if (isset($pp)){
@@ -55,7 +55,7 @@ class Basket_Controller extends Controller {
 
   public function view_orders() {
     self::check_view_orders();
-    $template = new Theme_View("page.html", "basket");
+    $template = new Theme_View("page.html", "basket", 'basket');
 
     $incomplete_orders = ORM::factory("order")->where('status',"<",20)->find_all();
 
@@ -72,7 +72,7 @@ class Basket_Controller extends Controller {
   public function view_ipn($orderid){
     self::check_view_orders();
 
-    $template = new Theme_View("page.html", "basket");
+    $template = new Theme_View("page.html", "basket", 'basket');
 
     $order = ORM::factory("order")->where("id","=",$orderid)->find();
     $ipn_messages = ORM::factory("ipn_message")->where("key","=",$orderid)->find_all();
@@ -203,7 +203,7 @@ class Basket_Controller extends Controller {
 
   public function checkout () {
 
-    $template = new Theme_View("page.html", "basket");
+    $template = new Theme_View("page.html", "basket", 'basket');
 
     $view = new View("checkout.html");
 
@@ -251,7 +251,7 @@ class Basket_Controller extends Controller {
       $basket->phone = $form->contact->phone->value;
 
       $paypal=$form->contact->paypal->value=="true";
-      $template = new Theme_View("page.html", "basket");
+      $template = new Theme_View("page.html", "basket", 'basket');
 
       if ($paypal){
         // create a prelimary order
@@ -350,7 +350,7 @@ class Basket_Controller extends Controller {
   }
 
   private function _complete($order){
-    $template = new Theme_View("page.html", "basket");
+    $template = new Theme_View("page.html", "basket", 'basket');
     $view = new View("order_complete.html");
     $ordernumber = basket::getOrderPrefix().$order->id;
     $view->ordernumber = $ordernumber;
