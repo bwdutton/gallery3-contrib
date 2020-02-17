@@ -19,7 +19,8 @@
  */
 class Postage_Band_Model extends ORM {
     var $rules = array(
-    "name" => "length[1,32]");
+	"name" => array("rules" => array("length[1,32]")),
+    );
 
     protected $has_many=array('products');
 
