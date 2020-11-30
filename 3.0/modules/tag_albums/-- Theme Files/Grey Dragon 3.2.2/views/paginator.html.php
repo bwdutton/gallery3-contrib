@@ -16,7 +16,7 @@
  * the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 ?>
-<?
+<?php
 // This is a generic paginator for album, photo and movie pages.  Depending on the page type,
 // there are different sets of variables available.  With this data, you can make a paginator
 // that lets you say "You're viewing photo 5 of 35", or "You're viewing photos 10 - 18 of 37"
@@ -43,7 +43,7 @@
 //
 ?>
 
-<?
+<?php
   $_pagelist = array();
 
   // rWatcher Mod
@@ -180,37 +180,37 @@
 <ul class="g-paginator">
   <li class="g-pagination"><?= $pagination_msg ?></li>   
   <li class="g-navigation">
-  <? if ($current_page > 1): ?>
+  <?php if ($current_page > 1): ?>
     <a title="<?= t("first") ?>" id="g-navi-first" href="<?= $_pagelist[1] ?>"><span class="ui-icon ui-icon-first">&nbsp;</span></a>
-  <? else: ?>
+  <?php else: ?>
     <span class="ui-icon ui-icon-first-d">&nbsp;</span>
-  <? endif ?>
+  <?php endif ?>
 
-  <? if (isset($previous_page_url)): ?>
+  <?php if (isset($previous_page_url)): ?>
     <a title="<?= t("previous") ?>" id="g-navi-prev" href="<?= $previous_page_url ?>"><span class="ui-icon ui-icon-prev">&nbsp;</span></a>
-  <? else: ?>
+  <?php else: ?>
     <span class="ui-icon ui-icon-prev-d">&nbsp;</span>
-  <? endif ?>
+  <?php endif ?>
 
-  <? // rWatcher Edit:  Use $theme->breadcrumbs instead of $parent to determine parent url. ?>
-  <? if (count($theme->breadcrumbs) > 1): ?>
-    <? end($theme->breadcrumbs); ?>
+  <?php // rWatcher Edit:  Use $theme->breadcrumbs instead of $parent to determine parent url. ?>
+  <?php if (count($theme->breadcrumbs) > 1): ?>
+    <?php end($theme->breadcrumbs); ?>
     <a title="<?= t("up") ?>" id="g-navi-parent" href="<?= prev($theme->breadcrumbs)->url; ?>"><span class="ui-icon ui-icon-parent">&nbsp;</span></a>
-  <? else: ?>
+  <?php else: ?>
     <span class="ui-icon ui-icon-parent-d">&nbsp;</span>
-  <? endif ?>
-  <? // End rWatcher Edit. ?>
+  <?php endif ?>
+  <?php // End rWatcher Edit. ?>
 
-  <? if (isset($next_page_url)): ?>
+  <?php if (isset($next_page_url)): ?>
     <a title="<?= t("next") ?>" class="ui-right" id="g-navi-next" href="<?= $next_page_url ?>"><span class="ui-icon ui-icon-next">&nbsp;</span></a>
-  <? else: ?>
+  <?php else: ?>
     <span class="ui-icon ui-icon-next-d">&nbsp;</span>
-  <? endif ?>
+  <?php endif ?>
 
-  <? if ($current_page < $total_pages): ?>
+  <?php if ($current_page < $total_pages): ?>
       <a title="<?= t("last") ?>" class="ui-right" id="g-navi-last" href="<?= $_pagelist[$total_pages] ?>"><span class="ui-icon ui-icon-last">&nbsp;</span></a>
-  <? else: ?>
+  <?php else: ?>
     <span class="ui-icon ui-icon-last-d">&nbsp;</span>
-  <? endif ?>
+  <?php endif ?>
   </li>
 </ul>

@@ -1020,7 +1020,7 @@ class S3 {
 	private static function __getCloudFrontResponse(&$rest) {
 		$rest->getResponse();
 		if ($rest->response->error === false && isset($rest->response->body) &&
-		is_string($rest->response->body) && substr($rest->response->body, 0, 5) == '<?xml') {
+		is_string($rest->response->body) && substr($rest->response->body, 0, 5) == '<?phpxml') {
 			$rest->response->body = simplexml_load_string($rest->response->body);
 			// Grab CloudFront errors
 			if (isset($rest->response->body->Error, $rest->response->body->Error->Code,

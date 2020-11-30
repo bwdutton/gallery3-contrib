@@ -134,7 +134,7 @@
 <div class="g-block">
 <h2><?= t("Delivery and Contact (Step 1 of 3)") ?></h2>
   <div id="b-complete">
-  <? 
+  <?php 
 	$payment_details = basket_plus::getBasketVar(PAYMENT_OPTIONS); 
   $webshop = basket_plus::getBasketVar(WEBSHOP);
   $payment_details = basket_plus::replaceStrings($payment_details,Array("webshop"=> $webshop));
@@ -144,7 +144,7 @@
       <h3> <?= t("Payment Options") ?></h3>
       <?= $payment_details; ?>
     </div>
-  <? 
+  <?php 
 	endif;
 	/* here the form is loaded */?>
 	<?= $form ?>
@@ -152,7 +152,7 @@
 		<div class="basketbuttons">
 			<a href="javascript:back();" class="left g-button ui-state-default ui-corner-all ui-icon-left">
 				<span class="ui-icon ui-icon-arrow-1-w"></span><?= t("Back to Basket") ?></a>
-			<?
+			<?php
 			/* check for pack&post */
 			$basket = Session_Basket::get();
 			$postage = $basket->postage_cost();
@@ -161,15 +161,15 @@
 			if ($basket->pickup && $postage > 0):?>
 			<a href="javascript: checkCheckoutPickup()" class="right g-button ui-state-default ui-corner-all ui-icon-right">
 				<span class="ui-icon ui-icon-arrow-1-e"></span><?= t("To Order Confirmation") ?></a>
-		<? /* Pickup selected and postage cost */
+		<?php /* Pickup selected and postage cost */
 			elseif ($postage > 0):?>
 			<a href="javascript: checkCheckoutMail()" class="right g-button ui-state-default ui-corner-all ui-icon-right">
 				<span class="ui-icon ui-icon-arrow-1-e"></span><?= t("To Order Confirmation") ?></a>
-		<? /* no postage cost */
+		<?php /* no postage cost */
 			else: ?>
 			<a href="javascript: checkCheckoutEmail()" class="right g-button ui-state-default ui-corner-all ui-icon-right">
 				<span class="ui-icon ui-icon-arrow-1-e"></span><?= t("To Order Confirmation") ?></a>
-		<? endif; ?>
+		<?php endif; ?>
 		</div>
   </div>
 </div>

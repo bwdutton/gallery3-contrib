@@ -5,23 +5,23 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <title>
-      <? if ($page_title): ?>
+      <?php if ($page_title): ?>
         <?= $page_title ?>
-      <? else: ?>
-        <? if ($theme->item()): ?>
-          <? if ($theme->item()->is_album()): ?>
+      <?php else: ?>
+        <?php if ($theme->item()): ?>
+          <?php if ($theme->item()->is_album()): ?>
           <?= t("Browse Album :: %album_title", array("album_title" => $theme->item()->title)) ?>
-          <? elseif ($theme->item()->is_photo()): ?>
+          <?php elseif ($theme->item()->is_photo()): ?>
           <?= t("Photo :: %photo_title", array("photo_title" => $theme->item()->title)) ?>
-          <? else: ?>
+          <?php else: ?>
           <?= t("Movie :: %movie_title", array("movie_title" => $theme->item()->title)) ?>
-          <? endif ?>
-        <? elseif ($theme->tag()): ?>
+          <?php endif ?>
+        <?php elseif ($theme->tag()): ?>
           <?= t("Browse Tag :: %tag_title", array("tag_title" => $theme->tag()->name)) ?>
-        <? else: /* Not an item, not a tag, no page_title specified.  Help! */ ?>
+        <?php else: /* Not an item, not a tag, no page_title specified.  Help! */ ?>
           <?= t("Gallery") ?>
-        <? endif ?>
-      <? endif ?>
+        <?php endif ?>
+      <?php endif ?>
     </title>
     <link rel="shortcut icon" href="<?= url::file("lib/images/favicon.ico") ?>" type="image/x-icon" />
     <?= $theme->css("yui/reset-fonts-grids.css") ?>
@@ -33,10 +33,10 @@
     <link rel="stylesheet" type="text/css" href="<?= $theme->url("css/fix-ie.css") ?>"
           media="screen,print,projection" />
     <![endif]-->
-    <? if ($theme->page_type == "collection"): ?>
-      <? if ($thumb_proportion != 1): ?>
-        <? $new_width = $thumb_proportion * 213 ?>
-        <? $new_height = $thumb_proportion * 240 ?>
+    <?php if ($theme->page_type == "collection"): ?>
+      <?php if ($thumb_proportion != 1): ?>
+        <?php $new_width = $thumb_proportion * 213 ?>
+        <?php $new_height = $thumb_proportion * 240 ?>
     <style type="text/css">
     #g-content #g-album-grid .g-item {
       width: <?= $new_width ?>px;
@@ -44,13 +44,13 @@
       /* <?= $thumb_proportion ?> */
     }
     </style>
-      <? endif ?>
-    <? endif ?>
+      <?php endif ?>
+    <?php endif ?>
     <?= $theme->script("jquery.js") ?>
     <?= $theme->script("jquery.form.js") ?>
     <?= $theme->script("jquery-ui.js") ?>
     <?= $theme->script("gallery.common.js") ?>
-    <? /* MSG_CANCEL is required by gallery.dialog.js */ ?>
+    <?php /* MSG_CANCEL is required by gallery.dialog.js */ ?>
     <script type="text/javascript">
     var MSG_CANCEL = <?= t('Cancel')->for_js() ?>;
     </script>
@@ -60,13 +60,13 @@
     <?= $theme->script("jquery.localscroll.js") ?>
     <?= $theme->script("ui.init.js") ?>
 
-    <? /* These are page specific, but if we put them before $theme->head() they get combined */ ?>
-    <? if ($theme->page_subtype == "photo"): ?>
+    <?php /* These are page specific, but if we put them before $theme->head() they get combined */ ?>
+    <?php if ($theme->page_subtype == "photo"): ?>
     <?= $theme->script("jquery.scrollTo.js") ?>
     <?= $theme->script("gallery.show_full_size.js") ?>
-    <? elseif ($theme->page_subtype == "movie"): ?>
+    <?php elseif ($theme->page_subtype == "movie"): ?>
     <?= $theme->script("flowplayer.js") ?>
-    <? endif ?>
+    <?php endif ?>
 
     <?= $theme->head() ?>
   </head>
@@ -77,13 +77,13 @@
       <?= $theme->site_status() ?>
       <div id="g-header" class="ui-helper-clearfix">
         <div id="g-banner">
-          <? if ($header_text = module::get_var("gallery", "header_text")): ?>
+          <?php if ($header_text = module::get_var("gallery", "header_text")): ?>
           <?= $header_text ?>
-          <? else: ?>
+          <?php else: ?>
           <a id="g-logo" class="g-left" href="<?= item::root()->url() ?>" title="<?= t("go back to the Gallery home")->for_html_attr() ?>">
             <img alt="<?= t("Gallery logo: Your photos on your web site")->for_html_attr() ?>" src="<?= url::file("themes/browny_wind/images/logo.png") ?>" />
           </a>
-          <? endif ?>
+          <?php endif ?>
           <?= $theme->user_menu() ?>
           <?= $theme->header_top() ?>
 
@@ -96,29 +96,29 @@
           <?= $theme->header_bottom() ?>
         </div>
 
-        <? // The following code was modifed to allow module-defined breadcrumbs.
+        <?php // The following code was modifed to allow module-defined breadcrumbs.
            // Everything else in this file is a copy of the default page.html.php file.
         ?>
-        <? if (!empty($breadcrumbs)): ?>
+        <?php if (!empty($breadcrumbs)): ?>
         <ul class="g-breadcrumbs">
-          <? $i = 0 ?>
-          <? foreach ($breadcrumbs as $breadcrumb): ?>
-          <li<? if ($i == 0) print " class=\"g-first\"" ?>>
+          <?php $i = 0 ?>
+          <?php foreach ($breadcrumbs as $breadcrumb): ?>
+          <li<?php if ($i == 0) print " class=\"g-first\"" ?>>
             <!-- Adding ?show=<id> causes Gallery3 to display the page
                  containing that photo.  For now, we just do it for
                  the immediate parent so that when you go back up a
                  level you're on the right page. -->
-            <? if ($breadcrumb->url) : ?>
+            <?php if ($breadcrumb->url) : ?>
               <a href="<?= $breadcrumb->url ?>"><?= html::purify($breadcrumb->title) ?></a>
-            <? else : ?>
+            <?php else : ?>
               <?= html::purify($breadcrumb->title) ?>
-            <? endif ?>
+            <?php endif ?>
           </li>
-          <? $i++ ?>
-          <? endforeach ?>
+          <?php $i++ ?>
+          <?php endforeach ?>
         </ul>
-        <? endif ?>
-        <? // End modified code ?>
+        <?php endif ?>
+        <?php // End modified code ?>
 
       </div>
       <div id="bd">
@@ -131,22 +131,22 @@
           </div>
         </div>
         <div id="g-sidebar" class="yui-b">
-          <? if ($theme->page_subtype != "login"): ?>
+          <?php if ($theme->page_subtype != "login"): ?>
           <?= new View("sidebar.html") ?>
-          <? endif ?>
+          <?php endif ?>
         </div>
       </div>
       <div id="g-footer" class="ui-helper-clearfix">
         <?= $theme->footer() ?>
-        <? if ($footer_text = module::get_var("gallery", "footer_text")): ?>
+        <?php if ($footer_text = module::get_var("gallery", "footer_text")): ?>
         <?= $footer_text ?>
-        <? endif ?>
+        <?php endif ?>
 
-        <? if (module::get_var("gallery", "show_credits")): ?>
+        <?php if (module::get_var("gallery", "show_credits")): ?>
         <ul id="g-credits" class="g-inline">
           <?= $theme->credits() ?>
         </ul>
-        <? endif ?>
+        <?php endif ?>
       </div>
     </div>
     <?= $theme->page_bottom() ?>

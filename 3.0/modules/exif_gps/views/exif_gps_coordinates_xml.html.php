@@ -1,7 +1,7 @@
 <?php defined("SYSPATH") or die("No direct script access.") ?>
-<? print "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"; ?>
+<?php print "<?phpxml version=\"1.0\" encoding=\"UTF-8\"?>\n"; ?>
 <markers>
-<?
+<?php
 $thumb_arr=array();
 $items_id=array();;
 foreach ($items as $item) {
@@ -17,5 +17,5 @@ $str_thumb_html = str_replace(">", "&gt;", $str_thumb_html);
 $str_thumb_html = str_replace("\"", "&quot;", $str_thumb_html);
 ?>
 <marker lat="<?= $item_coordinates->latitude; ?>" lng="<?= $item_coordinates->longitude; ?>" url="<?= url::abs_site("exif_gps/item/$item_coordinates->item_id"); ?>" thumb="<?=$str_thumb_html; ?>" />
-<? } ?>
+<?php } ?>
 </markers>

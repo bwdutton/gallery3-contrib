@@ -18,11 +18,11 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 ?>
-<?if ($theme->page_subtype != "login"){
+<?phpif ($theme->page_subtype != "login"){
 		if (basket_plus::can_view_orders()){
 			 ?><a class="g-button ui-icon-left ui-state-default ui-corner-all ui-state-hover" 
 			 href="<?= url::site("basket_plus/view_Orders") ?>" title="<?= t("View Orders") ?>">
-			 <span class="ui-icon ui-icon-clipboard"></span><?= t("View Orders")?></a><?
+			 <span class="ui-icon ui-icon-clipboard"></span><?= t("View Orders")?></a><?php
 		}
 	}
 	if ($theme->page_subtype == "photo" or $theme->page_subtype == "album"){
@@ -31,7 +31,7 @@
 				?><p>
 				<a class="g-dialog-link g-button ui-icon-left ui-state-default ui-corner-all ui-state-hover" href="<?= url::site("basket_plus/add_to_basket_ajax/$item->id") ?>"
 				title="<?= t("Add To Basket")?>"><span class="ui-icon ui-icon-plusthick"></span><?= t("Add To Basket") ?></a></p>
-				<?
+				<?php
 			}
 		}
 		if (isset($basket) && isset($basket->contents) && ($basket->size() > 0)) {
@@ -42,27 +42,27 @@
 						<th><?= t("Product") ?></th>
 						<th><?= t("Cost") ?></th>
 						<th></th>
-					</tr><?
+					</tr><?php
 
 					$total = $basket->product_cost();
 					$postage=0;
 					foreach ($basket->contents as $key => $prod_details){
 						?><tr id="" class="<?= text::alternate("gOddRow", "gEvenRow") ?>">
-								<td id="item-<?= $prod_details->item ?>" class="core-info"><?
+								<td id="item-<?= $prod_details->item ?>" class="core-info"><?php
 									$item = $prod_details->getItem();
 									$width = $item->width;
 									?><img src="<?= $item->thumb_url()?>" title="<?= $item->title?>" alt="<?= $item->title?>" 
-									<? if ($width < module::get_var("gallery", "resize_size")):?>
+									<?php if ($width < module::get_var("gallery", "resize_size")):?>
 										style="max-width:60px;"/><br/>
-									<? else: ?>
+									<?php else: ?>
 										style="max-width:90px;"/><br/>
-									<? endif; ?>
+									<?php endif; ?>
 									<?= html::clean($prod_details->quantity) ?> x <?= html::clean($prod_details->product_name())/*= html::clean($prod_details->product_description())*/ ?></td>
 								<td><?= basket_plus::formatMoneyForWeb($prod_details->product_cost); ?></td>
 								<td class="g-actions"><a href="<?= url::site("basket_plus/remove_item/$key") ?>" 
 									class="g-button2"><span class="ui-icon ui-icon-trash"></span></a></td>
 							</tr>
-						<?
+						<?php
 					}
 					?>
 					<tr class="<?= text::alternate("gOddRow", "gEvenRow") ?>">
@@ -74,11 +74,11 @@
 			</div><br/>
 			<p><a class="g-button right ui-icon-left ui-state-default ui-corner-all ui-state-hover" 
 				href="<?= url::site("basket_plus/view_basket") ?>" title="<?= t("Checkout") ?>">
-				<span class="ui-icon ui-icon-cart"></span><?= t("Checkout") ?></a></p><?
+				<span class="ui-icon ui-icon-cart"></span><?= t("Checkout") ?></a></p><?php
 		}
 		else {?>
 			<div id="sidebar-basket">
 				<?= t("Shopping Basket is Empty") ?>
-			</div><?
+			</div><?php
 		}
 	}

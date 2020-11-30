@@ -19,7 +19,7 @@
         <?= t("Action") ?>
       </th>
     </tr>
-    <? foreach ($schedule_definitions as $entry): ?>
+    <?php foreach ($schedule_definitions as $entry): ?>
     <tr class="<?= text::alternate("g-odd", "g-even") ?>">
       <td>
         <?= html::clean($entry->name) ?>
@@ -44,6 +44,6 @@
         </a>
       </td>
     </tr>
-    <? endforeach ?>
+    <?php endforeach ?>
   </table>
 </div>

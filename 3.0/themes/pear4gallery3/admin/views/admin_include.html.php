@@ -57,7 +57,7 @@ input.ui-state-hover { background-image: url(/themes/greydragon/images/button-gr
   });
 </script>
 
-<?
+<?php
   if ($is_module):
     $admin_info = new ArrayObject(parse_ini_file(MODPATH   . $name . "/module.info"), ArrayObject::ARRAY_AS_PROPS);
     $version = number_format($admin_info->version / 10, 1, '.', '');
@@ -73,12 +73,12 @@ input.ui-state-hover { background-image: url(/themes/greydragon/images/button-gr
     <div id="gd-admin-hlinks">
       <ul><li><a href="http://codex.gallery2.org/Gallery3:Themes:pear4gallery3" target="_blank"><?= t("Home") ?></a>&nbsp;|&nbsp;</li>
         <li><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=RX4UUYVJ5D7TY&lc=SE&item_name=Pear4Gallery&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted" target="_blank"><?= t("Beer found") ?></a>&nbsp;|&nbsp;</li>
-        <? if (isset($admin_info->support)): ?>
+        <?php if (isset($admin_info->support)): ?>
         <li><a href="<?= $admin_info->support;  ?>" target="_blank"><?= t("Support") ?></a>&nbsp;|&nbsp;</li>
-        <? endif; ?>
-        <? if (isset($admin_info->download)): ?>
+        <?php endif; ?>
+        <?php if (isset($admin_info->download)): ?>
         <li><a href="<?= $admin_info->download; ?>" target="_blank"><?= t("Download") ?></a>&nbsp;|&nbsp;</li>
-        <? endif; ?>
+        <?php endif; ?>
       </ul>
     </div>
   </div>

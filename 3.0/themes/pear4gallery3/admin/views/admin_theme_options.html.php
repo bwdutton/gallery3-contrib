@@ -2,7 +2,7 @@
 /**
  */
 ?>
-<?
+<?php
   $view = new View("admin_include.html");
 
   $view->is_module = FALSE;

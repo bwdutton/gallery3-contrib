@@ -14,14 +14,14 @@
         <th> <?= t("User agent") ?> </th>
       </tr>
 
-      <? $rank = 0; ?>
-      <? foreach ($uas as $ua => $count): ?>
+      <?php $rank = 0; ?>
+      <?php foreach ($uas as $ua => $count): ?>
       <tr class="<?= text::alternate("g-odd", "g-even") ?>">
         <td> <?= ++$rank ?> </td>
         <td> <?= $count ?> </td>
         <td> <?= $ua ?> </td>
       </tr>
-      <? endforeach ?>
+      <?php endforeach ?>
     </table>
   </div>
 
@@ -34,14 +34,14 @@
         <th> <?= t("Internet address") ?> </th>
       </tr>
 
-      <? $rank = 0; ?>
-      <? foreach ($ips as $ip => $count): ?>
+      <?php $rank = 0; ?>
+      <?php foreach ($ips as $ip => $count): ?>
       <tr class="<?= text::alternate("g-odd", "g-even") ?>">
         <td> <?= ++$rank ?> </td>
         <td> <?= $count ?> </td>
         <td> <?= $ip ?> </td>
       </tr>
-      <? endforeach ?>
+      <?php endforeach ?>
     </table>
   </div>
 </div>

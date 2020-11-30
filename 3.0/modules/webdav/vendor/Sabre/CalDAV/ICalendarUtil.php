@@ -99,7 +99,7 @@ class Sabre_CalDAV_ICalendarUtil {
 
         }
 
-        $xml = '<?xml version="1.0"?>' . "\n";
+        $xml = '<?phpxml version="1.0"?>' . "\n";
         $xml.= "<iCalendar xmlns=\"urn:ietf:params:xml:ns:xcal\">\n";
 
         $spaces = 2;

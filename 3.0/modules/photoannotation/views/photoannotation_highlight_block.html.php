@@ -112,11 +112,11 @@
 <script type="text/javascript">
       $(document).ready(function() {
 				$("<?= $css_item_id ?>").annotateImage({
-          <? if ((access::can("view", $item)) && (access::can("edit", $item))): ?>
+          <?php if ((access::can("view", $item)) && (access::can("edit", $item))): ?>
 					editable: true,
-          <? else: ?>
+          <?php else: ?>
           editable: false,
-          <? endif ?>
+          <?php endif ?>
           saveUrl: '<?= url::site("photoannotation/save/". $item->id) ?>',
           deleteUrl: '<?= url::site("photoannotation/delete/". $item->id) ?>',
           tags: '<?= url::site("tags/autocomplete") ?>',
@@ -130,6 +130,6 @@
 				});
 			});
 		</script>
-    <? if ($legend_display != ""): ?>
+    <?php if ($legend_display != ""): ?>
     <?= "<div style=\"text-align: center\">". $legend_display ."</div>" ?>
-    <? endif ?>
+    <?php endif ?>

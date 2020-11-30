@@ -8,7 +8,7 @@
 
 <br/><?= $calendar_user_year_form ?><br /><br />
 
-<?
+<?php
   // Search the db for all photos that were taken during the selected year.
   if ($calendar_user == "-1") {
     $items_for_year = ORM::factory("item")

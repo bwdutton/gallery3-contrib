@@ -11,7 +11,7 @@
         fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
     </script>
-        <fb:comments href="<?if(isset($url)) { print $url; } else { print url::abs_current(); }?>"
+        <fb:comments href="<?phpif(isset($url)) { print $url; } else { print url::abs_current(); }?>"
             num_posts="5" width="478" colorscheme="dark"> </fb:comments>
 </div>
 

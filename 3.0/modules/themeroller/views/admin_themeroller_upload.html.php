@@ -40,11 +40,11 @@
     <fieldset>
       <ul>
         <li><?= access::csrf_form_field() ?></li>
-        <? if (!$is_writable): ?>
+        <?php if (!$is_writable): ?>
         <li class="g-error">
            <?= t("The theme directory is not writable. Please ensure that it is writable by the web server") ?>
         </li>
-        <? endif ?>
+        <?php endif ?>
         <li><span><?= t("Upload and generate theme") ?></span></li>
         <li>
           <?= form::checkbox(array("name" => "is_admin",
@@ -59,7 +59,7 @@
           <button type="submit"
                id="g-generate-theme"
                class="<?= $submit_class ?>"
-               <? if ($not_writable): ?> disabled<? endif ?>>
+               <?php if ($not_writable): ?> disabled<?php endif ?>>
             <?= t("Upload") ?>
           </button>
           </span>

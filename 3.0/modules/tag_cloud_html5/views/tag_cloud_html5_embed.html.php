@@ -51,7 +51,7 @@
 </script>
 <div id="g-tag-cloud-html5-embed">
   <canvas id="g-tag-cloud-html5-embed-canvas">
-    <? echo t('Tag cloud loading...'); ?>
+    <?php echo t('Tag cloud loading...'); ?>
   </canvas>
 </div>
 <div id="g-tag-cloud-html5-embed-tags" style="display: none">

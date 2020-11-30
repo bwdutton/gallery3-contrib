@@ -55,7 +55,7 @@ function so(g){
 }
 </SCRIPT>
 <div class="g-block">
-<?
+<?php
 $payment_details = basket::getPaymentDetails();
 if ($payment_details):
 ?>
@@ -63,24 +63,24 @@ if ($payment_details):
 <h2>Payment Details</h2>
 <?= $payment_details; ?>
 </div>
-<? endif; ?>
+<?php endif; ?>
 <?= $form ?>
 <div class="basketbuttons">
 <a href="<?= url::site("basket/view_basket") ?>" class="left g-button ui-state-default ui-corner-all ui-icon-left">
 <span class="ui-icon ui-icon-arrow-1-w"></span><?= t("Back to Basket") ?></a>
 
-<? if (basket::isPaypal()): ?>
+<?php if (basket::isPaypal()): ?>
 <a href="javascript: so(true)"
     class="right g-button ui-state-default ui-corner-all ui-icon-right">
       <span class="ui-icon ui-icon-arrow-1-e"></span><?= t("Pay with Credit Card or Paypal") ?></a>
   <a href="javascript: so(false)"
     class="right g-button ui-state-default ui-corner-all ui-icon-right">
       <span class="ui-icon ui-icon-arrow-1-e"></span><?= t("Pay off line") ?></a>
-<? else: ?>
+<?php else: ?>
 
 <a href="javascript: so(false)" class="right g-button ui-state-default ui-corner-all ui-icon-right">
 <span class="ui-icon ui-icon-arrow-1-e"></span><?= t("Proceed to Confirmation") ?></a>
-<? endif?>
+<?php endif?>
 </div>
 
 </div>

@@ -27,18 +27,18 @@
             empty($form->slug->readonly) ? "" : "readonly={$form->slug->readonly}") ?>
         <?= empty($errors->slug) ? "" : "<span class=\"error\">{$errors->slug}</span>" ?>
       </li>
-      <? if (!empty($form->image)): ?>
+      <?php if (!empty($form->image)): ?>
       <li>
         <?= form::label("image", "{$form->image->label}:") ?><br/>
         <?= form::upload("image") ?>
         <?= empty($errors->image) ? "" : "<span class=\"error\">{$errors->image}</span>" ?>
       </li>
-      <? endif ?>
-      <? if (!empty($errors->form_error)): ?>
+      <?php endif ?>
+      <?php if (!empty($errors->form_error)): ?>
       <li>
         <span class="error"><?= $errors->form_error ?></span>
       </li>
-      <? endif ?>
+      <?php endif ?>
       <li style="text-align: center">
          <?= form::submit("do_edit", $button_text) ?>
          <?= form::input(array('type'=>'reset','name'=>'reset'), "Reset") ?>

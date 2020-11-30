@@ -2,7 +2,7 @@
 
 <script type="text/javascript" src="<?= url::file("modules/ratings/js/mootools-1.2.4.js"); ?>"></script>
 <style>
-<? include_once(MODPATH."ratings/css/ratings.css"); ?>
+<?php include_once(MODPATH."ratings/css/ratings.css"); ?>
 </style>
 
 <style>
@@ -51,16 +51,16 @@
 <?php require_once(MODPATH."ratings/vendor/ratings.php"); $rr = new RabidRatings(); ?>
 
 <script type="text/javascript">
-<? include_once(MODPATH."ratings/js/ratings.js"); ?>
+<?php include_once(MODPATH."ratings/js/ratings.js"); ?>
 </script>
 
 
 <div class="ratings-bp">
-<?
+<?php
 if(module::get_var("ratings","regonly") == 1 && identity::active_user()->guest){
 } else {
   echo module::get_var("ratings","castyourvotestring");
 }
 ?>
-<? $ratingid = "rate".$item->id; $rr->showStars($ratingid); ?>
+<?php $ratingid = "rate".$item->id; $rr->showStars($ratingid); ?>
 </div>

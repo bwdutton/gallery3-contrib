@@ -3,9 +3,9 @@
   $("document").ready(function() {
     $("#g-tag").gallery_tag_cloud({
       movie: "<?= url::file("modules/tag_cloud/lib/tagcloud.swf") ?>"
-      <? foreach ($options as $option => $value) : ?>
+      <?php foreach ($options as $option => $value) : ?>
         , <?= $option ?> : "<?= $value ?>"
-      <? endforeach ?>
+      <?php endforeach ?>
     });
   });
 </script>

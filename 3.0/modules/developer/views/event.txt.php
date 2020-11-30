@@ -19,9 +19,9 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class <?= $module ?>_event {
-<? foreach ($callbacks as $callback => $unused): ?>
+<?php foreach ($callbacks as $callback => $unused): ?>
   <?= $callback ?> {
   }
 
-<? endforeach ?>
+<?php endforeach ?>
 }

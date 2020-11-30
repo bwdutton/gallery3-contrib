@@ -36,18 +36,18 @@
         <th><?= t("Payment - Delivery") ?></th>
         <th><?= t("Total Amount") ?></th>
       </tr>     
-    <? $total = 0;
+    <?php $total = 0;
 			foreach ($orders as $i => $order){
       ?>
       <tr class="order-status-<?=$order->status?>">
         <td class="order-status-<?=$order->status?>"><a href="javascript:loadOrder(<?=$order->id?>)"><?=basket_plus::getBasketVar(ORDER_PREFIX).$order->id?></a></td>
         <td><?=$order->name?></td>
-        <? $id=$order->id;?>
+        <?php $id=$order->id;?>
         <td class="order-status-<?=$order->status?>"><a href="javascript:loadOrderLog(<?=$order->id?>)" alt=<?=t("Show order history")?>><?=t($order->status())?></a></td>
         <td class="order-status-<?=$order->status?>"><?=t($order->payment_method())?>&nbsp;-&nbsp;<?= $order->delivery_method()?></td>
         <td style="text-align:right;"><?=basket_plus::formatMoneyForWeb($order->cost)?></td>
       </tr>     
-    <?
+    <?php
     $total = $total + $order->cost;
     }
     ?>

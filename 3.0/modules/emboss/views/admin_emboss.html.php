@@ -72,7 +72,7 @@ function uncheckAllOverlays()
     <td><?=$image->width?> x <?=$image->height?></td>
     <td><?=emboss::usage_count($image->id)?></td>
     <td><?=html::anchor('admin/emboss/delete_overlay?name='.$image->name.'&csrf='.access::csrf_token(), 'delete')?></td></tr>
-<? endforeach ?>
+<?php endforeach ?>
 <tr class="<?=text::alternate('g-odd','g-even')?>"><td colspan=5>
 <a href='javascript:checkAllOverlays()'>Check All</a> / 
 <a href='javascript:uncheckAllOverlays()'>Uncheck All</a>

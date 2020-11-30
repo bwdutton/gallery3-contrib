@@ -3,9 +3,9 @@
 <link rel="stylesheet" href="<?= url::file("modules/pages_xtra/css/admin_screen.css") ?>" type="text/css" media="screen,print,projection" />
 </head>
 <body>
- <? // <style type="text/css">  ?>
- <? // Styling code moved to pages_xtra/css/admin_screen.css  ?>
- <? // </style> ?>
+ <?php // <style type="text/css">  ?>
+ <?php // Styling code moved to pages_xtra/css/admin_screen.css  ?>
+ <?php // </style> ?>
 
 <script type="text/javascript">    
   $(function() {

@@ -1,5 +1,5 @@
 <?php defined("SYSPATH") or die("No direct script access.") ?>
-<?
+<?php
   // Generate a list of items within the specified 3 month time-frame.
   $items = ORM::factory("item")
     ->viewable()

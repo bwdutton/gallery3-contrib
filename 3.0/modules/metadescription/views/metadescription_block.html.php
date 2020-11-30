@@ -1,5 +1,5 @@
 <?php defined("SYSPATH") or die("No direct script access.") ?>
-<?
+<?php
   $item = $theme->item;
   $metaTags = "";
   if (count($tags) > 0) {

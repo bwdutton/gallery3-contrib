@@ -15,7 +15,7 @@
     <?= $theme->script("jquery.form.js") ?>
     <?= $theme->script("jquery-ui.js") ?>
     <?= $theme->script("gallery.common.js") ?>
-    <? /* MSG_CANCEL is required by gallery.dialog.js */ ?>
+    <?php /* MSG_CANCEL is required by gallery.dialog.js */ ?>
     <script type="text/javascript">
       var MSG_CANCEL = <?= t('Cancel')->for_js() ?>;
     </script>
@@ -30,11 +30,11 @@
   </head>
   <body class="g-fancy-iframe-body">
     <div id="g-item-box">
-      <? if (module::get_var("three_nids", "photo_size") == "full"): ?>
+      <?php if (module::get_var("three_nids", "photo_size") == "full"): ?>
       <img src="<?= $item->file_url() ?>" id="g-item-img"/>
-      <? else: ?>
+      <?php else: ?>
       <img src="<?= $item->resize_url() ?>" id="g-item-img"/>
-      <? endif ?>
+      <?php endif ?>
 
       <?= $theme->context_menu($item, "#g-item-id-{$item->id}") ?>
     </div>

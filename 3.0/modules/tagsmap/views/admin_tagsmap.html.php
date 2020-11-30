@@ -15,8 +15,8 @@
   <h3>
     <?= t("Assign GPS Coordinates") ?>
   </h3>
-  <? $tags_per_column = $tags->count()/5 ?>
-  <? $column_tag_count = 0 ?>
+  <?php $tags_per_column = $tags->count()/5 ?>
+  <?php $column_tag_count = 0 ?>
 
   <table id="g-gps-tag-admin" class="g-block-content">
     <caption class="understate">
@@ -24,23 +24,23 @@
     </caption>
     <tr>
       <td>
-        <? foreach ($tags as $i => $tag): ?>
-          <? $current_letter = strtoupper(mb_substr($tag->name, 0, 1)) ?>
+        <?php foreach ($tags as $i => $tag): ?>
+          <?php $current_letter = strtoupper(mb_substr($tag->name, 0, 1)) ?>
 
-          <? if ($i == 0): /* first letter */ ?>
+          <?php if ($i == 0): /* first letter */ ?>
             <strong><?= $current_letter ?></strong>
             <ul>
-          <? elseif ($last_letter != $current_letter): /* new letter */ ?>
-            <? if ($column_tag_count > $tags_per_column): /* new column */ ?>
+          <?php elseif ($last_letter != $current_letter): /* new letter */ ?>
+            <?php if ($column_tag_count > $tags_per_column): /* new column */ ?>
                </td>
               <td>
-              <? $column_tag_count = 0 ?>
-            <? endif ?>
+              <?php $column_tag_count = 0 ?>
+            <?php endif ?>
 
             </ul>
             <strong><?= $current_letter ?></strong>
             <ul>
-          <? endif ?>
+          <?php endif ?>
 
           <li>
             <?= html::clean($tag->name) ?>
@@ -48,7 +48,7 @@
 
             <a href="<?= url::site("admin/tagsmap/edit_gps/$tag->id") ?>"><?= t("Edit GPS") ?></a>
 
-            <?
+            <?php
               // Check and see if this ID already has GPS data, display a delete button if it does.
               $existingGPS = ORM::factory("tags_gps")
                              ->where("tag_id", "=", $tag->id)
@@ -56,14 +56,14 @@
               if (count($existingGPS) > 0) {
               ?>
                | <a href="<?= url::site("admin/tagsmap/confirm_delete_gps/$tag->id") ?>"><?= t("Delete GPS") ?></a>
-              <?
+              <?php
               }
             ?>
           </li>
 
-          <? $column_tag_count++ ?>
-          <? $last_letter = $current_letter ?>
-        <? endforeach /* $tags */ ?>
+          <?php $column_tag_count++ ?>
+          <?php $last_letter = $current_letter ?>
+        <?php endforeach /* $tags */ ?>
         </ul>
       </td>
     </tr>

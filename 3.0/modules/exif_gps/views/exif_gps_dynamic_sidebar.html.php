@@ -1,14 +1,14 @@
 <?php defined("SYSPATH") or die("No direct script access.") ?>
 <script type="text/javascript" src="//www.google.com/jsapi"></script>
 <script type="text/javascript">
-<?
+<?php
   if (module::get_var("exif_gps", "googlemap_api_key", "") != "") {
     print "google.load(\"maps\", \"3\",  {other_params:\"key=" . module::get_var("exif_gps", "googlemap_api_key") . "\"});";
   } else {
     print "google.load(\"maps\", \"3\",  {other_params:\"\"});";
   }
 ?>
-<?
+<?php
   $my_album_id = 0;
   if (isset($album_id)) {
     $my_album_id = $album_id;
@@ -121,7 +121,7 @@
       });
     }
 
-    <? if (($max_autozoom = module::get_var("exif_gps", "googlemap_max_autozoom")) != "") : ?>
+    <?php if (($max_autozoom = module::get_var("exif_gps", "googlemap_max_autozoom")) != "") : ?>
     // If there is a maximum auto-zoom value, then set up an event to check the zoom
     // level the first time it is changed, and adjust it if necessary.
     // (if we call map.getZoom right after .fitBounds, getZoom will return the initial 
@@ -132,7 +132,7 @@
         google_zoom_hack = false;
       }
     });
-    <? endif ?>
+    <?php endif ?>
   }
 
   // Set up an info window at the specified coordinates

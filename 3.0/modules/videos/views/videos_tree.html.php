@@ -1,5 +1,5 @@
 <?php defined("SYSPATH") or die("No direct script access.") ?>
-<? // rWatcher Edit:  This file used to be server_add_tree.html.php ?>
+<?php // rWatcher Edit:  This file used to be server_add_tree.html.php ?>
 <li class="ui-icon-left">
   <span class="ui-icon ui-icon-folder-open"></span>
   <span class="g-directory" ref="">
@@ -7,16 +7,16 @@
   </span>
   <ul>
 
-    <? foreach ($parents as $dir): ?>
+    <?php foreach ($parents as $dir): ?>
     <li class="ui-icon-left">
       <span class="ui-icon ui-icon-folder-open"></span>
       <span class="g-directory" ref="<?= html::clean_attribute($dir) ?>">
         <?= html::clean(basename($dir)) ?>
       </span>
       <ul>
-        <? endforeach ?>
+        <?php endforeach ?>
 
-        <? foreach ($files as $file): ?>
+        <?php foreach ($files as $file): ?>
         <li class="ui-icon-left">
           <span class="ui-icon <?= is_dir($file) ? "ui-icon-folder-collapsed" : "ui-icon-document" ?>"></span>
           <span class="<?= is_dir($file) ? "g-directory" : "g-file" ?>"
@@ -24,15 +24,15 @@
             <?= html::clean(basename($file)) ?>
           </span>
         </li>
-        <? endforeach ?>
-        <? if (!$files): ?>
+        <?php endforeach ?>
+        <?php if (!$files): ?>
         <li> <i> <?= t("empty") ?> </i> </li>
-        <? endif ?>
+        <?php endif ?>
 
-        <? foreach ($parents as $dir): ?>
+        <?php foreach ($parents as $dir): ?>
       </ul>
     </li>
-    <? endforeach ?>
+    <?php endforeach ?>
 
   </ul>
 </li>

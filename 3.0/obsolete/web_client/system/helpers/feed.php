@@ -73,7 +73,7 @@ class feed_Core {
 	{
 		$info += array('title' => 'Generated Feed', 'link' => '', 'generator' => 'KohanaPHP');
 
-		$feed = '<?xml version="1.0" encoding="'.$encoding.'"?><rss version="2.0"><channel></channel></rss>';
+		$feed = '<?phpxml version="1.0" encoding="'.$encoding.'"?><rss version="2.0"><channel></channel></rss>';
 		$feed = simplexml_load_string($feed);
 
 		foreach ($info as $name => $value)

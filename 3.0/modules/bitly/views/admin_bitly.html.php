@@ -7,11 +7,11 @@
               "bitly_url" => "http://bit.ly")) ?>
   </p>
   <div class="g-block-content">
-    <? if (!empty($g3_url)): ?>
+    <?php if (!empty($g3_url)): ?>
     <div class="g-module-status g-success">
       <?= t("Your bit.ly login and API key are valid. Your Gallery URLs can now be shortened! This is the shortened URL for this Gallery <a href=\"%g3_url\">%g3_url</a>", array('g3_url' => $g3_url)) ?>
     </div>
-    <? endif ?>
+    <?php endif ?>
 
     <?= $form ?>
   </div>

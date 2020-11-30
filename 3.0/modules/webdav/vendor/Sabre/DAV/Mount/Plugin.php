@@ -67,7 +67,7 @@ class Sabre_DAV_Mount_Plugin extends Sabre_DAV_ServerPlugin {
         $this->server->httpResponse->sendStatus(200);
         $this->server->httpResponse->setHeader('Content-Type','application/davmount+xml');
         ob_start();
-        echo '<?xml version="1.0"?>', "\n";
+        echo '<?phpxml version="1.0"?>', "\n";
         echo "<dm:mount xmlns:dm=\"http://purl.org/NET/webdav/mount\">\n";
         echo "  <dm:url>", htmlspecialchars($uri, ENT_NOQUOTES, 'UTF-8'), "</dm:url>\n";
         echo "</dm:mount>";

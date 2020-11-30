@@ -1,11 +1,11 @@
 <?php defined("SYSPATH") or die("No direct script access.") ?>
 
-<? $useShadowBox = ( module::is_active("shadowbox") && module::get_var("theme_clean_canvas", "use_shadowbox") )?>
-<? $useStandardFullSize = ( !$useShadowBox ) ?>
+<?php $useShadowBox = ( module::is_active("shadowbox") && module::get_var("theme_clean_canvas", "use_shadowbox") )?>
+<?php $useStandardFullSize = ( !$useShadowBox ) ?>
 
-<? if (access::can("view_full", $theme->item())): ?>
+<?php if (access::can("view_full", $theme->item())): ?>
 
-<? if ( $useShadowBox ) : ?>
+<?php if ( $useShadowBox ) : ?>
 
 <!-- Use javascript to show the full size as an overlay on the current page -->
 <script type="text/javascript">
@@ -15,7 +15,7 @@ Shadowbox.init({
 });
 </script>
 
-<? else : ?>
+<?php else : ?>
 <!-- Use javascript to show the full size as an overlay on the current page -->
 <script type="text/javascript">
   $(document).ready(function() {
@@ -38,54 +38,54 @@ Shadowbox.init({
     });
   });
 </script>
-<? endif ?>
-<? endif ?>
+<?php endif ?>
+<?php endif ?>
 
 <div id="g-item">
   <?= $theme->photo_top() ?>
 
   <?= $theme->paginator() ?>
 
-<? if ($useShadowBox) : ?>
+<?php if ($useShadowBox) : ?>
   <div style="display:none">
-  <? foreach ($item->parent()->children() as $i => $child): ?>
-    <? if ( $child->id === $item->id ): ?>
+  <?php foreach ($item->parent()->children() as $i => $child): ?>
+    <?php if ( $child->id === $item->id ): ?>
   </div>
 
   <div id="g-photo">
       <?= $theme->resize_top($item) ?>
-      <? if (access::can("view_full", $item)): ?>
+      <?php if (access::can("view_full", $item)): ?>
     <a href="<?= $item->file_url() ?>" class="g-fullsize-link" rel="shadowbox[<?= $item->parent()->title ?>]" title="<?= html::purify($item->title) ?>">
-      <? endif ?>
+      <?php endif ?>
       <?= $item->resize_img(array("id" => "g-item-id-{$item->id}", "class" => "g-resize")) ?>
-      <? if (access::can("view_full", $item)): ?>
+      <?php if (access::can("view_full", $item)): ?>
     </a>
-    <? endif ?>
+    <?php endif ?>
     <?= $theme->resize_bottom($item) ?>
   </div>
   
   <div style="display:none">
-	<? else :?>
-      <? if (access::can("view_full", $child)): ?>
+	<?php else :?>
+      <?php if (access::can("view_full", $child)): ?>
       <a href="<?= $child->file_url() ?>" class="g-fullsize-link" rel="shadowbox[<?= $item->parent()->title ?>]" title="<?= html::purify($child->title) ?>"> dummy </a>
-      <? endif ?>
-	<? endif ?>
-  <? endforeach ?>	
+      <?php endif ?>
+	<?php endif ?>
+  <?php endforeach ?>	
   </div>
-<? else : ?>
+<?php else : ?>
 
   <div id="g-photo">
     <?= $theme->resize_top($item) ?>
-    <? if (access::can("view_full", $item)): ?>
+    <?php if (access::can("view_full", $item)): ?>
     <a href="<?= $item->file_url() ?>" class="g-fullsize-link" title="<?= t("View full size")->for_html_attr() ?>">
-      <? endif ?>
+      <?php endif ?>
       <?= $item->resize_img(array("id" => "g-item-id-{$item->id}", "class" => "g-resize")) ?>
-      <? if (access::can("view_full", $item)): ?>
+      <?php if (access::can("view_full", $item)): ?>
     </a>
-    <? endif ?>
+    <?php endif ?>
     <?= $theme->resize_bottom($item) ?>
   </div> 
- <? endif ?>
+ <?php endif ?>
   
   <div id="g-info">
     <h1><?= html::purify($item->title) ?></h1>

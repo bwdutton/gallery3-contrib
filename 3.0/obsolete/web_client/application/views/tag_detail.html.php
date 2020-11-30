@@ -5,16 +5,16 @@
   var resource_type = "album";
 </script>
 <ul id="wc-thumb-grid" class="ui-helper-clearfix">
-  <? foreach ($resources as $child): ?>
+  <?php foreach ($resources as $child): ?>
   <li class="wc-thumb-grid-cell" ref="<?= $child->path ?>">
       <a class="wc-child-link wc-image-block" href="#">
-        <? if ($child->has_thumb): ?>
+        <?php if ($child->has_thumb): ?>
         <img src="<?= $child->thumb_url ?>" title="<?= $child->title ?>" />
-        <? else: ?>
+        <?php else: ?>
         <span><?= $child->title ?></span>
-        <? endif ?>
+        <?php endif ?>
       </a>
   </li>
-  <? endforeach ?>
+  <?php endforeach ?>
 </ul>
 

@@ -21,14 +21,14 @@ $("document").ready(function() {
   <script type="text/javascript">
     $(document).ready(function() {
       $("#g-admin-g1-import-tabs").tabs()
-      <? if (!isset($g1_version)): ?>
+      <?php if (!isset($g1_version)): ?>
       .tabs("disable", 1)
       .tabs("disable", 2)
-      <? elseif ($g3_resource_count > .9 * $g1_resource_count):  ?>
+      <?php elseif ($g3_resource_count > .9 * $g1_resource_count):  ?>
       .tabs("select", 2)
-      <? else: ?>
+      <?php else: ?>
       .tabs("select", 1)
-      <? endif ?>
+      <?php endif ?>
       ;
 
       // Show the tabs after the page has loaded to prevent Firefox from rendering the
@@ -60,31 +60,31 @@ $("document").ready(function() {
       <?= $form ?>
     </div>
     <div id="g-admin-g1-import-import">
-      <? if (isset($g1_version)): ?>
+      <?php if (isset($g1_version)): ?>
       <ul>
         <li>
           <?= t("Gallery version %version detected", array("version" => $g1_version)) ?>
         </li>
-        <? if ($g1_sizes["thumb"]["size"] && $thumb_size != $g1_sizes["thumb"]["size"]): ?>
+        <?php if ($g1_sizes["thumb"]["size"] && $thumb_size != $g1_sizes["thumb"]["size"]): ?>
         <li>
           <?= t("Your most common thumbnail size in Gallery 1 is %g1_pixels pixels, but your Gallery 3 thumbnail size is set to %g3_pixels pixels. <a href=\"%url\">Using the same value</a> will speed up your import.",
                 array("g1_pixels" => $g1_sizes["thumb"]["size"],
                       "g3_pixels" => $thumb_size,
                       "url" => html::mark_clean(url::site("admin/theme_options")))) ?>
         </li>
-        <? endif ?>
+        <?php endif ?>
 
-        <? if ($g1_sizes["resize"]["size"] && $resize_size != $g1_sizes["resize"]["size"]): ?>
+        <?php if ($g1_sizes["resize"]["size"] && $resize_size != $g1_sizes["resize"]["size"]): ?>
         <li>
           <?= t("Your most common intermediate size in Gallery 1 is %g1_pixels pixels, but your Gallery 3 intermediate size is set to %g3_pixels pixels. <a href=\"%url\">Using the same value</a> will speed up your import.",
                 array("g1_pixels" => $g1_sizes["resize"]["size"],
                       "g3_pixels" => $resize_size,
                       "url" => html::mark_clean(url::site("admin/theme_options")))) ?>
         </li>
-        <? endif ?>
+        <?php endif ?>
 
         <li>
-          <?
+          <?php
           $t = array();
           $t[] = t2("1 user", "%count users", $g1_stats["users"]);
           $t[] = t2("1 group", "%count groups", $g1_stats["groups"]);
@@ -99,9 +99,9 @@ $("document").ready(function() {
                       "t3" => $t[3], "t4" => $t[4], "t5" => $t[5])) ?>
         </li>
 
-        <? if ($g3_resource_count): ?>
+        <?php if ($g3_resource_count): ?>
         <li>
-          <?
+          <?php
           $t = array();
           $t[] = t2("1 user", "%count users", $g3_stats["user"]);
           $t[] = t2("1 group", "%count groups", $g3_stats["group"]);
@@ -114,7 +114,7 @@ $("document").ready(function() {
                 array("t0" => $t[0], "t1" => $t[1], "t2" => $t[2],
                       "t3" => $t[3], "t4" => $t[4], "t5" => $t[5])) ?>
         </li>
-        <? endif ?>
+        <?php endif ?>
       </ul>
       <p>
         <a class="g-button g-dialog-link ui-state-default ui-corner-all"
@@ -122,7 +122,7 @@ $("document").ready(function() {
           <?= t("Begin import!") ?>
         </a>
       </p>
-      <? endif ?>
+      <?php endif ?>
     </div>
     <div id="g-admin-g1-import-notes" class="g-text">
       <ul>
@@ -141,7 +141,7 @@ $("document").ready(function() {
           <textarea id="g-g1-gallery-redirect-rules" rows="4" cols="60">&lt;IfModule mod_rewrite.c&gt;
       Options +FollowSymLinks
       RewriteEngine On
-<? /*      RewriteBase <?= html::clean(g1_import::$gallery_url) ?> */ ?>
+<?php /*      RewriteBase <?= html::clean(g1_import::$gallery_url) ?> */ ?>
       RewriteRule ^(.*)$ <?= url::site("g1/map?path=\$1") ?>   [QSA,L,R=301]
     &lt;/IfModule&gt;</textarea>
           <script type="text/javascript">

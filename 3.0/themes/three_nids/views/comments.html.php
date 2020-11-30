@@ -15,7 +15,7 @@
     <?= $theme->script("jquery.form.js") ?>
     <?= $theme->script("jquery-ui.js") ?>
     <?= $theme->script("gallery.common.js") ?>
-    <? /* MSG_CANCEL is required by gallery.dialog.js */ ?>
+    <?php /* MSG_CANCEL is required by gallery.dialog.js */ ?>
     <script type="text/javascript">
       var MSG_CANCEL = <?= t('Cancel')->for_js() ?>;
     </script>
@@ -38,13 +38,13 @@
       <?= t("Add a comment") ?>
     </a>
     <div id="g-comment-detail">
-      <? if (!$comments->count()): ?>
+      <?php if (!$comments->count()): ?>
       <p id="g-no-comments-yet">
 	<?= t("No comments yet.") ?>
       </p>
-      <? endif ?>
+      <?php endif ?>
       <ul>
-	<? foreach ($comments as $comment): ?>
+	<?php foreach ($comments as $comment): ?>
 	<li id="g-Comment-<?= $comment->id ?>" class="g-comment-box">
 	  <?= t('<b>%name</b> %date: ',
 	      array("date" => date(module::get_var("gallery", "date_time_format", "Y-M-d H:i:s"), $comment->created),
@@ -53,7 +53,7 @@
 	    <?= nl2br(html::purify($comment->text)) ?>
 	  </div>
 	</li>
-	<? endforeach ?>
+	<?php endforeach ?>
       </ul>
     </div>
   </body>

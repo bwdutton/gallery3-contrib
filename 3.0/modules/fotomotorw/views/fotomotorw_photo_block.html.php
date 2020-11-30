@@ -1,12 +1,12 @@
 <?php defined("SYSPATH") or die("No direct script access.") ?>
 <center>
-  <? if (count($details) > 0): ?>
+  <?php if (count($details) > 0): ?>
     <a href="javascript:void(0);" onclick="showFotomotoDialog(<?=$details[0][0]; ?>);" style="font-weight: bold; font-size: 14px;"><?=$details[0][1]; ?></a>
-    <? for ($i = 1; $i < count($details); $i++): ?>    
+    <?php for ($i = 1; $i < count($details); $i++): ?>    
       <span style="font-weight: bold; font-size: 14px;"> | </span>
       <a href="javascript:void(0);" onclick="showFotomotoDialog(<?=$details[$i][0]; ?>);" style="font-weight: bold; font-size: 14px;"><?=$details[$i][1]; ?></a>
-    <? endfor ?>
-  <? endif; ?>
+    <?php endfor ?>
+  <?php endif; ?>
 </center>
 <script>
   function showFotomotoDialog(window_type) {

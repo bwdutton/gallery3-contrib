@@ -24,7 +24,7 @@
         <?= t("Add captions for photos in <b>%album_title</b>", array("album_title" => $album->title)) ?>
       </legend>
 
-      <? foreach ($album->viewable()->children() as $child): ?>
+      <?php foreach ($album->viewable()->children() as $child): ?>
       <table>
         <tr>
           <td style="width: 140px">
@@ -40,12 +40,12 @@
                 <label for="description[<?= $child->id ?>]"> <?= t("Description") ?> </label>
                 <textarea style="height: 5em" name="description[<?= $child->id ?>]"><?= $child->description ?></textarea>
               </li>
-              <? if ($enable_tags): ?>
+              <?php if ($enable_tags): ?>
               <li>
                 <label for="tags[<?= $child->id ?>]"> <?= t("Tags (comma separated)") ?> </label>
                 <input type="text" name="tags[<?= $child->id ?>]" class="ac_input" autocomplete="off" value="<?= html::chars($tags[$child->id]) ?>"/>
               </li>
-              <? endif ?>
+              <?php endif ?>
               <li>
                 <label for="filename[<?= $child->id ?>]"> <?= t("Filename") ?> </label>
                 <input type="text" name="filename[<?= $child->id ?>]" class="ac_input" autocomplete="off" value="<?= html::chars($child->name) ?>"/>
@@ -58,7 +58,7 @@
           </td>
         </tr>
       </table>
-      <? endforeach ?>
+      <?php endforeach ?>
     </fieldset>
     <fieldset>
       <input type="submit" name="cancel" value="<?= t("Cancel") ?>"/>

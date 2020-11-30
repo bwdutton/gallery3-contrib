@@ -10,14 +10,14 @@
 </style>
 
 <ul class="treealbumnav">
-<?
+<?php
 function makelist($album,$level){
 //print out the list item
 ?>
   <li>
     <a href="<?= item::root()->url() ?><?= $album->relative_url() ?>"><?= str_repeat("&nbsp;&nbsp;", $level) ?><?= html::purify($album->title) ?></a>
   </li>
-<?
+<?php
   //recurse over the children, and print their list items as well
   foreach ($album->viewable()->children(null, null, array(array("type", "=", "album"))) as $child){
     makelist($child,$level+1);

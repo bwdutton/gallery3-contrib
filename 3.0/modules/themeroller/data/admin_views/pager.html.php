@@ -1,7 +1,7 @@
 <?php defined("SYSPATH") or die("No direct script access.") ?>
-<? // See http://docs.kohanaphp.com/libraries/pagination ?>
+<?php // See http://docs.kohanaphp.com/libraries/pagination ?>
 <ul class="g-paginator">
-  <? /* @todo This message isn't easily localizable */
+  <?php /* @todo This message isn't easily localizable */
      $from_to_msg = t2("Item %from_number of %count",
                        "Items %from_number - %to_number of %count",
                        $total_items,
@@ -9,36 +9,36 @@
                              "to_number" => $current_last_item,
                              "count" => $total_items)) ?>
   <li>
-  <? if ($first_page): ?>
+  <?php if ($first_page): ?>
     <a href="<?= str_replace('{page}', 1, $url) ?>" class="g-button ui-icon-left ui-state-default ui-corner-all">
       <span class="ui-icon ui-icon-seek-first"></span><?= t("First") ?></a>
-  <? else: ?>
+  <?php else: ?>
     <a class="g-button ui-icon-left ui-state-disabled ui-corner-all">
       <span class="ui-icon ui-icon-seek-first"></span><?= t("First") ?></a>
-  <? endif ?>
-  <? if ($previous_page): ?>
+  <?php endif ?>
+  <?php if ($previous_page): ?>
     <a href="<?= str_replace('{page}', $previous_page, $url) ?>" class="g-button ui-icon-left ui-state-default ui-corner-all">
       <span class="ui-icon ui-icon-seek-prev"></span><?= t("Previous") ?></a>
-  <? else: ?>
+  <?php else: ?>
     <a class="g-button ui-icon-left ui-state-disabled ui-corner-all">
       <span class="ui-icon ui-icon-seek-prev"></span><?= t("Previous") ?></a>
-  <? endif ?>
+  <?php endif ?>
   </li>
   <li class="g-info"><?= $from_to_msg ?></li>
   <li class="g-text-right">
-  <? if ($next_page): ?>
+  <?php if ($next_page): ?>
     <a href="<?= str_replace('{page}', $next_page, $url) ?>" class="g-button ui-icon-right ui-state-default ui-corner-all">
       <span class="ui-icon ui-icon-seek-next"></span><?= t("Next") ?></a>
-  <? else: ?>
+  <?php else: ?>
     <a class="g-button ui-state-disabled ui-icon-right ui-corner-all">
       <span class="ui-icon ui-icon-seek-next"></span><?= t("Next") ?></a>
-  <? endif ?>
-  <? if ($last_page): ?>
+  <?php endif ?>
+  <?php if ($last_page): ?>
     <a href="<?= str_replace('{page}', $last_page, $url) ?>" class="g-button ui-icon-right ui-state-default ui-corner-all">
       <span class="ui-icon ui-icon-seek-end"></span><?= t("Last") ?></a>
-  <? else: ?>
+  <?php else: ?>
     <a class="g-button ui-state-disabled ui-icon-right ui-corner-all">
       <span class="ui-icon ui-icon-seek-end"></span><?= t("Last") ?></a>
-  <? endif ?>
+  <?php endif ?>
   </li>
 </ul>

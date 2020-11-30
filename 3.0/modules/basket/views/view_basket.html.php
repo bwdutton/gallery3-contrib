@@ -38,7 +38,7 @@ $("#gBasketList").find(".preview-image").bind("click",function(){return previewI
 </script>
 <div class="g-block">
 <div class="basketbuttons">
-  <? if (isset($basket->contents ) && count($basket->contents) > 0): ?>
+  <?php if (isset($basket->contents ) && count($basket->contents) > 0): ?>
 
   <script language="JavaScript">
 
@@ -59,10 +59,10 @@ $("#gBasketList").find(".preview-image").bind("click",function(){return previewI
   <a href="<?= url::site("basket/checkout") ?>"
     class="right g-button ui-state-default ui-corner-all ui-icon-right">
       <span class="ui-icon ui-icon-arrow-1-e"></span><?= t("Proceed to Checkout") ?></a>
-<? endif; ?>
+<?php endif; ?>
 </div>
   <div class="g-block-content scrollable">
-      <? if (isset($basket->contents ) && count($basket->contents) > 0): ?>
+      <?php if (isset($basket->contents ) && count($basket->contents) > 0): ?>
 
     <table id="gBasketList">
       <tr>
@@ -73,13 +73,13 @@ $("#gBasketList").find(".preview-image").bind("click",function(){return previewI
         <th><?= t("Actions") ?></th>
 
       </tr>
-      <? $total=0;?>
+      <?php $total=0;?>
 
-      <? foreach ($basket->contents as $key => $prod_details): ?>
+      <?php foreach ($basket->contents as $key => $prod_details): ?>
       <tr id="" class="<?= text::alternate("gOddRow", "gEvenRow") ?>">
 
         <td id="item-<?= $prod_details->item ?>" class="core-info ">
-          <?  $item = $prod_details->getItem(); ?>
+          <?php  $item = $prod_details->getItem(); ?>
         <div id="basketThumb">
         <a href="<?= $item->resize_url()?>" class="preview-image">
           <img src="<?= $item->thumb_url()?>" title="<?= $item->title?>" alt="<?= $item->title?>" />
@@ -93,7 +93,7 @@ $("#gBasketList").find(".preview-image").bind("click",function(){return previewI
           <?= html::clean($prod_details->quantity) ?>
         </td>
         <td>
-          <? $total += $prod_details->cost?>
+          <?php $total += $prod_details->cost?>
           <?= basket::formatMoneyForWeb($prod_details->cost); ?>
         </td>
         <td class="g-actions">
@@ -103,35 +103,35 @@ $("#gBasketList").find(".preview-image").bind("click",function(){return previewI
             <span class="ui-icon ui-icon-trash"></span><?= t("Remove") ?></a>
       </td>
   </tr>
-      <? endforeach ?>
-      <? $postage = $basket->postage_cost();?>
-      <? if ($postage > 0):?>
+      <?php endforeach ?>
+      <?php $postage = $basket->postage_cost();?>
+      <?php if ($postage > 0):?>
       <tr class="<?= text::alternate("gOddRow", "gEvenRow") ?>">
         <td></td><td></td><td <?=$basket->ispp()?"":"style=\"text-decoration:line-through\""; ?>>Postage and Packaging</td><td <?=$basket->ispp()?"":"style=\"text-decoration:line-through\""; ?>><?= basket::formatMoneyForWeb($postage)?></td><td>
         </td>
       </tr>
-      <? if (basket::isAllowPickup()):?>
+      <?php if (basket::isAllowPickup()):?>
       <tr class="<?= text::alternate("gOddRow", "gEvenRow") ?>"><td colspan="5"><input id="pickup" type="checkbox" <?=$basket->ispp()?"":"checked"; ?>/> Select if you wish to pick up the photos.</td></tr>
-      <? endif;?>
-      <? endif;?>
+      <?php endif;?>
+      <?php endif;?>
       <tr class="<?= text::alternate("gOddRow", "gEvenRow") ?>">
         <td></td><td></td><td>Total Cost</td><td id="total"><?= $basket->ispp()?basket::formatMoneyForWeb($total + $postage):basket::formatMoneyForWeb($total)?></td><td></td>
       </tr>
 
    </table>
 
-      <? else: ?>
+      <?php else: ?>
       Shopping Basket is Empty
-      <? endif; ?>
+      <?php endif; ?>
 
   </div>
 
 <div class="basketbuttons">
-  <? if (isset($basket->contents ) && count($basket->contents) > 0): ?>
+  <?php if (isset($basket->contents ) && count($basket->contents) > 0): ?>
 
   <a href="<?= url::site("basket/checkout") ?>"
     class="right g-button ui-state-default ui-corner-all ui-icon-right">
       <span class="ui-icon ui-icon-arrow-1-e"></span><?= t("Proceed to Checkout") ?></a>
-  <? endif; ?>
+  <?php endif; ?>
   </div>
 </div>

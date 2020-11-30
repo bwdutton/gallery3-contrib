@@ -395,11 +395,11 @@ albumTree.config.closeSameLevel = false;
 albumTree.config.cookiePath = '<?= item::root()->url() ?>';
 albumTree.config.cookieDomain = '';
 { var pf = '<?= item::root()->url() ?>';
-<?
+<?php
 function addtree($album){
 ?>
 albumTree.add(<?= $album->id -1 ?>, <?= $album->parent_id -1 ?>, "<?= html::purify($album->title) ?>", pf+'<?= $album->relative_url() ?>');
-<?
+<?php
   foreach ($album->viewable()->children(null, null, array(array("type", "=", "album"))) as $child){
     addtree($child);
   }

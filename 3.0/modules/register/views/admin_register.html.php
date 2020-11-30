@@ -23,12 +23,12 @@
     <fieldset>
       <legend><?= t("Confirmation policy") ?></legend>
       <ul>
-          <? foreach ($policy_list as $policy => $text): ?>
+          <?php foreach ($policy_list as $policy => $text): ?>
         <li>
           <?= form::radio("policy", $policy, $policy == $form["policy"]) ?>
           <?= form::label("policy", $text) ?>
         </li>
-          <? endforeach ?>
+          <?php endforeach ?>
         <li>
           <?= form::checkbox("email_verification", "true", !empty($form["email_verification"]), $disable_email) ?>
           <?= form::label("email_verification", t("Require e-mail verification when a visitor creates an account")) ?>
@@ -42,12 +42,12 @@
           <?= form::label("subject_prefix", t("Email subject line prefix, with trailing spaces as needed (e.g. '[Gallery3] ')")) ?>
         </li>
         <li>
-          <? if (!empty($group_list)): ?>
+          <?php if (!empty($group_list)): ?>
           <label for="group" class="g-left"> <?= t("Default group: ") ?></label>
           <?= form::dropdown(array("name" => "group"), $group_list, $form["group"]) ?></label>
-          <? else: ?>
+          <?php else: ?>
           <?= form::hidden("group", $form["group"]) ?></label>
-          <? endif ?>
+          <?php endif ?>
         </li>
         <li>
           <?= form::submit(array("id" => "g-registration-admin", "name" => "save", "class" => "submit", "style" => "clear:both!important"), t("Update")) ?>
@@ -56,7 +56,7 @@
     </fieldset>
   </form>
   </div>
-  <? if (count($pending)): ?>
+  <?php if (count($pending)): ?>
     <div id="g-activate-pending-users">
       <?= form::open($activate, array("method" => "post"), $hidden) ?>
         <fieldset>
@@ -73,14 +73,14 @@
               <th><?= t("Email") ?></th>
               <th><?= t("Registered") ?></th>
             </tr>
-            <? foreach ($pending as $user): ?>
+            <?php foreach ($pending as $user): ?>
             <tr class="<?= text::alternate("g-odd", "g-even") ?>">
               <td>
-                <? if ($user->state != 2): ?>
+                <?php if ($user->state != 2): ?>
                 <?= form::checkbox("activate[]", $user->id) ?>
-                <? else: ?>
+                <?php else: ?>
                 &nbsp;
-                <? endif ?>
+                <?php endif ?>
               </td>
               <td><?= register::format_registration_state($user->state) ?></td>
               <td><?= t($user->name) ?></td>
@@ -88,11 +88,11 @@
               <td><a href="mailto:<?= t($user->email) ?>"><?= t($user->email) ?></a></td>
               <td><?= t(gallery::date_time($user->request_date)) ?></td>
             </tr>
-            <? endforeach ?>
+            <?php endforeach ?>
           </table>
           <?= form::submit(array("id" => "g-registration-activate", "name" => "activate_users", "class" => "submit"), t("Activate selected")) ?>
         </fieldset>
       </form>
     </div>
-  <? endif ?>
+  <?php endif ?>
 </div>

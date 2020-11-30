@@ -16,7 +16,7 @@
   <center>
   <table class="g-exif-info-table">
     <tbody>
-      <? for ($i = 0; $i < count($details); $i++): ?>
+      <?php for ($i = 0; $i < count($details); $i++): ?>
       <tr>
          <td class="g-even">
          <?= $details[$i]["caption"] ?>
@@ -24,18 +24,18 @@
          <td class="g-odd">
          <?= html::clean($details[$i]["value"]) ?>
          </td>
-         <? if (!empty($details[++$i])): ?>
+         <?php if (!empty($details[++$i])): ?>
            <td class="g-even">
            <?= $details[$i]["caption"] ?>
            </td>
            <td class="g-odd">
            <?= html::clean($details[$i]["value"]) ?>
            </td>
-         <? else: ?>
+         <?php else: ?>
            <td class="g-even"></td><td class="g-odd"></td>
-         <? endif ?>
+         <?php endif ?>
        </tr>
-       <? endfor ?>
+       <?php endfor ?>
     </tbody>
   </table>
  </center>

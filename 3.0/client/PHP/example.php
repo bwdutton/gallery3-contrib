@@ -1,4 +1,4 @@
-<?
+<?php
 include("Gallery3.php");
 
 $SITE_URL = "http://example.com/gallery3/index.php/rest";
