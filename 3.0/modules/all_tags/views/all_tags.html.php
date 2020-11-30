@@ -1,7 +1,7 @@
 <?php defined("SYSPATH") or die("No direct script access.") ?>
 
-<? $tags_per_column = $tags->count()/5 ?>
-<? $column_tag_count = 0 ?>
+<?php $tags_per_column = $tags->count()/5 ?>
+<?php $column_tag_count = 0 ?>
 
 <div class="g-block">
   <h1> <?= t("All Tags in the Gallery") ?> </h1>
@@ -13,29 +13,29 @@
       </caption>
       <tr>
         <td>
-        <? foreach ($tags as $i => $tag): ?>
-          <? $current_letter = strtoupper(mb_substr($tag->name, 0, 1)) ?>
+        <?php foreach ($tags as $i => $tag): ?>
+          <?php $current_letter = strtoupper(mb_substr($tag->name, 0, 1)) ?>
 
-          <? if ($i == 0): /* first letter */ ?>
+          <?php if ($i == 0): /* first letter */ ?>
           <strong><?= html::clean($current_letter) ?></strong>
           <ul>
-          <? elseif ($last_letter != $current_letter): /* new letter */ ?>
+          <?php elseif ($last_letter != $current_letter): /* new letter */ ?>
           </ul>
-            <? if ($column_tag_count > $tags_per_column): /* new column */ ?>
-              <? $column_tag_count = 0 ?>
+            <?php if ($column_tag_count > $tags_per_column): /* new column */ ?>
+              <?php $column_tag_count = 0 ?>
         </td>
         <td>
-            <? endif ?>
+            <?php endif ?>
           <strong><?= html::clean($current_letter) ?></strong>
           <ul>
-          <? endif ?>
+          <?php endif ?>
               <li>
                 <span class="g-editable g-tag-name" rel="<?= $tag->id ?>"><a href="<?= $tag->url() ?>"><?= html::clean($tag->name) ?></a></span>
                 <span class="g-understate">(<?= $tag->count ?>)</span>
               </li>
-          <? $column_tag_count++ ?>
-          <? $last_letter = $current_letter ?>
-        <? endforeach ?>
+          <?php $column_tag_count++ ?>
+          <?php $last_letter = $current_letter ?>
+        <?php endforeach ?>
           </ul>
         </td>
       </tr>

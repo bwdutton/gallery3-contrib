@@ -12,9 +12,9 @@
 		->order_by("created", "DESC")
 		->find_all($quantity);
 ?>
-<? if (module::get_var("carousel", "mousewheel") == true) : ?>
+<?php if (module::get_var("carousel", "mousewheel") == true) : ?>
 <script type="text/javascript" src="<?= url::file("modules/carousel/js/jquery.mousewheel.min.js") ?>"></script>
-<? endif ?>
+<?php endif ?>
 <script type="text/javascript">
 $(function() {
     $(".carouselr").jCarouselLite({
@@ -22,17 +22,17 @@ $(function() {
               mouseWheel: true,
 		visible: <?= $visible ?>,
         vertical: true,
-<? if (module::get_var("carousel", "autoscroll") == true) : ?>
+<?php if (module::get_var("carousel", "autoscroll") == true) : ?>
         hoverPause: true,
 		auto: <?= $auto ?>,
     	speed: <?= $speed ?>
-<? endif ?>
+<?php endif ?>
     });
 });
 </script>
 <div class="carouselr" id="dyna">
 	<ul>
-	<? foreach ($photos as $photo):
+	<?php foreach ($photos as $photo):
 		if (module::get_var("carousel", "mousewheel") == true) {
 			$ctitle = t("Use mouse wheel to scroll!");
 			} else {
@@ -43,6 +43,6 @@ $(function() {
 			<?= $photo->thumb_img(array("class" => "g-thumbnail", "title" => $ctitle), $thumbsize) ?>
 			</a>
 		</li>
-	<? endforeach ?>
+	<?php endforeach ?>
   	</ul>
 </div>

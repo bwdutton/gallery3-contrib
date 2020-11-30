@@ -1,8 +1,8 @@
 <?php defined("SYSPATH") or die("No direct script access.") ?>
 
-<? if ($theme->item->is_photo()) { ?>
-<? if (star::is_starred($theme->item)) { ?>
-<? $csrf = access::csrf_token(); ?>
+<?php if ($theme->item->is_photo()) { ?>
+<?php if (star::is_starred($theme->item)) { ?>
+<?php $csrf = access::csrf_token(); ?>
 
 <script type="text/javascript">
 function unstar_item() {
@@ -26,12 +26,12 @@ function unstar_item() {
    title="<?= t("Unstar Image") ?>"
   class="g-button ui-icon-left ui-state-default ui-corner-all"><?= t("Unstar Image") ?></a>
 </div>
-<? } ?>
-<? } ?>
+<?php } ?>
+<?php } ?>
 
-<? if ($theme->item->is_photo()) { ?>
-<? if (!star::is_starred($theme->item)) { ?>
-<? $csrf = access::csrf_token(); ?>
+<?php if ($theme->item->is_photo()) { ?>
+<?php if (!star::is_starred($theme->item)) { ?>
+<?php $csrf = access::csrf_token(); ?>
 
 <script type="text/javascript">
 function star_item() {
@@ -55,27 +55,27 @@ function star_item() {
    title="<?= t("Star Image") ?>"
   class="g-button ui-icon-left ui-state-default ui-corner-all"><?= t("Star Image") ?></a>
 </div>
-<? } ?>
-<? } ?>
+<?php } ?>
+<?php } ?>
 
-<? if (false) { //old style. Notifications worked, but gave you a download popup and required manual refresh to see change.?>
-<? if (!star::is_starred($theme->item)) { ?>
-<? $csrf = access::csrf_token(); ?>
+<?php if (false) { //old style. Notifications worked, but gave you a download popup and required manual refresh to see change.?>
+<?php if (!star::is_starred($theme->item)) { ?>
+<?php $csrf = access::csrf_token(); ?>
 <div class="g-star-block">
 <a href="<?= url::site("display/star/{$theme->item->id}?csrf={$csrf}") ?>"
    ajax_handler="function(data) { window.location.reload() }"
    title="<?= t("Star options") ?>"
   class="g-button ui-icon-left ui-state-default ui-corner-all"><?= t("Star Image") ?></a>
 </div>
-<? } ?>
-<? } ?>
+<?php } ?>
+<?php } ?>
 
 
 
 
 
-<? if (star::show_only_starred_items()) { ?>
-<? $csrf = access::csrf_token(); ?>
+<?php if (star::show_only_starred_items()) { ?>
+<?php $csrf = access::csrf_token(); ?>
 <div class="g-download-fullsize-block">
 
 <script type="text/javascript">
@@ -99,10 +99,10 @@ function star_only_off() {
    title="<?= t("Show all items.") ?>"
   class="g-button ui-icon-left ui-state-default ui-corner-all"><?= t("Show all items.") ?></a>
 </div>
-<? } ?>
+<?php } ?>
 
-<? if (!star::show_only_starred_items()) { ?>
-<? $csrf = access::csrf_token(); ?>
+<?php if (!star::show_only_starred_items()) { ?>
+<?php $csrf = access::csrf_token(); ?>
 <div class="g-download-fullsize-block">
 
 <script type="text/javascript">
@@ -126,16 +126,16 @@ function star_only_on() {
    title="<?= t("Show only starred.") ?>"
   class="g-button ui-icon-left ui-state-default ui-corner-all"><?= t("Show only starred.") ?></a>
 </div>
-<? } ?>
+<?php } ?>
 
 
-<? //Buttons were like the below. The notification message worked when doing this, but you got a popup to download the response, and had to manually reload. Something was wrong.?>
-<? if (false) { ?>
-<? $csrf = access::csrf_token(); ?>
+<?php //Buttons were like the below. The notification message worked when doing this, but you got a popup to download the response, and had to manually reload. Something was wrong.?>
+<?php if (false) { ?>
+<?php $csrf = access::csrf_token(); ?>
 <div class="g-download-fullsize-block">
 <a href="<?= url::site("display/star_only_on/?csrf={$csrf}") ?>"
    ajax_handler="function(data) { window.location.reload() }"
    title="<?= t("Show only starred.") ?>"
   class="g-ajax-link g-button ui-icon-left ui-state-default ui-corner-all"><?= t("Show only starred.") ?></a>
 </div>
-<? } ?>
+<?php } ?>

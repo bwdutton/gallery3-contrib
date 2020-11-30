@@ -23,9 +23,9 @@
 <div class="left" style="width:150px;float:left;font-size:10px;">
 
 <ul>
-<?
+<?php
   foreach ($ipn_messages as $i => $ipn_message){
-    ?><li><a href="javascript:ld(<?=$ipn_message->id?>)"><?= $ipn_message->date." ".$ipn_message->status ?></a></li><?
+    ?><li><a href="javascript:ld(<?=$ipn_message->id?>)"><?= $ipn_message->date." ".$ipn_message->status ?></a></li><?php
   }
 ?>
 </ul>

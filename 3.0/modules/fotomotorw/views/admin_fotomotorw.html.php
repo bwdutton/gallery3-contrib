@@ -11,11 +11,11 @@
     <tr class="setting-row g-odd">
       <td>
         <a href="<?= url::site("admin/advanced_settings/edit/fotomotorw/fotomoto_site_key"); ?>" class="g-dialog-link">
-          <? if (module::get_var("fotomotorw", "fotomoto_site_key", "") == ""): ?>
+          <?php if (module::get_var("fotomotorw", "fotomoto_site_key", "") == ""): ?>
           <i> <?= t("Click to add your Fotomoto Site Key") ?> </i>
-          <? else: ?>
+          <?php else: ?>
           <?= module::get_var("fotomotorw", "fotomoto_site_key"); ?>
-          <? endif; ?>
+          <?php endif; ?>
       </a>
       </td>
     </tr>
@@ -48,7 +48,7 @@
 
 <div class="g-block">
   <h1> <?= t("Configuring Auto Pickup") ?> </h1>
-  <?
+  <?php
     if (module::get_var("fotomotorw", "fotomoto_private_key") == "") {
       print t("Please click the \"Reset Private Key\" link above to continue.");
     } else {
@@ -60,5 +60,5 @@
     <?= t("Step 5: For \"Path\", enter in \"") . str_replace(Kohana::config('core.url_suffix'), "", substr(url::site("fotomotorw/print_proxy/" . module::get_var("fotomotorw", "fotomoto_private_key")), 1)) . "\""; ?><br />
     <?= t("Step 6: For \"Filename Lookup Pattern\", enter in \"FILENAME.EXT\"."); ?><br />
     <?= t("Step 7: Press \"Save Profile\" to finish."); ?>
-  <? } ?>
+  <?php } ?>
 </div>

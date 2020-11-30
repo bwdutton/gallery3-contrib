@@ -5,11 +5,11 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <title>
-      <? if ($page_title): ?>
+      <?php if ($page_title): ?>
         <?= t("Gallery Admin: %page_title", array("page_title" => $page_title)) ?>
-      <? else: ?>
+      <?php else: ?>
         <?= t("Admin dashboard") ?>
-      <? endif ?>
+      <?php endif ?>
     </title>
     <link rel="shortcut icon" href="<?= url::file("lib/images/favicon.ico") ?>" type="image/x-icon" />
 
@@ -26,7 +26,7 @@
    <?= $theme->script("jquery.form.js") ?>
    <?= $theme->script("jquery-ui.js") ?>
    <?= $theme->script("gallery.common.js") ?>
-   <? /* MSG_CANCEL is required by gallery.dialog.js */ ?>
+   <?php /* MSG_CANCEL is required by gallery.dialog.js */ ?>
    <script type="text/javascript">
    var MSG_CANCEL = <?= t("Cancel")->for_js() ?>;
    </script>
@@ -40,11 +40,11 @@
 
   <body <?= $theme->body_attributes() ?>>
     <?= $theme->admin_page_top() ?>
-    <? if ($sidebar): ?>
+    <?php if ($sidebar): ?>
     <div id="doc3" class="yui-t5 g-view">
-    <? else: ?>
+    <?php else: ?>
     <div id="doc3" class="yui-t7 g-view">
-    <? endif; ?>
+    <?php endif; ?>
       <?= $theme->site_status() ?>
       <div id="g-header" class="ui-helper-clearfix">
         <?= $theme->admin_header_top() ?>
@@ -68,19 +68,19 @@
             </div>
           </div>
         </div>
-        <? if ($sidebar): ?>
+        <?php if ($sidebar): ?>
         <div id="g-sidebar" class="yui-b">
           <?= $sidebar ?>
         </div>
-        <? endif ?>
+        <?php endif ?>
       </div>
       <div id="g-footer" class="g-inline ui-helper-clearfix">
         <?= $theme->admin_footer() ?>
-        <? if (module::get_var("gallery", "show_credits")): ?>
+        <?php if (module::get_var("gallery", "show_credits")): ?>
         <ul id="g-credits" class="g-inline">
           <?= $theme->admin_credits() ?>
         </ul>
-        <? endif ?>
+        <?php endif ?>
       </div>
     </div>
     <?= $theme->admin_page_bottom() ?>

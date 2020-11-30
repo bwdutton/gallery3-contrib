@@ -23,13 +23,13 @@
         <td><b>Description</b></td>
         <td><b>Formats</b></td>
       </tr>
-      <? foreach ($formats as $id => $data): ?>
+      <?php foreach ($formats as $id => $data): ?>
       <tr>
         <td><?= $data["name"] ?></td>
         <td><?= $data["desc"] ?></td>
         <td><?= movie_tools::formats_array_to_string($data["types"]) ?></td>
       </tr>
-      <? endforeach; ?>
+      <?php endforeach; ?>
     </table>
   </p>
 

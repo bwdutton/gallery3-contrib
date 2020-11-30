@@ -356,7 +356,7 @@ class Markdown_Parser {
 							  [ ]*
 							  \n?				# maybe *one* newline
 							  [ ]*
-							<?(\S+?)>?			# url = $2
+							<?php(\S+?)>?			# url = $2
 							  [ ]*
 							  \n?				# maybe one newline
 							  [ ]*
@@ -500,7 +500,7 @@ class Markdown_Parser {
 					[ ]*
 					(?=\n{2,}|\Z)		# followed by a blank line or end of document
 			
-			| # PHP and ASP-style processor instructions (<? and <%)
+			| # PHP and ASP-style processor instructions (<?php and <%)
 			
 					[ ]{0,'.$less_than_tab.'}
 					(?s:

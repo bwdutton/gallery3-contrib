@@ -1,7 +1,7 @@
 <?php defined("SYSPATH") or die("No direct script access.") ?>
 <div id="g-admin-twitter" class="g-block">
   <h1> <?= t("Share Gallery Items on Twitter") ?> </h1>
-  <? if (!$is_registered): ?>
+  <?php if (!$is_registered): ?>
     <p><?= t("Register your Gallery with Twitter at
       <a href=\"%twitter_apps_reg\" target=\"_blank\">dev.twitter.com/apps/new</a>.",
         array("twitter_apps_reg" => "http://dev.twitter.com/apps/new")) ?></p>
@@ -15,15 +15,15 @@
       <li><?= t("Default Access Type: Read &amp; Write") ?></li>
     </ul>
     <p><?= t("Then enter the provided OAuth consumer key and secret here.") ?></p>
-    <? else: ?>
+    <?php else: ?>
     <p><?= t("Update your Gallery's
       <a href=\"%twitter_apps\" target=\"_blank\">Twitter application settings</a>, if necessary.",
         array("twitter_apps" => "http://dev.twitter.com/apps")) ?></p>
-    <? if (!module::is_active("bitly")): ?>
+    <?php if (!module::is_active("bitly")): ?>
     <p><?= t("Install and activate the <a href=\"%bitly_module_url\">bit.ly module</a> to shorten
       Gallery URLs in tweets.", array("bitly_module_url" => "http://codex.gallery2.org/Gallery3:Modules:bitly")) ?></p>
-    <? endif; ?>
-    <? endif; ?>
+    <?php endif; ?>
+    <?php endif; ?>
   <div class="g-block-content">
     <?= $form ?>
   </div>

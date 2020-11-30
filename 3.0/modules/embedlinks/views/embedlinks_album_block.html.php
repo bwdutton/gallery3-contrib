@@ -4,7 +4,7 @@ input[type="text"] {
   width: 95%;
 }
 </style>
-<? if (module::get_var("embedlinks", "HTMLCode")) { ?>
+<?php if (module::get_var("embedlinks", "HTMLCode")) { ?>
 <table class="g-embed-links">
   <tbody>
     <tr>
@@ -22,9 +22,9 @@ input[type="text"] {
     </tr>
   </tbody>
 </table>
-<? } ?>
+<?php } ?>
 
-<? if (module::get_var("embedlinks", "BBCode")) { ?>
+<?php if (module::get_var("embedlinks", "BBCode")) { ?>
 <table class="g-embed-links">
   <tbody>
     <tr>
@@ -42,9 +42,9 @@ input[type="text"] {
     </tr>
   </tbody>
 </table>
-<? } ?>
+<?php } ?>
 
-<? if (module::get_var("embedlinks", "FullURL")) { ?>
+<?php if (module::get_var("embedlinks", "FullURL")) { ?>
 <table class="g-embed-links">
   <tbody>
     <tr>
@@ -63,4 +63,4 @@ input[type="text"] {
 
   </tbody>
 </table>
-<? } ?>
+<?php } ?>

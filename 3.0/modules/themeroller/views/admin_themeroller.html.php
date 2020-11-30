@@ -25,34 +25,34 @@
     <fieldset>
       <ul>
         <li><?= access::csrf_form_field() ?></li>
-        <? if (!$is_writable): ?>
+        <?php if (!$is_writable): ?>
         <li class="g-error">
            <?= t("The theme directory is not writable. Please ensure that it is writable by the web server") ?>
         </li>
-        <? endif ?>
-        <li <? if (!empty($errors["name"])): ?> class="g-error"<? endif ?>>
+        <?php endif ?>
+        <li <?php if (!empty($errors["name"])): ?> class="g-error"<?php endif ?>>
           <?= form::label("name", t("Name")) ?>
           <?= form::input("name", $form["name"]) ?>
-          <? if (!empty($errors["name"]) && $errors["name"] == "required"): ?>
+          <?php if (!empty($errors["name"]) && $errors["name"] == "required"): ?>
             <p class="g-error"><?= t("Theme name is required") ?></p>
-          <? endif ?>
-          <? if (!empty($errors["name"]) && $errors["name"] == "module_exists"): ?>
+          <?php endif ?>
+          <?php if (!empty($errors["name"]) && $errors["name"] == "module_exists"): ?>
             <p class="g-error"><?= t("Theme exists") ?></p>
-          <? endif ?>
+          <?php endif ?>
         </li>
-        <li <? if (!empty($errors["display_name"])): ?> class="g-error"<? endif ?>>
+        <li <?php if (!empty($errors["display_name"])): ?> class="g-error"<?php endif ?>>
           <?= form::label("display_name", t("Display name")) ?>
           <?= form::input("display_name", $form["display_name"]) ?>
-          <? if (!empty($errors["display_name"]) && $errors["display_name"] == "required"): ?>
+          <?php if (!empty($errors["display_name"]) && $errors["display_name"] == "required"): ?>
             <p class="g-error"><?= t("Theme display_name is required")?></p>
-          <? endif ?>
+          <?php endif ?>
         </li>
-        <li <? if (!empty($errors["description"])): ?> class="g-error"<? endif ?>>
+        <li <?php if (!empty($errors["description"])): ?> class="g-error"<?php endif ?>>
           <?= form::label("description", t("Description")) ?>
           <?= form::textarea("description", $form["description"]) ?>
-          <? if (!empty($errors["description"]) && $errors["description"] == "required"): ?>
+          <?php if (!empty($errors["description"]) && $errors["description"] == "required"): ?>
             <p class="g-error"><?= t("Theme description is required")?></p>
-          <? endif ?>
+          <?php endif ?>
         </li>
         <li>
           <?= form::label("is_admin", t("Generate an admin theme")) ?>
@@ -68,7 +68,7 @@
           <button type="submit"
                id="g-generate-theme"
                class="<?= $submit_class ?>"
-               <? if ($not_writable): ?> disabled<? endif ?>>
+               <?php if ($not_writable): ?> disabled<?php endif ?>>
             <?= t("Generate") ?>
           </button>
           </span>

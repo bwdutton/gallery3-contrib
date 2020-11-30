@@ -1,4 +1,4 @@
-<?
+<?php
 
 if(class_exists("Kohana") && !file_exists(VARPATH."modules/ratings/db.settings.php")){
   $ratings_db_config = Kohana::config('database.default');
@@ -9,7 +9,7 @@ if(class_exists("Kohana") && !file_exists(VARPATH."modules/ratings/db.settings.p
     $dbPrefix = $ratings_db_config['table_prefix'];
 
   $fh = fopen(VARPATH."modules/ratings/db.settings.php","w");
-    fwrite($fh, "<?\n");
+    fwrite($fh, "<?php\n");
     fwrite($fh, "\$this->dbHost = \"".$dbHost."\";\n");
     fwrite($fh, "\$this->dbUser = \"".$dbUser."\";\n");
     fwrite($fh, "\$this->dbPassword = \"".$dbPassword."\";\n");

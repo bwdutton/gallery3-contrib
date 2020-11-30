@@ -1,5 +1,5 @@
 <?php defined("SYSPATH") or die("No direct script access.") ?>
-<?
+<?php
 // rWatcher Edit:  This is a combination of Gallery's movieplayer.html.php file and 
 //  some custom edits.
 

@@ -31,7 +31,7 @@
 </div>
 <div id="g-tag-cloud-html5-page">
   <canvas id="g-tag-cloud-html5-page-canvas">
-    <? echo t('Tag cloud loading...'); ?>
+    <?php echo t('Tag cloud loading...'); ?>
   </canvas>
 </div>
 <div id="g-tag-cloud-html5-page-tags">

@@ -3,7 +3,7 @@
 <h1>All Comments</h1>
 <div id="allcomments">
 <ul>
-  <? foreach ($comments as $comment): ?>
+  <?php foreach ($comments as $comment): ?>
   <div class="allcomments-comment">
    <li id="g-comment-<?= $comment->id ?>">
     <p class="allcomments-author">
@@ -19,7 +19,7 @@
     </p>
    </li>
    </div>
-  <? endforeach ?>
+  <?php endforeach ?>
 </ul>
 
 <?php 
@@ -30,7 +30,7 @@ if($page > 0)
         <span class="ui-icon ui-icon-seek-prev"></span>
         prev
 	</a>
-<?}?>
+<?php}?>
 	<a class="g-button ui-icon-right ui-state-default ui-corner-all" href="<?=url::base()?>allcomments/page/<?=$page+1?>">
 	<span class="ui-icon ui-icon-seek-next"></span>
 	next

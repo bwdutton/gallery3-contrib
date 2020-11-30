@@ -1,6 +1,6 @@
 <?php defined("SYSPATH") or die("No direct script access.") ?>
 <div class="g-sharephoto">	
-<? if (module::get_var("sharephoto", "Icons")) { ?>
+<?php if (module::get_var("sharephoto", "Icons")) { ?>
 	<div id="dock">
 		<div class="dock-container">		
 			<div class="dock-contaner-left"></div>
@@ -29,9 +29,9 @@
 	</div>
 <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script>
 <script type="text/javascript" src="<?= url::file("modules/sharephoto/js/fisheye-iutil.min.js") ?>"></script>
-<? } ?>
+<?php } ?>
 
-<? if (module::get_var("sharephoto", "HTMLLinks")) { ?> 
+<?php if (module::get_var("sharephoto", "HTMLLinks")) { ?> 
 	<div id="g-sharephoto-links">
 		<li id="g-sharephoto-links-position">
 		  <div style="cursor:pointer;" class="show-link"><?= t("URL") ?></div>
@@ -67,5 +67,5 @@
 		  </div>
 		</li>
 	</div>
-<? } ?>
+<?php } ?>
 </div>

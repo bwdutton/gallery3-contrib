@@ -11,11 +11,11 @@
   <?= access::csrf_form_field() ?>
   <div  id="tabs">
     <ul>
-    <? foreach ($tabs as $album => $label): ?>
+    <?php foreach ($tabs as $album => $label): ?>
       <li><a href="#<?= $album ?>"><?= $label ?></a></li>
-    <? endforeach ?>
+    <?php endforeach ?>
     </ul>
-    <? foreach (array("updates", "popular") as $album): ?>
+    <?php foreach (array("updates", "popular") as $album): ?>
     <div id="<?= $album ?>">
       <ul>
         <li>
@@ -34,7 +34,7 @@
        </li>
       <ul>
     </div>
-    <? endforeach ?>
+    <?php endforeach ?>
   </div>
   <?= form::submit("submit", t("Submit")) ?>
 </div>

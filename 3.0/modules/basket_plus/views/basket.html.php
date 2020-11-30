@@ -19,17 +19,17 @@
  */
 ?>
 
-<? if ($theme->page_type != 'basket'): ?>
-  <? if (basket_plus::can_view_orders()): ?>
+<?php if ($theme->page_type != 'basket'): ?>
+  <?php if (basket_plus::can_view_orders()): ?>
 			<a href="<?= url::site("basket_plus/view_Orders") ?>"
 				 title="<?= t("View Orders") ?>">View Orders</a>
-  <? endif?>
-  <? if (isset($basket) && isset($basket->contents) && ($basket->size() > 0)): ?>
+  <?php endif?>
+  <?php if (isset($basket) && isset($basket->contents) && ($basket->size() > 0)): ?>
 		<div id="basket">
 				<a href="<?= url::site("basket_plus/view_basket") ?>"
 					 title="<?= t("View Basket") ?>">
 					 <img src="<?= url::file("modules/basket/images/basket.png") ?>"><br/>
 					 <?= $basket->size()?> items</a>
 		</div>
-  <? endif ?>
-<? endif ?>
+  <?php endif ?>
+<?php endif ?>

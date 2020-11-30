@@ -16,8 +16,8 @@ function ChangeLocale( locale ) {
 }
 </script>
 
-<? $i = 0 ?>
-<? foreach ($installed_locales as $locale => $value): ?>
-  <? if ($i>0) : ?>  <? if ($i>1) : ?> | <? endif ?> <a href="javascript:ChangeLocale( '<?= $locale ?>' )"> <?= html::purify($value) ?> </a> <? endif ?>   <? $i++ ?>
-<? endforeach ?>
+<?php $i = 0 ?>
+<?php foreach ($installed_locales as $locale => $value): ?>
+  <?php if ($i>0) : ?>  <?php if ($i>1) : ?> | <?php endif ?> <a href="javascript:ChangeLocale( '<?= $locale ?>' )"> <?= html::purify($value) ?> </a> <?php endif ?>   <?php $i++ ?>
+<?php endforeach ?>
 

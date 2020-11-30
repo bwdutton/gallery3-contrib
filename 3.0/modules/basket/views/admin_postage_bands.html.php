@@ -40,7 +40,7 @@
         <th><?= t("Actions") ?></th>
 
       </tr>
-      <? foreach ($postage_bands as $i => $postage_band): ?>
+      <?php foreach ($postage_bands as $i => $postage_band): ?>
       <tr id="g-product-<?= $postage_band->id ?>" class="<?= text::alternate("gOddRow", "gEvenRow") ?>">
         <td id="product-<?= $postage_band->id ?>" class="core-info ">
           <?= html::clean($postage_band->name) ?>
@@ -64,7 +64,7 @@
       </td>
 
   </tr>
-      <? endforeach ?>
+      <?php endforeach ?>
    </table>
   </div>
 

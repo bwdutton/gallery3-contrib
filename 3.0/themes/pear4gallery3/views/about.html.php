@@ -8,7 +8,7 @@
 <div id="g-photo-detail">
   <table class="g-metadata" >
     <tbody>
-      <? for ($i = 0; $i < count($details); $i++): ?>
+      <?php for ($i = 0; $i < count($details); $i++): ?>
       <tr>
          <td class="g-even">
          <?= $details[$i]["caption"] ?>
@@ -17,24 +17,24 @@
          <?= html::clean($details[$i]["value"]) ?>
          </td>
        </tr>
-       <? endfor ?>
-    <? if (isset($tags)): ?>
+       <?php endfor ?>
+    <?php if (isset($tags)): ?>
       <tr>
          <td class="g-even">
              Tags
          </td>
          <td class="g-odd">
-            <? foreach ($tags as $key => $tag): ?>
+            <?php foreach ($tags as $key => $tag): ?>
               <a href="<?= $tag->url() ?>"><?= html::clean($tag->name) ?></a>
-<? if ($key == (count($tag)-1)) echo "," ?>
-            <? endforeach?>
+<?php if ($key == (count($tag)-1)) echo "," ?>
+            <?php endforeach?>
          </td>
        </tr>
-      <? endif ?>
+      <?php endif ?>
     </tbody>
   </table>
 </div>
-<? if(module::is_active("exif")): ?>
+<?php if(module::is_active("exif")): ?>
 <div style="margin: 25px 0 0; text-align: center;">
 <div id="exif_data">
 <button class="ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all"
@@ -46,4 +46,4 @@
    <span class="ui-button-text">Load exif data</span>
 </button>
 </div></div>
-<? endif ?>
+<?php endif ?>

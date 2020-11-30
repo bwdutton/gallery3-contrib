@@ -1,5 +1,5 @@
 <?php defined("SYSPATH") or die("No direct script access.") ?>
-<?
+<?php
   // Base URL for flag pictures.
   $flag_type = module::get_var("language_flags", "flag_shape");
   $base_url = url::base(false, "http") . "modules/language_flags/images/" . $flag_type . "/";

@@ -170,8 +170,8 @@ class Admin_Sitemap_Controller extends Admin_Controller {
 		$date = '<!-- generated-on="' . date(DATE_ATOM) . '" -->';
 		$sitemap_xsl_path = $base_url . STYLE_SHEET_FILENAME;
 		$sitemap = <<< EOT
-<?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="$sitemap_xsl_path"?>
+<?phpxml version="1.0" encoding="UTF-8"?>
+<?phpxml-stylesheet type="text/xsl" href="$sitemap_xsl_path"?>
 $date
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 $locations</urlset>

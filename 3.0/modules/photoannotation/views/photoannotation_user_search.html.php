@@ -14,12 +14,12 @@
 <div id="g-user-search-results" ref="<?= url::site("photoannotation") ?>">
   <h1><?= t("Search results") ?></h1>
   <?= $search_form ?>
-  <? if (count($users)): ?>
+  <?php if (count($users)): ?>
   <div class="g-message photoannotation-user-search">
     <?= t("%count people found for <b>%term</b>", array("count" => $count, "term" => $q)) ?>
   </div>
-  <? foreach ($users as $user): ?>
-  <? $profile_link = "<a href=\"". user_profile::url($user->id) ."\">" ?>
+  <?php foreach ($users as $user): ?>
+  <?php $profile_link = "<a href=\"". user_profile::url($user->id) ."\">" ?>
   <div class="g-block">
     <h2><img src="<?= $user->avatar_url(40, $theme->url("images/avatar.jpg", true)) ?>"
        alt="<?= html::clean_attribute($user->display_name()) ?>"
@@ -36,20 +36,20 @@
             <th style="width: 20%"><?= t("Tagged photos") ?></th>
             <td colspan="2"><?= photoannotation::annotation_count($user->id) ?></td>
           </tr>
-          <? if (module::is_active("comment")): ?>
+          <?php if (module::is_active("comment")): ?>
           <tr>
             <th style="width: 20%"><?= t("Comments") ?></th>
             <td colspan="2"><?= photoannotation::comment_count($user->id) ?></td>
           </tr>
-          <? endif ?>
+          <?php endif ?>
         </tbody></table>
     </div>
   </div>
-  <? endforeach ?>
+  <?php endforeach ?>
   <?= $paginator ?>
-  <? else: ?>
+  <?php else: ?>
   <div class="photoannotation-user-search">
     <?= t("No users found for <b>%term</b>", array("term" => $q)) ?>
   </div>
-  <? endif; ?>
+  <?php endif; ?>
 </div>

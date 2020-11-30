@@ -42,13 +42,13 @@
         <th><?= t("Actions") ?></th>
 
       </tr>
-      <? foreach ($postage_bands as $i => $postage_band): ?>
+      <?php foreach ($postage_bands as $i => $postage_band): ?>
       <tr id="g-product-<?= $postage_band->id ?>" class="<?= text::alternate("gOddRow", "gEvenRow") ?>">
         <td id="product-<?= $postage_band->id ?>" class="core-info "><?= html::clean($postage_band->name) ?></td>
 				<td><?= basket_plus::formatMoneyForWeb($postage_band->flat_rate) ?></td>
 				<td><?= basket_plus::formatMoneyForWeb($postage_band->per_item) ?></td>
         <td class="core-info "><input id="via_download" type="checkbox" disabled="disabled" 
-								<? if ($postage_band->via_download):?>checked="checked"<? endif; ?>
+								<?php if ($postage_band->via_download):?>checked="checked"<?php endif; ?>
 				/></td>
 				<td class="g-actions"><a href="<?= url::site("admin/postage_bands/edit_postage_band_form/$postage_band->id") ?>"
           open_text="<?= t("close") ?>"class="g-panel-link g-button ui-state-default ui-corner-all ui-icon-left">
@@ -57,7 +57,7 @@
             <span class="ui-icon ui-icon-trash"></span><?= t("delete") ?></a>
 				</td>
 			</tr>
-      <? endforeach ?>
+      <?php endforeach ?>
    </table>
   </div>
 

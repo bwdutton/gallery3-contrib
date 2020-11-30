@@ -122,7 +122,7 @@
 
 <?php
 /*
-<? if (ini_get("suhosin.session.encrypt")): ?>
+<?php if (ini_get("suhosin.session.encrypt")): ?>
 <ul id="g-action-status" class="g-message-block">
   <li class="g-error">
     <?= t("Error: your server is configured to use the <a href=\"%encrypt_url\"><code>suhosin.session.encrypt</code></a> setting from <a href=\"%suhosin_url\">Suhosin</a>.  You must disable this setting to upload photos.",
@@ -130,16 +130,16 @@
     "suhosin_url" => "http://www.hardened-php.net/suhosin/")) ?>
   </li>
 </ul>
-<? endif ?>
+<?php endif ?>
 
 <div>
   <p>
     <?= t("Photos will be uploaded to album: ") ?>
   </p>
   <ul class="g-breadcrumbs ui-helper-clearfix">
-    <? foreach ($album->parents() as $i => $parent): ?>
-    <li<? if ($i == 0) print " class=\"g-first\"" ?>> <?= html::clean($parent->title) ?> </li>
-    <? endforeach ?>
+    <?php foreach ($album->parents() as $i => $parent): ?>
+    <li<?php if ($i == 0) print " class=\"g-first\"" ?>> <?= html::clean($parent->title) ?> </li>
+    <?php endforeach ?>
     <li class="g-active"> <?= html::purify($album->title) ?> </li>
   </ul>
 </div>

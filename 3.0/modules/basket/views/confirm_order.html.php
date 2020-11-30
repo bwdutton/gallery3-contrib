@@ -32,11 +32,11 @@ function so(){document.confirm.submit();}
         <th><?= t("Quantity") ?></th>
         <th><?= t("Cost") ?></th>
       </tr>
-      <? foreach ($basket->contents as $key => $prod_details): ?>
+      <?php foreach ($basket->contents as $key => $prod_details): ?>
       <tr id="" class="<?= text::alternate("gOddRow", "gEvenRow") ?>">
 
         <td id="item-<?= $prod_details->item ?>" class="core-info ">
-          <?  $item = $prod_details->getItem(); ?>
+          <?php  $item = $prod_details->getItem(); ?>
         <div>
           <?= html::clean($item->title) ?>
         </div>
@@ -51,13 +51,13 @@ function so(){document.confirm.submit();}
           <?= basket::formatMoneyForWeb($prod_details->cost) ?>
         </td>
     </tr>
-      <? endforeach ?>
-      <? $postage = $basket->postage_cost();?>
-      <? if ($postage > 0):?>
+      <?php endforeach ?>
+      <?php $postage = $basket->postage_cost();?>
+      <?php if ($postage > 0):?>
       <tr id="" class="<?= text::alternate("gOddRow", "gEvenRow") ?>">
         <td></td><td></td><td  <?=$basket->ispp()?"":"style=\"text-decoration:line-through\""; ?>>Postage and Packaging</td><td  <?=$basket->ispp()?"":"style=\"text-decoration:line-through\""; ?>><?= basket::formatMoneyForWeb($postage)?></td>
       </tr>
-      <? endif;?>
+      <?php endif;?>
       <tr id="" class="<?= text::alternate("gOddRow", "gEvenRow") ?>">
         <td></td><td></td><td>Total Cost</td><td><?= $basket->ispp()?basket::formatMoneyForWeb($basket->cost() + $postage):basket::formatMoneyForWeb($basket->cost()); ?></td>
       </tr>

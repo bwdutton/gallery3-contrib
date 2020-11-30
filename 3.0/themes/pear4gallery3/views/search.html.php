@@ -5,14 +5,14 @@ $(function() {
   $('.pearTitle').html("Search results for \"<?=$q?>\"");
 });
 </script>
-<? if (count($items)): ?>
-  <?/* Treat dynamic pages just lite album pages. */ ?>
-  <? $children = $items ?>
-  <? $v = new View("album.html");
+<?php if (count($items)): ?>
+  <?php/* Treat dynamic pages just lite album pages. */ ?>
+  <?php $children = $items ?>
+  <?php $v = new View("album.html");
   $v->set_global("children", $items);// = $items;
   print $v;?>
-<? else: ?>
+<?php else: ?>
   <p>
   <?= t("No results found for <b>%term</b>", array("term" => $q)) ?>
   </p>
-<? endif; ?>
+<?php endif; ?>

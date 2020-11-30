@@ -1,15 +1,15 @@
 <?php defined("SYSPATH") or die("No direct script access.") ?>
 <ul id="g-contact-owner">
-  <? if (!empty($ownerLink)): ?>
+  <?php if (!empty($ownerLink)): ?>
   <li style="clear: both">
     <?= $ownerLink ?>
   </li>
-  <? endif  ?>
+  <?php endif  ?>
 
-  <? if (!empty($userLink)): ?>
+  <?php if (!empty($userLink)): ?>
   <li style="clear: both">
     <?= ($userLink); ?>
   </li>
-  <? endif ?>
+  <?php endif ?>
 </ul>
 

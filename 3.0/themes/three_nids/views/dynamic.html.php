@@ -5,19 +5,19 @@
   </div>
   <h1><?= html::clean($title) ?></h1>
 </div>
-<? $children_all = $tag->items();
+<?php $children_all = $tag->items();
      $theme->pagination = new Pagination();
 		$theme->pagination->initialize(array("query_string" => "page","total_items" => $children_count,"items_per_page" => $page_size,"style" => "classic"));
 	$children_offset = ($theme->pagination->current_page -1) * $page_size ; ?>
 
 
 <ul id="g-album-grid" class="ui-helper-clearfix">
-<? for($i=0;$i<$children_offset;$i++): ?>
-	<? $child = $children_all[$i] ?>
+<?php for($i=0;$i<$children_offset;$i++): ?>
+	<?php $child = $children_all[$i] ?>
 	<?= three_nids::fancylink($child,"header") ?>
-<? endfor ?>
+<?php endfor ?>
 
-  <? foreach ($children as $i => $child): ?>
+  <?php foreach ($children as $i => $child): ?>
 
   <!--<li class="g-Item <?= $child->is_album() ? "g-album" : "" ?>">!-->
   <li id="g-item-id-<?= $child->id ?>" class="g-item g-album">
@@ -26,12 +26,12 @@
 	<?= $theme->thumb_bottom($child) ?>
 	<?= $theme->context_menu($child, "#g-ItemId-{$child->id} .g-Thumbnail") ?>
   </li>
-  <? endforeach ?>
+  <?php endforeach ?>
 </ul>
-<? for($i=$children_offset+$page_size;$i<$children_count;$i++): ?>
-	 <? $child = $children_all[$i] ?>
+<?php for($i=$children_offset+$page_size;$i<$children_count;$i++): ?>
+	 <?php $child = $children_all[$i] ?>
 	<?= three_nids::fancylink($child,"header") ?>
-<? endfor ?>
+<?php endfor ?>
 <?= $theme->dynamic_bottom() ?>
 
 <?= $theme->paginator() ?>

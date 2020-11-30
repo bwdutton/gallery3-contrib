@@ -1,5 +1,5 @@
 <?php defined("SYSPATH") or die("No direct script access.") ?>
-<? date_default_timezone_set('Australia/ACT'); ?> 
+<?php date_default_timezone_set('Australia/ACT'); ?> 
 <div class="g-metadata">
 <span class="g-about-this">
 <table cellspacing="0" cellpadding="0" border="0">
@@ -26,9 +26,9 @@
   </div >
   <span >
     <strong class=="caption"><?= t("Tags: &nbsp;&nbsp;") ?></strong>
-    <? foreach ($tags as $tag): ?>
+    <?php foreach ($tags as $tag): ?>
     <a href="<?= $tag->url() ?>"><?= html::clean($tag->name) ?></a>,
-    <? endforeach?>
+    <?php endforeach?>
   </span ><br>
 </span>
 </div>

@@ -8,7 +8,7 @@
   <div class="g-block-content">
   
     <form method="post" action="<?= url::site("admin/moduleupdates") ?>" id="g-configure-moduleupdates-form">
-      <input type="hidden" name="csrf" value="<? echo $csrf; ?>"  />
+      <input type="hidden" name="csrf" value="<?php echo $csrf; ?>"  />
       <fieldset>
         <legend>ModuleUpdates Information</legend>
         <ul>
@@ -17,7 +17,7 @@
           <li><?= t("<font color=orange>Orange = Your file version is newer than the installed version</font><br>") ?></li>
           <li><?= t("<font color=pink>Pink = Your installed version is newer than file version</font><br>") ?></li>
           <li><?= t("Outbound Status: " . $Google . " - GitHub Status: " . $GitHub . " - Execution Time: " . $ExecutionTime . " s <br>") ?></li>
-          <li><input type="submit" value="<?= t("Check Modules for Updates")?>" class="submit" /> <? if($update_time == ""){ echo "&nbsp;- Last Scan: Unknown";}else{ echo "&nbsp;- Last Scan: ".$update_time;} ?></li>
+          <li><input type="submit" value="<?= t("Check Modules for Updates")?>" class="submit" /> <?php if($update_time == ""){ echo "&nbsp;- Last Scan: Unknown";}else{ echo "&nbsp;- Last Scan: ".$update_time;} ?></li>
         </ul>
       </fieldset>
     </form>
@@ -35,16 +35,16 @@
 			<th width=50><center> <?= t("GC")           ?> </center></th>
 			<th> <?= t("Description")                   ?> </th>
 		  </tr>
-		  <? foreach ($vars as $module_name): ?>
-        <? if(is_numeric($module_name['core_version'])) { ?>
+		  <?php foreach ($vars as $module_name): ?>
+        <?php if(is_numeric($module_name['core_version'])) { ?>
           <tr class="<?= text::alternate("g-odd", "g-even") ?>">
             <td> <?= t($module_name['name'])                                    ?> </td>
-            <td align=center> <? echo "<font color=".$module_name['font_color_local'].">";   ?> <? if($module_name['font_color_local'] != "black"){ echo "<b><u>*"; } ?> <? if (is_numeric($module_name['code_version'])) echo $module_name['code_version']; ?><? if (is_numeric($module_name['version'])) echo " / ".$module_name['version']; ?> <? if($module_name['font_color_local'] != "black"){ echo "*</b></u>"; } ?> </td>
-            <td align=center> <? echo "<font color=".$module_name['font_color_core'].">";    ?> <? if($module_name['font_color_core'] != "black" and $module_name['font_color_core'] != "" ){ echo "<b><u>*"; }        ?> <? if(is_numeric($module_name['core_version'])) if($module_name['core_version'] > $module_name['code_version']) { echo "<a href=\"".$module_name['core_dlink']."\" target=\"_blank\">".$module_name['core_version']."</a>";} else { echo $module_name['core_version']; }                ?> <? if($module_name['font_color_core'] != "black"){ echo "*</b></u>"; }     ?> </font> </td>
+            <td align=center> <?php echo "<font color=".$module_name['font_color_local'].">";   ?> <?php if($module_name['font_color_local'] != "black"){ echo "<b><u>*"; } ?> <?php if (is_numeric($module_name['code_version'])) echo $module_name['code_version']; ?><?php if (is_numeric($module_name['version'])) echo " / ".$module_name['version']; ?> <?php if($module_name['font_color_local'] != "black"){ echo "*</b></u>"; } ?> </td>
+            <td align=center> <?php echo "<font color=".$module_name['font_color_core'].">";    ?> <?php if($module_name['font_color_core'] != "black" and $module_name['font_color_core'] != "" ){ echo "<b><u>*"; }        ?> <?php if(is_numeric($module_name['core_version'])) if($module_name['core_version'] > $module_name['code_version']) { echo "<a href=\"".$module_name['core_dlink']."\" target=\"_blank\">".$module_name['core_version']."</a>";} else { echo $module_name['core_version']; }                ?> <?php if($module_name['font_color_core'] != "black"){ echo "*</b></u>"; }     ?> </font> </td>
             <td> <?= t($module_name['description'])                             ?> </td>
           </tr>
-        <? } ?>
-		  <? endforeach ?>
+        <?php } ?>
+		  <?php endforeach ?>
 		</table> 
 	</fieldset>
 	<fieldset>
@@ -56,16 +56,16 @@
 			<th width=85><center> <?= t("GM")           ?> </center></th>
 			<th> <?= t("Description")                   ?> </th>
 		  </tr>
-		  <? foreach ($vars as $module_name): ?>
-        <? if(is_numeric($module_name['contrib_version']) or is_numeric($module_name['gh_version'])) { ?>
+		  <?php foreach ($vars as $module_name): ?>
+        <?php if(is_numeric($module_name['contrib_version']) or is_numeric($module_name['gh_version'])) { ?>
           <tr class="<?= text::alternate("g-odd", "g-even") ?>">
             <td> <?= t($module_name['name'])                                                 ?> </td>
-            <td align=center> <? echo "<font color=".$module_name['font_color_local'].">";   ?> <? if($module_name['font_color_local'] != "black"){ echo "<b><u>*"; }                                                  ?> <? if (is_numeric($module_name['code_version'])) echo $module_name['code_version']; ?><? if (is_numeric($module_name['version'])) echo " / ".$module_name['version']; ?> <? if($module_name['font_color_local'] != "black"){ echo "*</b></u>"; } ?> </td>
-            <td align=center> <? echo "<font color=".$module_name['font_color_gh'].">";      ?> <? if($module_name['font_color_gh'] != "black" and $module_name['font_color_gh'] != "" ){ echo "<b><u>*"; }            ?> <? if(is_numeric($module_name['gh_version'])) if($module_name['gh_version'] > $module_name['version'] or $module_name['core_version'] > $module_name['code_version']) { echo "<a href=\"".$module_name['gh_dlink']."\" target=\"_blank\">".$module_name['gh_version']."</a>";} else { echo $module_name['gh_version']; }                          ?> <? if($module_name['font_color_gh'] != "black"){ echo "*</b></u>"; }       ?> </font> </td>
+            <td align=center> <?php echo "<font color=".$module_name['font_color_local'].">";   ?> <?php if($module_name['font_color_local'] != "black"){ echo "<b><u>*"; }                                                  ?> <?php if (is_numeric($module_name['code_version'])) echo $module_name['code_version']; ?><?php if (is_numeric($module_name['version'])) echo " / ".$module_name['version']; ?> <?php if($module_name['font_color_local'] != "black"){ echo "*</b></u>"; } ?> </td>
+            <td align=center> <?php echo "<font color=".$module_name['font_color_gh'].">";      ?> <?php if($module_name['font_color_gh'] != "black" and $module_name['font_color_gh'] != "" ){ echo "<b><u>*"; }            ?> <?php if(is_numeric($module_name['gh_version'])) if($module_name['gh_version'] > $module_name['version'] or $module_name['core_version'] > $module_name['code_version']) { echo "<a href=\"".$module_name['gh_dlink']."\" target=\"_blank\">".$module_name['gh_version']."</a>";} else { echo $module_name['gh_version']; }                          ?> <?php if($module_name['font_color_gh'] != "black"){ echo "*</b></u>"; }       ?> </font> </td>
             <td> <?= t($module_name['description'])                                          ?> </td>
           </tr>
-        <? } ?>
-		  <? endforeach ?>
+        <?php } ?>
+		  <?php endforeach ?>
 		  </table>
 	</fieldset>
   </div>

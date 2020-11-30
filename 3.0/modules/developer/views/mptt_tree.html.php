@@ -4,12 +4,12 @@
     <?= t("MPTT Tree Visualizer") ?>
   </h2>
   <div id="g-mptt">
-  <? if (empty($url)): ?>
+  <?php if (empty($url)): ?>
     <pre><?= $tree ?></pre>
-  <? else: ?>
+  <?php else: ?>
     <object type="image/svg+xml" data="<?= $url ?>" style="width: 100%; height: 100%;" >
       <pre><?= $tree ?></pre>
     </object>
-  <? endif ?>
+  <?php endif ?>
   </div>
 </div>

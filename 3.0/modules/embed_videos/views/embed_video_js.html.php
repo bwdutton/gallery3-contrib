@@ -18,10 +18,10 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 ?>
-<? if (isset($embed_code)): ?>
+<?php if (isset($embed_code)): ?>
 <script type="text/javascript">
 $(document).ready(function() {
 $("#g-photo").replaceWith("<div id=\"g-movie\" class=\"ui-helper-clearfix\"><?= $embed_code ?></div>");
 });
 </script>
-<? endif ?>
+<?php endif ?>

@@ -42,7 +42,7 @@
 <div class="g-block">
 <h2><?= t("Basket Contents") ?></h2>
   <div class="basketbuttons">
-    <? if (isset($basket->contents ) && count($basket->contents) > 0): ?>
+    <?php if (isset($basket->contents ) && count($basket->contents) > 0): ?>
       <script language="JavaScript">
       $(document).ready(function(){
         $("#pickup").click(function(){
@@ -55,10 +55,10 @@
         });
       })
       </script>
-    <? endif; ?>
+    <?php endif; ?>
   </div>
   <div class="g-block-content scrollable">
-    <? if (isset($basket->contents ) && count($basket->contents) > 0): ?>
+    <?php if (isset($basket->contents ) && count($basket->contents) > 0): ?>
       <table id="gBasketList" class="bp-table-small">
         <tr>
           <th></th>
@@ -67,20 +67,20 @@
           <th style="text-align:right;"><?= t("Cost") ?></th>
           <th><?= t("Actions") ?></th>
         </tr>
-        <? $total=0;?>
+        <?php $total=0;?>
 
-        <? foreach ($basket->contents as $key => $prod_details): ?>
+        <?php foreach ($basket->contents as $key => $prod_details): ?>
           <tr id="" class="<?= text::alternate("gOddRow", "gEvenRow") ?>">
             <td id="item-<?= $prod_details->item ?>" class="core-info ">
-              <? $item = $prod_details->getItem(); ?>
-              <? $width = $item->width; ?>
+              <?php $item = $prod_details->getItem(); ?>
+              <?php $width = $item->width; ?>
               <div id="basketThumb">
                 <a href="<?= $item->resize_url()?>" class="preview-image">
                   <img src="<?= $item->thumb_url()?>" title="<?= $item->title?>" alt="<?= $item->title?>"
-                <? if ($width < module::get_var("gallery", "resize_size")):
-                ?> style="width=60px;"/></a><?
+                <?php if ($width < module::get_var("gallery", "resize_size")):
+                ?> style="width=60px;"/></a><?php
                  else: 
-                ?> style="width=90px;"/></a><?
+                ?> style="width=90px;"/></a><?php
                  endif; ?>
               </div>
             </td>
@@ -91,11 +91,11 @@
               <span class="ui-icon ui-icon-trash" title="<?= t("Remove") ?>"></span></a>
             </td>
           </tr>
-        <? endforeach ?>
-        <? /* line with postage: show only when postage > 0; when pickup is selected, use 'line-through' formatting */ ?>
-        <? $postage = $basket->postage_cost();?>
-        <? $total = $basket->product_cost();?>
-        <? if ($postage > 0):?>
+        <?php endforeach ?>
+        <?php /* line with postage: show only when postage > 0; when pickup is selected, use 'line-through' formatting */ ?>
+        <?php $postage = $basket->postage_cost();?>
+        <?php $total = $basket->product_cost();?>
+        <?php if ($postage > 0):?>
           <tr class="<?= text::alternate("gOddRow", "gEvenRow") ?>">
             <td></td>
             <td <?=$basket->pickup?"style=\"text-decoration:line-through\"":""; ?>><?= t("Postage and Packaging") ?></td>
@@ -103,8 +103,8 @@
 						<td style="text-align:right;<?=$basket->pickup?" text-decoration:line-through;":"";?>"><?= basket_plus::formatMoneyForWeb($postage)?></td>
             <td></td>
           </tr>
-        <? endif;?>
-        <? /* line with total:  show total incl postage when postage > 0;*/ ?>
+        <?php endif;?>
+        <?php /* line with total:  show total incl postage when postage > 0;*/ ?>
         <tr class="<?= text::alternate("gOddRow", "gEvenRow") ?>">
           <td></td>
           <td><b><?= t("Total Cost") ?></b></td>
@@ -112,28 +112,28 @@
           <td style="text-align:right;" id="total"><b><?= $basket->pickup?basket_plus::formatMoneyForWeb($total):basket_plus::formatMoneyForWeb($total + $postage)?></b></td>
           <td></td>
         </tr>
-        <? /* line with pickup choice: show only when postage > 0; when pickup is changed, trigger script (see top) */ ?>
-        <? if ($postage > 0):?>
-          <? if (basket_plus::getBasketVar(ALLOW_PICKUP)):?>
+        <?php /* line with pickup choice: show only when postage > 0; when pickup is changed, trigger script (see top) */ ?>
+        <?php if ($postage > 0):?>
+          <?php if (basket_plus::getBasketVar(ALLOW_PICKUP)):?>
             <tr class="bp-table-noborder">
               <td colspan="5"><input id="pickup" type="checkbox" <?=$basket->pickup?"checked":""; ?>/><?= t(" Select if you wish to pick up the photos.") ?></td>
             </tr>
-          <? endif;?>
-        <? endif;?>
+          <?php endif;?>
+        <?php endif;?>
       </table>
-    <? else: ?>
+    <?php else: ?>
       <?= t("Shopping Basket is Empty") ?>
-    <? endif; ?>
+    <?php endif; ?>
   </div>
 
   <div class="basketbuttons">
-    <? if (isset($basket->contents ) && count($basket->contents) > 0): ?>
+    <?php if (isset($basket->contents ) && count($basket->contents) > 0): ?>
       <a href="javascript:back();"
         class="left g-button ui-state-default ui-corner-all ui-icon-left">
         <span class="ui-icon ui-icon-arrow-1-w"></span><?= t("Back to Photos") ?></a>
       <a href="<?= url::site("basket_plus/checkout") ?>"
         class="right g-button ui-state-default ui-corner-all ui-icon-right">
           <span class="ui-icon ui-icon-arrow-1-e"></span><?= t("Proceed to Checkout") ?></a>
-    <? endif; ?>
+    <?php endif; ?>
   </div>
 </div>

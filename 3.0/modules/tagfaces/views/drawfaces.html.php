@@ -1,5 +1,5 @@
 <?php defined("SYSPATH") or die("No direct script access.") ?>
-<? $item = ORM::factory("item", $item_id); ?>
+<?php $item = ORM::factory("item", $item_id); ?>
 
 <style>
 .jcrop-holder { text-align: left; }

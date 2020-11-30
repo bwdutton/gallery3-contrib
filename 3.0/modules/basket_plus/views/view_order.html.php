@@ -19,7 +19,7 @@
  */
 ?>
 <h2><?= $order->title()?></h2>
-<div class="basketbuttons">	<?
+<div class="basketbuttons">	<?php
 	if ($order->status == Bp_Order_Model::WAITING_PAYMENT){?>
 	<table>
 		<tr>
@@ -32,7 +32,7 @@
 			<td><a class="g-button ui-state-default ui-icon-right" href="<?= url::site("basket_plus/confirm_order_cancelled/".$order->id)."?csrf=$csrf";?>"><?= t(basket_plus_label::BUTTON_CANCEL_ORDER) ?></a></td> 
 		</tr>
 	</table>
-	 <?
+	 <?php
 	}
 	if ($order->status == Bp_Order_Model::DELIVERED_NOTPAID){?>
 	<table>
@@ -42,7 +42,7 @@
 			<td><a class="g-button ui-state-default ui-icon-right" href="<?= url::site("basket_plus/send_order_copy/".$order->id)."?csrf=$csrf";?>"><?= t(basket_plus_label::BUTTON_SEND_ORDER_COPY) ?></a></td>
 		</tr>
 	</table>
-	 <?
+	 <?php
 	}
 	if ($order->status == Bp_Order_Model::PAYMENT_CONFIRMED){?>
 	<table>
@@ -51,13 +51,13 @@
 			<td><a class="g-button ui-state-default ui-icon-right" href="<?= url::site("basket_plus/notify_order_delayed/".$order->id)."?csrf=$csrf";?>"><?= t(basket_plus_label::BUTTON_NOTIFY_DELAY) ?></a></td>
 		</tr>
 	</table>
- <?
+ <?php
 	}
 /*	
 //NOT USED
 	if ($order->payment_method == Bp_Order_Model::PAYMENT_PAYPAL){?>
     <br/><a href="<?= url::site("basket_plus/view_ipn/".$order->id);?>"><?= t("View Paypal IPN Messages")?></a>
- <?	
+ <?php	
 	}*/ ?>
 </div>
 <?= t("Payment and Delivery method")?>:&nbsp;<?= $order->payment_method()?>&nbsp;-&nbsp;<?= $order->delivery_method()?> </br>

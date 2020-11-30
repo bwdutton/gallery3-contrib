@@ -38,7 +38,7 @@ input.ui-state-hover { background-image: url(/themes/greydragon/images/button-gr
   });
 </script>
 
-<?
+<?php
   if ($is_module):
     $admin_info = new ArrayObject(parse_ini_file(MODPATH   . $name . "/module.info"), ArrayObject::ARRAY_AS_PROPS);
     $version = number_format($admin_info->version / 10, 1, '.', '');
@@ -53,15 +53,15 @@ input.ui-state-hover { background-image: url(/themes/greydragon/images/button-gr
     <div id="gd-admin-title"><?= t($admin_info->name) ?> - <?= $version ?></div>
     <div id="gd-admin-hlinks">
       <ul><li><a href="http://blog.dragonsoft.us/gallery-3/" target="_blank"><?= t("Home") ?></a>&nbsp;|&nbsp;</li>
-        <? if (isset($admin_info->support)): ?>
+        <?php if (isset($admin_info->support)): ?>
         <li><a href="<?= $admin_info->support;  ?>" target="_blank"><?= t("Support") ?></a>&nbsp;|&nbsp;</li>
-        <? endif; ?>
-        <? if (isset($admin_info->download)): ?>
+        <?php endif; ?>
+        <?php if (isset($admin_info->download)): ?>
         <li><a href="<?= $admin_info->download; ?>" target="_blank"><?= t("Download") ?></a>&nbsp;|&nbsp;</li>
-        <? endif; ?>
-        <? if (isset($admin_info->vote)): ?>
+        <?php endif; ?>
+        <?php if (isset($admin_info->vote)): ?>
         <li><a href="<?= $admin_info->vote;     ?>" target="_blank"><?= t("Vote") ?></a>&nbsp;|&nbsp;</li>
-        <? endif; ?>
+        <?php endif; ?>
         <li><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=9MWBSVJMWMJEU" target="_blank" ><?= t("Coffee Fund") ?></a>&nbsp;</li>
       </ul>
     </div>

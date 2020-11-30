@@ -75,13 +75,13 @@ class Sabre_DAV_XMLUtil {
         // does not support this, so we must intercept this and convert to UTF-8.
         if (substr($xml,0,12) === "\x3c\x00\x3f\x00\x78\x00\x6d\x00\x6c\x00\x20\x00") {
 
-            // Note: the preceeding byte sequence is "<?xml" encoded as UTF_16, without the BOM.
+            // Note: the preceeding byte sequence is "<?phpxml" encoded as UTF_16, without the BOM.
             $xml = iconv('UTF-16LE','UTF-8',$xml);
 
             // Because the xml header might specify the encoding, we must also change this.
             // This regex looks for the string encoding="UTF-16" and replaces it with
             // encoding="UTF-8".
-            $xml = preg_replace('|<\?xml([^>]*)encoding="UTF-16"([^>]*)>|u','<?xml\1encoding="UTF-8"\2>',$xml);
+            $xml = preg_replace('|<\?xml([^>]*)encoding="UTF-16"([^>]*)>|u','<?phpxml\1encoding="UTF-8"\2>',$xml);
 
         }
 

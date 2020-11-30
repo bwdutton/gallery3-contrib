@@ -38,7 +38,7 @@
         <th><?= t("Postage Band") ?></th>
         <th><?= t("Actions") ?></th>
       </tr>
-    <? foreach ($products as $i => $product): ?>
+    <?php foreach ($products as $i => $product): ?>
       <tr id="gProduct-<?= $product->id ?>" class="<?= text::alternate("gOddRow", "gEvenRow") ?>">
         <td id="product-<?= $product->id ?>" class="core-info ">
           <?= html::clean($product->name) ?></td>
@@ -54,7 +54,7 @@
             <span class="ui-icon ui-icon-trash"></span><?= t("delete") ?></a>
         </td>
       </tr>
-    <? endforeach ?>
+    <?php endforeach ?>
     </table>
   </div>
 </div>

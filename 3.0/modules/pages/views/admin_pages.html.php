@@ -12,8 +12,8 @@
   });
 </script>
 
-<? $pages_per_column = $pages->count()/5 ?>
-<? $column_page_count = 0 ?>
+<?php $pages_per_column = $pages->count()/5 ?>
+<?php $column_page_count = 0 ?>
 
 <div class="g-block">
   <h1> <?= t("Manage pages") ?> </h1>
@@ -26,31 +26,31 @@
       </caption>
       <tr>
         <td>
-        <? foreach ($pages as $i => $one_page): ?>
-          <? $current_letter = strtoupper(mb_substr($one_page->name, 0, 1)) ?>
+        <?php foreach ($pages as $i => $one_page): ?>
+          <?php $current_letter = strtoupper(mb_substr($one_page->name, 0, 1)) ?>
 
-          <? if ($i == 0): /* first letter */ ?>
+          <?php if ($i == 0): /* first letter */ ?>
           <strong><?= html::clean($current_letter) ?></strong>
           <ul>
-          <? elseif ($last_letter != $current_letter): /* new letter */ ?>
+          <?php elseif ($last_letter != $current_letter): /* new letter */ ?>
           </ul>
-            <? if ($column_page_count > $pages_per_column): /* new column */ ?>
-              <? $column_page_count = 0 ?>
+            <?php if ($column_page_count > $pages_per_column): /* new column */ ?>
+              <?php $column_page_count = 0 ?>
         </td>
         <td>
-            <? endif ?>
+            <?php endif ?>
           <strong><?= html::clean($current_letter) ?></strong>
           <ul>
-          <? endif ?>
+          <?php endif ?>
               <li>
                 <span class="g-editable g-page-name" rel="<?= $one_page->id ?>"><?= html::clean($one_page->name) ?></span>
                 <a href="<?= url::site("admin/pages/editpage/$one_page->id") ?>" class="g-edit-link g-button" title="<?= t("Edit this page") ?>"><span class="ui-icon ui-icon-pencil"><?= t("Edit this page") ?></span></a>
                 <a href="<?= url::site("pages/show/" . $one_page->name) ?>" class="g-view-link g-button" title="<?= t("View this page") ?>" target="_blank"><span class="ui-icon ui-icon-info"><?= t("View this page") ?></span></a>
                 <a href="<?= url::site("admin/pages/form_delete/$one_page->id") ?>" class="g-dialog-link g-delete-link g-button"><span class="ui-icon ui-icon-trash"><?= t("Delete this page") ?></span></a>
               </li>
-          <? $column_page_count++ ?>
-          <? $last_letter = $current_letter ?>
-        <? endforeach ?>
+          <?php $column_page_count++ ?>
+          <?php $last_letter = $current_letter ?>
+        <?php endforeach ?>
           </ul>
         </td>
       </tr>

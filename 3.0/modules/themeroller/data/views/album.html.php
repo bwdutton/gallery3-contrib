@@ -1,5 +1,5 @@
 <?php defined("SYSPATH") or die("No direct script access.") ?>
-<? // @todo Set hover on AlbumGrid list items for guest users ?>
+<?php // @todo Set hover on AlbumGrid list items for guest users ?>
 <div id="g-info">
   <?= $theme->album_top() ?>
   <h1><?= html::purify($item->title) ?></h1>
@@ -7,12 +7,12 @@
 </div>
 
 <ul id="g-album-grid" class="ui-helper-clearfix">
-<? if (count($children)): ?>
-  <? foreach ($children as $i => $child): ?>
-    <? $item_class = "g-photo"; ?>
-    <? if ($child->is_album()): ?>
-      <? $item_class = "g-album"; ?>
-    <? endif ?>
+<?php if (count($children)): ?>
+  <?php foreach ($children as $i => $child): ?>
+    <?php $item_class = "g-photo"; ?>
+    <?php if ($child->is_album()): ?>
+      <?php $item_class = "g-album"; ?>
+    <?php endif ?>
   <li id="g-item-id-<?= $child->id ?>" class="g-item <?= $item_class ?>">
     <?= $theme->thumb_top($child) ?>
     <a href="<?= $child->url() ?>">
@@ -26,16 +26,16 @@
       <?= $theme->thumb_info($child) ?>
     </ul>
   </li>
-  <? endforeach ?>
-<? else: ?>
-  <? if ($user->admin || access::can("add", $item)): ?>
-  <? $addurl = url::site("uploader/index/$item->id") ?>
+  <?php endforeach ?>
+<?php else: ?>
+  <?php if ($user->admin || access::can("add", $item)): ?>
+  <?php $addurl = url::site("uploader/index/$item->id") ?>
   <li><?= t("There aren't any photos here yet! <a %attrs>Add some</a>.",
             array("attrs" => html::mark_clean("href=\"$addurl\" class=\"g-dialog-link\""))) ?></li>
-  <? else: ?>
+  <?php else: ?>
   <li><?= t("There aren't any photos here yet!") ?></li>
-  <? endif; ?>
-<? endif; ?>
+  <?php endif; ?>
+<?php endif; ?>
 </ul>
 <?= $theme->album_bottom() ?>
 

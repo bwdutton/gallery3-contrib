@@ -9,7 +9,7 @@
 </div>
 
 
-<? if (isset($google_map_key) && ($google_map_key != "")) {
+<?php if (isset($google_map_key) && ($google_map_key != "")) {
   print "<script src=\"http://www.google.com/jsapi?key=" . $google_map_key . "\" type=\"text/javascript\"></script>\n";
 } else {
   print "<script src=\"http://www.google.com/jsapi\" type=\"text/javascript\"></script>\n";

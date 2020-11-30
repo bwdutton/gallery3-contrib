@@ -1,14 +1,14 @@
 <?php defined("SYSPATH") or die("No direct script access.") ?>
-<? date_default_timezone_set('Australia/ACT'); ?> 
+<?php date_default_timezone_set('Australia/ACT'); ?> 
 <div class="g-metadata">
 <span class="g-about-this">
 <table cellspacing="0" cellpadding="0" border="0">
-<? if ($album_count > 0): ?>
+<?php if ($album_count > 0): ?>
   <tr>
     <td><strong class="caption"><?= t("Albums:&nbsp;") ?></strong></td>
     <td><?= $album_count ?></td>
   </tr>
-<? endif ?>
+<?php endif ?>
   <tr>
     <td><strong class="caption"><?= t("Images:&nbsp;") ?></strong></td>
     <td><?= $photo_count ?></td>
@@ -21,22 +21,22 @@
   <span >
   
   <!--This Div will insert a margin either side of the desciption if there are tags to display-->
-  <? if (count($all_tags) > 0): ?>
+  <?php if (count($all_tags) > 0): ?>
 	<div style="margin-top: 10px; margin-bottom: 10px;">
-  <? endif ?>
+  <?php endif ?>
 
-  <? if ($description <> ""): ?>
+  <?php if ($description <> ""): ?>
 	<strong class="caption"><?= t("Details:&nbsp;") ?></strong>
     <?= $description ?>
   </span ><br>
-  <? endif ?>
+  <?php endif ?>
   
-    <? if (count($all_tags) > 0): ?>
+    <?php if (count($all_tags) > 0): ?>
 	</div>
   <span >
       <strong class=="caption"><?= t("Tags:&nbsp;") ?></strong>
   </span >
-  <?
+  <?php
   // Create an array to store the tag names and urls in.
   $display_tags = array();  
   
@@ -63,6 +63,6 @@
     print "<a href=\"" . $one_tag[1] . "\">" . $one_tag[0] . "</a>";
   }
 ?>
-<? endif ?>
+<?php endif ?>
 </span>
 </div>

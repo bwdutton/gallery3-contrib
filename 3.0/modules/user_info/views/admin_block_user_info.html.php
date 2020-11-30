@@ -11,19 +11,19 @@
 
 <!-- First Row - Displays Number of Records -->
 <tr>
-<? if ($number_of_records > 0) { ?>
+<?php if ($number_of_records > 0) { ?>
 	<td align="center" colspan="6"><?= t("Number of Records: %number_of_records",array("number_of_records" => $number_of_records)) ?></td>
-	<? } else { ?>
+	<?php } else { ?>
 	<td align="center" colspan="6"><?= t("Number of Records: 0") ?></td>
-	<? } ?> 
+	<?php } ?> 
 </tr>
 
 <!--Second Row - List the Page Numbers for Pagination if there are records in the Database -->
-<? if ($number_of_records) { ?>
+<?php if ($number_of_records) { ?>
 <tr>
 	<td align="center" colspan="6"><?= $pager ?></td>
 </tr>
-<? } ?>
+<?php } ?>
 
 <!--Third Row - Headers -->
 <tr>
@@ -36,19 +36,19 @@
 </tr>
 
 <!--Forth Row etc.. - Lists the actual data -->
-<? if ($number_of_records > 0) { ?>
-<? foreach($data as $myData) { ?>
+<?php if ($number_of_records > 0) { ?>
+<?php foreach($data as $myData) { ?>
 <tr>
-	<td><? echo $myData->id ?></td>
+	<td><?php echo $myData->id ?></td>
 	
-	<td><? echo $myData->user_id ?></td>
+	<td><?php echo $myData->user_id ?></td>
 	
 	<td>
-		<? if ($myData->user_id){ ?>
+		<?php if ($myData->user_id){ ?>
 			<a href="<?= url::site("user_profile/show/$myData->user_id") ?>" target="_blank"><?= html::clean($myData->user_name) ?> </a>
-		<? } else { ?>
-			<? echo $myData->user_name ?><br>
-		<? } ?>
+		<?php } else { ?>
+			<?php echo $myData->user_name ?><br>
+		<?php } ?>
 	</td>
 	
 	<td>
@@ -56,9 +56,9 @@
 	</td>
 
 	<td>
-		<? if ($use_default_gallery_date_format == "Yes") { ?>
+		<?php if ($use_default_gallery_date_format == "Yes") { ?>
 			<?=	gallery::date_time($myData->time_stamp) ?>
-		<?
+		<?php
 		} else {
 			echo date($date_format,$myData->time_stamp);	
 		}
@@ -66,7 +66,7 @@
 	</td>
 
 	<td>
-		<? 
+		<?php 
 		switch ($myData->action)
 			{
 				case "Failed Login":
@@ -107,12 +107,12 @@
 		?>
 	</td>
 </tr>
-	<? } ?>
-<? } else { ?>
+	<?php } ?>
+<?php } else { ?>
 <tr>
 	<td colspan="6"><center><b><?= t("No Records in Database") ?></b></center></td>
 </tr>
-<? } ?>
+<?php } ?>
 
 </table>
 </div>

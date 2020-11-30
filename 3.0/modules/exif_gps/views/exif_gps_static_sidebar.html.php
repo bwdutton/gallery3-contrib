@@ -1,5 +1,5 @@
 <?php defined("SYSPATH") or die("No direct script access.") ?>
-<?
+<?php
   $map_api_key = "";
   if (module::get_var("exif_gps", "googlemap_api_key", "") != "") {
     $map_api_key = "&key=" . module::get_var("exif_gps", "googlemap_api_key");

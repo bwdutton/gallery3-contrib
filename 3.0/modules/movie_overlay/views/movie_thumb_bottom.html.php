@@ -5,8 +5,8 @@ left:<?= $left ?>px; height: 48px; width: 48px;
 background-image:url('<?= $images_url ?>/<?= $icon ?>.png');
 opacity:0.<?= $trans ?>; filter:alpha(opacity=<?= $trans ?>);">
 </span>
-<? if (module::get_var("movie_overlay", "time")) : ?>
+<?php if (module::get_var("movie_overlay", "time")) : ?>
   <span class="g-movie-time" style="top:<?= $texttime_top ?>px;">&#9655;&nbsp;<?= $movie_time ?></span>
-<? endif ?>
+<?php endif ?>
 </a>
 </div>

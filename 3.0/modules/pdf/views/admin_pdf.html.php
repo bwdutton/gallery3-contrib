@@ -19,21 +19,21 @@
   <div class="g-available">
     <h2> <?= t("Current Ghostscript configuration") ?> </h2>
     <div id="g-gs" class="g-block">
-      <img class="logo" width="100" height="100" src="<?= url::file("modules/pdf/images/ghostscript.png") ?>" alt="<? t("Visit the Ghostscript project site") ?>" />
+      <img class="logo" width="100" height="100" src="<?= url::file("modules/pdf/images/ghostscript.png") ?>" alt="<?php t("Visit the Ghostscript project site") ?>" />
       <p>
         <?= t("Ghostscript is an interpreter for the PostScript language and for PDF.") ?><br/>
         <?= t("Please refer to the <a href=\"%url\">Ghostscript website</a> for more information.", array("url" => "http://www.ghostscript.com/")) ?>
       </p>
       <div class="g-module-status g-info">
-        <? if ($gs_dir): ?>
-          <? if ($gs_version): ?>
+        <?php if ($gs_dir): ?>
+          <?php if ($gs_version): ?>
             <p><?= t("%version was found in %dir", array("version" => $gs_version, "dir" => $gs_dir)) ?></p>
-          <? else: ?>
+          <?php else: ?>
             <p><?= t("Ghostscript (of unknown version) was found in %dir", array("dir" => $gs_dir)) ?></p>
-          <? endif ?>
-        <? else: ?>
+          <?php endif ?>
+        <?php else: ?>
           <p><?= t("We could not locate Ghostscript on your system.") ?></p>
-        <? endif ?>
+        <?php endif ?>
       </div>
     </div>
   </div>

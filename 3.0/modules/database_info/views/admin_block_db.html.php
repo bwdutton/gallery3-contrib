@@ -1,5 +1,5 @@
 <?php defined("SYSPATH") or die("No direct script access.") ?>
-<?
+<?php
   $db = Database::instance();
   $tables = $db->query("SHOW TABLE STATUS");
   $database_size = 0;

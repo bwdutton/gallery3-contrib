@@ -7,14 +7,14 @@
 </div>
 <br />
 
-<? if (module::is_active("tag_cloud")) { ?>
+<?php if (module::is_active("tag_cloud")) { ?>
 <script type="text/javascript">
   $("document").ready(function() {
     $("#g-tag-cloud-page").gallery_tag_cloud_page({
       movie: "<?= url::file("modules/tag_cloud/lib/tagcloud.swf") ?>"
-      <? foreach ($options as $option => $value) : ?>
+      <?php foreach ($options as $option => $value) : ?>
         , <?= $option ?> : "<?= $value ?>"
-      <? endforeach ?>
+      <?php endforeach ?>
     });
   });
 </script>
@@ -26,10 +26,10 @@
   </div>
 </div>
 
-<? } else { ?>
+<?php } else { ?>
 <div id="g-tag-cloud-page">
   <?= tag::cloud(ORM::factory("tag")->count_all()); ?>
 </div>
-<? } ?>
+<?php } ?>
 
 <?= $theme->dynamic_bottom() ?>

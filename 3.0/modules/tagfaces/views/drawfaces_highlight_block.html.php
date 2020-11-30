@@ -1,5 +1,5 @@
 <?php defined("SYSPATH") or die("No direct script access.") ?>
-<?
+<?php
   // Check and see if the current photo has any faces or notes associated with it.
   $existingFaces = ORM::factory("items_face")
                         ->where("item_id", "=", $item->id)
@@ -78,22 +78,22 @@
 <div id="divsquare" class="transparent30" onMouseOut="hidebox()" style="position:absolute;display:none;border:2px solid #000000;background-color:#ffffff;" onclick="self.location.href = '';"></div>
 
 <map name="faces">
-<?
+<?php
     // For each face, add a rectangle area to the page.
     foreach ($existingFaces as $oneFace) {
       $oneTag = ORM::factory("tag", $oneFace->tag_id)
 ?>
       <area shape="rect" coords="<?=$oneFace->x1 ?>,<?=$oneFace->y1 ?>,<?=$oneFace->x2 ?>,<?=$oneFace->y2 ?>" href="<?=$oneTag->url() ?>" title="<?=html::clean($oneTag->name); ?>" alt="<?=$oneTag->name; ?>" onMouseOver="highlightbox(<?=$oneFace->x1 ?>,<?=$oneFace->y1 ?>,<?=$oneFace->x2 ?>,<?=$oneFace->y2 ?>,'<?=html::clean($oneTag->name); ?>', '<?=html::clean($oneFace->description); ?>', '<?=$oneTag->url() ?>')" />
-<? } ?>
+<?php } ?>
 
-<?
+<?php
     // For each note, add a rectangle area to the page.
     foreach ($existingNotes as $oneNote) {
 ?>
       <area shape="rect" coords="<?=$oneNote->x1 ?>,<?=$oneNote->y1 ?>,<?=$oneNote->x2 ?>,<?=$oneNote->y2 ?>" title="<?=html::clean($oneNote->title); ?>" alt="<?=$oneNote->title; ?>" onMouseOver="highlightbox(<?=$oneNote->x1 ?>,<?=$oneNote->y1 ?>,<?=$oneNote->x2 ?>,<?=$oneNote->y2 ?>,'<?=html::clean($oneNote->title); ?>', '<?=html::clean($oneNote->description); ?>', '')" />
-<? } ?>
+<?php } ?>
 
 </map>
-<?
+<?php
   }
 ?>

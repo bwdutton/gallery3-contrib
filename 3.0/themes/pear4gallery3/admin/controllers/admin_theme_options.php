@@ -3,7 +3,7 @@
 /*
  */
 ?>
-<?
+<?php
 class Admin_Theme_Options_Controller extends Admin_Controller {
 
   protected $min_gallery_ver = 46;
