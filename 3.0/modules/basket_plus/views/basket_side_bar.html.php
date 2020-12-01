@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 ?>
-<?phpif ($theme->page_subtype != "login"){
+<?php if ($theme->page_subtype != "login"){
 		if (basket_plus::can_view_orders()){
 			 ?><a class="g-button ui-icon-left ui-state-default ui-corner-all ui-state-hover" 
 			 href="<?= url::site("basket_plus/view_Orders") ?>" title="<?= t("View Orders") ?>">
