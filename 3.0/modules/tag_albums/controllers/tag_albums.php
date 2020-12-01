@@ -24,7 +24,7 @@ class tag_albums_Controller extends Controller {
     $this->index($id, $filter);
   }
 
-  public function index($id, $filter) {
+  public function index($id='', $filter='') {
     // Load a page containing sub-albums for each tag in the gallery.
 
     // Check to see if the user has overridden default behavior, and act accordingly.
