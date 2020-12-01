@@ -41,7 +41,7 @@
     <?= form::label("IccPath", t('Path to <a href="%icc_url">ICC profile</a>', array("icc_url" =>
           "http://www.permajet.com/30/Downloads/76/What_are_ICC_Profiles,_and_why_do_I_need_them.html"))) ?>
     <?= form::input(array("name" => "IccPath", "id" => "IccPath"), $icc_path) ?>
-    <?phpif (empty($icc_path) || !empty($errors["IccPath"])): ?>
+    <?php if (empty($icc_path) || !empty($errors["IccPath"])): ?>
       <em>An ICC profile is optional. If you don't know what it is, then you don't need it.</em>
     <?php endif; ?>
   </fieldset>

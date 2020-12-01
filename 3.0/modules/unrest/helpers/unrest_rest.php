@@ -146,7 +146,7 @@ class unrest_rest_Core {
 		}
 					
 		/* We shouldn't have any albums we don't have access to by default in this query, but just in case.. */
-		unrest_rest::queryLimitByPermission(&$children, $permitted);
+		unrest_rest::queryLimitByPermission($children, $permitted);
 		
 		
 		$childBlock = array();
@@ -218,9 +218,9 @@ class unrest_rest_Core {
       		Introduce some WHERE statements that'll make sure that we don't get to see stuff we
       		shouldn't be seeing.
       	*/
-      	unrest_rest::queryLimitByPermission(&$items, $permitted);
-      	unrest_rest::queryLimitByLimiter(&$items, $limit);
-      	unrest_rest::queryOrder(&$items, $request);
+      	unrest_rest::queryLimitByPermission($items, $permitted);
+      	unrest_rest::queryLimitByLimiter($items, $limit);
+      	unrest_rest::queryOrder($items, $request);
 		
 		$return = array();
 		$filler = array();
@@ -294,7 +294,7 @@ class unrest_rest_Core {
 		/* Do we need to fetch children? */
 		if (array_key_exists('children_of', $filler))
 		{
-			unrest_rest::addChildren($request, $db, $filler, $permitted, $display, &$return, $rest_base);
+			unrest_rest::addChildren($request, $db, $filler, $permitted, $display, $return, $rest_base);
 		}
 		
 		$end = microtime(true);
