@@ -77,7 +77,7 @@ class exif_gps_event_Core {
       db::build()
         ->delete("exif_coordinates")
         ->where("item_id", "=", $item->id)
-        ->execute();	
+        ->execute();
     } else {
       $record = ORM::factory("exif_coordinate")->where("item_id", "=", $item->id)->find();
       if (!$record->loaded()) {
@@ -251,8 +251,10 @@ class exif_gps_event_Core {
       return;
     }
 
+    $map_provider_id = module::get_var("exif_gps", "provider");
+
     // Display the map block.
-    $v = new View("user_profile_exif_gps.html");
+    $v = new View("$map_provider_id/user_profile_exif_gps.html");
     $int_map_type = module::get_var("exif_gps", "largemap_maptype");
     if ($int_map_type == 0) $map_type = "ROADMAP";
     if ($int_map_type == 1) $map_type = "SATELLITE";

@@ -19,6 +19,7 @@
  */
 class EXIF_GPS_Controller extends Controller {
   public static $xml_records_limit = 1000;
+  public static $map_provider_id = module::get_var("exif_gps", "provider");
 
   public function item($item_id) {
     // Make sure the context callback is set to album when linking to photos from map pages.
@@ -52,8 +53,8 @@ class EXIF_GPS_Controller extends Controller {
                ->order_by("exif_coordinates.latitude", "ASC")
                ->descendants(EXIF_GPS_Controller::$xml_records_limit, $offset);
     }
-
-    $v = new View("exif_gps_coordinates_xml.html");
+    $map_provider_id = module::get_var("exif_gps", "provider");
+    $v = new View("$map_provider_id/exif_gps_coordinates_xml.html");
     $v->items = $items;
     header("Content-type: text/xml; charset=utf-8");
     print $v;
@@ -61,7 +62,7 @@ class EXIF_GPS_Controller extends Controller {
 
   public function map($map_type, $type_id) {
     // Map all items in the specified album or user.
-    // Valid values for $map_type are "album" or "user", $type_id is either an 
+    // Valid values for $map_type are "album" or "user", $type_id is either an
     //   album id# or a user id#.
 
     // If the user can't view maps, throw a 404 error.
@@ -114,7 +115,7 @@ class EXIF_GPS_Controller extends Controller {
     $template = new Theme_View("page.html", "other", "EXIF_GPS_MAP");
     $template->page_title = t("Gallery :: Map");
     $template->set_global(array("breadcrumbs" => $breadcrumbs));
-    $template->content = new View("exif_gps_map.html");
+    $template->content = new View("$map_provider_id/exif_gps_map.html");
     if ($map_title == "") {
       $template->content->title = t("Map");
     } else {
