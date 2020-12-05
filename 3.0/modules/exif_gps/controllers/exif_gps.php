@@ -19,7 +19,6 @@
  */
 class EXIF_GPS_Controller extends Controller {
   public static $xml_records_limit = 1000;
-  public static $map_provider_id = module::get_var("exif_gps", "provider");
 
   public function item($item_id) {
     // Make sure the context callback is set to album when linking to photos from map pages.
@@ -115,6 +114,7 @@ class EXIF_GPS_Controller extends Controller {
     $template = new Theme_View("page.html", "other", "EXIF_GPS_MAP");
     $template->page_title = t("Gallery :: Map");
     $template->set_global(array("breadcrumbs" => $breadcrumbs));
+    $map_provider_id = module::get_var("exif_gps", "provider");
     $template->content = new View("$map_provider_id/exif_gps_map.html");
     if ($map_title == "") {
       $template->content->title = t("Map");

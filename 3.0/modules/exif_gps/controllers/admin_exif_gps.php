@@ -38,17 +38,24 @@ class Admin_EXIF_GPS_Controller extends Admin_Controller {
     if ($form->validate()) {
       // Save settings to Gallery's database.
       module::set_var("exif_gps", "provider", $form->Global->provider->value);
-      module::set_var("exif_gps", "googlemap_api_key", $form->Global->google_api_key->value);
-      module::set_var("exif_gps", "googlemap_max_autozoom", $form->Global->max_auto_zoom_level->value);
-      module::set_var("exif_gps", "markercluster_gridsize", $form->markercluster->markercluster_gridsize->value);
-      module::set_var("exif_gps", "markercluster_maxzoom", $form->markercluster->markercluster_maxzoom->value);
-      module::set_var("exif_gps", "sidebar_zoom", $form->Sidebar->sidebar_default_zoom->value);
-      module::set_var("exif_gps", "sidebar_mapformat", $form->Sidebar->sidebar_mapformat->value);
-      module::set_var("exif_gps", "sidebar_maptype", $form->Sidebar->sidebar_maptype->value);
-      module::set_var("exif_gps", "largemap_maptype", $form->LargeMap->largemap_maptype->value);
-      module::set_var("exif_gps", "toolbar_map_album", $form->Global->toolbar_map_album->value);
-      module::set_var("exif_gps", "toolbar_map_user", $form->Global->toolbar_map_user->value);
-      module::set_var("exif_gps", "restrict_maps", $form->Global->restrict_maps->value);
+      // switch (module::get_var("exif_gps", "provider")) {
+      //     case "gmaps":
+              module::set_var("exif_gps", "googlemap_api_key", $form->Global->google_api_key->value);
+              module::set_var("exif_gps", "googlemap_max_autozoom", $form->Global->max_auto_zoom_level->value);
+              module::set_var("exif_gps", "markercluster_gridsize", $form->markercluster->markercluster_gridsize->value);
+              module::set_var("exif_gps", "markercluster_maxzoom", $form->markercluster->markercluster_maxzoom->value);
+              module::set_var("exif_gps", "sidebar_zoom", $form->Sidebar->sidebar_default_zoom->value);
+              module::set_var("exif_gps", "sidebar_mapformat", $form->Sidebar->sidebar_mapformat->value);
+              module::set_var("exif_gps", "sidebar_maptype", $form->Sidebar->sidebar_maptype->value);
+              module::set_var("exif_gps", "largemap_maptype", $form->LargeMap->largemap_maptype->value);
+              module::set_var("exif_gps", "toolbar_map_album", $form->Global->toolbar_map_album->value);
+              module::set_var("exif_gps", "toolbar_map_user", $form->Global->toolbar_map_user->value);
+              module::set_var("exif_gps", "restrict_maps", $form->Global->restrict_maps->value);
+      //     break;
+      //     case "osm":
+      //
+      //     break;
+      // }
 
       // Display a success message and redirect back to the TagsMap admin page.
       message::success(t("Your settings have been saved."));
@@ -75,62 +82,72 @@ class Admin_EXIF_GPS_Controller extends Admin_Controller {
                ->label(t("Map Provider"))
                ->options(array(
                  "gmaps" => "Google Maps",
-                 "osm" => "Open Street Maps"
+                 "osm" => "OpenStreetMap"
                ))
                ->selected(module::get_var("exif_gps", "provider"));
-    $gps_global_group->input("google_api_key")
-      ->label(t("Google APIs Console key (optional):"))
-      ->value(module::get_var("exif_gps", "googlemap_api_key"));
-    $gps_global_group->input("max_auto_zoom_level")
-      ->label(t("Maximum Auto-Zoom Level:"))
-      ->value(module::get_var("exif_gps", "googlemap_max_autozoom"));
-    $gps_global_group->checkbox("toolbar_map_album")->label(t("Show \"Map this album\" icon?"))
-      ->checked(module::get_var("exif_gps", "toolbar_map_album", false));
-    $gps_global_group->checkbox("toolbar_map_user")->label(t("Show \"Map this user\" icon?"))
-      ->checked(module::get_var("exif_gps", "toolbar_map_user", false));
-    $gps_global_group->checkbox("restrict_maps")->label(t("Restrict maps to registered users?"))
-      ->checked(module::get_var("exif_gps", "restrict_maps", false));
 
-    $gmaps = $form->group("gmaps")
-                            ->label(t("Marker Cluster Settings"));
+    // switch (module::get_var("exif_gps", "provider")) {
+    //     case "gmaps":
+            $gps_global_group->input("google_api_key")
+              ->label(t("Google APIs Console key (optional):"))
+              ->value(module::get_var("exif_gps", "googlemap_api_key"));
+            $gps_global_group->input("max_auto_zoom_level")
+              ->label(t("Maximum Auto-Zoom Level:"))
+              ->value(module::get_var("exif_gps", "googlemap_max_autozoom"));
+            $gps_global_group->checkbox("toolbar_map_album")->label(t("Show \"Map this album\" icon?"))
+              ->checked(module::get_var("exif_gps", "toolbar_map_album", false));
+            $gps_global_group->checkbox("toolbar_map_user")->label(t("Show \"Map this user\" icon?"))
+              ->checked(module::get_var("exif_gps", "toolbar_map_user", false));
+            $gps_global_group->checkbox("restrict_maps")->label(t("Restrict maps to registered users?"))
+              ->checked(module::get_var("exif_gps", "restrict_maps", false));
 
-    // Create a group for marker cluster settings
-    $gps_markercluster = $form->group("markercluster")
-                        ->label(t("Marker Cluster Settings"));
-    $gps_markercluster->input("markercluster_gridsize")
-                      ->label(t("Grid Size"))
-                      ->value(module::get_var("exif_gps", "markercluster_gridsize"))
-                      ->rules("required");
-    $gps_markercluster->input("markercluster_maxzoom")
-                      ->label(t("Max Zoom"))
-                      ->value(module::get_var("exif_gps", "markercluster_maxzoom"))
-                      ->rules("required");
+            // Create a group for marker cluster settings
+            $gps_markercluster = $form->group("markercluster")
+                                ->label(t("Marker Cluster Settings"));
+            $gps_markercluster->input("markercluster_gridsize")
+                              ->label(t("Grid Size"))
+                              ->value(module::get_var("exif_gps", "markercluster_gridsize"))
+                              ->rules("required");
+            $gps_markercluster->input("markercluster_maxzoom")
+                              ->label(t("Max Zoom"))
+                              ->value(module::get_var("exif_gps", "markercluster_maxzoom"))
+                              ->rules("required");
 
-    // Create a group for sidebar settings
-    $gps_sidebar = $form->group("Sidebar")
-                        ->label(t("Sidebar Settings"));
-    $gps_sidebar->input("sidebar_default_zoom")
-                ->label(t("Default Zoom Level"))
-                ->value(module::get_var("exif_gps", "sidebar_zoom"))
-                ->rules("required");
-    $gps_sidebar->dropdown("sidebar_mapformat")
-                ->label(t("Map Interface"))
-                ->options(array(t("Static"), t("Interactive")))
-                ->selected(module::get_var("exif_gps", "sidebar_mapformat"));
-    $gps_sidebar->dropdown("sidebar_maptype")
-                ->label(t("Default Map Type"))
-                ->options(array(t("Map"), t("Satellite"),
-                                t("Hybrid"), t("Terrain")))
-                ->selected(module::get_var("exif_gps", "sidebar_maptype"));
-
-    // Create a group for map album/user settings
-    $gps_large_map_group = $form->group("LargeMap")
-                                ->label(t("Map Album/User Settings"));
-    $gps_large_map_group->dropdown("largemap_maptype")
+            // Create a group for sidebar settings
+            $gps_sidebar = $form->group("Sidebar")
+                                ->label(t("Sidebar Settings"));
+            $gps_sidebar->input("sidebar_default_zoom")
+                        ->label(t("Default Zoom Level"))
+                        ->value(module::get_var("exif_gps", "sidebar_zoom"))
+                        ->rules("required");
+            $gps_sidebar->dropdown("sidebar_mapformat")
+                        ->label(t("Map Interface"))
+                        ->options(array(t("Static"), t("Interactive")))
+                        ->selected(module::get_var("exif_gps", "sidebar_mapformat"));
+            $gps_sidebar->dropdown("sidebar_maptype")
                         ->label(t("Default Map Type"))
                         ->options(array(t("Map"), t("Satellite"),
                                         t("Hybrid"), t("Terrain")))
-                        ->selected(module::get_var("exif_gps", "largemap_maptype"));
+                        ->selected(module::get_var("exif_gps", "sidebar_maptype"));
+
+            // Create a group for map album/user settings
+            $gps_large_map_group = $form->group("LargeMap")
+                                        ->label(t("Map Album/User Settings"));
+            $gps_large_map_group->dropdown("largemap_maptype")
+                                ->label(t("Default Map Type"))
+                                ->options(array(t("Map"), t("Satellite"),
+                                                t("Hybrid"), t("Terrain")))
+                                ->selected(module::get_var("exif_gps", "largemap_maptype"));
+        // break;
+        // case "osm":
+            // $gps_large_map_group->dropdown("xxx")
+            //                 ->label(t("Map Style"))
+            //                 ->options(array(
+            //                   "OSM Bright"
+            //                 ))
+            //                 ->selected(module::get_var("exif_gps", "osm_map_style"));
+        // break;
+    // }
 
     // Add a save button to the form.
     $form->submit("SaveSettings")->value(t("Save"));
