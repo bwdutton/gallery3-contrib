@@ -15,6 +15,12 @@
 <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"
    integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA=="
    crossorigin=""></script><script>
+function onEachFeature(feature, layer) {
+   // does this feature have a property named popupContent?
+   if (feature.properties && feature.properties.popupContent) {
+       layer.bindPopup(feature.properties.popupContent);
+   }
+}
 var geojsonFeature = {
    "type": "Feature",
    "properties": {
@@ -28,7 +34,9 @@ var geojsonFeature = {
    }
 };
 var map = L.map('map').setView([-104.99404, 39.75621], 13);
-var ggFeatureGroup = L.geoJSON(geojsonFeature);
+var ggFeatureGroup = L.geoJSON(geojsonFeature, {
+  onEachFeature: onEachFeature
+});
 ggFeatureGroup.addTo(map);
 map.fitBounds(ggFeatureGroup.getBounds());
 
