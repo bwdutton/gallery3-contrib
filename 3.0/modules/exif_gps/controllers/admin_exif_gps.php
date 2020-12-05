@@ -37,6 +37,7 @@ class Admin_EXIF_GPS_Controller extends Admin_Controller {
     $form = $this->_get_admin_form();
     if ($form->validate()) {
       // Save settings to Gallery's database.
+      module::set_var("exif_gps", "provider", $form->Global->provider->value);
       module::set_var("exif_gps", "googlemap_api_key", $form->Global->google_api_key->value);
       module::set_var("exif_gps", "googlemap_max_autozoom", $form->Global->max_auto_zoom_level->value);
       module::set_var("exif_gps", "markercluster_gridsize", $form->markercluster->markercluster_gridsize->value);
@@ -51,6 +52,7 @@ class Admin_EXIF_GPS_Controller extends Admin_Controller {
 
       // Display a success message and redirect back to the TagsMap admin page.
       message::success(t("Your settings have been saved."));
+      message::success($form->Global->provider->value);
       url::redirect("admin/exif_gps");
     }
 
@@ -69,6 +71,13 @@ class Admin_EXIF_GPS_Controller extends Admin_Controller {
     // Create group for global settings, like the Maps API Key
     $gps_global_group = $form->group("Global")
                              ->label(t("Global Settings"));
+    $gps_global_group->dropdown("provider")
+               ->label(t("Map Provider"))
+               ->options(array(
+                 "gmaps" => "Google Maps",
+                 "osm" => "Open Street Maps"
+               ))
+               ->selected(module::get_var("exif_gps", "provider"));
     $gps_global_group->input("google_api_key")
       ->label(t("Google APIs Console key (optional):"))
       ->value(module::get_var("exif_gps", "googlemap_api_key"));
@@ -81,6 +90,9 @@ class Admin_EXIF_GPS_Controller extends Admin_Controller {
       ->checked(module::get_var("exif_gps", "toolbar_map_user", false));
     $gps_global_group->checkbox("restrict_maps")->label(t("Restrict maps to registered users?"))
       ->checked(module::get_var("exif_gps", "restrict_maps", false));
+
+    $gmaps = $form->group("gmaps")
+                            ->label(t("Marker Cluster Settings"));
 
     // Create a group for marker cluster settings
     $gps_markercluster = $form->group("markercluster")
@@ -107,7 +119,7 @@ class Admin_EXIF_GPS_Controller extends Admin_Controller {
                 ->selected(module::get_var("exif_gps", "sidebar_mapformat"));
     $gps_sidebar->dropdown("sidebar_maptype")
                 ->label(t("Default Map Type"))
-                ->options(array(t("Map"), t("Satellite"), 
+                ->options(array(t("Map"), t("Satellite"),
                                 t("Hybrid"), t("Terrain")))
                 ->selected(module::get_var("exif_gps", "sidebar_maptype"));
 
@@ -116,7 +128,7 @@ class Admin_EXIF_GPS_Controller extends Admin_Controller {
                                 ->label(t("Map Album/User Settings"));
     $gps_large_map_group->dropdown("largemap_maptype")
                         ->label(t("Default Map Type"))
-                        ->options(array(t("Map"), t("Satellite"), 
+                        ->options(array(t("Map"), t("Satellite"),
                                         t("Hybrid"), t("Terrain")))
                         ->selected(module::get_var("exif_gps", "largemap_maptype"));
 
