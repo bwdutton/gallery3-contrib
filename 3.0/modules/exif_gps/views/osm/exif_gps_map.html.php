@@ -33,18 +33,40 @@ var geojsonFeature = {
        "coordinates": [-104.99404, 39.75621]
    }
 };
-var map = L.map('map').setView([-104.99404, 39.75621], 13);
-var ggFeatureGroup = L.geoJSON(geojsonFeature, {
-  onEachFeature: onEachFeature
-});
-ggFeatureGroup.addTo(map);
-map.fitBounds(ggFeatureGroup.getBounds());
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> collaborators'
-}).addTo(map);
 
-// L.marker(.addTo(map);
+
+var request = new XMLHttpRequest();
+var int_offset = 0;
+request.open('GET', '<?= url::abs_site("exif_gps/geojson/{$query_type}/{$query_id}"); ?>/' +  int_offset, true);
+
+request.onload = function() {
+  if (this.status >= 200 && this.status < 400) {
+    // Success!
+    var geojsonFeatures = JSON.parse(this.response);
+
+    var map = L.map('map').setView([-104.99404, 39.75621], 13);
+    var ggFeatureGroup = L.geoJSON(geojsonFeatures, {
+      onEachFeature: onEachFeature
+    }).addTo(map);
+    map.fitBounds(ggFeatureGroup.getBounds());
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> collaborators'
+    }).addTo(map);
+    // L.marker(.addTo(map);
+
+  } else {
+    // We reached our target server, but it returned an error
+
+  }
+};
+
+request.onerror = function() {
+  // There was a connection error of some sort
+};
+
+request.send();
 
 </script>
 <?= $theme->dynamic_bottom() ?>
