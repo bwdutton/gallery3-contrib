@@ -20,11 +20,11 @@ function onEachFeature(feature, layer) {
    // does this feature have a property named popupContent?
    if (feature.properties && feature.properties.image_html_base64) {
        layer.bindPopup(
-         "<h3 style=\"max-width: 200px; text-align: center; overflow-wrap: break-word; margin-bottom: 1ex;\">" + feature.properties.name + "</h3>" + 
-         "<div style=\"text-align: center;\">" +
+         "<h3 style=\"max-width: 200px; text-align: center; overflow-wrap: break-word; margin-bottom: 1ex;\">" + feature.properties.name + "</h3>" +
+         "<div style=\"text-align: center;\"><a href=\"" + feature.properties.url + "\">" +
          // decode HTML element with thumb
          window.atob(feature.properties.image_html_base64)
-         + "</div>"
+         + "</a></div>"
        );
    }
 }
