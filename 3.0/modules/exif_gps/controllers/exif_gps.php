@@ -52,16 +52,47 @@ class EXIF_GPS_Controller extends Controller {
                ->order_by("exif_coordinates.latitude", "ASC")
                ->descendants(EXIF_GPS_Controller::$xml_records_limit, $offset);
     }
-
-    $v = new View("exif_gps_coordinates_xml.html");
+    $map_provider_id = module::get_var("exif_gps", "provider");
+    $v = new View("$map_provider_id/exif_gps_coordinates_xml.html");
     $v->items = $items;
     header("Content-type: text/xml; charset=utf-8");
     print $v;
   }
 
+  public function geojson($query_type, $query_id, $offset) {
+    // Generate an xml output of the photos to be mapped.
+    // $query_type can be either "album" or "user", $query_id is the id# of the album or user to map.
+
+    // If the user can't view maps, don't let them view the xml.
+    if ((module::get_var("exif_gps", "restrict_maps") == true) && (identity::active_user()->guest)) {
+      throw new Kohana_404_Exception();
+    }
+
+    $items = "";
+    if ($query_type == "user") {
+      $items = ORM::factory("item")
+               ->join("exif_coordinates", "items.id", "exif_coordinates.item_id")
+               ->where("items.owner_id", "=", $query_id)
+               ->viewable()
+               ->order_by("exif_coordinates.latitude", "ASC")
+               ->find_all(EXIF_GPS_Controller::$xml_records_limit, $offset);
+    } elseif ($query_type == "album") {
+      $items = ORM::factory("item", $query_id)
+               ->join("exif_coordinates", "items.id", "exif_coordinates.item_id")
+               ->viewable()
+               ->order_by("exif_coordinates.latitude", "ASC")
+               ->descendants(EXIF_GPS_Controller::$xml_records_limit, $offset);
+    }
+    $map_provider_id = module::get_var("exif_gps", "provider");
+    $v = new View("$map_provider_id/exif_gps_coordinates_geojson.html");
+    $v->items = $items;
+    header("Content-type: application/json; charset=utf-8");
+    print $v;
+  }
+
   public function map($map_type, $type_id) {
     // Map all items in the specified album or user.
-    // Valid values for $map_type are "album" or "user", $type_id is either an 
+    // Valid values for $map_type are "album" or "user", $type_id is either an
     //   album id# or a user id#.
 
     // If the user can't view maps, throw a 404 error.
@@ -114,7 +145,8 @@ class EXIF_GPS_Controller extends Controller {
     $template = new Theme_View("page.html", "other", "EXIF_GPS_MAP");
     $template->page_title = t("Gallery :: Map");
     $template->set_global(array("breadcrumbs" => $breadcrumbs));
-    $template->content = new View("exif_gps_map.html");
+    $map_provider_id = module::get_var("exif_gps", "provider");
+    $template->content = new View("$map_provider_id/exif_gps_map.html");
     if ($map_title == "") {
       $template->content->title = t("Map");
     } else {
