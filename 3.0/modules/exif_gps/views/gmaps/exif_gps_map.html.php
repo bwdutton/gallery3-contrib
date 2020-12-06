@@ -15,7 +15,7 @@
 
   $.ajaxSetup({
     error: function(xhr, status, error) {
-      $('p.exif-gps-status').html("<font size=\"6\" color=\"white\"><strong>An AJAX error occured: " + 
+      $('p.exif-gps-status').html("<font size=\"6\" color=\"white\"><strong>An AJAX error occured: " +
                                   status + "<br />\nError: " + error + "</strong></font>");
     }
   });
@@ -93,15 +93,15 @@
             str_thumb_html = str_thumb_html.replace("&amp;", "&");
 
             // Set up the HTML for this record and append it to the bottom of the info window.
-            str_thumb_html = "<div class=\"g-exif-gps-thumb\"><a href=\"" + 
+            str_thumb_html = "<div class=\"g-exif-gps-thumb\"><a href=\"" +
                               String(xmlmarker.attr("url")) + "\">" + str_thumb_html + "</a></div>";
             str_marker_html += str_thumb_html;
           });
 
           // Display a status message telling the user what percentage of records have been processed.
-          $('p.exif-gps-status').html("<font size=\"6\" color=\"white\"><strong><?= t("Loading..."); ?> " + 
-                                      parseInt((item_counter / int_max_items) * 100) + "%</strong></font>" + 
-                                      "<br /><br /><img src=\"<?= url::file("modules/exif_gps/images/exif_gps-loading-map-large.gif"); ?>\"" + 
+          $('p.exif-gps-status').html("<font size=\"6\" color=\"white\"><strong><?= t("Loading..."); ?> " +
+                                      parseInt((item_counter / int_max_items) * 100) + "%</strong></font>" +
+                                      "<br /><br /><img src=\"<?= url::file("modules/exif_gps/images/exif_gps-loading-map-large.gif"); ?>\"" +
                                       " style=\"vertical-align: middle;\"></img>");
 
           // If item counter is less then max items, get the next batch of records.
@@ -119,7 +119,7 @@
             var markerCluster = new MarkerClusterer(map, map_markers, mcOptions);
 
             // Auto zoom and center the map around the coordinates.
-            //  Set google_zoom_hack to true, to when the zoom changed function triggers 
+            //  Set google_zoom_hack to true, to when the zoom changed function triggers
             //  we can re-zoom to the admin specified auto-zoom value, if necessary.
             google_zoom_hack = true;
             map.fitBounds(glatlngbounds);
@@ -134,7 +134,7 @@
     <?php if (($max_autozoom = module::get_var("exif_gps", "googlemap_max_autozoom")) != "") : ?>
     // If there is a maximum auto-zoom value, then set up an event to check the zoom
     // level the first time it is changed, and adjust it if necessary.
-    // (if we call map.getZoom right after .fitBounds, getZoom will return the initial 
+    // (if we call map.getZoom right after .fitBounds, getZoom will return the initial
     // zoom level, not the auto zoom level, this way we get the auto zoomed value).
     google.maps.event.addListener(map, 'zoom_changed', function() {
       if (google_zoom_hack) {
