@@ -15,10 +15,17 @@
 <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"
    integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA=="
    crossorigin=""></script><script>
+
 function onEachFeature(feature, layer) {
    // does this feature have a property named popupContent?
-   if (feature.properties && feature.properties.popupContent) {
-       layer.bindPopup(feature.properties.popupContent);
+   if (feature.properties && feature.properties.image_html_base64) {
+       layer.bindPopup(
+         "<h3 style=\"max-width: 200px; text-align: center; overflow-wrap: break-word; margin-bottom: 1ex;\">" + feature.properties.name + "</h3>" + 
+         "<div style=\"text-align: center;\">" +
+         // decode HTML element with thumb
+         window.atob(feature.properties.image_html_base64)
+         + "</div>"
+       );
    }
 }
 var geojsonFeature = {
@@ -42,19 +49,19 @@ request.open('GET', '<?= url::abs_site("exif_gps/geojson/{$query_type}/{$query_i
 
 request.onload = function() {
   if (this.status >= 200 && this.status < 400) {
-    // Success!
-    var geojsonFeatures = JSON.parse(this.response);
+      // Success!
+      var geojsonFeatures = JSON.parse(this.response);
 
-    var map = L.map('map').setView([-104.99404, 39.75621], 13);
-    var ggFeatureGroup = L.geoJSON(geojsonFeatures, {
-      onEachFeature: onEachFeature
-    }).addTo(map);
-    map.fitBounds(ggFeatureGroup.getBounds());
+      var map = L.map('map').setView([0, 0], 13);
+      var ggFeatureGroup = L.geoJSON(geojsonFeatures, {
+        onEachFeature: onEachFeature
+      }).addTo(map);
+      map.fitBounds(ggFeatureGroup.getBounds());
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> collaborators'
-    }).addTo(map);
-    // L.marker(.addTo(map);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> collaborators'
+      }).addTo(map);
+      // L.marker(.addTo(map);
 
   } else {
     // We reached our target server, but it returned an error
