@@ -18,9 +18,6 @@ var map = L.map('map').setView([<?=$longitude; ?>, <?=$latitude; ?>], 13);
 var geojsonFeatures = [
     {
       "type": "Feature",
-      "properties": {
-        "url": "http://localhost:8441/exif_gps/item/3"
-      },
       "geometry": {
         "type": "Point",
         "coordinates": [
