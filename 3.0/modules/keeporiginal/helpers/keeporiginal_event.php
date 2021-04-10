@@ -102,7 +102,7 @@ class keeporiginal_event_Core {
         if (file_exists($old_original)) {
 
           // Make sure the new folder exists, create it if it doesn't.
-          $individual_dirs = split("[/\]", "original/" . str_replace(VARPATH . "albums/", "", $item->file_path()));
+          $individual_dirs = explode("[/\]", "original/" . str_replace(VARPATH . "albums/", "", $item->file_path()));
           $new_img_path = VARPATH;
           for($i = 0; $i < count($individual_dirs)-1; $i++) {
             $new_img_path = $new_img_path . "/" . $individual_dirs[$i];

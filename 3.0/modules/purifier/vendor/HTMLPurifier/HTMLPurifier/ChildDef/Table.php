@@ -99,6 +99,7 @@ class HTMLPurifier_ChildDef_Table extends HTMLPurifier_ChildDef
                     $tag_index = 0;
                     continue;
                 }
+                $continue = 0;
                 switch($token->name) {
                     case 'caption':
                     case 'colgroup':
@@ -108,14 +109,17 @@ class HTMLPurifier_ChildDef_Table extends HTMLPurifier_ChildDef
                     case 'tr':
                         $is_collecting = true;
                         $collection[] = $token;
-                        continue;
+                        $continue = 1;
+                        break;
                     default:
                         if (!empty($token->is_whitespace)) {
                             $collection[] = $token;
                             $tag_index++;
                         }
-                        continue;
+                        $continue = 1;
                 }
+
+                if ($continue) continue;
             }
         }
 

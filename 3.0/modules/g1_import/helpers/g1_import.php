@@ -297,7 +297,7 @@ class g1_import_Core {
     // the time we get to the child.
 
     // Dequeue the current album and enqueue its children
-    list($album, $tree) = each($queue);
+    list($album, $tree) = current($queue);
     unset($queue[$album]);
     g1_import::debug( t('Dequeued album %album.', array('album' => $album)) );
 
@@ -903,7 +903,7 @@ class g1_import_Core {
 
     $element = array_shift($queue);
 
-    list($item, $comments) = each($element);
+    list($item, $comments) = current($element);
     g1_import::debug( t('Now importing %$comments comment(s) for item %$item', array('album' => $item, 'comments' => count($comments))) );
 
     // Item names come in as FolderX/ItemX
@@ -1022,7 +1022,7 @@ class g1_import_Core {
       return;
     }
 
-    list( $item_id, $album_item ) = each(self::$current_g1_item);
+    list( $item_id, $album_item ) = current(self::$current_g1_item);
     
     // Item names come in as FolderX/ItemX
     $pos = strrpos($item_id, '/');

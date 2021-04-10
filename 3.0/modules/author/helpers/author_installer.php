@@ -50,7 +50,7 @@ class author_installer {
 	  		module::set_var("author", "exiv_path", $exiv);
 	  		$out = array();
 	  		exec("$exiv -V", $out);
-	  		$parts = split(' ', $out[0]);
+			$parts = explode(' ', $out[0]);
 	  		module::set_var("author", "exiv_version", $parts[1]);
 	  	}
   }
