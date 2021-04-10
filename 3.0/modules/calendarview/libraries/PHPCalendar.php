@@ -52,7 +52,12 @@ class PHPCalendar_Core {
     $title   = t(date("F", mktime(0, 0, 0, $month, 1, $year))) . '&nbsp;' . $year;
 
     #Begin calendar. Uses a real <caption>. See http://diveintomark.org/archives/2002/07/03
-    @list($p, $pl) = each($pn); @list($n, $nl) = each($pn); #previous and next links, if applicable
+	#previous and next links, if applicable
+	$p = $pl = $n = $nl = null;
+	if ($pn && is_array($pn)) {
+		list($p, $pl) = current($pn);
+		list($n, $nl) = current($pn);
+	}
     if($p) $p = '<span class="calendar-prev">'.($pl ? '<a href="'.htmlspecialchars($pl).'">'.$p.'</a>' : $p).'</span>&nbsp;';
     if($n) $n = '&nbsp;<span class="calendar-next">'.($nl ? '<a href="'.htmlspecialchars($nl).'">'.$n.'</a>' : $n).'</span>';
     $calendar = '<table class="calendar" id="g-calendar-month">'."\n".

@@ -111,7 +111,7 @@ class Mail_mime
      *
      * @access public
      */
-    function Mail_mime($crlf = "\r\n")
+    function __construct($crlf = "\r\n")
     {
         $this->_setEOL($crlf);
         $this->_build_params = array(
@@ -310,13 +310,7 @@ class Mail_mime
         if ($filesize == 0){
             $cont =  "";
         }else{
-            if ($magic_quote_setting = get_magic_quotes_runtime()){
-                @set_magic_quotes_runtime(0);
-            }
             $cont = fread($fd, $filesize);
-            if ($magic_quote_setting){
-                @set_magic_quotes_runtime($magic_quote_setting);
-            }
         }
         fclose($fd);
         return $cont;
@@ -537,7 +531,7 @@ class Mail_mime
     function &get($build_params = null)
     {
         if (isset($build_params)) {
-            while (list($key, $value) = each($build_params)) {
+            foreach ($build_params as $key => $value) {
                 $this->_build_params[$key] = $value;
             }
         }
@@ -844,7 +838,7 @@ class Mail_mime
                     //Replace all extended characters (\x80-xFF) with their
                     //ASCII values.
                     $hdr_value = preg_replace(
-                        '#([\x80-\xFF])#e',
+                        '#([\x80-\xFF])#',
                         '"=" . strtoupper(dechex(ord("\1")))',
                         $hdr_value
                     );
@@ -902,7 +896,7 @@ class Mail_mime
     {
         $this->_eol = $eol;
         if (!defined('MAIL_MIME_CRLF')) {
-            define('MAIL_MIME_CRLF', $this->_eol, true);
+            define('MAIL_MIME_CRLF', $this->_eol);
         }
     }
 

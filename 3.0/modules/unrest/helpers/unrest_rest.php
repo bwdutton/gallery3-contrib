@@ -3,7 +3,7 @@
 class unrest_rest_Core {
 	private static function resolveLimitOption($string)
 	{
-		$items = split(',', $string);
+		$items = explode(',', $string);
 		if (count($items) == 1) { return $string; }
 		return $items;
 	}
@@ -99,7 +99,7 @@ class unrest_rest_Core {
 	static function getDisplayOptions($request)
 	{
 		if (isset($request->params->display)) {
-			return(split(',', $request->params->display));
+			return(explode(',', $request->params->display));
 		} else {
 			return(array('uiimage','uitext','ownership','members'));
 		};
@@ -141,7 +141,7 @@ class unrest_rest_Core {
 		$children = $db->select('parent_id', 'id')->from('items')->where('parent_id', 'IN', $filler['children_of']);
 		if (isset($request->params->childtypes)) 
 		{
-			$types = split(',', $request->params->childtypes);
+			$types = explode(',', $request->params->childtypes);
 			$children->where('type', 'IN', $types);
 		}
 					
