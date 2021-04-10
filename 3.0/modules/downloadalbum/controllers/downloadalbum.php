@@ -294,7 +294,7 @@ class downloadalbum_Controller extends Controller {
 
     if( version_compare(PHP_VERSION, '5.2.7', '<') ) {
       $str = str_pad(dechex($hash), 8, '0', STR_PAD_LEFT);
-      $output = hexdec($str{6}.$str{7}.$str{4}.$str{5}.$str{2}.$str{3}.$str{0}.$str{1});
+      $output = hexdec($str[6].$str[7].$str[4].$str[5].$str[2].$str[3].$str[0].$str[1]);
     }
 
     return $output;
