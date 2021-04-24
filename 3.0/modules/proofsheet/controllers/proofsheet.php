@@ -331,7 +331,7 @@ class proofsheet_Controller extends Controller {
     // Close output buffers
     Kohana::close_buffers(FALSE);
     // Clear any output
-    Event::add('system.display', create_function('', 'Kohana::$output = "";'));
+    Event::add('system.display', function() { Kohana::$output = ""; });
   }
 
   /**
