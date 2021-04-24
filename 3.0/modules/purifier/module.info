@@ -1,5 +1,5 @@
 name = "HTML Purifier"
-description = "Enable XSS protection using HTMLPurifier"
+description = "Enable XSS protection using HTMLPurifier; add ezyang/htmlpurifier: ^4.13 to composer.json and run composer update"
 version = 2
 author_name = ""
 author_url = ""

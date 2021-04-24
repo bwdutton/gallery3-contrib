@@ -86,7 +86,7 @@ if(!isset($this->dbUser)){
 
 	}
 
-	function RabidRatings() {
+	function __construct() {
 		$this->configuration();
 		$this->initializeDatabase();
 	}

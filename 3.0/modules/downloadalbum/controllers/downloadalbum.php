@@ -220,7 +220,7 @@ class downloadalbum_Controller extends Controller {
       ob_end_clean();
     }
     // Clear any output
-    Event::add('system.display', create_function('', 'Kohana::$output = "";'));
+    Event::add('system.display', function() { Kohana::$output = ""; });
   }
 
   /**

@@ -16,7 +16,6 @@
 
 	<rule ref="PHPCompatibility" />
 
-<!--
 	<rule ref="PHPCompatibility.Extensions.RemovedExtensions">
 		<exclude name="PHPCompatibility.Extensions.RemovedExtensions.mysql_DeprecatedRemoved"/>
 	</rule>
@@ -51,6 +50,7 @@
 		<exclude name="PHPCompatibility.Extensions.RemovedExtensions.mcryptDeprecatedRemoved"/>
 	</rule>
 
+<!--
 	<rule ref="Squiz">
 		<exclude name="Squiz.Commenting"/>
 		<exclude name="Squiz.NamingConventions.ValidVariableName.NotCamelCaps"/>

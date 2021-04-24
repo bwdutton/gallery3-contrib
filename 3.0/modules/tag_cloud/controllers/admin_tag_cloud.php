@@ -65,16 +65,16 @@ class Admin_Tag_Cloud_Controller extends Admin_Controller {
                       array("id" => "g-tag-cloud-admin-form"));
     $group = $form->group("tag_cloud_options")->label(t("Tag Cloud Options"));
     $group->input("tagcolor")    ->label(t("Tag color"))
-      ->value(module::get_var("tag_cloud", "tagcolor", "0x333333"))
-      ->error_message("not_valid", t("The color value must be specified as '0xhhhhhh'"))
+      ->value(module::get_var("tag_cloud", "tagcolor", '333333'))
+      ->error_message("not_valid", t("The color value must be specified as 'hhhhhh'"))
       ->rules("required|length[8]");
     $group->input("mouseover")    ->label(t("Tag mouseover color"))
-      ->value(module::get_var("tag_cloud", "mouseover", "0x000000"))
-      ->error_message("not_valid", t("The color value must be specified as '0xhhhhhh'"))
+      ->value(module::get_var("tag_cloud", "mouseover", '000000'))
+      ->error_message("not_valid", t("The color value must be specified as 'hhhhhh'"))
       ->rules("required|length[8]");
     $group->input("background_color")->label(t("Background color"))
-      ->value(module::get_var("tag_cloud", "background_color", "0xffffff"))
-      ->error_message("not_valid", t("The color value must be specified as '0xhhhhhh'"))
+      ->value(module::get_var("tag_cloud", "background_color", 'ffffff'))
+      ->error_message("not_valid", t("The color value must be specified as 'hhhhhh'"))
       ->rules("required|length[8]");
     $group->checkbox("transparent")->label(t("Transparent mode"))
       ->checked(module::get_var("tag_cloud", "transparent", 0) == 1);
