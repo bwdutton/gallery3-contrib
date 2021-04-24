@@ -43,7 +43,7 @@
                 priv.initToolBar.call(this, opts);
 
                 var iframe = this.iframe = $("<iframe/>").height(textarea.height());
-                iframe.width(textarea.width() - ($.browser.msie ? 0 : 4));
+                iframe.width(textarea.width() - 4);
                 var htmlarea = this.htmlarea = $("<div/>").append(iframe);
 
                 container.append(htmlarea).append(textarea.hide());
@@ -79,20 +79,11 @@
             return this.queryCommandValue(a);
         },
         getSelectedHTML: function() {
-            if ($.browser.msie) {
-                return this.getRange().htmlText;
-            } else {
-                var elem = this.getRange().cloneContents();
-                return $("<p/>").append($(elem)).html();
-            }
+			var elem = this.getRange().cloneContents();
+			return $("<p/>").append($(elem)).html();
         },
         getSelection: function() {
-            if ($.browser.msie) {
-                //return (this.editor.parentWindow.getSelection) ? this.editor.parentWindow.getSelection() : this.editor.selection;
-                return this.editor.selection;
-            } else {
-                return this.iframe[0].contentDocument.defaultView.getSelection();
-            }
+			return this.iframe[0].contentDocument.defaultView.getSelection();
         },
         getRange: function() {
             var s = this.getSelection();
@@ -110,15 +101,17 @@
         pasteHTML: function(html) {
             this.iframe[0].contentWindow.focus();
             var r = this.getRange();
+			/*
             if ($.browser.msie) {
                 r.pasteHTML(html);
             } else if ($.browser.mozilla) {
                 r.deleteContents();
                 r.insertNode($((html.indexOf("<") != 0) ? $("<span/>").append(html) : html)[0]);
             } else { // Safari
+			*/
                 r.deleteContents();
                 r.insertNode($(this.iframe[0].contentWindow.document.createElement("span")).append($((html.indexOf("<") != 0) ? "<span>" + html + "</span>" : html))[0]);
-            }
+            //}
             r.collapse(false);
             r.select();
         },
@@ -136,22 +129,14 @@
         underline: function() { this.ec("underline"); },
         strikeThrough: function() { this.ec("strikethrough"); },
         image: function(url) {
-            if ($.browser.msie && !url) {
-                this.ec("insertImage", true);
-            } else {
-                this.ec("insertImage", false, (url || prompt("Image URL:", "http://")));
-            }
+			this.ec("insertImage", false, (url || prompt("Image URL:", "http://")));
         },
         removeFormat: function() {
             this.ec("removeFormat", false, []);
             this.unlink();
         },
         link: function() {
-            if ($.browser.msie) {
-                this.ec("createLink", true);
-            } else {
-                this.ec("createLink", false, prompt("Link URL:", "http://"));
-            }
+			this.ec("createLink", false, prompt("Link URL:", "http://"));
         },
         unlink: function() { this.ec("unlink", false, []); },
         orderedList: function() { this.ec("insertorderedlist"); },
@@ -181,7 +166,7 @@
             this.heading(6);
         },
         heading: function(h) {
-            this.formatBlock($.browser.msie ? "Heading " + h : "h" + h);
+            this.formatBlock("h" + h);
         },
 
         indent: function() {
@@ -206,22 +191,26 @@
         },
 
         increaseFontSize: function() {
+			/*
             if ($.browser.msie) {
                 this.ec("fontSize", false, this.qc("fontSize") + 1);
             } else if ($.browser.safari) {
                 this.getRange().surroundContents($(this.iframe[0].contentWindow.document.createElement("span")).css("font-size", "larger")[0]);
             } else {
+			*/
                 this.ec("increaseFontSize", false, "big");
-            }
+            //}
         },
         decreaseFontSize: function() {
+			/*
             if ($.browser.msie) {
                 this.ec("fontSize", false, this.qc("fontSize") - 1);
             } else if ($.browser.safari) {
                 this.getRange().surroundContents($(this.iframe[0].contentWindow.document.createElement("span")).css("font-size", "smaller")[0]);
             } else {
+			*/
                 this.ec("decreaseFontSize", false, "small");
-            }
+            //}
         },
 
         forecolor: function(c) {
