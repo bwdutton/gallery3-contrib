@@ -381,33 +381,32 @@ class Basket_Controller extends Controller {
 
     access::verify_csrf();
 
-
     if (!isset($_POST['id']))
     {
       die("no id");
     }
+
     $form = self::getAddToBasketForm($_POST['id']);
     $valid = $form->validate();
 
     if ($valid){
-    $basket = Session_Basket::getOrCreate();
-    $basket->add(
-      $form->add_to_basket->id->value,
-      $form->add_to_basket->product->value,
-      $form->add_to_basket->quantity->value);
+      $basket = Session_Basket::getOrCreate();
+      $basket->add(
+        $form->add_to_basket->id->value,
+        $form->add_to_basket->product->value,
+        $form->add_to_basket->quantity->value
+      );
 
       $item = ORM::factory("item", $form->add_to_basket->id->value);
 
       Session::instance()->set("redirect_home", $item->parent_id);
 
-    print json::reply(array("result" => "success"));
+      print json::reply(array("result" => "success"));
     }
     else
     {
       log_error("invalid form!");
-
     }
-
   }
 
   public function add_to_basket_ajax($id) {

@@ -41,8 +41,41 @@ class basket_item
 
   private function calculate_cost(){
     $prod = ORM::factory("product", $this->product);
-    $this->cost = $prod->cost * $this->quantity;
-    $this->cost_per = $prod->cost;
+    $item = $this->getItem();
+    $id = $item->id;
+
+    $product_override = ORM::factory("product_override")->where('item_id', "=",  $id)->find();
+
+    if (!$product_override->loaded()){
+      // no override found so check parents
+      // check parents for product override
+      $item = ORM::factory("item",$id);
+
+      $parents = $item->parents();
+      foreach ($parents as $parent){
+        // check for product override
+        $temp_override = ORM::factory("product_override")->where('item_id', "=", $parent->id)->find();
+        if ($temp_override ->loaded()){
+          $product_override = $temp_override;
+          //break;
+        }
+      }
+    }
+
+    $product = $this->getProduct();
+    $cost = $product->cost;
+    if ($product_override->loaded()){
+      $item_product = ORM::factory("item_product")
+          ->where('product_override_id', "=", $product_override->id)
+          ->where('product_id', "=", $product->id)->find();
+
+      if ($item_product->loaded()){
+        $cost = $item_product->cost;
+      }
+    }
+
+    $this->cost = $cost * $this->quantity;
+    $this->cost_per = $cost;
   }
 
   public function add($quantity){
