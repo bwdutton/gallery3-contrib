@@ -104,7 +104,7 @@ class product_Core {
           $product_override = $temp_override;
           //break;
         }
-              }
+      }
     }
 
     $products = ORM::factory("product")->find_all();

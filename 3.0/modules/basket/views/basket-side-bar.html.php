@@ -30,7 +30,6 @@ title="<?= t("Add To Basket")?>"><span class="ui-icon ui-icon-plusthick"></span>
 <td><?php $total += $prod_details->cost?><?= basket::formatMoneyForWeb($prod_details->cost); ?></td>
 <td class="g-actions"><a href="<?= url::site("basket/remove_item/$key") ?>" class="g-button ui-state-default ui-corner-all ui-icon-left"><span class="ui-icon ui-icon-trash"></span></a></td>
 </tr><?php
-
     }
 
     ?>
