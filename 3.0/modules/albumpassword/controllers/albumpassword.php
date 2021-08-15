@@ -1,7 +1,7 @@
 <?php defined("SYSPATH") or die("No direct script access.");
 /**
  * Gallery - a web based photo album viewer and editor
- * Copyright (C) 2000-2013 Bharat Mediratta
+ * Copyright (C) 2000-2021 Bharat Mediratta
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -162,7 +162,7 @@ class albumpassword_Controller extends Controller {
     return $form;
   }
   
-  private function _get_login_form($id) {
+  private function _get_login_form() {
     // Generate a form for allowing visitors to enter in their passwords.
     $form = new Forge("albumpassword/checkpassword", "", "post",
                       array("id" => "g-login-password-form"));
