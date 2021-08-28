@@ -3,5 +3,5 @@ description = "Displays a link to download the fullsize version of the current p
 version = 1
 author_name = "rWatcher"
 author_url = "http://codex.gallery2.org/User:RWatcher"
-info_url = "http://codex.gallery2.org/Gallery3:Modules:downloadfullsize"
-discuss_url = "http://gallery.menalto.com/node/103278"
+info_url = "https://gallery3-contrib.gitlab.io/#Documentation:27018368"
+discuss_url = "https://gitlab.com/eric2001/downloadfullsize/-/issues"
