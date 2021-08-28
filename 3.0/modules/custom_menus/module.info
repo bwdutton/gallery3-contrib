@@ -3,5 +3,5 @@ description = "Allows Gallery admins to create additional menu and sub-menu item
 version = 1
 author_name = "rWatcher"
 author_url = "http://codex.gallery2.org/User:RWatcher"
-info_url = "http://codex.gallery2.org/Gallery3:Modules:custom_menus"
-discuss_url = "http://gallery.menalto.com/node/102814"
+info_url = "https://gallery3-contrib.gitlab.io/#Documentation:27018362"
+discuss_url = "https://gitlab.com/eric2001/custom_menus/-/issues"
