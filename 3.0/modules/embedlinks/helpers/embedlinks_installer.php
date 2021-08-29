@@ -32,11 +32,15 @@ class embedlinks_installer {
 
   static function upgrade($version) {
     if ($version == 1) {
-    // Set some default values.
-    module::set_var("embedlinks", "ToolbarLinks", true);
+      // Set some default values.
+      module::set_var("embedlinks", "ToolbarLinks", true);
 
-    // Set the module version number.
-    module::set_version("embedlinks", 2);
+      // Set the module version number.
+      module::set_version("embedlinks", 2);
+    }
+    if ($version == 2) {
+      // Set the module version number.
+      module::set_version("embedlinks", 3);
     }
   }
 }
