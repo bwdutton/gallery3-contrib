@@ -1,6 +1,6 @@
 name = "EmbedLinks"
 description = "Display BBCode and HTML code to embed links to albums/images/movies into other web pages."
-version = 2
+version = 3
 author_name = "rWatcher"
 author_url = "http://codex.gallery2.org/User:RWatcher"
 info_url = "https://gallery3-contrib.gitlab.io/#Documentation:27018371"
