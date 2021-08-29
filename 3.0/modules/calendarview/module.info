@@ -3,5 +3,5 @@ description = "View your photos by the date they were taken."
 version = 1
 author_name = "rWatcher"
 author_url = "http://codex.gallery2.org/User:RWatcher"
-info_url = "http://codex.gallery2.org/Gallery3:Modules:calendarview"
-discuss_url = "http://gallery.menalto.com/node/92405"
+info_url = "https://gallery3-contrib.gitlab.io/#Documentation:27018355"
+discuss_url = "https://gitlab.com/eric2001/calendarview/-/issues"

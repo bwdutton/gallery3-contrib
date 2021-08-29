@@ -1,7 +1,7 @@
 <?php defined("SYSPATH") or die("No direct script access.");
 /**
  * Gallery - a web based photo album viewer and editor
- * Copyright (C) 2000-2013 Bharat Mediratta
+ * Copyright (C) 2000-2021 Bharat Mediratta
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -146,17 +146,33 @@ class ContactOwner_Controller extends Controller {
           $str_emailto = $userDetails[0]->email;
         }
 
-        // Send the email message.
-        Sendmail::factory()
-          ->to($str_emailto)
-          ->subject($str_emailsubject)
-          ->header("Mime-Version", "1.0")
-          ->header("Content-type", "text/html; charset=utf-8")
-          ->message($str_emailbody)
-          ->send();
+        try {
+          // Send the email message.
+          Sendmail::factory()
+            ->to($str_emailto)
+            ->subject($str_emailsubject)
+            ->header("Mime-Version", "1.0")
+            ->header("Content-type", "text/html; charset=utf-8")
+            ->message($str_emailbody)
+            ->send();
+        }
+        catch (Throwable $t) // Executed only in PHP 7
+        {
+          Kohana_Log::add("error", wordwrap($t->getMessage()));
+          message::error(t("Unable to send message."));
+          json::reply(array("result" => "success"));
+          return false;
+        }
+        catch (Exception $e) // Executed only in PHP 5
+        {
+          Kohana_Log::add("error", wordwrap($e->getMessage()));
+          message::error(t("Unable to send message."));
+          json::reply(array("result" => "success"));
+          return false;
+        }
 
-      message::info(t("Your Message Has Been Sent."));
-      json::reply(array("result" => "success"));
+        message::info(t("Your Message Has Been Sent."));
+        json::reply(array("result" => "success"));
 
     } else {
       // Set up and display the actual page.

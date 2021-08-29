@@ -1,7 +1,7 @@
 <?php defined("SYSPATH") or die("No direct script access.");
 /**
  * Gallery - a web based photo album viewer and editor
- * Copyright (C) 2000-2013 Bharat Mediratta
+ * Copyright (C) 2000-2021 Bharat Mediratta
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -67,12 +67,7 @@ class EmbedLinks_Controller extends Controller {
         }
 
         if ($str_movie_path != "") {
-          $linkArray[4] = array("Embed:", "<object id=&quot;flowplayer&quot; classid=&quot;clsid:D27CDB6E-AE6D-11cf-96B8-444553540000&quot;" . 
-                          "width=&quot;" . $item->width . "&quot; height=&quot;" . $item->height . "&quot;><param name=&quot;movie&quot; value=&quot;" . 
-                          url::abs_file("lib/flowplayer.swf") . "&quot; /><param name=&quot;flashvars&quot; value='config={&quot;clip&quot;:&quot;" . 
-                          $str_movie_path . "&quot;}' /><embed type=&quot;application/x-shockwave-flash&quot; width=&quot;" . $item->width . 
-                          "&quot; height=&quot;" . $item->height . "&quot; src=&quot;" . url::abs_file("lib/flowplayer.swf") . "&quot; flashvars=" . 
-                          "'config={&quot;clip&quot;:&quot;" . $str_movie_path . "&quot;}'/></object>");
+          $linkArray[4] = array("Embed:", "<video controls><source src=&quot;" .  $str_movie_path . "&quot; type=&quot;" . $item->mime_type . "&quot;>Your browser does not support the video tag.</video>");
           $linkTitles[1] = array("Link To The Video File:", 3);
         } else {
           $linkTitles[1] = array("Link To The Video File:", 2);

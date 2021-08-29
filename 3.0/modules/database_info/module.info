@@ -3,5 +3,5 @@ description = "View information about your Gallery 3 database on the admin dashb
 version = 1
 author_name = "rWatcher"
 author_url = "http://codex.gallery2.org/User:RWatcher"
-info_url = "http://codex.gallery2.org/Gallery3:Modules:database_info"
-discuss_url = "http://gallery.menalto.com/node/95320"
+info_url = "https://gallery3-contrib.gitlab.io/#Documentation:27018364"
+discuss_url = "https://gitlab.com/eric2001/database_info/-/issues"
