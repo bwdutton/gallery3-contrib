@@ -75,7 +75,7 @@ input[type="text"] {
     <?php if ($str_movie_path != "") { ?>
       <tr>
         <th><?= t("Embed:") ?></th>
-        <td><input type="text" value="<object id=&quot;flowplayer&quot; classid=&quot;clsid:D27CDB6E-AE6D-11cf-96B8-444553540000&quot; width=&quot;<?= $item->width ?>&quot; height=&quot;<?= $item->height ?>&quot;> <param name=&quot;movie&quot; value=&quot;<?= url::abs_file("lib/flowplayer.swf") ?>&quot; /><param name=&quot;flashvars&quot; value='config={&quot;clip&quot;:&quot;<?= $str_movie_path ?>&quot;}' /><embed type=&quot;application/x-shockwave-flash&quot; width=&quot;<?= $item->width ?>&quot; height=&quot;<?= $item->height ?>&quot; src=&quot;<?= url::abs_file("lib/flowplayer.swf") ?>&quot; flashvars='config={&quot;clip&quot;:&quot;<?= $str_movie_path ?>&quot;}'/></object>" onclick="this.focus(); this.select();" readonly></td>
+        <td><input type="text" value="<video controls><source src=&quot;<?= $str_movie_path ?>&quot; type=&quot;<?= $item->mime_type ?>&quot;>Your browser does not support the video tag.</video>" onclick="this.focus(); this.select();" readonly></td>
       </tr>
     <?php } ?>
   <?php } ?>
