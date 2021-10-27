@@ -26,7 +26,6 @@
     <?= $theme->script("jquery.easing.js") ?>
     <?= $theme->script("jquery.fancybox.js") ?>
     <?= $theme->script("ui.init.js") ?>
-    <?= $theme->script("flowplayer.js") ?>
     <?= $theme->head() ?>
   </head>
   <body class="g-fancy-iframe-body">

@@ -44,7 +44,6 @@
     <?= $theme->script("_DISABLED_jquery.scrollTo.js") ?>
     <?= $theme->script("gallery.show_full_size.js") ?>
     <?php elseif ($theme->page_subtype == "movie"): ?>
-    <?= $theme->script("flowplayer.js") ?>
     <?php endif ?>
 
     <?= $theme->head() ?>
