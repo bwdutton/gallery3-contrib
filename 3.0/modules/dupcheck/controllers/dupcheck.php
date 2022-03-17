@@ -24,8 +24,9 @@ class dupcheck_Controller extends Controller {
    $page_size = module::get_var("gallery", "page_size", 9);
 
    // Figure out which page # the visitor is on and
-   //	don't allow the visitor to go below page 1.
+   // don't allow the visitor to go below page 1.
    $page = Input::instance()->get("page", 1);
+
     if ($page < 1) {
       url::redirect("dupcheck/dupes");
     }
@@ -34,14 +35,14 @@ class dupcheck_Controller extends Controller {
     $offset = ($page - 1) * $page_size;
 
     // Determine the total number of items,
-    //	for page numbering purposes.
+    // for page numbering purposes.
     $count = db::build()
-	      ->select("itemmd5")
-	      ->select(array("C" => "count(\"*\")"))
-	      ->from("fullsize_md5sums")
-	      ->group_by("itemmd5")
-	      ->having("C", ">", 1)
-	      ->execute()->count();
+      ->select("itemmd5")
+      ->select(array("C" => "count(\"*\")"))
+      ->from("fullsize_md5sums")
+      ->group_by("itemmd5")
+      ->having("C", ">", 1)
+      ->execute()->count();
 
     // Figure out what the highest page number is.
     $max_pages = ceil($count / $page_size);
@@ -53,13 +54,13 @@ class dupcheck_Controller extends Controller {
 
     // Figure out which items to display on this page.
       foreach( db::build()
-	      ->select("item_id")
-	      ->select(array("C" => "count(\"*\")"))
-	      ->from("fullsize_md5sums")
-	      ->group_by("itemmd5")
-	      ->having("C", ">", 1)
-	      ->execute()
-	      as $row ) {
+      ->select("item_id")
+      ->select(array("C" => "count(\"*\")"))
+      ->from("fullsize_md5sums")
+      ->group_by("itemmd5")
+      ->having("C", ">", 1)
+      ->execute()
+      as $row ) {
       $dupes[] = $row->item_id;
     }
 
@@ -73,16 +74,6 @@ class dupcheck_Controller extends Controller {
       ->order_by("created", "DESC")
       ->find_all($page_size, $offset);
 
-    // Set up the previous and next page buttons.
-    if ($page > 1) {
-      $previous_page = $page - 1;
-      $view->previous_page_link = url::site("dupcheck/dupes?page={$previous_page}");
-    }
-    if ($page < $max_pages) {
-      $next_page = $page + 1;
-      $view->next_page_link = url::site("dupcheck/dupes?page={$next_page}");
-    }
-
     // Set up and display the actual page.
     $template = new Theme_View("page.html", "collection", "DuplicatePhotos");
     $template->page_title = t("Gallery :: Duplicate Photos");
@@ -93,9 +84,9 @@ class dupcheck_Controller extends Controller {
     $template->set_global("children_count", $count);
     $template->content = new View("dupespage.html");
     if($dupes[0] == 9999999){
-    $template->content->title = t("No Duplicate Photos Found");
+      $template->content->title = t("No Duplicate Photos Found");
     } else {
-    $template->content->title = t("Duplicate Photos");
+      $template->content->title = t("Duplicate Photos");
     }
     print $template;
   }
