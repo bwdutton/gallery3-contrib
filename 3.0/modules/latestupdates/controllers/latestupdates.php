@@ -496,7 +496,7 @@ class latestupdates_Controller extends Controller {
     }
   }
 
-  private function _get_position($item, $str_display_type, $user_id) {
+  private static function _get_position($item, $str_display_type, $user_id) {
     // Figure out the item's position within the virtual album.
     //  Valid $str_display_type values are popular, recent, albums and descendants.
     //  $user_id can be set to "0" to search site wide.
