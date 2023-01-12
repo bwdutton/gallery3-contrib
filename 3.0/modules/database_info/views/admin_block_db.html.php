@@ -13,6 +13,6 @@
     <?= t("Database size: %dbsize MB", array("dbsize" => number_format($database_size, 2))) ?>
   </li>
   <li>
-    <?= t("Number of tables: %dbtables", array("dbtables" => count($tables))) ?>
+    <?= t("Number of tables: %dbtables", array("dbtables" => isset($tables) ? count($tables) : 0)) ?>
   </li>
 </ul>
