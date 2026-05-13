@@ -8,3 +8,6 @@ the core Gallery team.
 To discuss anything you find here, please refer to the Gallery Google forum:
 
   https://groups.google.com/forum/#!forum/gallery-3-users
+
+
+Due to merging a 3rd party pull request that contained a password, this repository had it's history rewritten to erase the credentials. The commit history will be different from the original fork.
