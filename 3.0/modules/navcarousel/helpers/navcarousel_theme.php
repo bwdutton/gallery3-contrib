@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class navcarousel_theme_Core {
-  static function head($theme) {
+  public static function head($theme) {
    if ($theme->page_type == "item") {
       return
         $theme->script("jquery.jcarousel.js")
@@ -26,7 +26,7 @@ class navcarousel_theme_Core {
     }
   }
   
-  static function photo_bottom($theme) {
+  public static function photo_bottom($theme) {
    $content = '';
 
    if ($theme->page_type == "item") {
@@ -125,7 +125,7 @@ class navcarousel_theme_Core {
     return $content;
   }
   
-  static function photo_top($theme) {
+  public static function photo_top($theme) {
     if (module::get_var("navcarousel", "abovephoto", false)) {
       if ($theme->page_type == "item") {
         return new View("navcarousel.html");

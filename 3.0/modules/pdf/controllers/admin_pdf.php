@@ -57,7 +57,7 @@ class Admin_Pdf_Controller extends Admin_Controller {
   }
 
   private function _get_admin_form() {
-    $form = new Forge("admin/pdf/save", "", "post", array("id" => "g-pdf-admin-form"));
+    $form = new Forge("admin/pdf/save", "", "post", ["id" => "g-pdf-admin-form"]);
     $group = $form->group("settings")->label(t("PDF settings"));
     $group->checkbox("make_thumb")
       ->label(t("Generate thumbnails (only if Ghostscript is found)"))

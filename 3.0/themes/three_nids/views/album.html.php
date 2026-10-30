@@ -9,7 +9,7 @@
 $children_all = $item->viewable()->children();
 $theme->pagination = new Pagination();
 $theme->pagination->initialize(
-  array("query_string" => "page", "total_items" => $children_count, "items_per_page" => $page_size, "style" => "classic"));
+  ["query_string" => "page", "total_items" => $children_count, "items_per_page" => $page_size, "style" => "classic"]);
 $children_offset = ($theme->pagination->current_page -1) * $page_size ;
 ?>
 <ul id="g-album-grid" class="ui-helper-clearfix">
@@ -40,7 +40,7 @@ $children_offset = ($theme->pagination->current_page -1) * $page_size ;
     <?php if ($user->admin || access::can("add", $item)): ?>
       <?php $addurl = url::file("index.php/simple_uploader/app/$item->id") ?>
       <li><?= t("There aren't any photos here yet! <a %attrs>Add some</a>.",
-                array("attrs" => html::mark_clean("href=\"$addurl\" class=\"g-dialog-link\""))) ?></li>
+                ["attrs" => html::mark_clean("href=\"$addurl\" class=\"g-dialog-link\"")]) ?></li>
     <?php else: ?>
       <li><?= t("There aren't any photos here yet!") ?></li>
     <?php endif ?>

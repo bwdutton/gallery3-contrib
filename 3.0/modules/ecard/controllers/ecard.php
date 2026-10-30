@@ -50,22 +50,22 @@ class Ecard_Controller extends Controller {
 		  if($form->send_ecard->send_to_self->checked == true) {
 			$cc = $form->send_ecard->inputs["from_email"]->value;
 		  }	  
-		  $v->message = t(module::get_var("ecard", "message"), array("fromname" => $from_name));
+		  $v->message = t(module::get_var("ecard", "message"), ["fromname" => $from_name]);
 		  $v->custom_message = $form->send_ecard->text->value;
 		  $v->image = $item->name;
 		  $from = $form->send_ecard->inputs["from_email"]->value;
-		  $headers = array("from" => $from_name."<".$from.">", "to" => $to, "subject" => module::get_var("ecard", "subject"));
+		  $headers = ["from" => $from_name."<".$from.">", "to" => $to, "subject" => module::get_var("ecard", "subject")];
 		  require_once(MODPATH. "ecard/lib/mime.php");
 		  $mime = new Mail_mime("\n");
 		  $mime->setHTMLBody($v->render());
 		  if($form->send_ecard->send_fresh->checked == true) {
 			  $tmpfile = tempnam(TMPPATH, "clean");
 			  if($form->send_ecard->send_thumbnail->checked == true) {
-				$options = array("width" => module::get_var("gallery", "thumb_size"), "height" => module::get_var("gallery", "thumb_size"), "master" => Image::AUTO);
+				$options = ["width" => module::get_var("gallery", "thumb_size"), "height" => module::get_var("gallery", "thumb_size"), "master" => Image::AUTO];
 				gallery_graphics::resize($item->file_path(), $tmpfile, $options);
 				$mime->addHTMLImage($tmpfile,$item->mime_type,$item->name);
 			  } else {
-				$options = array("width" => module::get_var("gallery", "resize_size"), "height" => module::get_var("gallery", "resize_size"), "master" => Image::AUTO);
+				$options = ["width" => module::get_var("gallery", "resize_size"), "height" => module::get_var("gallery", "resize_size"), "master" => Image::AUTO];
 				gallery_graphics::resize($item->file_path(), $tmpfile, $options);
 				$mime->addHTMLImage($tmpfile,$item->mime_type,$item->name);
 			  }
@@ -76,14 +76,14 @@ class Ecard_Controller extends Controller {
 				$mime->addHTMLImage($item->resize_path(),$item->mime_type,$item->name);
 			  }
 		  }
-		  $body = $mime->get(array('html_charset'  => 'UTF-8', 'text_charset'  => 'UTF-8','text_encoding' => '8bit','head_charset'  => 'UTF-8'));
+		  $body = $mime->get(['html_charset'  => 'UTF-8', 'text_charset'  => 'UTF-8','text_encoding' => '8bit','head_charset'  => 'UTF-8']);
 		  self::_notify($headers['to'], $headers['from'], $headers['subject'], $item, $body, $mime->headers(), $bcc, $cc);
 		}
 	  unlink($tmpfile);
 	  message::success("eCard successfully sent");
-	  json::reply(array("result" => "success"));
+	  json::reply(["result" => "success"]);
 	} else {
-	  json::reply(array("result" => "error", "html" => (string) $form));
+	  json::reply(["result" => "error", "html" => (string) $form]);
 	}
   }
   /**

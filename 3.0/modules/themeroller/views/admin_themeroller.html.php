@@ -21,7 +21,7 @@
 </script>
 <div id="g-admin-themeroller">
   <h1><?= t("Generate theme") ?></h1>
-  <?= form::open($action, array("method" => "post", "id" => "g-themeroller-form")) ?>
+  <?= form::open($action, ["method" => "post", "id" => "g-themeroller-form"]) ?>
     <fieldset>
       <ul>
         <li><?= access::csrf_form_field() ?></li>
@@ -61,9 +61,9 @@
         <li>
           <?= form::label("zip_file", t("Upload and generate theme")) ?>
           <br />
-          <?= form::upload(array("name" => "zip_file",
+          <?= form::upload(["name" => "zip_file",
                                  "id" => "g-themeroller-zip",
-                                 "accept" => "application/zip, multipart/x-zip")) ?>
+                                 "accept" => "application/zip, multipart/x-zip"]) ?>
           <span style="z-index: 1">
           <button type="submit"
                id="g-generate-theme"

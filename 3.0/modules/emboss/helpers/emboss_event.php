@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  *************************************************************************/
 class emboss_event_Core {
-  static function admin_menu($menu,$theme) {
+  public static function admin_menu($menu,$theme) {
     module::set_var('emboss','admin_menu',1);
     $menu->get('content_menu')
       ->append(
@@ -26,7 +26,7 @@ class emboss_event_Core {
         ->url(url::site('admin/emboss')));
   }
 
-  static function item_moved($item,$olddir)
+  public static function item_moved($item,$olddir)
   {
     if( ! ($item->is_photo() || $item->is_album()) ) {
       return;
@@ -52,7 +52,7 @@ class emboss_event_Core {
       }
   }
 
-  static function item_updated($original,$item)
+  public static function item_updated($original,$item)
   {
     if( ! ($item->is_photo() || $item->is_album()) ) {
       return;
@@ -67,7 +67,7 @@ class emboss_event_Core {
     }
   }
 
-  static function item_deleted($item)
+  public static function item_deleted($item)
   {
     if( ! $item->is_photo()  ) {
       return;
@@ -89,7 +89,7 @@ class emboss_event_Core {
     log::info('emboss',"item_deleted: $name");
   }
 
-  static function item_created($item)
+  public static function item_created($item)
   {
     if( ! $item->is_photo()  ) {
       return;

@@ -32,20 +32,20 @@ class Admin_Default_Sort_Controller extends Admin_Controller {
     }
 
     private function _get_form() {
-        $form = new Forge("admin/default_sort", "", "post", array("id" => "g-admin-default_sort-form"));
+        $form = new Forge("admin/default_sort", "", "post", ["id" => "g-admin-default_sort-form"]);
 
         $group = $form->group("sort_order")->label(t("Sort Order"));
 
         $group  ->dropdown("sort_column")
                 ->id(t("sort_column"))
                 ->label(t("Sort by"))
-                ->options(array_merge(array("none" => t("None")), album::get_sort_order_options()))
+                ->options(array_merge(["none" => t("None")], album::get_sort_order_options()))
                 ->selected(module::get_var("default_sort", "default_sort_column", "none"));
 
         $group  ->dropdown("sort_direction")
                 ->id(t("sort_direction"))
                 ->label(t("Sort by"))
-                ->options(array("none" => t("None"), "ASC" => t("Ascending"), "DESC" => t("Descending")))
+                ->options(["none" => t("None"), "ASC" => t("Ascending"), "DESC" => t("Descending")])
                 ->selected(module::get_var("default_sort", "default_sort_direction", "none"));
 
         $form->submit("submit")->value(t("Save"));

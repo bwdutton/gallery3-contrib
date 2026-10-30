@@ -69,7 +69,7 @@ class IdentityProvider_Wordpressfile_Driver implements IdentityProvider_Driver {
     /**
      * @see IdentityProvider_Driver::create_user.
      */
-    public function create_user($name, $full_name, $password, $email) {
+    public function create_user($name, $full_name, $password, $email): never {
         throw new Exception("@todo INVALID OPERATION");
     }
 
@@ -109,7 +109,7 @@ class IdentityProvider_Wordpressfile_Driver implements IdentityProvider_Driver {
     /**
      * @see IdentityProvider_Driver::create_group.
      */
-    public function create_group($name) {
+    public function create_group($name): never {
         throw new Exception("@todo INVALID OPERATION");
     }
 
@@ -131,7 +131,7 @@ class IdentityProvider_Wordpressfile_Driver implements IdentityProvider_Driver {
      * @see IdentityProvider_Driver::get_user_list.
      */
     public function get_user_list($ids) {
-        $users = array();
+        $users = [];
         foreach ($ids as $id) {
             $users[] = $this->lookup_user($id);
         }
@@ -169,7 +169,7 @@ class IdentityProvider_Wordpressfile_Driver implements IdentityProvider_Driver {
         }
         $wp_role_obj = new WP_Roles();
         $wp_roles = $wp_role_obj->roles;
-        $groups = array(new Wordpress_Group('everybody'));
+        $groups = [new Wordpress_Group('everybody')];
         foreach ($wp_roles as $k => $r) {
             $groups[] = new Wordpress_Group(strtolower($k));
         }
@@ -179,14 +179,14 @@ class IdentityProvider_Wordpressfile_Driver implements IdentityProvider_Driver {
     /**
      * @see IdentityProvider_Driver::add_user_to_group.
      */
-    function add_user_to_group($user, $group) {
+    public function add_user_to_group($user, $group): never {
         throw new Exception("@todo INVALID OPERATION");
     }
 
     /**
      * @see IdentityProvider_Driver::remove_user_to_group.
      */
-    function remove_user_from_group($user, $group) {
+    public function remove_user_from_group($user, $group): never {
         throw new Exception("@todo INVALID OPERATION");
     }
 } // End Identity Gallery Driver
@@ -220,7 +220,7 @@ class Wordpress_User implements User_Definition {
                 return $this->user_info['ID'];
 
             case"groups":
-                $groups = array(new Wordpress_Group('everybody'));
+                $groups = [new Wordpress_Group('everybody')];
 
                 global $table_prefix;
                 $user_roles = get_usermeta($this->id, $table_prefix.'capabilities');
@@ -267,12 +267,10 @@ class Wordpress_User implements User_Definition {
 }
 
 class Wordpress_Group implements Group_Definition {
-    public $id;
     public $name;
 
-    public function __construct($id, $name = null) {
-        $this->id = $id;
-        if (is_null($name)) $name = ucfirst($id);
+    public function __construct(public $id, $name = null) {
+        $name ??= ucfirst($this->id);
         $this->name = $name;
     }
 }

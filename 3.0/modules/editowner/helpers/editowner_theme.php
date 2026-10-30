@@ -19,7 +19,7 @@
  */
 
 class editowner_theme_Core {
-  static function head($theme) {
+  public static function head($theme) {
     if (!$theme->item()) {
       return;
     }

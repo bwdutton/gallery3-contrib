@@ -18,5 +18,5 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class Addthis_Proxy_Model extends ORM {
-  protected $has_one = array("item");
+  protected $has_one = ["item"];
 }

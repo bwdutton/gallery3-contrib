@@ -20,7 +20,7 @@
 
 class Item_Model extends Item_Model_Core {
 
-  function children($limit=null, $offset=null, $where=array(), $order_by=null) {
+  public function children($limit=null, $offset=null, $where=[], $order_by=null) {
     if (!hide::can_view_hidden_items($this)) {
       $this->join("hidden_items", "items.id", "hidden_items.item_id", "LEFT OUTER");
       $this->where("hidden_items.item_id", "IS", NULL);

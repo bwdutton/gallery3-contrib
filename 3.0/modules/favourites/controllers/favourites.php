@@ -89,7 +89,7 @@ class Favourites_Controller extends Controller {
     $favourites = Favourites::getOrCreate();
     $favourites->clear();
     $array = func_get_args();
-    foreach($array as $i=>$item){
+    foreach($array as $item){
       $favourites->toggle($item);
     }
     url::redirect("favourites");
@@ -97,7 +97,7 @@ class Favourites_Controller extends Controller {
 
   private function getSaveForm(){
 
-    $form = new Forge("favourites/save_favourites", "", "post", array("id" => "gAddToBasketForm"));
+    $form = new Forge("favourites/save_favourites", "", "post", ["id" => "gAddToBasketForm"]);
     $group = $form->group("save")->label(t("Save Favourites"));
     $group->hidden("id");
     $group->input("fullname")->label(t("Name"))->id("gname")
@@ -163,7 +163,7 @@ class Favourites_Controller extends Controller {
 
         // create the order items
         $items = ORM::factory("item")->where("id","in", $favourites->contents)->find_all();
-        foreach ($items->contents as $id=>$item){
+        foreach ($items->contents as $item){
           $admin_email = $admin_email."
             ".$item->title." - ".$item->url()."";
         }
@@ -176,28 +176,28 @@ class Favourites_Controller extends Controller {
 
       $email = favourites_configuration::replaceStrings(
         favourites_configuration::getEmailTemplate(),
-        Array(
+        [
           "name"=>$name,
           "comments"=>$comments,
           "url"=>$favourites->getUrl(),
-          "owner"=>favourites_configuration::getOwner()));
+          "owner"=>favourites_configuration::getOwner()]);
 
       mail($email_address,$name."'s Favourites",$email, $from);
 
-      json::reply(array("result" => "success", "location" => url::site("favourites")));
+      json::reply(["result" => "success", "location" => url::site("favourites")]);
       return;
     }
-    json::reply(array("result" => "error", "html" => (string)$form));
+    json::reply(["result" => "error", "html" => (string)$form]);
   }
 
   public function toggle_favourites($id){
     $favourites = Favourites::getOrCreate();
     $infavour = $favourites ->toggle($id);
     $title = $infavour?t("Remove from favourites"):t("Add to favourites");
-    json::reply(array("result" => "success",
+    json::reply(["result" => "success",
                       "favourite" => $infavour,
                       "hasfavourites" => $favourites->hasFavourites(),
-                      "title" => (string)$title));
+                      "title" => (string)$title]);
   }
 
   public function clear_favourites(){

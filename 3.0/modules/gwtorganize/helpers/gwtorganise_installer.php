@@ -20,15 +20,15 @@
 
 class gwtorganise_installer
 {
-  static function install(){
+  public static function install(){
    module::set_version("gwtorganise", 1);
    upload_configuration::setResize(false);
    upload_configuration::setMaxWidth(500);
    upload_configuration::setMaxHeight(400);
   }
-  static function activate() {
+  public static function activate() {
   }
 
-  static function deactivate(){
+  public static function deactivate(){
   }
 }

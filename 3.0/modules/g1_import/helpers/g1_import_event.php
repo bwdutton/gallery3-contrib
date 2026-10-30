@@ -18,18 +18,18 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class g1_import_event_Core {
-  static function item_deleted($item) {
+  public static function item_deleted($item) {
     db::build()
       ->delete("g1_maps")
       ->where("id", "=", $item->id)
       ->execute();
   }
 
-  static function item_created($item) {
+  public static function item_created($item) {
     g1_import::copy_matching_thumbnails_and_resizes($item);
   }
 
-  static function admin_menu($menu, $theme) {
+  public static function admin_menu($menu, $theme) {
     $menu
       ->get("settings_menu")
       ->append(Menu::factory("link")

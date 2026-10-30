@@ -9,10 +9,10 @@
     <p class="allcomments-author">
      <a href="<?= $comment->item()->url() ?>">
        <?= t("on %date",
-        array("date" => gallery::date_time($comment->created),
-              "title" => $comment->item()->title)); ?></a><br />
+        ["date" => gallery::date_time($comment->created),
+              "title" => $comment->item()->title]); ?></a><br />
      <a href="<?= $comment->item()->url() ?>">
-       <?= $comment->item()->thumb_img(array(), 128) ?></a>
+       <?= $comment->item()->thumb_img([], 128) ?></a>
      <a href="<?= $comment->author_url() ?>">
      <?= nl2br(html::purify($comment->author_name())) ?></a>:
      <?= nl2br(html::purify($comment->text)) ?>

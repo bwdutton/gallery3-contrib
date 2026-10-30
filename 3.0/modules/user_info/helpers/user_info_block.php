@@ -1,10 +1,10 @@
 <?php defined("SYSPATH") or die("No direct script access.");
 class user_info_block_Core {
-  static function get_admin_list() {
-    return array("user_info" => t("User Information"));
+  public static function get_admin_list() {
+    return ["user_info" => t("User Information")];
   }
 
-  static function get($block_id) {
+  public static function get($block_id) {
     $block = new Block();
     switch ($block_id) {
     case "user_info":
@@ -20,17 +20,17 @@ class user_info_block_Core {
     $user_count = $builder->from("user_infos")->count_records();
     $block->content->pager = new Pagination();
     $block->content->pager->initialize(
-      array("query_string" => "page",
+      ["query_string" => "page",
             "total_items" => $user_count,
             "items_per_page" => $page_size,
-            "style" => "classic"));
+            "style" => "classic"]);
     // Make sure that the page references a valid offset
     if ($page < 1) {
 // This prevents the admin page from displaying if there are no records in the database, commented out to temp. fix
 //      url::redirect(url::merge(array("page" => 1)));
 		url::site("admin"); //This should fix the issue I think
     } else if ($page > $block->content->pager->total_pages) {
-      url::redirect(url::merge(array("page" => $block->content->pager->total_pages)));
+      url::redirect(url::merge(["page" => $block->content->pager->total_pages]));
     }
 	// Get the user defined settings for sort by and sort order
 	$default_sort_column = module::get_var("user_info", "default_sort_column");

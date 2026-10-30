@@ -2,7 +2,7 @@
 
 
 class Favourites_Core {
-  public $contents = array();
+  public $contents = [];
 
   public function toggle($id){
     foreach ($this->contents as $i => $value) {
@@ -16,7 +16,7 @@ class Favourites_Core {
   }
 
   public function contains($id){
-    foreach ($this->contents as $i => $value){
+    foreach ($this->contents as $value){
       if ($value==$id)  return true;
     }
     return false;
@@ -31,14 +31,14 @@ class Favourites_Core {
   }
 
   public function clear(){
-    $this->contents = array();
+    $this->contents = [];
   }
 
   public function getUrl(){
 
     $toReturn = url::site("favourites/view","http");
 
-    foreach ($this->contents as $i => $value){
+    foreach ($this->contents as $value){
       $toReturn = $toReturn."/".$value;
     }
     return $toReturn;

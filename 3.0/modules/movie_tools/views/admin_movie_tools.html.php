@@ -23,7 +23,7 @@
         <td><b>Description</b></td>
         <td><b>Formats</b></td>
       </tr>
-      <?php foreach ($formats as $id => $data): ?>
+      <?php foreach ($formats as $data): ?>
       <tr>
         <td><?= $data["name"] ?></td>
         <td><?= $data["desc"] ?></td>

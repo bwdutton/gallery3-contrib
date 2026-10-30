@@ -19,11 +19,11 @@
  */
 
 class latestupdates_event_Core {
-  static function show_user_profile($data) {
+  public static function show_user_profile($data) {
     // Display links on the user profile pages for recent photos/albums 
     //   and most popular photos from the specified user.
     $v = new View("latestupdates_user_profile_info.html");
     $v->user_id = $data->user->id;
-    $data->content[] = (object) array("title" => t("Latest Updates"), "view" => $v);
+    $data->content[] = (object) ["title" => t("Latest Updates"), "view" => $v];
   }
 }

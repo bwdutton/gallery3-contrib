@@ -21,7 +21,7 @@ interface Sabre_DAV_IFile extends Sabre_DAV_INode {
      * @param resource $data 
      * @return void 
      */
-    function put($data);
+    public function put($data);
 
     /**
      * Returns the data 
@@ -30,7 +30,7 @@ interface Sabre_DAV_IFile extends Sabre_DAV_INode {
      *
      * @return mixed 
      */
-    function get();
+    public function get();
 
     /**
      * Returns the mime-type for a file
@@ -39,7 +39,7 @@ interface Sabre_DAV_IFile extends Sabre_DAV_INode {
      * 
      * @return void
      */
-    function getContentType();
+    public function getContentType();
 
     /**
      * Returns the ETag for a file
@@ -50,14 +50,14 @@ interface Sabre_DAV_IFile extends Sabre_DAV_INode {
      * 
      * @return void
      */
-    function getETag();
+    public function getETag();
 
     /**
      * Returns the size of the node, in bytes 
      * 
      * @return int 
      */
-    function getSize();
+    public function getSize();
 
 }
 

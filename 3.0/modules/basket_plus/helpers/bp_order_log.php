@@ -23,7 +23,7 @@ class bp_order_log {
    * Add a log entry.
    *
    */
-  static function log($order, $event) {
+  public static function log($order, $event) {
     $log = ORM::factory("bp_order_log");
     $log->id = $order->id;
     $log->status = $order->status;

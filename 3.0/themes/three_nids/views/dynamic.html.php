@@ -7,7 +7,7 @@
 </div>
 <?php $children_all = $tag->items();
      $theme->pagination = new Pagination();
-		$theme->pagination->initialize(array("query_string" => "page","total_items" => $children_count,"items_per_page" => $page_size,"style" => "classic"));
+		$theme->pagination->initialize(["query_string" => "page","total_items" => $children_count,"items_per_page" => $page_size,"style" => "classic"]);
 	$children_offset = ($theme->pagination->current_page -1) * $page_size ; ?>
 
 

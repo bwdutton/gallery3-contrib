@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class quotas_installer {
-  static function install() {
+  public static function install() {
     // Create tables.
     $db = Database::instance();
     $db->query("CREATE TABLE IF NOT EXISTS {users_space_usages} (

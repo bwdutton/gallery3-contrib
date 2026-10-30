@@ -48,7 +48,7 @@ Shadowbox.init({
 
 <?php if ($useShadowBox) : ?>
   <div style="display:none">
-  <?php foreach ($item->parent()->children() as $i => $child): ?>
+  <?php foreach ($item->parent()->children() as $child): ?>
     <?php if ( $child->id === $item->id ): ?>
   </div>
 
@@ -57,7 +57,7 @@ Shadowbox.init({
       <?php if (access::can("view_full", $item)): ?>
     <a href="<?= $item->file_url() ?>" class="g-fullsize-link" rel="shadowbox[<?= $item->parent()->title ?>]" title="<?= html::purify($item->title) ?>">
       <?php endif ?>
-      <?= $item->resize_img(array("id" => "g-item-id-{$item->id}", "class" => "g-resize")) ?>
+      <?= $item->resize_img(["id" => "g-item-id-{$item->id}", "class" => "g-resize"]) ?>
       <?php if (access::can("view_full", $item)): ?>
     </a>
     <?php endif ?>
@@ -79,7 +79,7 @@ Shadowbox.init({
     <?php if (access::can("view_full", $item)): ?>
     <a href="<?= $item->file_url() ?>" class="g-fullsize-link" title="<?= t("View full size")->for_html_attr() ?>">
       <?php endif ?>
-      <?= $item->resize_img(array("id" => "g-item-id-{$item->id}", "class" => "g-resize")) ?>
+      <?= $item->resize_img(["id" => "g-item-id-{$item->id}", "class" => "g-resize"]) ?>
       <?php if (access::can("view_full", $item)): ?>
     </a>
     <?php endif ?>

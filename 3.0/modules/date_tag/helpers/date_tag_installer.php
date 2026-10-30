@@ -18,23 +18,23 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class date_tag_installer {
-  static function install() {
+  public static function install() {
     module::set_version("date_tag", 2);
   }
 
-  static function upgrade($version) {
+  public static function upgrade($version) {
     if ($version == 1) {
       module::set_var("date_tag", "template", "F, Y");
     }
     module::set_version("date_tag", $version = 2);
   }
 
-  static function deactivate() {
+  public static function deactivate() {
     site_status::clear("date_tag_needs_tag");
   }
 
-  static function can_activate() {
-    $messages = array();
+  public static function can_activate() {
+    $messages = [];
     if (!module::is_active("tag")) {
       $messages["warn"][] = t("The date_tag module requires the Tag module.");
     }

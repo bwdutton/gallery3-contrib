@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class content_warning_installer {
-	static function install() {
+	public static function install() {
 		module::set_var("content_warning", "title", "Warning!");
     	module::set_var("content_warning", "message", "This site contains inappropriate material");
     	module::set_var("content_warning", "enter_link_text", "Enter");
@@ -26,11 +26,11 @@ class content_warning_installer {
 		module::set_version("content_warning", 1);
   	}
 
-  	static function upgrade($version) {
+  	public static function upgrade($version) {
   		//module::set_version("content_warning", 2);
 	}
 
-  	static function uninstall() {
+  	public static function uninstall() {
   		module::clear_var("content_warning", "title");
     	module::clear_var("content_warning", "message");
     	module::clear_var("content_warning", "enter_link_text");  	

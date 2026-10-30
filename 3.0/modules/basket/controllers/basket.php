@@ -112,7 +112,7 @@ class Basket_Controller extends Controller {
       $view = new View("print_order.html");
 
       if ($order->loaded()){
-        $view->order = str_replace(array("\r\n", "\n", "\r"),"<br/>",$order->text);
+        $view->order = str_replace(["\r\n", "\n", "\r"],"<br/>",$order->text);
       }else{
         $view->order = "Order ".$id." not found.";
       }
@@ -186,7 +186,7 @@ class Basket_Controller extends Controller {
   }
 
   private function getCheckoutForm(){
-    $form = new Forge("basket/confirm", "", "post", array("id" => "checkout", "name" =>"checkout"));
+    $form = new Forge("basket/confirm", "", "post", ["id" => "checkout", "name" =>"checkout"]);
     $group = $form->group("contact")->label(t("Contact Details"));
     $group->input("fullname")->label(t("Name"))->id("fullname");
     $group->input("house")->label(t("House Number / Name"))->id("house");
@@ -270,7 +270,7 @@ class Basket_Controller extends Controller {
         // redirect to paypal
       }else
       {
-        $form = new Forge("basket/complete", "", "post", array("id" => "confirm", "name" =>"confirm"));
+        $form = new Forge("basket/complete", "", "post", ["id" => "confirm", "name" =>"confirm"]);
         $view = new View("confirm_order.html");
         $view->basket = $basket;
         $template->content = $view;
@@ -285,7 +285,7 @@ class Basket_Controller extends Controller {
     }
   }
 
-  function paypal_ipn($id){
+  public function paypal_ipn($id){
       $order = ORM::factory("order")->where("id","=",$id)->find();
       if ($order->loaded()){
 
@@ -364,7 +364,7 @@ class Basket_Controller extends Controller {
 
   private function getAddToBasketForm($id){
 
-    $form = new Forge("basket/add_to_basket", "", "post", array("id" => "gAddToBasketForm"));
+    $form = new Forge("basket/add_to_basket", "", "post", ["id" => "gAddToBasketForm"]);
     $group = $form->group("add_to_basket")->label(t("Add To Basket"));
     $group->hidden("id");
     $group->dropdown("product")
@@ -401,7 +401,7 @@ class Basket_Controller extends Controller {
 
       Session::instance()->set("redirect_home", $item->parent_id);
 
-      print json::reply(array("result" => "success"));
+      print json::reply(["result" => "success"]);
     }
     else
     {

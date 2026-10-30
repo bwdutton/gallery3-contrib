@@ -20,7 +20,7 @@ class Admin_Themeroller_Controller extends Admin_Controller {
   public function form_upload() {
     $v = new View("admin_themeroller_upload.html");
 
-    list ($v->form, $v->errors) = $this->_get_upload_form();
+    [$v->form, $v->errors] = $this->_get_upload_form();
     $v->is_writable = is_writable(THEMEPATH);
     $v->action = "admin/themeroller/form_create";
     $submit_class = "ui-state-default ui-corner-all submit g-left";
@@ -29,16 +29,16 @@ class Admin_Themeroller_Controller extends Admin_Controller {
       $submit_class .= " ui-state-disabled";
     }
     $v->submit_class = $submit_class;
-    $v->script_data = array(
+    $v->script_data = [
       "g3sid" => Session::instance()->id(),
       "user_agent" => Input::instance()->server("HTTP_USER_AGENT"),
-      "csrf" => access::csrf_token());
-    json::reply(array("html" => (string) $v));
+      "csrf" => access::csrf_token()];
+    json::reply(["html" => (string) $v]);
   }
 
   public function form_create() {
     $theme_name = Session::instance()->get_once("theme_name");
-    json::reply(array("html" => (string) $this->_get_theme_form($theme_name)));
+    json::reply(["html" => (string) $this->_get_theme_form($theme_name)]);
   }
 
   public function upload() {
@@ -47,7 +47,7 @@ class Admin_Themeroller_Controller extends Admin_Controller {
     $validation = new Validation(array_merge($_POST, $_FILES));
     $validation->add_rules("zip_file", "upload::valid",  "upload::required", "upload::type[zip]");
     $validation->add_rules("is_admin", "chars[0,1]");
-    $validation->add_callbacks("zip_file", array($this, "_unload_zip"));
+    $validation->add_callbacks("zip_file", $this->_unload_zip(...));
     if ($validation->validate()) {
       $session = Session::instance();
       $themeroller_name = $session->get("themeroller_name");
@@ -84,7 +84,7 @@ class Admin_Themeroller_Controller extends Admin_Controller {
         ->name(t("Generate theme"));
 
       $v->task = task::create($task_def,
-         array("path" => $extract_path,
+         ["path" => $extract_path,
                "user_name" => SafeString::purify(identity::active_user()->name),
                "original_name" => SafeString::purify($form->theme->original->value),
                "theme_name" => SafeString::purify($form->theme->theme_name->value),
@@ -93,18 +93,18 @@ class Admin_Themeroller_Controller extends Admin_Controller {
                "author_url" => SafeString::purify($form->theme->author_url->value),
                "info_url" => SafeString::purify($form->theme->info_url->value),
                "discuss_url" => SafeString::purify($form->theme->discuss_url->value),
-               "is_admin" => $session->get("themeroller_is_admin")));
+               "is_admin" => $session->get("themeroller_is_admin")]);
 
-      json::reply(array("html" => (string) $v));
+      json::reply(["html" => (string) $v]);
     } else {
-      json::reply(array("result" => "error", "html" => (string) $form));
+      json::reply(["result" => "error", "html" => (string) $form]);
     }
   }
 
   /**
    * Run the task of creating the theme
    */
-  static function run($task_id) {
+  public static function run($task_id) {
     access::verify_csrf();
 
     $task = ORM::factory("task", $task_id);
@@ -116,12 +116,12 @@ class Admin_Themeroller_Controller extends Admin_Controller {
 
     // Prevent the JavaScript code from breaking by forcing a period as
     // decimal separator for all locales with sprintf("%F", $value).
-    json::reply(array("done" => (bool)$task->done,
+    json::reply(["done" => (bool)$task->done,
                       "status" => (string)$task->status,
-                      "percent_complete" => sprintf("%F", $task->percent_complete)));
+                      "percent_complete" => sprintf("%F", $task->percent_complete)]);
   }
 
-  static function _is_theme_defined($name) {
+  public static function _is_theme_defined($name) {
     $theme_name = strtolower(strtr($name->value, " ", "_"));
     if (file_exists(THEMEPATH . "$theme_name/theme.info")) {
       $name->add_error("conflict", 1);
@@ -149,7 +149,7 @@ class Admin_Themeroller_Controller extends Admin_Controller {
 
   private function _get_theme_form($theme_name=null) {
     $session = Session::instance();
-    $form = new Forge("admin/themeroller/create", "", "post", array("id" => "g-themeroller-create-form"));
+    $form = new Forge("admin/themeroller/create", "", "post", ["id" => "g-themeroller-create-form"]);
     $form_group = $form->group("theme")->label(t("Create theme"));
     $original_name = $form_group->hidden("original");
     $name_field = $form_group->input("theme_name")->label(t("Theme Name"))->id("g-name")
@@ -166,15 +166,15 @@ class Admin_Themeroller_Controller extends Admin_Controller {
       $is_admin = $session->get("themeroller_is_admin");
       $themeroller_name = $session->get("themeroller_name");
       $display_name->value(ucwords($is_admin ? t("%name administration theme",
-                                                 array("name" => str_replace("-", " ", $themeroller_name))) :
+                                                 ["name" => str_replace("-", " ", $themeroller_name)]) :
                                                t("%name theme",
-                                                 array("name" => str_replace("-", " ", $themeroller_name)))));
+                                                 ["name" => str_replace("-", " ", $themeroller_name)])));
      $original_name->hidden("original")->value(Session::instance()->get("themeroller_name"));
     }
     $form_group->textarea("description")->label(t("Description"))
       ->id("g-description")
       ->value(t("A generated theme based on the ui themeroller '%name' styling",
-              array("name" => str_replace("admin_", "", $theme_name))))
+              ["name" => str_replace("admin_", "", $theme_name)]))
       ->rules("required")
       ->error_messages("required", t("You must enter a theme description name"));
     $form_group->input("author_url")->label(t("Author url"))->id("g-author-url");
@@ -186,8 +186,8 @@ class Admin_Themeroller_Controller extends Admin_Controller {
   }
 
   private function _get_upload_form() {
-    $form = array("zip_file" => "", "is_admin" => "");
+    $form = ["zip_file" => "", "is_admin" => ""];
     $errors = array_fill_keys(array_keys($form), "");
-    return array($form, $errors);
+    return [$form, $errors];
   }
 }

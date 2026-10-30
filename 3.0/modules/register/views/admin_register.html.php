@@ -19,7 +19,7 @@
 <div id="g-admin-register" class="g-block">
   <h1><?= t("User registration administration") ?></h1>
   <div id="g-registration-admin" class="g-block-content">
-  <?= form::open($action, array("method" => "post"), $hidden) ?>
+  <?= form::open($action, ["method" => "post"], $hidden) ?>
     <fieldset>
       <legend><?= t("Confirmation policy") ?></legend>
       <ul>
@@ -44,13 +44,13 @@
         <li>
           <?php if (!empty($group_list)): ?>
           <label for="group" class="g-left"> <?= t("Default group: ") ?></label>
-          <?= form::dropdown(array("name" => "group"), $group_list, $form["group"]) ?></label>
+          <?= form::dropdown(["name" => "group"], $group_list, $form["group"]) ?></label>
           <?php else: ?>
           <?= form::hidden("group", $form["group"]) ?></label>
           <?php endif ?>
         </li>
         <li>
-          <?= form::submit(array("id" => "g-registration-admin", "name" => "save", "class" => "submit", "style" => "clear:both!important"), t("Update")) ?>
+          <?= form::submit(["id" => "g-registration-admin", "name" => "save", "class" => "submit", "style" => "clear:both!important"], t("Update")) ?>
         </li>
       </ul>
     </fieldset>
@@ -58,7 +58,7 @@
   </div>
   <?php if (count($pending)): ?>
     <div id="g-activate-pending-users">
-      <?= form::open($activate, array("method" => "post"), $hidden) ?>
+      <?= form::open($activate, ["method" => "post"], $hidden) ?>
         <fieldset>
           <legend><?= t("Pending registrations") ?></legend>
           <table>
@@ -90,7 +90,7 @@
             </tr>
             <?php endforeach ?>
           </table>
-          <?= form::submit(array("id" => "g-registration-activate", "name" => "activate_users", "class" => "submit"), t("Activate selected")) ?>
+          <?= form::submit(["id" => "g-registration-activate", "name" => "activate_users", "class" => "submit"], t("Activate selected")) ?>
         </fieldset>
       </form>
     </div>

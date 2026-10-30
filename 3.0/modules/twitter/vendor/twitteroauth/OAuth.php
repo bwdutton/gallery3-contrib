@@ -9,48 +9,38 @@ if (!class_exists('OAuthException')) {
   }
 }
 
-class OAuthConsumer {
-  public $key;
-  public $secret;
-
-  function __construct($key, $secret, $callback_url=NULL) {
-    $this->key = $key;
-    $this->secret = $secret;
+class OAuthConsumer implements \Stringable {
+  public function __construct(public $key, public $secret, $callback_url=NULL) {
     $this->callback_url = $callback_url;
   }
 
-  function __toString() {
+  public function __toString(): string {
     return "OAuthConsumer[key=$this->key,secret=$this->secret]";
   }
 }
 
-class OAuthToken {
-  // access tokens and request tokens
-  public $key;
-  public $secret;
-
+class OAuthToken implements \Stringable {
   /**
    * key = the token
    * secret = the token secret
    */
-  function __construct($key, $secret) {
-    $this->key = $key;
-    $this->secret = $secret;
+  public function __construct(public $key, public $secret)
+  {
   }
 
   /**
    * generates the basic string serialization of a token that a server
    * would respond to request_token and access_token calls with
    */
-  function to_string() {
+  public function to_string() {
     return "oauth_token=" .
            OAuthUtil::urlencode_rfc3986($this->key) .
            "&oauth_token_secret=" .
            OAuthUtil::urlencode_rfc3986($this->secret);
   }
 
-  function __toString() {
-    return $this->to_string();
+  public function __toString(): string {
+    return (string) $this->to_string();
   }
 }
 
@@ -99,7 +89,7 @@ abstract class OAuthSignatureMethod {
  *   - Chapter 9.2 ("HMAC-SHA1")
  */
 class OAuthSignatureMethod_HMAC_SHA1 extends OAuthSignatureMethod {
-  function get_name() {
+  public function get_name() {
     return "HMAC-SHA1";
   }
 
@@ -107,10 +97,10 @@ class OAuthSignatureMethod_HMAC_SHA1 extends OAuthSignatureMethod {
     $base_string = $request->get_signature_base_string();
     $request->base_string = $base_string;
 
-    $key_parts = array(
+    $key_parts = [
       $consumer->secret,
       ($token) ? $token->secret : ""
-    );
+    ];
 
     $key_parts = OAuthUtil::urlencode_rfc3986($key_parts);
     $key = implode('&', $key_parts);
@@ -139,10 +129,10 @@ class OAuthSignatureMethod_PLAINTEXT extends OAuthSignatureMethod {
    * OAuthRequest handles this!
    */
   public function build_signature($request, $consumer, $token) {
-    $key_parts = array(
+    $key_parts = [
       $consumer->secret,
       ($token) ? $token->secret : ""
-    );
+    ];
 
     $key_parts = OAuthUtil::urlencode_rfc3986($key_parts);
     $key = implode('&', $key_parts);
@@ -219,20 +209,18 @@ abstract class OAuthSignatureMethod_RSA_SHA1 extends OAuthSignatureMethod {
   }
 }
 
-class OAuthRequest {
+class OAuthRequest implements \Stringable {
   private $parameters;
-  private $http_method;
   private $http_url;
   // for debug purposes
   public $base_string;
   public static $version = '1.0';
   public static $POST_INPUT = 'php://input';
 
-  function __construct($http_method, $http_url, $parameters=NULL) {
-    @$parameters or $parameters = array();
+  public function __construct(private $http_method, $http_url, $parameters=NULL) {
+    @$parameters or $parameters = [];
     $parameters = array_merge( OAuthUtil::parse_parameters(parse_url($http_url, PHP_URL_QUERY)), $parameters);
     $this->parameters = $parameters;
-    $this->http_method = $http_method;
     $this->http_url = $http_url;
   }
 
@@ -292,11 +280,11 @@ class OAuthRequest {
    * pretty much a helper function to set up the request
    */
   public static function from_consumer_and_token($consumer, $token, $http_method, $http_url, $parameters=NULL) {
-    @$parameters or $parameters = array();
-    $defaults = array("oauth_version" => OAuthRequest::$version,
+    @$parameters or $parameters = [];
+    $defaults = ["oauth_version" => OAuthRequest::$version,
                       "oauth_nonce" => OAuthRequest::generate_nonce(),
                       "oauth_timestamp" => OAuthRequest::generate_timestamp(),
-                      "oauth_consumer_key" => $consumer->key);
+                      "oauth_consumer_key" => $consumer->key];
     if ($token)
       $defaults['oauth_token'] = $token->key;
 
@@ -311,7 +299,7 @@ class OAuthRequest {
       if (is_scalar($this->parameters[$name])) {
         // This is the first duplicate, so transform scalar (string)
         // into an array so we can add the duplicates
-        $this->parameters[$name] = array($this->parameters[$name]);
+        $this->parameters[$name] = [$this->parameters[$name]];
       }
 
       $this->parameters[$name][] = $value;
@@ -322,15 +310,15 @@ class OAuthRequest {
 
   public function set_parameters($parameters) {
     // keep the oauth parameters
-    $oauth_parameters = Array();
+    $oauth_parameters = [];
     foreach ($this->parameters as $k=>&$v)
-      if (substr($k, 0, 6) == "oauth_")
+      if (str_starts_with($k, "oauth_"))
         $oauth_parameters[$k] = $v;
     $this->parameters = array_merge($parameters, $oauth_parameters);
   }
 
   public function get_parameter($name) {
-    return isset($this->parameters[$name]) ? $this->parameters[$name] : null;
+    return $this->parameters[$name] ?? null;
   }
 
   public function get_parameters() {
@@ -366,11 +354,11 @@ class OAuthRequest {
    * and the concated with &.
    */
   public function get_signature_base_string() {
-    $parts = array(
+    $parts = [
       $this->get_normalized_http_method(),
       $this->get_normalized_http_url(),
       $this->get_signable_parameters()
-    );
+    ];
 
     $parts = OAuthUtil::urlencode_rfc3986($parts);
 
@@ -435,9 +423,9 @@ class OAuthRequest {
     } else
       $out = 'Authorization: OAuth';
 
-    $total = array();
+    $total = [];
     foreach ($this->parameters as $k => $v) {
-      if (substr($k, 0, 5) != "oauth") continue;
+      if (!str_starts_with($k, "oauth")) continue;
       if (is_array($v)) {
         throw new OAuthException('Arrays not supported in headers');
       }
@@ -451,8 +439,8 @@ class OAuthRequest {
     return $out;
   }
 
-  public function __toString() {
-    return $this->to_url();
+  public function __toString(): string {
+    return (string) $this->to_url();
   }
 
 
@@ -492,12 +480,10 @@ class OAuthRequest {
 class OAuthServer {
   protected $timestamp_threshold = 300; // in seconds, five minutes
   protected $version = '1.0';             // hi blaine
-  protected $signature_methods = array();
+  protected $signature_methods = [];
 
-  protected $data_store;
-
-  function __construct($data_store) {
-    $this->data_store = $data_store;
+  public function __construct(protected $data_store)
+  {
   }
 
   public function add_signature_method($signature_method) {
@@ -557,7 +543,7 @@ class OAuthServer {
     $consumer = $this->get_consumer($request);
     $token = $this->get_token($request, $consumer, "access");
     $this->check_signature($request, $consumer, $token);
-    return array($consumer, $token);
+    return [$consumer, $token];
   }
 
   // Internals from here
@@ -701,23 +687,23 @@ class OAuthServer {
 }
 
 class OAuthDataStore {
-  function lookup_consumer($consumer_key) {
+  public function lookup_consumer($consumer_key) {
     // implement me
   }
 
-  function lookup_token($consumer, $token_type, $token) {
+  public function lookup_token($consumer, $token_type, $token) {
     // implement me
   }
 
-  function lookup_nonce($consumer, $token, $nonce, $timestamp) {
+  public function lookup_nonce($consumer, $token, $nonce, $timestamp) {
     // implement me
   }
 
-  function new_request_token($consumer, $callback = null) {
+  public function new_request_token($consumer, $callback = null) {
     // return a new token attached to this consumer
   }
 
-  function new_access_token($token, $consumer, $verifier = null) {
+  public function new_access_token($token, $consumer, $verifier = null) {
     // return a new access token attached to this consumer
     // for the user associated with this token if the request token
     // is authorized
@@ -729,7 +715,7 @@ class OAuthDataStore {
 class OAuthUtil {
   public static function urlencode_rfc3986($input) {
   if (is_array($input)) {
-    return array_map(array('OAuthUtil', 'urlencode_rfc3986'), $input);
+    return array_map(['OAuthUtil', 'urlencode_rfc3986'], $input);
   } else if (is_scalar($input)) {
     return str_replace(
       '+',
@@ -755,7 +741,7 @@ class OAuthUtil {
   public static function split_header($header, $only_allow_oauth_parameters = true) {
     $pattern = '/(([-_a-z]*)=("([^"]*)"|([^,]*)),?)/';
     $offset = 0;
-    $params = array();
+    $params = [];
     while (preg_match($pattern, $header, $matches, PREG_OFFSET_CAPTURE, $offset) > 0) {
       $match = $matches[0];
       $header_name = $matches[2][0];
@@ -784,7 +770,7 @@ class OAuthUtil {
       // we always want the keys to be Cased-Like-This and arh()
       // returns the headers in the same case as they are in the
       // request
-      $out = array();
+      $out = [];
       foreach( $headers AS $key => $value ) {
         $key = str_replace(
             " ",
@@ -796,14 +782,14 @@ class OAuthUtil {
     } else {
       // otherwise we don't have apache and are just going to have to hope
       // that $_SERVER actually contains what we need
-      $out = array();
+      $out = [];
       if( isset($_SERVER['CONTENT_TYPE']) )
         $out['Content-Type'] = $_SERVER['CONTENT_TYPE'];
       if( isset($_ENV['CONTENT_TYPE']) )
         $out['Content-Type'] = $_ENV['CONTENT_TYPE'];
 
       foreach ($_SERVER as $key => $value) {
-        if (substr($key, 0, 5) == "HTTP_") {
+        if (str_starts_with($key, "HTTP_")) {
           // this is chaos, basically it is just there to capitalize the first
           // letter of every word that is not an initial HTTP and strip HTTP
           // code from przemek
@@ -823,11 +809,11 @@ class OAuthUtil {
   // parameters like this
   // array('a' => array('b','c'), 'd' => 'e')
   public static function parse_parameters( $input ) {
-    if (!isset($input) || !$input) return array();
+    if (!isset($input) || !$input) return [];
 
     $pairs = explode('&', $input);
 
-    $parsed_parameters = array();
+    $parsed_parameters = [];
     foreach ($pairs as $pair) {
       $split = explode('=', $pair, 2);
       $parameter = OAuthUtil::urldecode_rfc3986($split[0]);
@@ -840,7 +826,7 @@ class OAuthUtil {
         if (is_scalar($parsed_parameters[$parameter])) {
           // This is the first duplicate, so transform scalar (string) into an array
           // so we can add the duplicates
-          $parsed_parameters[$parameter] = array($parsed_parameters[$parameter]);
+          $parsed_parameters[$parameter] = [$parsed_parameters[$parameter]];
         }
 
         $parsed_parameters[$parameter][] = $value;
@@ -861,9 +847,9 @@ class OAuthUtil {
 
     // Parameters are sorted by name, using lexicographical byte value ordering.
     // Ref: Spec: 9.1.1 (1)
-    uksort($params, 'strcmp');
+    uksort($params, strcmp(...));
 
-    $pairs = array();
+    $pairs = [];
     foreach ($params as $parameter => $value) {
       if (is_array($value)) {
         // If two or more parameters share the same name, they are sorted by their value

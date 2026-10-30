@@ -3,11 +3,8 @@
 
 class Pseudo_album_Core {
 
-  public $favourites;
+  public function __construct(public $favourites) {
 
-  public function __construct($favourites) {
-
-    $this->favourites = $favourites;
     // Set reasonable defaults
     $this->created = time();
     $this->rand_key = ((float)mt_rand()) / (float)mt_getrandmax();
@@ -217,7 +214,7 @@ class Pseudo_album_Core {
    * Find the position of the given child id in this album.  The resulting value is 1-indexed, so
    * the first child in the album is at position 1.
    */
-  public function get_position($child, $where=array()) {
+  public function get_position($child, $where=[]) {
     /*
     if ($this->sort_order == "DESC") {
       $comp = ">";
@@ -303,7 +300,7 @@ class Pseudo_album_Core {
    * @param boolean (optional) $center_vertically Center vertically (default: false)
    * @return string
    */
-  public function thumb_img($extra_attrs=array(), $max=null, $center_vertically=false) {
+  public function thumb_img($extra_attrs=[], $max=null, $center_vertically=false) {
     return "";
   }
 
@@ -343,7 +340,7 @@ class Pseudo_album_Core {
    * @param   array    order_by
    * @return array ORM
    */
-  function children($limit=null, $offset=null, $where=array(), $order_by=null) {
+  public function children($limit=null, $offset=null, $where=[], $order_by=null) {
     if (empty($this->favourites->contents)){
       return null;
     }
@@ -371,7 +368,7 @@ class Pseudo_album_Core {
    * @param   array    additional where clauses
    * @return object ORM_Iterator
    */
-  function descendants($limit=null, $offset=null, $where=array(), $order_by=null) {
+  public function descendants($limit=null, $offset=null, $where=[], $order_by=null) {
     if (empty($this->favourites->contents)){
       return null;
     }

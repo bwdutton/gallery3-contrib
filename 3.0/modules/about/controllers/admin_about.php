@@ -48,7 +48,7 @@ class Admin_About_Controller extends Admin_Controller {
   }
 
   private function _get_form() {
-    $form = new Forge("admin/about/handler", "", "post", array("id" => "g-admin-form"));
+    $form = new Forge("admin/about/handler", "", "post", ["id" => "g-admin-form"]);
     $group = $form->group("about");
     $group->input("about_title")->label(t('Enter the headline.'))->value(module::get_var("about", "title"));
     $group->textarea("about_code")->label(t('Enter the standard HTML code you want on the page.'))->value(module::get_var("about", "code"));

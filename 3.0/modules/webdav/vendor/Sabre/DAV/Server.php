@@ -67,14 +67,14 @@ class Sabre_DAV_Server {
      * 
      * @var array 
      */
-    protected $plugins = array();
+    protected $plugins = [];
 
     /**
      * This array contains a list of callbacks we should call when certain events are triggered 
      * 
      * @var array
      */
-    protected $eventSubscriptions = array();
+    protected $eventSubscriptions = [];
 
     /**
      * This is a default list of namespaces.
@@ -84,10 +84,10 @@ class Sabre_DAV_Server {
      * 
      * @var array
      */
-    public $xmlNamespaces = array(
+    public $xmlNamespaces = [
         'DAV:' => 'd',
         'http://sabredav.org/ns' => 's',
-    );
+    ];
 
     /**
      * The propertymap can be used to map properties from 
@@ -95,10 +95,10 @@ class Sabre_DAV_Server {
      * 
      * @var array
      */
-    public $propertyMap = array(
-    );
+    public $propertyMap = [
+    ];
 
-    public $protectedProperties = array(
+    public $protectedProperties = [
         // RFC4918
         '{DAV:}getcontentlength',
         '{DAV:}getetag',
@@ -124,7 +124,7 @@ class Sabre_DAV_Server {
 
         // RFC5397 
         '{DAV:}current-user-principal',
-    );
+    ];
 
     /**
      * This is a flag that allow or not showing file, line and code
@@ -185,7 +185,7 @@ class Sabre_DAV_Server {
             $error->setAttribute('xmlns:s',self::NS_SABREDAV);
             $DOM->appendChild($error);
 
-            $error->appendChild($DOM->createElement('s:exception',get_class($e)));
+            $error->appendChild($DOM->createElement('s:exception',$e::class));
             $error->appendChild($DOM->createElement('s:message',$e->getMessage()));
             if ($this->debugExceptions) {
                 $error->appendChild($DOM->createElement('s:file',$e->getFile()));
@@ -205,11 +205,11 @@ class Sabre_DAV_Server {
             } else {
 
                 $httpCode = 500;
-                $headers = array();
+                $headers = [];
 
             }
             $headers['Content-Type'] = 'application/xml; charset=utf-8';
-            
+
             $this->httpResponse->sendStatus($httpCode);
             $this->httpResponse->setHeaders($headers);
             $this->httpResponse->sendBody($DOM->saveXML());
@@ -303,7 +303,7 @@ class Sabre_DAV_Server {
      */
     public function addPlugin(Sabre_DAV_ServerPlugin $plugin) {
 
-        $this->plugins[get_class($plugin)] = $plugin;
+        $this->plugins[$plugin::class] = $plugin;
         $plugin->initialize($this);
 
     }
@@ -318,8 +318,7 @@ class Sabre_DAV_Server {
      */
     public function getPlugin($className) {
 
-        if (isset($this->plugins[$className])) return $this->plugins[$className];
-        return null;
+        return $this->plugins[$className] ?? null;
 
     }
 
@@ -341,9 +340,7 @@ class Sabre_DAV_Server {
      */
     public function subscribeEvent($event, $callback, $priority = 100) {
 
-        if (!isset($this->eventSubscriptions[$event])) {
-            $this->eventSubscriptions[$event] = array();
-        }
+        $this->eventSubscriptions[$event] ??= [];
         while(isset($this->eventSubscriptions[$event][$priority])) $priority++;
         $this->eventSubscriptions[$event][$priority] = $callback;
         ksort($this->eventSubscriptions[$event]);
@@ -361,8 +358,8 @@ class Sabre_DAV_Server {
      * @param array $arguments
      * @return bool 
      */
-    public function broadcastEvent($eventName,$arguments = array()) {
-        
+    public function broadcastEvent($eventName,$arguments = []) {
+
         if (isset($this->eventSubscriptions[$eventName])) {
 
             foreach($this->eventSubscriptions[$eventName] as $subscriber) {
@@ -389,10 +386,10 @@ class Sabre_DAV_Server {
 
         $method = strtoupper($method); 
 
-        if (!$this->broadcastEvent('beforeMethod',array($method, $uri))) return;
+        if (!$this->broadcastEvent('beforeMethod',[$method, $uri])) return;
 
         // Make sure this is a HTTP method we support
-        $internalMethods = array(
+        $internalMethods = [
             'OPTIONS',
             'GET',
             'HEAD',
@@ -404,15 +401,15 @@ class Sabre_DAV_Server {
             'COPY',
             'MOVE',
             'REPORT'
-        );
+        ];
 
         if (in_array($method,$internalMethods)) {
 
-            call_user_func(array($this,'http' . $method), $uri);
+            call_user_func([$this,'http' . $method], $uri);
 
         } else {
 
-            if ($this->broadcastEvent('unknownMethod',array($method, $uri))) {
+            if ($this->broadcastEvent('unknownMethod',[$method, $uri])) {
                 // Unsupported method
                 throw new Sabre_DAV_Exception_NotImplemented();
             }
@@ -422,7 +419,7 @@ class Sabre_DAV_Server {
     }
 
     // {{{ HTTP Method implementations
-    
+
     /**
      * HTTP OPTIONS 
      *
@@ -434,10 +431,10 @@ class Sabre_DAV_Server {
         $methods = $this->getAllowedMethods($uri);
 
         $this->httpResponse->setHeader('Allow',strtoupper(implode(', ',$methods)));
-        $features = array('1','3', 'extended-mkcol');
+        $features = ['1','3', 'extended-mkcol'];
 
         foreach($this->plugins as $plugin) $features = array_merge($features,$plugin->getFeatures());
-        
+
         $this->httpResponse->setHeader('DAV',implode(', ',$features));
         $this->httpResponse->setHeader('MS-Author-Via','DAV');
         $this->httpResponse->setHeader('Accept-Ranges','bytes');
@@ -481,9 +478,7 @@ class Sabre_DAV_Server {
         /* ContentType needs to get a default, because many webservers will otherwise
          * default to text/html, and we don't want this for security reasons.
          */
-        if (!isset($httpHeaders['Content-Type'])) {
-            $httpHeaders['Content-Type'] = 'application/octet-stream';
-        }
+        $httpHeaders['Content-Type'] ??= 'application/octet-stream';
 
 
         if (isset($httpHeaders['Content-Length'])) {
@@ -496,7 +491,7 @@ class Sabre_DAV_Server {
         } else {
             $nodeSize = null;
         }
-        
+
         $this->httpResponse->setHeaders($httpHeaders);
 
         $range = $this->getHTTPRange();
@@ -506,12 +501,12 @@ class Sabre_DAV_Server {
         // If ifRange is set, and range is specified, we first need to check
         // the precondition.
         if ($nodeSize && $range && $ifRange) {
-             
+
             // if IfRange is parsable as a date we'll treat it as a DateTime
             // otherwise, we must treat it as an etag.
             try {
                 $ifRangeDate = new DateTime($ifRange);
-               
+
                 // It's a date. We must check if the entity is modified since
                 // the specified date.
                 if (!isset($httpHeaders['Last-Modified'])) $ignoreRangeHeader = true;
@@ -520,8 +515,8 @@ class Sabre_DAV_Server {
                     if($modified > $ifRangeDate) $ignoreRangeHeader = true;
                 }
 
-            } catch (Exception $e) {
-               
+            } catch (Exception) {
+
                 // It's an entity. We can do a simple comparison. 
                 if (!isset($httpHeaders['ETag'])) $ignoreRangeHeader = true;
                 elseif ($httpHeaders['ETag']!==$ifRange) $ignoreRangeHeader = true;
@@ -535,7 +530,7 @@ class Sabre_DAV_Server {
             if (!is_null($range[0])) {
 
                 $start = $range[0];
-                $end = $range[1]?$range[1]:$nodeSize-1;
+                $end = $range[1] ?: $nodeSize-1;
                 if($start >= $nodeSize) 
                     throw new Sabre_DAV_Exception_RequestedRangeNotSatisfiable('The start offset (' . $range[0] . ') exceeded the size of the entity (' . $nodeSize . ')');
 
@@ -591,9 +586,7 @@ class Sabre_DAV_Server {
          */
         if ($node instanceof Sabre_DAV_IFile) {
             $headers = $this->getHTTPHeaders($this->getRequestUri());
-            if (!isset($headers['Content-Type'])) {
-                $headers['Content-Type'] = 'application/octet-stream';
-            }
+            $headers['Content-Type'] ??= 'application/octet-stream';
             $this->httpResponse->setHeaders($headers);
         }
         $this->httpResponse->sendStatus(200);
@@ -610,7 +603,7 @@ class Sabre_DAV_Server {
      */
     protected function httpDelete($uri) {
 
-        if (!$this->broadcastEvent('beforeUnbind',array($uri))) return;
+        if (!$this->broadcastEvent('beforeUnbind',[$uri])) return;
         $this->tree->delete($uri);
 
         $this->httpResponse->sendStatus(204);
@@ -665,14 +658,14 @@ class Sabre_DAV_Server {
     protected function httpPropPatch($uri) {
 
         $newProperties = $this->parsePropPatchRequest($this->httpRequest->getBody(true));
-        
+
         $result = $this->updateProperties($uri, $newProperties);
 
         $this->httpResponse->sendStatus(207);
         $this->httpResponse->setHeader('Content-Type','application/xml; charset=utf-8');
 
         $this->httpResponse->sendBody(
-            $this->generateMultiStatus(array($result))
+            $this->generateMultiStatus([$result])
         );
 
     }
@@ -693,7 +686,7 @@ class Sabre_DAV_Server {
 
         // Intercepting the Finder problem
         if (($expected = $this->httpRequest->getHeader('X-Expected-Entity-Length')) && $expected > 0) {
-           
+
             /**
             Many webservers will not cooperate well with Finder PUT requests, 
             because it uses 'Chunked' transfer encoding for the request body.
@@ -736,13 +729,13 @@ class Sabre_DAV_Server {
         if ($this->tree->nodeExists($uri)) { 
 
             $node = $this->tree->getNodeForPath($uri);
-          
+
             // Checking If-None-Match and related headers.
             if (!$this->checkPreconditions()) return;
-            
+
             // If the node is a collection, we'll deny it
             if (!($node instanceof Sabre_DAV_IFile)) throw new Sabre_DAV_Exception_Conflict('PUT is not allowed on non-files.');
-            if (!$this->broadcastEvent('beforeWriteContent',array($this->getRequestUri()))) return false;
+            if (!$this->broadcastEvent('beforeWriteContent',[$this->getRequestUri()])) return false;
 
             $node->put($body);
             $this->httpResponse->setHeader('Content-Length','0');
@@ -775,7 +768,7 @@ class Sabre_DAV_Server {
         if ($requestBody) {
 
             $contentType = $this->httpRequest->getHeader('Content-Type');
-            if (strpos($contentType,'application/xml')!==0 && strpos($contentType,'text/xml')!==0) {
+            if (!str_starts_with($contentType, 'application/xml') && !str_starts_with($contentType, 'text/xml')) {
 
                 // We must throw 415 for unsupport mkcol bodies
                 throw new Sabre_DAV_Exception_UnsupportedMediaType('The request body for the MKCOL request must have an xml Content-Type');
@@ -790,7 +783,7 @@ class Sabre_DAV_Server {
 
             }
 
-            $properties = array();
+            $properties = [];
             foreach($dom->firstChild->childNodes as $childNode) {
 
                 if (Sabre_DAV_XMLUtil::toClarkNotation($childNode)!=='{DAV:}set') continue;
@@ -802,7 +795,7 @@ class Sabre_DAV_Server {
 
             unset($properties['{DAV:}resourcetype']);
 
-            $resourceType = array();
+            $resourceType = [];
             // Need to parse out all the resourcetypes
             $rtNode = $dom->firstChild->getElementsByTagNameNS('urn:DAV','resourcetype');
             $rtNode = $rtNode->item(0);
@@ -812,8 +805,8 @@ class Sabre_DAV_Server {
 
         } else {
 
-            $properties = array();
-            $resourceType = array('{DAV:}collection');
+            $properties = [];
+            $resourceType = ['{DAV:}collection'];
 
         }
 
@@ -824,7 +817,7 @@ class Sabre_DAV_Server {
             $this->httpResponse->setHeader('Content-Type','application/xml; charset=utf-8');
 
             $this->httpResponse->sendBody(
-                $this->generateMultiStatus(array($result))
+                $this->generateMultiStatus([$result])
             );
 
         } else {
@@ -847,15 +840,15 @@ class Sabre_DAV_Server {
         $moveInfo = $this->getCopyAndMoveInfo();
         if ($moveInfo['destinationExists']) {
 
-            if (!$this->broadcastEvent('beforeUnbind',array($moveInfo['destination']))) return false;
+            if (!$this->broadcastEvent('beforeUnbind',[$moveInfo['destination']])) return false;
             $this->tree->delete($moveInfo['destination']);
 
         }
 
-        if (!$this->broadcastEvent('beforeUnbind',array($uri))) return false;
-        if (!$this->broadcastEvent('beforeBind',array($moveInfo['destination']))) return false;
+        if (!$this->broadcastEvent('beforeUnbind',[$uri])) return false;
+        if (!$this->broadcastEvent('beforeBind',[$moveInfo['destination']])) return false;
         $this->tree->move($uri,$moveInfo['destination']);
-        $this->broadcastEvent('afterBind',array($moveInfo['destination']));
+        $this->broadcastEvent('afterBind',[$moveInfo['destination']]);
 
         // If a resource was overwritten we should send a 204, otherwise a 201
         $this->httpResponse->setHeader('Content-Length','0');
@@ -877,13 +870,13 @@ class Sabre_DAV_Server {
         $copyInfo = $this->getCopyAndMoveInfo();
         if ($copyInfo['destinationExists']) {
 
-            if (!$this->broadcastEvent('beforeUnbind',array($copyInfo['destination']))) return false;
+            if (!$this->broadcastEvent('beforeUnbind',[$copyInfo['destination']])) return false;
             $this->tree->delete($copyInfo['destination']);
 
         }
-        if (!$this->broadcastEvent('beforeBind',array($copyInfo['destination']))) return false;
+        if (!$this->broadcastEvent('beforeBind',[$copyInfo['destination']])) return false;
         $this->tree->copy($uri,$copyInfo['destination']);
-        $this->broadcastEvent('afterBind',array($copyInfo['destination']));
+        $this->broadcastEvent('afterBind',[$copyInfo['destination']]);
 
         // If a resource was overwritten we should send a 204, otherwise a 201
         $this->httpResponse->setHeader('Content-Length','0');
@@ -909,7 +902,7 @@ class Sabre_DAV_Server {
 
         $reportName = Sabre_DAV_XMLUtil::toClarkNotation($dom->firstChild);
 
-        if ($this->broadcastEvent('report',array($reportName,$dom, $uri))) {
+        if ($this->broadcastEvent('report',[$reportName,$dom, $uri])) {
 
             // If broadcastEvent returned true, it means the report was not supported
             throw new Sabre_DAV_Exception_ReportNotImplemented();
@@ -929,7 +922,7 @@ class Sabre_DAV_Server {
      */
     public function getAllowedMethods($uri) {
 
-        $methods = array(
+        $methods = [
             'OPTIONS',
             'GET',
             'HEAD',
@@ -940,12 +933,12 @@ class Sabre_DAV_Server {
             'COPY',
             'MOVE',
             'REPORT'
-        );
+        ];
 
         // The MKCOL is only allowed on an unmapped uri
         try {
             $node = $this->tree->getNodeForPath($uri);
-        } catch (Sabre_DAV_Exception_FileNotFound $e) {
+        } catch (Sabre_DAV_Exception_FileNotFound) {
             $methods[] = 'MKCOL';
         }
 
@@ -985,7 +978,7 @@ class Sabre_DAV_Server {
 
         $uri = str_replace('//','/',$uri);
 
-        if (strpos($uri,$this->getBaseUri())===0) {
+        if (str_starts_with($uri, $this->getBaseUri())) {
 
             return trim(Sabre_DAV_URLUtil::decodePath(substr($uri,strlen($this->getBaseUri()))),'/');
 
@@ -1052,10 +1045,10 @@ class Sabre_DAV_Server {
 
         if ($matches[1]==='' && $matches[2]==='') return null;
 
-        return array(
+        return [
             $matches[1]!==''?$matches[1]:null,
             $matches[2]!==''?$matches[2]:null,
-        );
+        ];
 
     }
 
@@ -1084,12 +1077,12 @@ class Sabre_DAV_Server {
         // We need to throw a bad request exception, if the header was invalid
         else throw new Sabre_DAV_Exception_BadRequest('The HTTP Overwrite header should be either T or F');
 
-        list($destinationDir) = Sabre_DAV_URLUtil::splitPath($destination);
+        [$destinationDir] = Sabre_DAV_URLUtil::splitPath($destination);
 
         try {
             $destinationParent = $this->tree->getNodeForPath($destinationDir);
             if (!($destinationParent instanceof Sabre_DAV_ICollection)) throw new Sabre_DAV_Exception_UnsupportedMediaType('The destination node is not a collection');
-        } catch (Sabre_DAV_Exception_FileNotFound $e) {
+        } catch (Sabre_DAV_Exception_FileNotFound) {
 
             // If the destination parent node is not found, we throw a 409
             throw new Sabre_DAV_Exception_Conflict('The destination node is not found');
@@ -1098,12 +1091,12 @@ class Sabre_DAV_Server {
         try {
 
             $destinationNode = $this->tree->getNodeForPath($destination);
-            
+
             // If this succeeded, it means the destination already exists
             // we'll need to throw precondition failed in case overwrite is false
             if (!$overwrite) throw new Sabre_DAV_Exception_PreconditionFailed('The destination node already exists, and the overwrite header is set to false','Overwrite');
 
-        } catch (Sabre_DAV_Exception_FileNotFound $e) {
+        } catch (Sabre_DAV_Exception_FileNotFound) {
 
             // Destination didn't exist, we're all good
             $destinationNode = false;
@@ -1113,11 +1106,11 @@ class Sabre_DAV_Server {
         }
 
         // These are the three relevant properties we need to return
-        return array(
+        return [
             'destination'       => $destination,
             'destinationExists' => $destinationNode==true,
             'destinationNode'   => $destinationNode,
-        );
+        ];
 
     }
 
@@ -1151,16 +1144,16 @@ class Sabre_DAV_Server {
      */
     public function getHTTPHeaders($path) {
 
-        $propertyMap = array(
+        $propertyMap = [
             '{DAV:}getcontenttype'   => 'Content-Type',
             '{DAV:}getcontentlength' => 'Content-Length',
             '{DAV:}getlastmodified'  => 'Last-Modified', 
             '{DAV:}getetag'          => 'ETag',
-        );
+        ];
 
         $properties = $this->getProperties($path,array_keys($propertyMap));
 
-        $headers = array();
+        $headers = [];
         foreach($propertyMap as $property=>$header) {
             if (!isset($properties[$property])) continue;
 
@@ -1175,7 +1168,7 @@ class Sabre_DAV_Server {
         }
 
         return $headers;
-        
+
     }
 
     /**
@@ -1192,21 +1185,21 @@ class Sabre_DAV_Server {
      * @param int $depth 
      * @return array
      */
-    public function getPropertiesForPath($path,$propertyNames = array(),$depth = 0) {
+    public function getPropertiesForPath($path,$propertyNames = [],$depth = 0) {
 
         if ($depth!=0) $depth = 1;
 
-        $returnPropertyList = array();
-        
+        $returnPropertyList = [];
+
         $parentNode = $this->tree->getNodeForPath($path);
-        $nodes = array(
+        $nodes = [
             $path => $parentNode
-        );
+        ];
         if ($depth==1 && $parentNode instanceof Sabre_DAV_ICollection) {
             foreach($this->tree->getChildren($path) as $childNode)
                 $nodes[$path . '/' . $childNode->getName()] = $childNode;
         }            
-       
+
         // If the propertyNames array is empty, it means all properties are requested.
         // We shouldn't actually return everything we know though, and only return a
         // sensible list. 
@@ -1214,17 +1207,17 @@ class Sabre_DAV_Server {
 
         foreach($nodes as $myPath=>$node) {
 
-            $newProperties = array(
-                '200' => array(),
-                '404' => array(),
-            );
+            $newProperties = [
+                '200' => [],
+                '404' => [],
+            ];
             if ($node instanceof Sabre_DAV_IProperties) 
                 $newProperties['200'] = $node->getProperties($propertyNames);
 
             if ($allProperties) {
 
                 // Default list of propertyNames, when all properties were requested.
-                $propertyNames = array(
+                $propertyNames = [
                     '{DAV:}getlastmodified',
                     '{DAV:}getcontentlength',
                     '{DAV:}resourcetype',
@@ -1232,7 +1225,7 @@ class Sabre_DAV_Server {
                     '{DAV:}quota-available-bytes',
                     '{DAV:}getetag',
                     '{DAV:}getcontenttype',
-                );
+                ];
 
                 // We need to make sure this includes any propertyname already returned from
                 // $node->getProperties();
@@ -1254,7 +1247,7 @@ class Sabre_DAV_Server {
             }
 
             foreach($propertyNames as $prop) {
-                
+
                 if (isset($newProperties[200][$prop])) continue;
 
                 switch($prop) {
@@ -1283,8 +1276,8 @@ class Sabre_DAV_Server {
                 if (!$allProperties && !isset($newProperties[200][$prop])) $newProperties[404][$prop] = null;
 
             }
-         
-            $this->broadcastEvent('afterGetProperties',array(trim($myPath,'/'),&$newProperties));
+
+            $this->broadcastEvent('afterGetProperties',[trim($myPath,'/'),&$newProperties]);
 
             $newProperties['href'] = trim($myPath,'/'); 
 
@@ -1301,7 +1294,7 @@ class Sabre_DAV_Server {
             $returnPropertyList[] = $newProperties;
 
         }
-        
+
         return $returnPropertyList;
 
     }
@@ -1319,16 +1312,16 @@ class Sabre_DAV_Server {
      */
     public function createFile($uri,$data) {
 
-        list($dir,$name) = Sabre_DAV_URLUtil::splitPath($uri);
+        [$dir, $name] = Sabre_DAV_URLUtil::splitPath($uri);
 
-        if (!$this->broadcastEvent('beforeBind',array($uri))) return;
-        if (!$this->broadcastEvent('beforeCreateFile',array($uri,$data))) return;
+        if (!$this->broadcastEvent('beforeBind',[$uri])) return;
+        if (!$this->broadcastEvent('beforeCreateFile',[$uri,$data])) return;
 
         $parent = $this->tree->getNodeForPath($dir);
         $parent->createFile($name,$data);
         $this->tree->markDirty($dir);
 
-        $this->broadcastEvent('afterBind',array($uri));
+        $this->broadcastEvent('afterBind',[$uri]);
     }
 
     /**
@@ -1339,7 +1332,7 @@ class Sabre_DAV_Server {
      */
     public function createDirectory($uri) {
 
-        $this->createCollection($uri,array('{DAV:}collection'),array());
+        $this->createCollection($uri,['{DAV:}collection'],[]);
 
     }
 
@@ -1358,7 +1351,7 @@ class Sabre_DAV_Server {
      */
     public function createCollection($uri, array $resourceType, array $properties) {
 
-        list($parentUri,$newName) = Sabre_DAV_URLUtil::splitPath($uri);
+        [$parentUri, $newName] = Sabre_DAV_URLUtil::splitPath($uri);
 
         // Making sure {DAV:}collection was specified as resourceType
         if (!in_array('{DAV:}collection', $resourceType)) {
@@ -1395,8 +1388,8 @@ class Sabre_DAV_Server {
             // This is correct
         }
 
-        
-        if (!$this->broadcastEvent('beforeBind',array($uri))) return;
+
+        if (!$this->broadcastEvent('beforeBind',[$uri])) return;
 
         // There are 2 modes of operation. The standard collection 
         // creates the directory, and then updates properties
@@ -1436,7 +1429,7 @@ class Sabre_DAV_Server {
             }
 
             if ($rollBack) {
-                if (!$this->broadcastEvent('beforeUnbind',array($uri))) return;
+                if (!$this->broadcastEvent('beforeUnbind',[$uri])) return;
                 $this->tree->delete($uri);
 
                 // Re-throwing exception
@@ -1444,10 +1437,10 @@ class Sabre_DAV_Server {
 
                 return $errorResult;
             }
-                
+
         }
         $this->tree->markDirty($parentUri);
-        $this->broadcastEvent('afterBind',array($uri));
+        $this->broadcastEvent('afterBind',[$uri]);
 
     }
 
@@ -1474,12 +1467,12 @@ class Sabre_DAV_Server {
         // we'll start by grabbing the node, this will throw the appropriate
         // exceptions if it doesn't. 
         $node = $this->tree->getNodeForPath($uri);
-       
-        $result = array(
-            200 => array(),
-            403 => array(),
-            424 => array(),
-        ); 
+
+        $result = [
+            200 => [],
+            403 => [],
+            424 => [],
+        ]; 
         $remainingProperties = $properties;
         $hasError = false;
 
@@ -1492,7 +1485,7 @@ class Sabre_DAV_Server {
             foreach($properties as $propertyName=> $value) {
                 $result[403][$propertyName] = null;
             }
-            $remainingProperties = array();
+            $remainingProperties = [];
         }
 
         // Running through all properties to make sure none of them are protected
@@ -1507,7 +1500,7 @@ class Sabre_DAV_Server {
         // Only if there were no errors we may attempt to update the resource
         if (!$hasError) {
             $updateResult = $node->updateProperties($properties);
-            $remainingProperties = array();
+            $remainingProperties = [];
 
             if ($updateResult===true) {
                 // success
@@ -1588,7 +1581,7 @@ class Sabre_DAV_Server {
             // request succeed if a resource exists at that url.
             try {
                 $node = $this->tree->getNodeForPath($uri);
-            } catch (Sabre_DAV_Exception_FileNotFound $e) {
+            } catch (Sabre_DAV_Exception_FileNotFound) {
                 throw new Sabre_DAV_Exception_PreconditionFailed('An If-Match header was specified and the resource did not exist','If-Match');
             }
 
@@ -1602,7 +1595,7 @@ class Sabre_DAV_Server {
 
                     // Stripping any extra spaces
                     $ifMatchItem = trim($ifMatchItem,' ');
-                    
+
                     $etag = $node->getETag();
                     if ($etag===$ifMatchItem) {
                         $haveMatch = true;
@@ -1624,7 +1617,7 @@ class Sabre_DAV_Server {
             if (!$node) {
                 try {
                     $node = $this->tree->getNodeForPath($uri);
-                } catch (Sabre_DAV_Exception_FileNotFound $e) {
+                } catch (Sabre_DAV_Exception_FileNotFound) {
                     $nodeExists = false;
                 }
             }
@@ -1638,10 +1631,10 @@ class Sabre_DAV_Server {
                     $etag = $node->getETag();
 
                     foreach($ifNoneMatch as $ifNoneMatchItem) {
-                        
+
                         // Stripping any extra spaces
                         $ifNoneMatchItem = trim($ifNoneMatchItem,' ');
-                        
+
                         if ($etag===$ifNoneMatchItem) $haveMatch = true;
 
                     }
@@ -1661,7 +1654,7 @@ class Sabre_DAV_Server {
         }
 
         if (!$ifNoneMatch && ($ifModifiedSince = $this->httpRequest->getHeader('If-Modified-Since'))) {
-            
+
             // The If-Modified-Since header contains a date. We
             // will only return the entity if it has been changed since
             // that date. If it hasn't been changed, we return a 304
@@ -1671,9 +1664,7 @@ class Sabre_DAV_Server {
             $date = Sabre_HTTP_Util::parseHTTPDate($ifModifiedSince);
 
             if ($date) {
-                if (is_null($node)) {
-                    $node = $this->tree->getNodeForPath($uri);
-                }
+                $node ??= $this->tree->getNodeForPath($uri);
                 $lastMod = $node->getLastModified();
                 if ($lastMod) {
                     $lastMod = new DateTime('@' . $lastMod);
@@ -1686,16 +1677,14 @@ class Sabre_DAV_Server {
         }
 
         if ($ifUnmodifiedSince = $this->httpRequest->getHeader('If-Unmodified-Since')) {
-            
+
             // The If-Unmodified-Since will allow allow the request if the
             // entity has not changed since the specified date.
             $date = Sabre_HTTP_Util::parseHTTPDate($ifUnmodifiedSince);
-           
+
             // We must only check the date if it's valid
             if ($date) {
-                if (is_null($node)) {
-                    $node = $this->tree->getNodeForPath($uri);
-                }   
+                $node ??= $this->tree->getNodeForPath($uri);   
                 $lastMod = $node->getLastModified();
                 if ($lastMod) {
                     $lastMod = new DateTime('@' . $lastMod);
@@ -1712,8 +1701,8 @@ class Sabre_DAV_Server {
 
     // }}} 
     // {{{ XML Readers & Writers  
-    
-    
+
+
     /**
      * Generates a WebDAV propfind response body based on a list of nodes 
      * 
@@ -1739,7 +1728,7 @@ class Sabre_DAV_Server {
 
             $href = $entry['href'];
             unset($entry['href']);
-            
+
             $response = new Sabre_DAV_Property_Response($href,$entry);
             $response->serialize($this,$multiStatus);
 
@@ -1766,8 +1755,8 @@ class Sabre_DAV_Server {
 
         //We'll need to change the DAV namespace declaration to something else in order to make it parsable
         $dom = Sabre_DAV_XMLUtil::loadDOMDocument($body);
-        
-        $newProperties = array();
+
+        $newProperties = [];
 
         foreach($dom->firstChild->childNodes as $child) {
 
@@ -1776,7 +1765,7 @@ class Sabre_DAV_Server {
             $operation = Sabre_DAV_XMLUtil::toClarkNotation($child);
 
             if ($operation!=='{DAV:}set' && $operation!=='{DAV:}remove') continue;
-            
+
             $innerProperties = Sabre_DAV_XMLUtil::parseProperties($child, $this->propertyMap);
 
             foreach($innerProperties as $propertyName=>$propertyValue) {
@@ -1807,7 +1796,7 @@ class Sabre_DAV_Server {
     public function parsePropFindRequest($body) {
 
         // If the propfind body was empty, it means IE is requesting 'all' properties
-        if (!$body) return array();
+        if (!$body) return [];
 
         $dom = Sabre_DAV_XMLUtil::loadDOMDocument($body);
         $elem = $dom->getElementsByTagNameNS('urn:DAV','propfind')->item(0);

@@ -17,7 +17,7 @@
  *************************************************************************/
 class emboss_task_Core {
 
-  static function available_tasks() {
+  public static function available_tasks() {
     $q = emboss::find_dirty();
     $n = $q->count();
 
@@ -34,18 +34,18 @@ class emboss_task_Core {
     return $tasks;
   }
 
-  static function update_overlays($task)
+  public static function update_overlays($task)
   {
-    $errors = array();
+    $errors = [];
     try {
       $mode = $task->get('mode','init');
       switch($mode) {
       case 'init':
         $q = emboss::find_dirty();
         foreach ($q as $item) {
-          $ids[] = array('id'=>$item->id,
+          $ids[] = ['id'=>$item->id,
                          'image_id'=>$item->image_id,
-                         'overlay_id'=>$item->best_overlay_id);
+                         'overlay_id'=>$item->best_overlay_id];
         }
         $count = count($ids);
 
@@ -101,7 +101,7 @@ class emboss_task_Core {
     }
   }
 
-  static function do_embossing($id,$image_id,$overlay_id)
+  public static function do_embossing($id,$image_id,$overlay_id)
   {
     $gravity      = module::get_var('emboss','gravity');
     $transparency = module::get_var('emboss','transparency');

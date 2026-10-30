@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class author_installer {
-  static function install() {
+  public static function install() {
     $db = Database::instance();
     $db->query("CREATE TABLE IF NOT EXISTS {author_records} (
                  `id` int(9) NOT NULL auto_increment,
@@ -35,12 +35,12 @@ class author_installer {
     return true;
   }
 
-  static function activate() {
+  public static function activate() {
 		gallery::set_path_env(
-        array(
+        [
         	getenv("PATH"),
            	module::get_var("gallery", "extra_binary_paths")
-        ));
+        ]);
 		
 		$exiv = exec('which exiv2');
 		if ($exiv == '') {
@@ -48,17 +48,17 @@ class author_installer {
   		}
   		else {
 	  		module::set_var("author", "exiv_path", $exiv);
-	  		$out = array();
+	  		$out = [];
 	  		exec("$exiv -V", $out);
 			$parts = explode(' ', $out[0]);
 	  		module::set_var("author", "exiv_version", $parts[1]);
 	  	}
   }
 
-  static function deactivate() {
+  public static function deactivate() {
   }
 
-  static function uninstall() {
+  public static function uninstall() {
     Database::instance()->query("DROP TABLE IF EXISTS {author_records};");
   }
 }

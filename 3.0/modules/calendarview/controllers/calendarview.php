@@ -30,10 +30,10 @@ class CalendarView_Controller extends Controller {
     $root = item::root();
     $template = new Theme_View("page.html", "other", "CalendarView");
     $template->set_global(
-      array("calendar_user" => $display_user,
-            "breadcrumbs" => array(
+      ["calendar_user" => $display_user,
+            "breadcrumbs" => [
               Breadcrumb::instance($root->title, $root->url())->set_first(),
-              Breadcrumb::instance($display_year, url::site("calendarview/calendar/" . $display_year))->set_last())));
+              Breadcrumb::instance($display_year, url::site("calendarview/calendar/" . $display_year))->set_last()]]);
     $template->page_title = t("Gallery :: Calendar");
     $template->content = new View("calendarview_year.html");
     $template->content->calendar_year = $display_year;
@@ -47,12 +47,12 @@ class CalendarView_Controller extends Controller {
     // Display all images for the specified day.
 
     // Set up default search conditions for retrieving all photos from the specified day.
-    $where = array(array("type", "!=", "album"));
+    $where = [["type", "!=", "album"]];
     if ($display_user != "-1") {
-      $where[] = array("owner_id", "=", $display_user);
+      $where[] = ["owner_id", "=", $display_user];
     }
-    $where[] = array("captured", ">=", mktime(0, 0, 0, $display_month, $display_day, $display_year));
-    $where[] = array("captured", "<", mktime(0, 0, 0, $display_month, ($display_day + 1), $display_year));
+    $where[] = ["captured", ">=", mktime(0, 0, 0, $display_month, $display_day, $display_year)];
+    $where[] = ["captured", "<", mktime(0, 0, 0, $display_month, ($display_day + 1), $display_year)];
 
     // Figure out the total number of photos to display.
     $day_count = calendarview::get_items_count($where);
@@ -75,16 +75,16 @@ class CalendarView_Controller extends Controller {
     $root = item::root();
     $template = new Theme_View("page.html", "collection", "CalendarDayView");
     $template->set_global(
-      array("page" => $page,
+      ["page" => $page,
             "max_pages" => $max_pages,
             "page_size" => $page_size,
             "children" => $children,
-            "breadcrumbs" => array(
+            "breadcrumbs" => [
               Breadcrumb::instance($root->title, $root->url())->set_first(),
               Breadcrumb::instance($display_year, url::site("calendarview/calendar/" . $display_year . "/" . $display_user)),
               Breadcrumb::instance(t(date("F", mktime(0, 0, 0, $display_month, $display_day, $display_year))), url::site("calendarview/month/" . $display_year . "/" . $display_user . "/" . $display_month)),
-              Breadcrumb::instance($display_day, url::site("calendarview/month/" . $display_year . "/" . $display_user . "/" . $display_month . "/" . $display_day))->set_last()),
-            "children_count" => $day_count));
+              Breadcrumb::instance($display_day, url::site("calendarview/month/" . $display_year . "/" . $display_user . "/" . $display_month . "/" . $display_day))->set_last()],
+            "children_count" => $day_count]);
     $template->page_title = t("Gallery :: Calendar");
     $template->content = new View("dynamic.html");
     $template->content->title = t("Photos From ") . date("d", mktime(0, 0, 0, $display_month, $display_day, $display_year)) . " " . t(date("F", mktime(0, 0, 0, $display_month, $display_day, $display_year))) . " " . date("Y", mktime(0, 0, 0, $display_month, $display_day, $display_year));
@@ -94,24 +94,24 @@ class CalendarView_Controller extends Controller {
     item::set_display_context_callback("CalendarView_Controller::get_display_day_context", $display_user, $display_year, $display_month, $display_day);
   }
 
-  static function get_display_day_context($item, $display_user, $display_year, $display_month, $display_day) {
+  public static function get_display_day_context($item, $display_user, $display_year, $display_month, $display_day) {
     // Set up default search conditions for retrieving all photos from the specified day.
-    $where = array(array("type", "!=", "album"));
+    $where = [["type", "!=", "album"]];
     if ($display_user != "-1") {
-      $where[] = array("owner_id", "=", $display_user);
+      $where[] = ["owner_id", "=", $display_user];
     }
-    $where[] = array("captured", ">=", mktime(0, 0, 0, $display_month, $display_day, $display_year));
-    $where[] = array("captured", "<", mktime(0, 0, 0, $display_month, ($display_day + 1), $display_year));			  
+    $where[] = ["captured", ">=", mktime(0, 0, 0, $display_month, $display_day, $display_year)];
+    $where[] = ["captured", "<", mktime(0, 0, 0, $display_month, ($display_day + 1), $display_year)];
 
     // Generate breadcrumbs for the photo page.
     $root = item::root();
-    $breadcrumbs = array(
+    $breadcrumbs = [
       Breadcrumb::instance($root->title, $root->url())->set_first(),
       Breadcrumb::instance($display_year, url::site("calendarview/calendar/" . $display_year . "/" . $display_user)),
       Breadcrumb::instance(t(date("F", mktime(0, 0, 0, $display_month, $display_day, $display_year))), url::site("calendarview/month/" . $display_year . "/" . $display_user . "/" . $display_month)),
       Breadcrumb::instance($display_day, url::site("calendarview/month/" . $display_year . "/" . $display_user . "/" . $display_month . "/" . $display_day)),
       Breadcrumb::instance($item->title, $item->url())->set_last()
-    );
+    ];
 
     return CalendarView_Controller::get_display_context($item, $where, $breadcrumbs);
   }
@@ -120,12 +120,12 @@ class CalendarView_Controller extends Controller {
     // Display all images for the specified month.
 
     // Set up default search conditions for retrieving all photos from the specified month.
-    $where = array(array("type", "!=", "album"));
+    $where = [["type", "!=", "album"]];
     if ($display_user != "-1") {
-      $where[] = array("owner_id", "=", $display_user);
+      $where[] = ["owner_id", "=", $display_user];
     }
-    $where[] = array("captured", ">=", mktime(0, 0, 0, $display_month, 1, $display_year));
-    $where[] = array("captured", "<", mktime(0, 0, 0, $display_month+1, 1, $display_year));
+    $where[] = ["captured", ">=", mktime(0, 0, 0, $display_month, 1, $display_year)];
+    $where[] = ["captured", "<", mktime(0, 0, 0, $display_month+1, 1, $display_year)];
 
     // Figure out the total number of photos to display.
     $day_count = calendarview::get_items_count($where);
@@ -148,15 +148,15 @@ class CalendarView_Controller extends Controller {
     $root = item::root();
     $template = new Theme_View("page.html", "collection", "CalendarMonthView");
     $template->set_global(
-      array("page" => $page,
+      ["page" => $page,
             "max_pages" => $max_pages,
             "page_size" => $page_size,
-            "breadcrumbs" => array(
+            "breadcrumbs" => [
               Breadcrumb::instance($root->title, $root->url())->set_first(),
               Breadcrumb::instance($display_year, url::site("calendarview/calendar/" . $display_year . "/" . $display_user)),
-              Breadcrumb::instance(t(date("F", mktime(0, 0, 0, $display_month, 1, $display_year))), url::site("calendarview/month/" . $display_year . "/" . $display_user . "/" . $display_month))->set_last()),
+              Breadcrumb::instance(t(date("F", mktime(0, 0, 0, $display_month, 1, $display_year))), url::site("calendarview/month/" . $display_year . "/" . $display_user . "/" . $display_month))->set_last()],
             "children" => $children,
-            "children_count" => $day_count));
+            "children_count" => $day_count]);
     $template->page_title = t("Gallery :: Calendar");
     $template->content = new View("dynamic.html");
     $template->content->title = t("Photos From ") . t(date("F", mktime(0, 0, 0, $display_month, 1, $display_year))) . " " . date("Y", mktime(0, 0, 0, $display_month, 1, $display_year));
@@ -166,28 +166,28 @@ class CalendarView_Controller extends Controller {
     item::set_display_context_callback("CalendarView_Controller::get_display_month_context", $display_user, $display_year, $display_month);
   }
 
-  static function get_display_month_context($item, $display_user, $display_year, $display_month) {
+  public static function get_display_month_context($item, $display_user, $display_year, $display_month) {
     // Set up default search conditions for retrieving all photos from the specified month.
-    $where = array(array("type", "!=", "album"));
+    $where = [["type", "!=", "album"]];
     if ($display_user != "-1") {
-      $where[] = array("owner_id", "=", $display_user);
+      $where[] = ["owner_id", "=", $display_user];
     }
-    $where[] = array("captured", ">=", mktime(0, 0, 0, $display_month, 1, $display_year));
-    $where[] = array("captured", "<", mktime(0, 0, 0, $display_month+1, 1, $display_year));
+    $where[] = ["captured", ">=", mktime(0, 0, 0, $display_month, 1, $display_year)];
+    $where[] = ["captured", "<", mktime(0, 0, 0, $display_month+1, 1, $display_year)];
 
     // Generate breadcrumbs for the photo page.
     $root = item::root();
-    $breadcrumbs = array(
+    $breadcrumbs = [
       Breadcrumb::instance($root->title, $root->url())->set_first(),
       Breadcrumb::instance($display_year, url::site("calendarview/calendar/" . $display_year . "/" . $display_user)),
       Breadcrumb::instance(t(date("F", mktime(0, 0, 0, $display_month, 1, $display_year))), url::site("calendarview/month/" . $display_year . "/" . $display_user . "/" . $display_month)),
       Breadcrumb::instance($item->title, $item->url())->set_last()
-    );
+    ];
 
     return CalendarView_Controller::get_display_context($item, $where, $breadcrumbs);
   }
 
-  private function get_display_context($item, $where=array(), $breadcrumbs=array()) {
+  private function get_display_context($item, $where=[], $breadcrumbs=[]) {
     // Set up previous / next / breadcrumbs / etc to point to CalendarView instead of the album.
 
     // Figure out the photo's position.
@@ -195,25 +195,25 @@ class CalendarView_Controller extends Controller {
 
     // Figure out the previous and next items.
     if ($position > 1) {
-      list ($previous_item, $ignore, $next_item) = calendarview::get_items(3, $position - 2, $where);
+      [$previous_item, $ignore, $next_item] = calendarview::get_items(3, $position - 2, $where);
     } else {
-      list ($next_item) = calendarview::get_items(1, $position, $where);
+      [$next_item] = calendarview::get_items(1, $position, $where);
     }
 
     // Figure out the total number of photos.
     $sibling_count = calendarview::get_items_count($where);
 
-    return array("position" => $position,
+    return ["position" => $position,
                  "previous_item" => $previous_item,
                  "next_item" => $next_item,
                  "sibling_count" => $sibling_count,
-                 "breadcrumbs" => $breadcrumbs);
+                 "breadcrumbs" => $breadcrumbs];
   }
 
   private function _get_calenderprefs_form($display_year, $display_user) {
     // Generate a form to allow the visitor to select a year and a gallery photo owner.
     $calendar_group = new Forge("calendarview/setprefs", "", "post",
-                      array("id" => "g-view-calendar-form"));
+                      ["id" => "g-view-calendar-form"]);
 
     // Generate a list of all Gallery users who have uploaded photos.
     $valid_users[-1] = "(All Users)";
@@ -233,7 +233,7 @@ class CalendarView_Controller extends Controller {
 
     // Generate a list of years, starting with the year the earliest photo was
     //   taken, and ending with the year of the most recent photo.
-    $valid_years = Array();
+    $valid_years = [];
     if ($display_user == -1) {
       $all_photos = ORM::factory("item")
         ->viewable()

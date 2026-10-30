@@ -18,11 +18,11 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class rwinfo_block_Core {
-  static function get_site_list() {
-    return array("rwinfo" => t("rWInfo"));
+  public static function get_site_list() {
+    return ["rwinfo" => t("rWInfo")];
   }
 
-  static function get($block_id, $theme) {
+  public static function get($block_id, $theme) {
     $block = "";
     switch ($block_id) {
     case "rwinfo":
@@ -43,28 +43,28 @@ class rwinfo_block_Core {
         $block->content = new View("rwinfo_block.html");
 
         if ($theme->item->title && module::get_var("rwinfo", "show_title")) {  //rWatcher Edit:  rwinfo
-          $info["title"] = array(
+          $info["title"] = [
             "label" => t("Title:"),
             "value" => html::purify($theme->item->title)
-          );
+          ];
         }
         if ($theme->item->description && module::get_var("rwinfo", "show_description")) {  //rWatcher Edit:  rwinfo
-          $info["description"] = array(
+          $info["description"] = [
             "label" => t("Description:"),
             "value" => nl2br(html::purify($theme->item->description))
-          );
+          ];
         }
         if (!$theme->item->is_album() && module::get_var("rwinfo", "show_name")) {  //rWatcher Edit:  rwinfo
-          $info["file_name"] = array(
+          $info["file_name"] = [
             "label" => t("File name:"),
             "value" => html::clean($theme->item->name)
-          );
+          ];
         }
 
         // rWatcher Edit:  Display file size
         if (!$theme->item->is_album()) {
           // Calculate file size.
-          $filesize_unit = array("B","kB","MB","GB","TB","PB","EB","ZB","YB");
+          $filesize_unit = ["B","kB","MB","GB","TB","PB","EB","ZB","YB"];
           $item_filesize = filesize($theme->item->file_path());
           $unit_counter = 0;
           while ($item_filesize >= 1024) {
@@ -72,10 +72,10 @@ class rwinfo_block_Core {
             $unit_counter++;
           }
           $item_filesize = number_format($item_filesize, 2) . " " . $filesize_unit[$unit_counter];
-          $info["file_size"] = array(
+          $info["file_size"] = [
             "label" => t("File size:"),
             "value" => $item_filesize
-          );
+          ];
         }
         // End rWatcher Edit
 
@@ -87,16 +87,16 @@ class rwinfo_block_Core {
         //  );
         //}
         if ($theme->item->is_album() && $theme->item->created && module::get_var("rwinfo", "show_captured")) {
-          $info["captured"] = array(
+          $info["captured"] = [
             "label" => t("Date:"),
             "value" => gallery::date($theme->item->created)
-          );
+          ];
         }
         if (!$theme->item->is_album() && $theme->item->created && module::get_var("rwinfo", "show_captured")) {
-          $info["captured"] = array(
+          $info["captured"] = [
             "label" => t("Date:"),
             "value" => gallery::date_time($theme->item->captured)
-          );
+          ];
         }
         // End rWatcher Edit
 
@@ -111,27 +111,27 @@ class rwinfo_block_Core {
           // rWatcher End Edit
 
           if ($str_owner_url) { //rW Edit $str_owner_url.
-            $info["owner"] = array(
+            $info["owner"] = [
               "label" => t("Owner:"),
               "value" => html::anchor(
                 html::clean($str_owner_url), //rW Edit $str_owner_url.
                 html::clean($display_name))
-            );
+            ];
           } else {
-            $info["owner"] = array(
+            $info["owner"] = [
               "label" => t("Owner:"),
               "value" => html::clean($display_name)
-            );
+            ];
           }
         }
         if (($theme->item->width && $theme->item->height) &&
             module::get_var("info", "show_dimensions")) {
-          $info["size"] = array(
+          $info["size"] = [
             "label" => t("Dimensions:"),
             "value" => t(
               "%width x %height px",
-              array("width" => $theme->item->width, "height" => $theme->item->height))
-            );
+              ["width" => $theme->item->width, "height" => $theme->item->height])
+            ];
         }
 
         $block->content->metadata = $info;
@@ -154,19 +154,12 @@ class rwinfo_block_Core {
       return true;
     }
 
-    switch (module::get_var("gallery", "show_user_profiles_to")) {
-    case "admin_users":
-      return identity::active_user()->admin;
-
-    case "registered_users":
-      return !identity::active_user()->guest;
-
-    case "everybody":
-      return true;
-
-    default:
-      // Fail in private mode on an invalid setting
-      return false;
-    }
+    return match (module::get_var("gallery", "show_user_profiles_to")) {
+        "admin_users" => identity::active_user()->admin,
+        "registered_users" => !identity::active_user()->guest,
+        "everybody" => true,
+        // Fail in private mode on an invalid setting
+        default => false,
+    };
   }
 }

@@ -13,4 +13,4 @@
  * @license http://code.google.com/p/sabredav/wiki/License Modified BSD License
  */
 
-include dirname(__FILE__) . '/Sabre/autoload.php';
+include __DIR__ . '/Sabre/autoload.php';

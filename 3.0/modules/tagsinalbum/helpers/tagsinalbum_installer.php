@@ -18,24 +18,24 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class tagsinalbum_installer {
-  static function install() {
+  public static function install() {
     module::set_var("tagsinalbum", "max_display_tags", 0);
     module::set_version("tagsinalbum", 2);
   }
 
-  static function upgrade($version) {
+  public static function upgrade($version) {
     if ($version == 1) {
       module::set_var("tagsinalbum", "max_display_tags", 0);
       module::set_version("tagsinalbum", $version = 2);
     }
   }
 
-  static function deactivate() {
+  public static function deactivate() {
     site_status::clear("tagsinalbum_needs_tag");
   }
 
-  static function can_activate() {
-    $messages = array();
+  public static function can_activate() {
+    $messages = [];
     if (!module::is_active("tag")) {
       $messages["warn"][] = t("The Tags In Album module requires the Tags module.");
     }

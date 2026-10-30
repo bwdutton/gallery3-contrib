@@ -19,7 +19,7 @@
  */
 
 class item extends item_Core {
-  static function viewable($model) {
+  public static function viewable($model) {
     // Hide password protected albums until the correct password is entered, 
     // unless the current user is an admin, or the albums owner.
 

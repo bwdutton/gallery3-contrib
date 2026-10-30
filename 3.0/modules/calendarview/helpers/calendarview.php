@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class calendarview_Core {
-  static function get_items_count($where=array()) {
+  public static function get_items_count($where=[]) {
     // Returns the number of viewable items identified by $where.
     return ORM::factory("item")
       ->viewable()
@@ -27,7 +27,7 @@ class calendarview_Core {
       ->count_all();
   }
 
-  static function get_items($limit=null, $offset=null, $where=array()) {
+  public static function get_items($limit=null, $offset=null, $where=[]) {
     // Returns the items identified by $where, up to $limit, and starting at $offset.
     return ORM::factory("item")
       ->viewable()
@@ -36,7 +36,7 @@ class calendarview_Core {
       ->find_all($limit, $offset);    
   }
 
-  static function get_position($item, $where=array()) {
+  public static function get_position($item, $where=[]) {
     // Get's $item's position within $where.
     return ORM::factory("item")
       ->viewable()

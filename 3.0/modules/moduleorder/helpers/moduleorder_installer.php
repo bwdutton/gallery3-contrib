@@ -18,21 +18,21 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class moduleorder_installer {
-  static function install() {
+  public static function install() {
     // Set the module's version number.
     module::set_version("moduleorder", 1);
   }
 
-  static function upgrade($version) {
+  public static function upgrade($version) {
     module::set_version("moduleorder", $version = 1);
   }
 
-  static function deactivate() {
+  public static function deactivate() {
   // Clear the require higher core version message.
     site_status::clear("moduleorder_needs_higherversion");
   }
 
-  static function uninstall() {
+  public static function uninstall() {
     module::delete("moduleorder");
   }
 }

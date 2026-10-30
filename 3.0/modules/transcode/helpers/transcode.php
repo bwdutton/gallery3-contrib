@@ -2,11 +2,11 @@
 
 class transcode_Core {
 	
-	static function can_use() {
+	public static function can_use() {
 		return true;
 	}
 
-	static function makeMultipleTwo($value) {
+	public static function makeMultipleTwo($value) {
 		$sType = gettype($value/2);
 		if($sType == "integer")
 			return $value;
@@ -14,7 +14,7 @@ class transcode_Core {
 			return ($value-1);
 	}
 
-	static function whereis($app) {
+	public static function whereis($app) {
 		$op = @shell_exec("whereis " . $app);
 		if ($op != "") {
 			$op = explode(" ", $op);
@@ -25,7 +25,7 @@ class transcode_Core {
 		}
 		return false;
 	}
-        static function verify_path($path) {
+        public static function verify_path($path) {
             if ($path == "")
                 return 0;
             else if (!file_exists($path))
@@ -35,7 +35,7 @@ class transcode_Core {
 
             return 1;
         }
-	static function verify_ffmpeg_path($field) {
+	public static function verify_ffmpeg_path($field) {
             $v = self::verify_path($field->value);
             switch ($v) {
                 case 0: $field->add_error("required", 1); break;
@@ -44,7 +44,7 @@ class transcode_Core {
             }
 	}
 
-        static function log($item) {
+        public static function log($item) {
 
             if (is_string($item) || is_numeric($item)) {}
             else

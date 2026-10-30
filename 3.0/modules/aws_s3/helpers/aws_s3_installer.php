@@ -2,16 +2,16 @@
 
 class aws_s3_installer {
 
-    static function install() {
+    public static function install() {
         self::upgrade(0);
     }
     
-    static function uninstall() {
+    public static function uninstall() {
         dir::unlink(VARPATH . "modules/aws_s3");
         Database::instance()->query("DROP TABLE {aws_s3_meta}");
     }
 
-    static function upgrade($version) {
+    public static function upgrade($version) {
         log::info("aws_s3", "Commencing module upgrade (" . $version . ")");
         switch ($version) {
             case 0: {
@@ -88,7 +88,7 @@ class aws_s3_installer {
                             // i CAN'T schedule it..
                             site_status::warning(
                                 t('Your site has not been synchronised to Amazon S3. Until it has, your server will continue to serve image content to your visitors.<br />Click <a href="%url" class="g-dialog-link">here</a> to start the synchronisation task.',
-                                  array("url" => html::mark_clean(url::site("admin/maintenance/start/aws_s3_task::manual_sync?csrf=__CSRF__")))
+                                  ["url" => html::mark_clean(url::site("admin/maintenance/start/aws_s3_task::manual_sync?csrf=__CSRF__"))]
                                 ),
                                 "aws_s3_not_synced"
                             );
@@ -97,7 +97,7 @@ class aws_s3_installer {
                     else {
                         site_status::warning(
                             t('Amazon S3 module needs configuration. Click <a href="%url">here</a> to go to the configuration page.',
-                              array("url" => html::mark_clean(url::site("admin/aws_s3")))
+                              ["url" => html::mark_clean(url::site("admin/aws_s3"))]
                             ),
                             "aws_s3_not_configured"
                         );
@@ -110,10 +110,10 @@ class aws_s3_installer {
         log::info("aws_s3", "Module upgrade complete");
     }
 
-    static function deactivate() {}
-    static function activate() {}
-    static function can_activate() {
-        $messages = array();
+    public static function deactivate() {}
+    public static function activate() {}
+    public static function can_activate() {
+        $messages = [];
         if (!function_exists("curl_init")) {
             $messages['error'][] = "The S3 library (and this module) depend on the php5-curl extension. Please install this extension and try again.";
         }

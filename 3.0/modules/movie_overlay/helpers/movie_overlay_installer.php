@@ -18,16 +18,16 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class movie_overlay_installer {
-  static function install() {
+  public static function install() {
     module::set_version("movie_overlay", 3);
   }
-  static function upgrade($version) {
+  public static function upgrade($version) {
     if ($version < 3) {
       module::set_version("movie_overlay", $version = 3);
     }
   }  
-  static function deactivate() {
+  public static function deactivate() {
   }
-  static function uninstall() {
+  public static function uninstall() {
   }
 }

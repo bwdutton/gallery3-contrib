@@ -91,7 +91,7 @@ class Sabre_DAV_FSExt_Directory extends Sabre_DAV_FSExt_Node implements Sabre_DA
      */
     public function getChildren() {
 
-        $nodes = array();
+        $nodes = [];
         foreach(scandir($this->path) as $node) if($node!='.' && $node!='..' && $node!='.sabredav') $nodes[] = $this->getChild($node);
         return $nodes;
 
@@ -124,10 +124,10 @@ class Sabre_DAV_FSExt_Directory extends Sabre_DAV_FSExt_Node implements Sabre_DA
      */
     public function getQuotaInfo() {
 
-        return array(
+        return [
             disk_total_space($this->path)-disk_free_space($this->path),
             disk_free_space($this->path)
-            ); 
+            ]; 
 
     }
 

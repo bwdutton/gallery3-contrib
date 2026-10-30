@@ -20,14 +20,14 @@
 
 class hide_event_Core {
 
-  static function admin_menu($menu, $theme) {
+  public static function admin_menu($menu, $theme) {
     $menu->get("settings_menu")
       ->append(Menu::factory("link")
                ->label(t("Item hiding"))
                ->url(url::site("admin/hide")));
   }
 
-  static function site_menu($menu, $theme, $item_css_selector) {
+  public static function site_menu($menu, $theme, $item_css_selector) {
     $item = $theme->item();
 
     if (!empty($item) && hide::can_be_hidden($item) && hide::can_hide($item)) {
@@ -42,7 +42,7 @@ class hide_event_Core {
     }
   }
 
-  static function context_menu($menu, $theme, $item, $thumb_css_selector) {
+  public static function context_menu($menu, $theme, $item, $thumb_css_selector) {
     if (hide::can_be_hidden($item) && hide::can_hide($item)) {
       $csrf = access::csrf_token();
       $link = self::_get_hide_link_data($item);
@@ -72,17 +72,13 @@ class hide_event_Core {
       $action_label = "Hide";
     }
 
-    switch ($item->type) {
-    case "movie":
-      $item_type_label = "movie";
-      break;
-    default:
-      $item_type_label = "photo";
-      break;
-    }
+    $item_type_label = match ($item->type) {
+        "movie" => "movie",
+        default => "photo",
+    };
 
     $label = t("$action_label this $item_type_label");
 
-    return array("text" => $label, "action" => $action);
+    return ["text" => $label, "action" => $action];
   }
 }

@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class date_tag {
-  static function tag_item($item) {
+  public static function tag_item($item) {
 
     if (!$item->is_album() && $item->captured) {
       $date_format = module::get_var("date_tag", "template");

@@ -47,14 +47,14 @@ class TagsMap_Controller extends Controller {
       print $view;
     } else {
       // Set up breadcrumbs.
-      $breadcrumbs = array();
+      $breadcrumbs = [];
       $root = item::root();
       $breadcrumbs[] = Breadcrumb::instance($root->title, $root->url())->set_first();
       $breadcrumbs[] = Breadcrumb::instance(t("Tag Map"), url::site("tagsmap/googlemap/"))->set_last();
 
       $template = new Theme_View("page.html", "other", "tag");
       $template->page_title = t("Gallery :: Map");
-      $template->set_global(array("breadcrumbs" => $breadcrumbs));
+      $template->set_global(["breadcrumbs" => $breadcrumbs]);
       $template->content = new View("tagsmap_googlemap.html");
 
       // Load in module preferences.

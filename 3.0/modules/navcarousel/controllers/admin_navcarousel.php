@@ -45,13 +45,13 @@ class Admin_Navcarousel_Controller extends Admin_Controller {
       }
       if ($carouselwidth < ($thumbsize + 75) && $carouselwidth > 0) {
         $carouselwidth = $thumbsize + 75;
-        message::error(t("The carousel must be at least %pixel wide.", array("pixel" => $carouselwidth)));
+        message::error(t("The carousel must be at least %pixel wide.", ["pixel" => $carouselwidth]));
       }
       if ($carouselwidth > 0) {
         if ($carouselwidth < ((($thumbsize + 11) * $showelements) + 64)) {
           $showelements = ($carouselwidth - 64) / ($thumbsize + 11);
           $showelements = intval(floor($showelements));
-          message::error(t("With the selected carousel width and thumbnail size you can show a maximum of %itemno items.", array("itemno" => $showelements)));
+          message::error(t("With the selected carousel width and thumbnail size you can show a maximum of %itemno items.", ["itemno" => $showelements]));
         }
       } else {
           message::warning(t("The maximum number of displayable items cannot be calculated when the carousel width is set to 0."));
@@ -95,7 +95,7 @@ class Admin_Navcarousel_Controller extends Admin_Controller {
   }
 
   private function _get_form() {
-    $form = new Forge("admin/navcarousel/handler", "", "post", array("id" => "g-admin-form"));
+    $form = new Forge("admin/navcarousel/handler", "", "post", ["id" => "g-admin-form"]);
     
     $group = $form->group("navcarousel")->label(t("Navigation carousel settings"));
     $group->input("scrollsize")->label(t('Enter how many items you want to scroll when clicking next or previous'))

@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class rawphoto_graphics {
-  static function detect_dcraw() {
+  public static function detect_dcraw() {
     $dcraw = new stdClass();
     $path = system::find_binary("dcraw");
     if (empty($path)) {
@@ -44,35 +44,35 @@ class rawphoto_graphics {
     return $dcraw;
   }
 
-  static function get_supported_toolkits() {
-    return array("imagemagick" => "ImageMagick",
-                 "graphicsmagick" => "GraphicsMagick");
+  public static function get_supported_toolkits() {
+    return ["imagemagick" => "ImageMagick",
+                 "graphicsmagick" => "GraphicsMagick"];
   }
 
-  static function report_dcraw_support($dcraw) {
+  public static function report_dcraw_support($dcraw) {
     if ($dcraw->installed) {
       site_status::clear("rawphoto_needs_dcraw");
     } else {
       site_status::warning(
         t('The <em>Raw Photos</em> module requires the <a href="%dcraw_url"><em>dcraw</em> tool</a> to be installed.',
-          array("dcraw_url" => "http://www.cybercom.net/~dcoffin/dcraw/")),
+          ["dcraw_url" => "http://www.cybercom.net/~dcoffin/dcraw/"]),
         "rawphoto_needs_dcraw");
     }
   }
 
-  static function report_ppm_support($toolkit_id) {
+  public static function report_ppm_support($toolkit_id) {
     if (array_key_exists($toolkit_id, rawphoto_graphics::get_supported_toolkits())) {
       site_status::clear("rawphoto_needs_ppm_support");
     } else {
       site_status::warning(
         t('The <em>Raw Photos</em> module requires a supporting graphics toolkit. ' .
           '<a href="%activate_url">Activate</a> either ImageMagick or GraphicsMagick.',
-          array("activate_url" => url::site("admin/graphics"))),
+          ["activate_url" => url::site("admin/graphics")]),
         "rawphoto_needs_ppm_support");
     }
   }
 
-  static function convert($input_file, $output_file) {
+  public static function convert($input_file, $output_file) {
     $success = false;
     $dcraw = rawphoto_graphics::detect_dcraw();
     if ($dcraw->installed) {

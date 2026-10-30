@@ -16,25 +16,20 @@
 class Sabre_DAV_Exception_PreconditionFailed extends Sabre_DAV_Exception {
 
     /**
-     * When this exception is thrown, the header-name might be set.
-     * 
-     * This allows the exception-catching code to determine which HTTP header
-     * caused the exception.
-     * 
-     * @var string 
-     */
-    public $header = null;
-
-    /**
      * Create the exception 
      * 
      * @param string $message 
      * @param string $header 
      */
-    public function __construct($message, $header=null) {
+    public function __construct($message, /**
+     * When this exception is thrown, the header-name might be set.
+     *
+     * This allows the exception-catching code to determine which HTTP header
+     * caused the exception.
+     */
+    public $header=null) {
 
         parent::__construct($message);
-        $this->header = $header;
 
     } 
 

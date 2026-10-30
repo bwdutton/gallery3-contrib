@@ -63,29 +63,29 @@ $("document").ready(function() {
       <?php if (isset($g1_version)): ?>
       <ul>
         <li>
-          <?= t("Gallery version %version detected", array("version" => $g1_version)) ?>
+          <?= t("Gallery version %version detected", ["version" => $g1_version]) ?>
         </li>
         <?php if ($g1_sizes["thumb"]["size"] && $thumb_size != $g1_sizes["thumb"]["size"]): ?>
         <li>
           <?= t("Your most common thumbnail size in Gallery 1 is %g1_pixels pixels, but your Gallery 3 thumbnail size is set to %g3_pixels pixels. <a href=\"%url\">Using the same value</a> will speed up your import.",
-                array("g1_pixels" => $g1_sizes["thumb"]["size"],
+                ["g1_pixels" => $g1_sizes["thumb"]["size"],
                       "g3_pixels" => $thumb_size,
-                      "url" => html::mark_clean(url::site("admin/theme_options")))) ?>
+                      "url" => html::mark_clean(url::site("admin/theme_options"))]) ?>
         </li>
         <?php endif ?>
 
         <?php if ($g1_sizes["resize"]["size"] && $resize_size != $g1_sizes["resize"]["size"]): ?>
         <li>
           <?= t("Your most common intermediate size in Gallery 1 is %g1_pixels pixels, but your Gallery 3 intermediate size is set to %g3_pixels pixels. <a href=\"%url\">Using the same value</a> will speed up your import.",
-                array("g1_pixels" => $g1_sizes["resize"]["size"],
+                ["g1_pixels" => $g1_sizes["resize"]["size"],
                       "g3_pixels" => $resize_size,
-                      "url" => html::mark_clean(url::site("admin/theme_options")))) ?>
+                      "url" => html::mark_clean(url::site("admin/theme_options"))]) ?>
         </li>
         <?php endif ?>
 
         <li>
           <?php
-          $t = array();
+          $t = [];
           $t[] = t2("1 user", "%count users", $g1_stats["users"]);
           $t[] = t2("1 group", "%count groups", $g1_stats["groups"]);
           $t[] = t2("1 album", "%count albums", $g1_stats["albums"]);
@@ -95,14 +95,14 @@ $("document").ready(function() {
                     $g1_stats["tags"]);
           ?>
           <?= t("Your Gallery 1 has the following importable data in it: %t0, %t1, %t2, %t3, %t4, %t5",
-                array("t0" => $t[0], "t1" => $t[1], "t2" => $t[2],
-                      "t3" => $t[3], "t4" => $t[4], "t5" => $t[5])) ?>
+                ["t0" => $t[0], "t1" => $t[1], "t2" => $t[2],
+                      "t3" => $t[3], "t4" => $t[4], "t5" => $t[5]]) ?>
         </li>
 
         <?php if ($g3_resource_count): ?>
         <li>
           <?php
-          $t = array();
+          $t = [];
           $t[] = t2("1 user", "%count users", $g3_stats["user"]);
           $t[] = t2("1 group", "%count groups", $g3_stats["group"]);
           $t[] = t2("1 album", "%count albums", $g3_stats["album"]);
@@ -111,8 +111,8 @@ $("document").ready(function() {
           $t[] = t2("1 tagged photo/movie/album", "%count tagged photos/movies/albums", $g3_stats["tag"]);
           ?>
           <?= t("It looks like you've imported the following Gallery 1 data already: %t0, %t1, %t2, %t3, %t4, %t5",
-                array("t0" => $t[0], "t1" => $t[1], "t2" => $t[2],
-                      "t3" => $t[3], "t4" => $t[4], "t5" => $t[5])) ?>
+                ["t0" => $t[0], "t1" => $t[1], "t2" => $t[2],
+                      "t3" => $t[3], "t4" => $t[4], "t5" => $t[5]]) ?>
         </li>
         <?php endif ?>
       </ul>
@@ -135,7 +135,7 @@ $("document").ready(function() {
         <li>
           <p>
             <?= t("Redirecting G1 Gallery URLs once your migration is complete. Put this block at the top of %path and all gallery urls will be redirected to Gallery 3",
-                  array("path" => g1_import::$gallery_dir.DIRECTORY_SEPARATOR.'.htaccess') ) ?>
+                  ["path" => g1_import::$gallery_dir.DIRECTORY_SEPARATOR.'.htaccess'] ) ?>
           </p>
 
           <textarea id="g-g1-gallery-redirect-rules" rows="4" cols="60">&lt;IfModule mod_rewrite.c&gt;
@@ -155,7 +155,7 @@ $("document").ready(function() {
         <li>
           <p>
             <?= t("Redirecting G1 Album URLs once your migration is complete.  Put this block at the top of %path and all album image urls will be redirected to Gallery 3",
-                  array("path" => g1_import::$album_dir.DIRECTORY_SEPARATOR.'.htaccess') ) ?>
+                  ["path" => g1_import::$album_dir.DIRECTORY_SEPARATOR.'.htaccess'] ) ?>
           </p>
 
           <textarea id="g-g1-album-redirect-rules" rows="4" cols="60">&lt;IfModule mod_rewrite.c&gt;

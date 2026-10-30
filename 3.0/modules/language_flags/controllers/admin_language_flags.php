@@ -45,13 +45,13 @@ class Admin_Language_Flags_Controller extends Admin_Controller {
   private function _get_admin_form() {
     // Make a new Form.
     $form = new Forge("admin/language_flags/saveprefs", "", "post",
-                      array("id" => "g-language-flags-adminForm"));
+                      ["id" => "g-language-flags-adminForm"]);
 
     // Figure out what type of flags to display.
     $group_flag_types = $form->group("flag_types");
     $group_flag_types->dropdown('flag_shape')
                              ->label(t("Flag Shape:"))
-                             ->options(array('rectangular'=>'Rectangular', 'round'=>'Round', 'square'=>'Square', 'custom'=>'Custom'))
+                             ->options(['rectangular'=>'Rectangular', 'round'=>'Round', 'square'=>'Square', 'custom'=>'Custom'])
                              ->selected(module::get_var("language_flags", "flag_shape"));
 
     // Add a save button to the form.

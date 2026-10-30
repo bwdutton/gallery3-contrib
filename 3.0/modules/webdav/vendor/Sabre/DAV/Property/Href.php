@@ -15,30 +15,23 @@
 class Sabre_DAV_Property_Href extends Sabre_DAV_Property implements Sabre_DAV_Property_IHref {
 
     /**
-     * href 
-     * 
-     * @var string 
-     */
-    private $href;
-
-    /**
-     * Automatically prefix the url with the server base directory 
-     * 
-     * @var bool 
-     */
-    private $autoPrefix = true;
-
-    /**
-     * __construct 
-     * 
-     * @param string $href 
+     * __construct
+     *
+     * @param string $href
      * @return void
+     * @param bool $autoPrefix
      */
-    public function __construct($href, $autoPrefix = true) {
-
-        $this->href = $href;
-        $this->autoPrefix = $autoPrefix;
-
+    public function __construct(
+        /**
+         * href
+         */
+        private $href,
+        /**
+         * Automatically prefix the url with the server base directory
+         */
+        private $autoPrefix = true
+    )
+    {
     }
 
     /**
@@ -80,7 +73,7 @@ class Sabre_DAV_Property_Href extends Sabre_DAV_Property implements Sabre_DAV_Pr
      * @param DOMElement $dom 
      * @return Sabre_DAV_Property_Href 
      */
-    static function unserialize(DOMElement $dom) {
+    public static function unserialize(DOMElement $dom) {
 
         if (Sabre_DAV_XMLUtil::toClarkNotation($dom->firstChild)==='{DAV:}href') {
             return new self($dom->firstChild->textContent,false);

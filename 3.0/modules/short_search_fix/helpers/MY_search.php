@@ -22,7 +22,7 @@ class search extends search_Core {
    * Add more terms to the query by wildcarding the stem value of the first
    * few terms in the query.
    */
-  static function add_query_terms($q) {
+  public static function add_query_terms($q) {
     $MAX_TERMS = 5; // used to limit the max number of extra terms
     $prefix = module::get_var("short_search_fix","search_prefix"); // short search fix prefix
     // strip leading, trailing, and extra whitespaces
@@ -88,7 +88,7 @@ class search extends search_Core {
       $termsuffix = substr($term, -$countsuffix, $countsuffix);
       // add extra terms with wildcards
       if ($flagwild == 1 && 
-          substr($termterm, -1, 1) != "*" &&
+          !str_ends_with($termterm, "*") &&
           strlen($termterm) > 0) {
         // @todo: make this i18n friendly with the plural character (only works here with s)
         $termsextra = $termsextra . $termprefix . $prefix . rtrim($termterm, "s") . "*" . $termsuffix . " ";

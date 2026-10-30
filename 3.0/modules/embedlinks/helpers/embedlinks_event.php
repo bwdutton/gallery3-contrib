@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class embedlinks_event_Core {
-  static function admin_menu($menu, $theme) {
+  public static function admin_menu($menu, $theme) {
     $menu->get("settings_menu")
       ->append(Menu::factory("link")
                ->id("embedlinks")
@@ -26,7 +26,7 @@ class embedlinks_event_Core {
                ->url(url::site("admin/embedlinks")));
   }
 
-  static function album_menu($menu, $theme) {
+  public static function album_menu($menu, $theme) {
     // Display embedlinks toolbar icon, if the corresponding setting is enabled.
     if (module::get_var("embedlinks", "ToolbarLinks") == true) {
       $menu
@@ -39,7 +39,7 @@ class embedlinks_event_Core {
     }
   }
 
-  static function photo_menu($menu, $theme) {
+  public static function photo_menu($menu, $theme) {
     // Display embedlinks toolbar icon, if the corresponding setting is enabled.
     if (module::get_var("embedlinks", "ToolbarLinks") == true) {
       $menu
@@ -52,7 +52,7 @@ class embedlinks_event_Core {
     }
   }
 
-  static function movie_menu($menu, $theme) {
+  public static function movie_menu($menu, $theme) {
     // Display embedlinks toolbar icon, if the corresponding setting is enabled.
     if (module::get_var("embedlinks", "ToolbarLinks") == true) {
       $menu

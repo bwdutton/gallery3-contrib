@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class tag_albums_theme_Core {
-  static function head($theme) {
+  public static function head($theme) {
     // If the current page is an item, and if it's in the tags_album_id table,
     //   then redirect to the tag_albums page.
     if ($theme->item()) {
@@ -32,7 +32,7 @@ class tag_albums_theme_Core {
     return;
   }
 
-  static function dynamic_top($theme) {
+  public static function dynamic_top($theme) {
     // If this page is the "all tags" dynamic page, display filter link text.
     if (isset($theme->content->filter_text) && module::get_var("tag_albums", "tag_index_filter_top", "0")) {
       $view = new View("tag_albums_filter.html");
@@ -41,7 +41,7 @@ class tag_albums_theme_Core {
     }
   }
 
-  static function dynamic_bottom($theme) {
+  public static function dynamic_bottom($theme) {
     // If this page is the "all tags" dynamic page, display filter link text.
     if (isset($theme->content->filter_text) && module::get_var("tag_albums", "tag_index_filter_bottom", "0")) {
       $view = new View("tag_albums_filter.html");

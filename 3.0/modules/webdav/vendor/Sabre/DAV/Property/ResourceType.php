@@ -48,7 +48,7 @@ class Sabre_DAV_Property_ResourceType extends Sabre_DAV_Property {
 
         $propName = null;
         $rt = $this->resourceType;
-        if (!is_array($rt)) $rt = array($rt);
+        if (!is_array($rt)) $rt = [$rt];
         
         foreach($rt as $resourceType) {
             if (preg_match('/^{([^}]*)}(.*)$/',$resourceType,$propName)) { 

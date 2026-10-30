@@ -19,16 +19,16 @@
  */
 class scheduler_Core {
 
-  static function intervals() {
+  public static function intervals() {
     static $intervals;
     if (empty($intervals)) {
-      $intervals = array("3600" => t("Hourly"), "86400" => t("Daily"),
-                         "604800" => t("Weekly"), "2419200" => t("Monthly"));
+      $intervals = ["3600" => t("Hourly"), "86400" => t("Daily"),
+                         "604800" => t("Weekly"), "2419200" => t("Monthly")];
     }
     return $intervals;
   }
 
-  static function get_form($method, $schedule) {
+  public static function get_form($method, $schedule) {
     if ($method == "define") {
       $title = t("Create a scheduled event");
       $button_text = t("Create");
@@ -39,7 +39,7 @@ class scheduler_Core {
 
     $id = empty($schedule->id) ? "" : "/$schedule->id";
     $form = new Forge("admin/schedule/$method{$id}", "", "post",
-                      array("id" => "g-{$method}-schedule"));
+                      ["id" => "g-{$method}-schedule"]);
     $group = $form->group("schedule_group")->label($title);
     $group->input("schedule_name")
       ->label(t("Description"))
@@ -49,14 +49,14 @@ class scheduler_Core {
       ->error_messages("length", t("Your description is too long"))
       ->value(!empty($schedule->name) ? $schedule->name : "");
 
-    list ($dow, $display_time) = scheduler::format_time($schedule->next_run_datetime);
+    [$dow, $display_time] = scheduler::format_time($schedule->next_run_datetime);
     $next = $group->group("run_date")->label(t("Scheduled Date"));
     $next->dropdown("dow")
       ->label(t("Day"))
       ->id("g-schedule-day")
       ->rules("required")
-      ->options(array(t("Sunday"), t("Monday"), t("Tuesday"), t("Wednesday"),
-                      t("Thursday"), t("Friday"), t("Saturday")))
+      ->options([t("Sunday"), t("Monday"), t("Tuesday"), t("Wednesday"),
+                      t("Thursday"), t("Friday"), t("Saturday")])
       ->selected($dow);
 
     $next->input("time")
@@ -80,14 +80,14 @@ class scheduler_Core {
     return $form;
   }
 
-  static function format_time($time) {
+  public static function format_time($time) {
     $local_time = localtime($time);
     $display_time = str_pad($local_time[2], 2, "0", STR_PAD_LEFT) . ":" .
       str_pad($local_time[1], 2, "0", STR_PAD_LEFT);
-    return array($local_time[6], $display_time);
+    return [$local_time[6], $display_time];
   }
 
-  static function valid_time($field) {
+  public static function valid_time($field) {
     if (preg_match("/([0-9]{1,2}):([0-9]{2})/", $field->value, $matches)) {
       $hour = (int)$matches[1];
       $minutes = (int)$matches[2];
@@ -99,8 +99,8 @@ class scheduler_Core {
     }
   }
 
-  static function get_definitions() {
-    $schedule_definitions = array();
+  public static function get_definitions() {
+    $schedule_definitions = [];
     $events = ORM::factory("schedule")
       ->order_by("next_run_datetime", "asc")
       ->find_all();
@@ -117,11 +117,11 @@ class scheduler_Core {
           $status = t("Scheduled");
         }
 
-        $schedule_definitions[] = (object)array("id" => $schedule->id,
+        $schedule_definitions[] = (object)["id" => $schedule->id,
                                                 "name" => $schedule->name,
                                                 "run_date" => $run_date,
                                                 "interval" => $interval,
-                                                "status" => $status);
+                                                "status" => $status];
       }
     }
     return $schedule_definitions;

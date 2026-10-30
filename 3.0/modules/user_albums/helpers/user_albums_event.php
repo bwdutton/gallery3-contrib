@@ -21,7 +21,7 @@ class user_albums_event_Core {
   /**
    * Create an album for the newly created user and give him view and edit permissions.
    */
-  static function user_created($user) {
+  public static function user_created($user) {
     // Create a group with the same name, if necessary
     $group_name = "auto: {$user->name}";
     $group = identity::lookup_group_by_name($group_name);

@@ -28,7 +28,7 @@ class Addthis_Controller extends Controller {
       $thumb_url = $item->thumb_url(true);
     } else {
       $proxy = ORM::factory("addthis_proxy");
-      $proxy->uuid =  md5(rand());
+      $proxy->uuid =  md5(random_int(0, mt_getrandmax()));
       $proxy->item_id = $item->id;
       $proxy->save();
       $full_url = url::abs_site("addthis/print_proxy/full/$proxy->uuid");
@@ -36,7 +36,7 @@ class Addthis_Controller extends Controller {
     }
 
     $v = new View("addthis_form.html");
-    $v->order_parms = array(
+    $v->order_parms = [
       "addthis_api_version" => "100",
       "company_id" => module::get_var("addthis", "company_id"),
       "event_id" => module::get_var("addthis", "event_id"),
@@ -50,7 +50,7 @@ class Addthis_Controller extends Controller {
       "image_width_1" => $item->width,
       "thumb_height_1" => $item->thumb_height,
       "thumb_width_1" => $item->thumb_width,
-      "title_1" => html::purify($item->title));
+      "title_1" => html::purify($item->title)];
 
     print $v;
   }
@@ -80,7 +80,7 @@ class Addthis_Controller extends Controller {
       }
     }
 
-    $proxy = ORM::factory("addthis_proxy", array("uuid" => $id));
+    $proxy = ORM::factory("addthis_proxy", ["uuid" => $id]);
     if (!$proxy->loaded || !$proxy->item->loaded) {
       Kohana::show_404();
     }

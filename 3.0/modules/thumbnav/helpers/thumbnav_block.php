@@ -2,11 +2,11 @@
 
 class ThumbNav_block_Core {
 
-  static function get_site_list() {
-    return array("thumbnav_block" => t("Navigator"));
+  public static function get_site_list() {
+    return ["thumbnav_block" => t("Navigator")];
   }
 
-  static function get($block_id, $theme) {
+  public static function get($block_id, $theme) {
     $block = "";
     switch ($block_id) {
       case "thumbnav_block":
@@ -18,7 +18,7 @@ class ThumbNav_block_Core {
         $hide_albums = module::get_var("thumbnav", "hide_albums", TRUE);
 
         $siblings = $item->parent()->children();
-        $itemlist = Array();
+        $itemlist = [];
         foreach ($siblings as $sibling):
 	        if (isset($sibling)):
             if ($sibling->viewable()):
@@ -66,7 +66,7 @@ class ThumbNav_block_Core {
   	          $content .= '<li>';
 	          endif;
   	        $content .= '<a href="' . $thumb_item->url() . '" title="' . html::purify($thumb_item->title) . '" target="_self">';
-	          $content .= $thumb_item->thumb_img(array("class" => "g-navthumb"), 60);         
+	          $content .= $thumb_item->thumb_img(["class" => "g-navthumb"], 60);         
   	        $content .= '</a></li>';
           endfor; 
         endif;

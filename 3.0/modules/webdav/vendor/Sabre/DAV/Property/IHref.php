@@ -20,6 +20,6 @@ interface Sabre_DAV_Property_IHref {
      * 
      * @return string 
      */
-    function getHref();
+    public function getHref();
 
 }

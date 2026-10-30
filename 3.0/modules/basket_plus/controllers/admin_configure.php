@@ -119,18 +119,18 @@ class Admin_Configure_Controller extends Controller
     $pubcertfile = $ssldir . "mypubcert.pem";
     $certreqfile = $ssldir . "mycertreq.pem";
 
-    $dn = array("countryName" => $form->encrypt->countryName->value,
+    $dn = ["countryName" => $form->encrypt->countryName->value,
     "stateOrProvinceName" => $form->encrypt->stateOrProvinceName->value,
     "localityName" => $form->encrypt->localityName->value,
     "organizationName" => $form->encrypt->organizationName->value,
     "organizationalUnitName" => $form->encrypt->organizationalUnitName->value,
     "commonName" => $form->encrypt->commonName->value,
-    "emailAddress" => $form->encrypt->emailAddress->value);
+    "emailAddress" => $form->encrypt->emailAddress->value];
     $privkeypass = $form->encrypt->privKeyPass->value;
     $numberofdays = 365;
-    $config = array(
+    $config = [
       "private_key_bits" => 1024
-    );
+    ];
 
     $privkey = openssl_pkey_new($config);
     $csr = openssl_csr_new($dn, $privkey);
@@ -154,7 +154,7 @@ class Admin_Configure_Controller extends Controller
 
   private function keyGenerationForm()
   {
-    $form = new Forge("admin/configure/paypal_encrypt_wizard_step2", "", "post", array("id" => "generateKeys", "name" =>"generateKeys"));
+    $form = new Forge("admin/configure/paypal_encrypt_wizard_step2", "", "post", ["id" => "generateKeys", "name" =>"generateKeys"]);
     $group = $form->group("encrypt")->label(t("Key Generation Details"));
     $group->input("countryName")->label(t("Country Name"))->id("countryName");
     $group->input("stateOrProvinceName")->label(t("State or Province Name"))->id("stateOrProvinceName");

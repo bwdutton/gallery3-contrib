@@ -39,21 +39,21 @@
  */
 
 
-$config['wordpress_auth'] = array(
+$config['wordpress_auth'] = [
   'driver'        => 'wordpressdb',
   'allow_updates' => false,
-  'params'        => array(
-    'wp_database' => array(
+  'params'        => [
+    'wp_database' => [
         'username' => 'user',
         'password' => 'pass',
         'database' => 'dbname',
         'host' => 'localhost',
         'table_prefix' => 'wp_',
         'charset' => 'utf8'
-    ),
+    ],
     'path' => 'path/to/local/wordpress/installation'
-  )
-);
+  ]
+];
 
 
 // load code

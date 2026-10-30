@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class highroller_Controller extends Controller {
-  function pick_theme() {
+  public function pick_theme() {
     $name = Input::instance()->get("name");
     if ($name) {
       Session::instance()->set("highroller_theme", $name);

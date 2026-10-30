@@ -38,7 +38,7 @@ function getJpegHeader($filename)
       }
       if ($result === FALSE)
         unset($result);
-      $result[] = array("type" => $typeOfSegment, "data" => $data);	// Multiple segments can have the same type like Exif and XMP
+      $result[] = ["type" => $typeOfSegment, "data" => $data];	// Multiple segments can have the same type like Exif and XMP
     }
   } while (!feof($file));
   fclose($file);
@@ -50,7 +50,7 @@ function getIptcBlock($jpegHeader)
 {
   for ($i = 0; $i < count($jpegHeader); $i++) {
     if ($jpegHeader[$i]['type'] == 0xED)  {
-      if (strncmp($jpegHeader[$i]['data'], "Photoshop 3.0\x00", 14) == 0) {
+      if (str_starts_with($jpegHeader[$i]['data'], "Photoshop 3.0\x00")) {
         return $jpegHeader[$i]['data'];
       }
     }
@@ -63,7 +63,7 @@ function getXmpDom($jpegHeader)
 {
   for ($i = 0; $i < count($jpegHeader); $i++) {
     if ($jpegHeader[$i]['type'] == 0xE1)  {
-      if (strncmp($jpegHeader[$i]['data'], "http://ns.adobe.com/xap/1.0/\x00", 29) == 0) {
+      if (str_starts_with($jpegHeader[$i]['data'], "http://ns.adobe.com/xap/1.0/\x00")) {
         $xmlstr = substr($jpegHeader[$i]['data'], 29);
         $doc = new DOMDocument();
 		$doc->loadXML($xmlstr);

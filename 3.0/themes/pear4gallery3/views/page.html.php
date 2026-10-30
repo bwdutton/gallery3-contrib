@@ -45,7 +45,7 @@ if (isset($_GET['ajax'])) {
         <?php if ($theme->item()): ?>
           <?= $theme->item()->title ?>
         <?php elseif ($theme->tag()): ?>
-          <?= t("Photos tagged with %tag_title", array("tag_title" => $theme->tag()->name)) ?>
+          <?= t("Photos tagged with %tag_title", ["tag_title" => $theme->tag()->name]) ?>
         <?php else: /* Not an item, not a tag, no page_title specified.  Help! */ ?>
           <?= item::root()->title ?>
         <?php endif ?>
@@ -164,7 +164,7 @@ if (isset($_GET['ajax'])) {
           <?= html::purify(text::limit_chars($page_title, 40)) ?> &nbsp;
       <?php else: ?>
         <?php if ($theme->tag()): ?>
-          <?= t("Photos tagged with %tag_title", array("tag_title" => $theme->tag()->name)) ?>
+          <?= t("Photos tagged with %tag_title", ["tag_title" => $theme->tag()->name]) ?>
         <?php else: /* Not an item, not a tag, no page_title specified.  Help! */ ?>
           <?= html::purify(text::limit_chars(item::root()->title, 40)) ?> &nbsp;
         <?php endif ?>

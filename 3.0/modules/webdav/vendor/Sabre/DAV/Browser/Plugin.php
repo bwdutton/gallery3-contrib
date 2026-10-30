@@ -25,13 +25,6 @@ class Sabre_DAV_Browser_Plugin extends Sabre_DAV_ServerPlugin {
     protected $server;
 
     /**
-     * enableEditing
-     * 
-     * @var bool 
-     */
-    protected $enablePost = true;
-
-    /**
      * Creates the object.
      *
      * By default it will allow file creation and uploads.
@@ -40,10 +33,13 @@ class Sabre_DAV_Browser_Plugin extends Sabre_DAV_ServerPlugin {
      * @param bool $enablePost 
      * @return void
      */
-    public function __construct($enablePost=true) {
-
-        $this->enablePost = $enablePost; 
-
+    public function __construct(
+        /**
+         * enableEditing
+         */
+        protected $enablePost=true
+    )
+    {
     }
 
     /**
@@ -55,8 +51,8 @@ class Sabre_DAV_Browser_Plugin extends Sabre_DAV_ServerPlugin {
     public function initialize(Sabre_DAV_Server $server) {
 
         $this->server = $server;
-        $this->server->subscribeEvent('beforeMethod',array($this,'httpGetInterceptor'));
-        if ($this->enablePost) $this->server->subscribeEvent('unknownMethod',array($this,'httpPOSTHandler'));
+        $this->server->subscribeEvent('beforeMethod',[$this,'httpGetInterceptor']);
+        if ($this->enablePost) $this->server->subscribeEvent('unknownMethod',[$this,'httpPOSTHandler']);
     }
 
     /**
@@ -157,15 +153,15 @@ class Sabre_DAV_Browser_Plugin extends Sabre_DAV_ServerPlugin {
     <tr><th>Name</th><th>Type</th><th>Size</th><th>Last modified</th></tr>
     <tr><td colspan=\"4\"><hr /></td></tr>";
     
-    $files = $this->server->getPropertiesForPath($path,array(
+    $files = $this->server->getPropertiesForPath($path,[
         '{DAV:}displayname',
         '{DAV:}resourcetype',
         '{DAV:}getcontenttype',
         '{DAV:}getcontentlength',
         '{DAV:}getlastmodified',
-    ),1);
+    ],1);
 
-    foreach($files as $k=>$file) {
+    foreach($files as $file) {
 
         // This is the current directory, we can skip it
         if (rtrim($file['href'],'/')==$path) continue;
@@ -202,7 +198,7 @@ class Sabre_DAV_Browser_Plugin extends Sabre_DAV_ServerPlugin {
 
         $fullPath = Sabre_DAV_URLUtil::encodePath('/' . trim($this->server->getBaseUri() . ($path?$path . '/':'') . $name,'/'));
 
-        $displayName = isset($file[200]['{DAV:}displayname'])?$file[200]['{DAV:}displayname']:$name;
+        $displayName = $file[200]['{DAV:}displayname'] ?? $name;
 
         $name = $this->escapeHTML($name);
         $displayName = $this->escapeHTML($displayName);

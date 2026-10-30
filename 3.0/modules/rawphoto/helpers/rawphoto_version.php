@@ -21,14 +21,14 @@ class rawphoto_version {
   const MIN_RELEASE_VERSION = "3.0.3";
   const MIN_BUILD_NUMBER = "164";
 
-  static function report_item_conversion_support() {
+  public static function report_item_conversion_support() {
     if (gallery::RELEASE_CHANNEL == "release") {
       if (version_compare(gallery::VERSION, rawphoto_version::MIN_RELEASE_VERSION, ">=")) {
         site_status::clear("rawphoto_needs_item_conversion_support");
       } else {
         site_status::warning(
           t("The <em>Raw Photos</em> module requires Gallery %version or higher.",
-            array("version" => rawphoto_version::MIN_RELEASE_VERSION)),
+            ["version" => rawphoto_version::MIN_RELEASE_VERSION]),
           "rawphoto_needs_item_conversion_support");
       }
     } else {
@@ -37,8 +37,8 @@ class rawphoto_version {
       } else {
         site_status::warning(
           t("The <em>Raw Photos</em> module requires Gallery %version, build %build_number or higher.",
-            array("version" => gallery::VERSION,
-                  "build_number" => rawphoto_version::MIN_BUILD_NUMBER)),
+            ["version" => gallery::VERSION,
+                  "build_number" => rawphoto_version::MIN_BUILD_NUMBER]),
           "rawphoto_needs_item_conversion_support");
       }
     }

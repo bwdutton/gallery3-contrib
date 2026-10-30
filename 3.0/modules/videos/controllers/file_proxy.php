@@ -40,7 +40,7 @@ class File_Proxy_Controller extends Controller {
     $var_uri = url::file("var/");
 
     // Make sure that the request is for a file inside var
-    $offset = strpos(rawurldecode($request_uri), $var_uri);
+    $offset = strpos(rawurldecode($request_uri), (string) $var_uri);
     if ($offset !== 0) {
       throw new Kohana_404_Exception();
     }
@@ -50,7 +50,7 @@ class File_Proxy_Controller extends Controller {
 
     // type: albums
     // path: foo/bar.jpg
-    list ($type, $path) = explode("/", $file_uri, 2);
+    [$type, $path] = explode("/", $file_uri, 2);
     if ($type != "resizes" && $type != "albums" && $type != "thumbs") {
       throw new Kohana_404_Exception();
     }
@@ -66,7 +66,7 @@ class File_Proxy_Controller extends Controller {
       if (preg_match('/.jpg$/', $path)) {
         // rWatcher Mod:   look for videos with file extensions supported by the videos module in addition to flv mp4 and m4v
         // Original Line:  foreach (array("flv", "mp4", "m4v") as $ext) {
-        foreach (array_merge(array("flv", "mp4", "m4v"), unserialize(module::get_var("videos", "allowed_extensions"))) as $ext) {
+        foreach (array_merge(["flv", "mp4", "m4v"], unserialize(module::get_var("videos", "allowed_extensions"))) as $ext) {
           $movie_path = preg_replace('/.jpg$/', ".$ext", $path);
           $item = item::find_by_path($movie_path);
           if ($item->loaded()) {

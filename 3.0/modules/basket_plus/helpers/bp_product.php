@@ -19,8 +19,8 @@
  */
 class bp_product_Core {
 
-	static function get_add_form_admin() {
-    $form = new Forge("admin/product_lines/add_product", "", "post", array("id" => "gAddProductForm"));
+	public static function get_add_form_admin() {
+    $form = new Forge("admin/product_lines/add_product", "", "post", ["id" => "gAddProductForm"]);
     $group = $form->group("add_product")->label(t("Add Product"));
     $group->input("name")->label(t("Name"))->id("gProductName")
       ->error_messages("in_use", t("There is already a product with that name"));
@@ -34,10 +34,10 @@ class bp_product_Core {
     return $form;
   }
 
-  static function get_edit_form_admin($product) {
+  public static function get_edit_form_admin($product) {
 
     $form = new Forge("admin/product_lines/edit_product/$product->id", "", "post",
-        array("id" => "gEditProductForm"));
+        ["id" => "gEditProductForm"]);
     $group = $form->group("edit_product")->label(t("Edit Product"));
     $group->input("name")->label(t("Name"))->id("gProductName")->value($product->name);
     $group->inputs["name"]->error_messages(
@@ -54,12 +54,12 @@ class bp_product_Core {
     return $form;
   }
 
-  static function get_delete_form_admin($product) {
+  public static function get_delete_form_admin($product) {
     $form = new Forge("admin/product_lines/delete_product/$product->id", "", "post",
-                      array("id" => "gDeleteProductForm"));
+                      ["id" => "gDeleteProductForm"]);
     $group = $form->group("delete_product")->label(
-      t("Are you sure you want to delete product %name?", array("name" => $product->name)));
-    $group->submit("")->value(t("Delete product %name", array("name" => $product->name)));
+      t("Are you sure you want to delete product %name?", ["name" => $product->name]));
+    $group->submit("")->value(t("Delete product %name", ["name" => $product->name]));
     return $form;
   }
 
@@ -71,7 +71,7 @@ class bp_product_Core {
    * @param string  $password
    * @return User_Model
    */
-  static function create($name, $cost, $description, $postage_band) {
+  public static function create($name, $cost, $description, $postage_band) {
     $product = ORM::factory("bp_product")->where("name", "=", $name)->find();
     if ($product->loaded()) {
       throw new Exception("The product".$name." already exists");
@@ -85,8 +85,8 @@ class bp_product_Core {
     return $product;
   }
 
-  static function getProductArray($id){
-    $producta = array();
+  public static function getProductArray($id){
+    $producta = [];
     // check for product override
     $product_override = ORM::factory("bp_product_override")->where('item_id', "=",  $id)->find();
 
@@ -129,7 +129,7 @@ class bp_product_Core {
     return $producta;
   }
 
-  static function isForSale($id){
+  public static function isForSale($id){
 
     try{
 			// check for product override

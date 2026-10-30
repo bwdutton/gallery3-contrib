@@ -38,15 +38,15 @@ class Admin_Quotas_Controller extends Admin_Controller {
 
     $view->content->pager = new Pagination();
     $view->content->pager->initialize(
-      array("query_string" => "page",
+      ["query_string" => "page",
             "total_items" => $user_count,
             "items_per_page" => $page_size,
-            "style" => "classic"));
+            "style" => "classic"]);
 
     if ($page < 1) {
-      url::redirect(url::merge(array("page" => 1)));
+      url::redirect(url::merge(["page" => 1]));
     } else if ($page > $view->content->pager->total_pages) {
-      url::redirect(url::merge(array("page" => $view->content->pager->total_pages)));
+      url::redirect(url::merge(["page" => $view->content->pager->total_pages]));
     }
 
     $view->content->users = ORM::factory("user")
@@ -63,14 +63,14 @@ class Admin_Quotas_Controller extends Admin_Controller {
     if (empty($group)) {
       throw new Kohana_404_Exception();
     }
-    print $this->_get_edit_group_quota($group);
+    print static::_get_edit_group_quota($group);
   }
 
-  static function _get_edit_group_quota($group) {
+  public static function _get_edit_group_quota($group) {
     // Generate a form for setting a quota for the specified group ($group).
     $record = ORM::factory("groups_quota")->where("group_id", "=", $group->id)->find();
     $form = new Forge(
-      "admin/quotas/edit_quota/$group->id", "", "post", array("id" => "g-edit-quota-form"));
+      "admin/quotas/edit_quota/$group->id", "", "post", ["id" => "g-edit-quota-form"]);
     $group = $form->group("edit_quota")->label(t("Edit group quota"));
     $group->input("group_quota")->label(t("Limit (MB)"))->id("g-group_quota")->value($record->storage_limit / 1024 / 1024)
       ->error_messages("required", t("A value is required"));
@@ -89,7 +89,7 @@ class Admin_Quotas_Controller extends Admin_Controller {
     }
 
     $record = ORM::factory("groups_quota")->where("group_id", "=", $group->id)->find();
-    $form = $this->_get_edit_group_quota($group);
+    $form = static::_get_edit_group_quota($group);
     try {
       $valid = $form->validate();
       $record->group_id = $id;
@@ -104,20 +104,20 @@ class Admin_Quotas_Controller extends Admin_Controller {
 
     if ($valid) {
       $record->save();
-      message::success(t("Limit for group %group_name set", array("group_name" => $group->name)));
-      json::reply(array("result" => "success"));
+      message::success(t("Limit for group %group_name set", ["group_name" => $group->name]));
+      json::reply(["result" => "success"]);
     } else {
-      json::reply(array("result" => "error", "html" => (string) $form));
+      json::reply(["result" => "error", "html" => (string) $form]);
     }
   }
 
   private function _get_quota_settings_form() {
     // Make a new form to allow the admin to specify how the system should calculate a user's quota.
     $form = new Forge("admin/quotas/saveprefs", "", "post",
-                      array("id" => "g-quotas-admin-form"));
+                      ["id" => "g-quotas-admin-form"]);
 
     // Setup a checkbox for the form.
-    $quota_options["use_all_sizes"] = array(t("Count resizes and thumbnails towards a users limit?"), module::get_var("quotas", "use_all_sizes"));
+    $quota_options["use_all_sizes"] = [t("Count resizes and thumbnails towards a users limit?"), module::get_var("quotas", "use_all_sizes")];
     $add_links = $form->group("quota_preferences");
     $add_links->checklist("quota_preferences_list")
       ->options($quota_options);

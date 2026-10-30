@@ -21,7 +21,7 @@ interface Sabre_DAV_IQuota extends Sabre_DAV_ICollection {
      * This method MUST return an array with 2 values, the first being the total used space,
      * the second the available space (in bytes)
      */
-    function getQuotaInfo(); 
+    public function getQuotaInfo(); 
 
 }
 

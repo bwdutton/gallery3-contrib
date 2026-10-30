@@ -41,7 +41,7 @@ class Admin_Hide_Controller extends Admin_Controller {
 
   private function _get_admin_form() {
     $form = new Forge("admin/hide/save", "", "post",
-                      array("id" => "g-hide-admin-form"));
+                      ["id" => "g-hide-admin-form"]);
     $form->dropdown("access_permissions")
       ->label(t("Who can see hidden items?"))
       ->options(hide::get_groups_as_dropdown_options())

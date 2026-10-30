@@ -62,9 +62,9 @@ class Admin_Email_Templates_Controller extends Controller
         );
 
       $email_template->save();
-      message::success(t("Created Email_template %email_template_name", array(
-        "email_template_name" => html::clean($email_template->name))));
-      print json::reply(array("result" => "success"));
+      message::success(t("Created Email_template %email_template_name", [
+        "email_template_name" => html::clean($email_template->name)]));
+      print json::reply(["result" => "success"]);
     } 
 		else {
       print $form;
@@ -96,10 +96,10 @@ class Admin_Email_Templates_Controller extends Controller
       print $form;
     }
 
-    $message = t("Deleted Email template %email_template_name", array("email_template_name" => html::clean($name)));
+    $message = t("Deleted Email template %email_template_name", ["email_template_name" => html::clean($name)]);
     log::success("email_template", $message);
     message::success($message);
-    print json::reply(array("result" => "success"));
+    print json::reply(["result" => "success"]);
   }
 
   public function edit_email_template($id) {
@@ -142,8 +142,8 @@ class Admin_Email_Templates_Controller extends Controller
 			$email_template->save();
 
       message::success(t("Changed Email template %email_template_name",
-          array("email_template_name" => html::clean($email_template->name))));
-      print json::reply(array("result" => "success"));
+          ["email_template_name" => html::clean($email_template->name)]));
+      print json::reply(["result" => "success"]);
     } 
 		else {
       print $form;

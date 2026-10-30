@@ -32,50 +32,30 @@ class Bp_Order_Log_Model extends ORM {
   const CANCELLED = 99;
 
   public function status(){
-    switch ($this->status){
-      case 1:
-        return t("Waiting Payment");
-      case 2:
-        return t("Payment Confirmed");
-      case 3:
-			return t("Late Payment");
-			case 10:
-			return t("Delivered,w/o payment");
-			case 20:
-			return t("Complete");
-			case 21:
-			return t("Expired");
-			case 99:
-			return t("Cancelled");
-
-      default:
-        return t("Unknown");
-    }
+    return match ($this->status) {
+        1 => t("Waiting Payment"),
+        2 => t("Payment Confirmed"),
+        3 => t("Late Payment"),
+        10 => t("Delivered,w/o payment"),
+        20 => t("Complete"),
+        21 => t("Expired"),
+        99 => t("Cancelled"),
+        default => t("Unknown"),
+    };
   }
 
   public function event(){
-    switch ($this->event){
-      case self::ORDERED:
-        return t("Order confirmation sent");
-      case self::PAID:
-        return t("Payment confirmation sent");
-      case self::LATE_PAYMENT:
-        return t("Late Payment notification sent");
-      case self::COPY_SENT:
-				return t("Order confirmation Copy sent");
-			case self::DELIVERED_NOTPAID:
-				return t("Delivery without Payment notification sent");
-      case self::DELIVERED:
-        return t("Delivery notification sent");
-			case self::DELAYED:
-				return t("Delay notification sent");
-			case self::EXPIRED:
-				return t("Expiration notification sent");
-			case self::CANCELLED:
-				return t("Cancellation notification sent");
-
-      default:
-        return t("Unknown");
-    }
+    return match ($this->event) {
+        self::ORDERED => t("Order confirmation sent"),
+        self::PAID => t("Payment confirmation sent"),
+        self::LATE_PAYMENT => t("Late Payment notification sent"),
+        self::COPY_SENT => t("Order confirmation Copy sent"),
+        self::DELIVERED_NOTPAID => t("Delivery without Payment notification sent"),
+        self::DELIVERED => t("Delivery notification sent"),
+        self::DELAYED => t("Delay notification sent"),
+        self::EXPIRED => t("Expiration notification sent"),
+        self::CANCELLED => t("Cancellation notification sent"),
+        default => t("Unknown"),
+    };
   }
 }

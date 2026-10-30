@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class editcreation_event_Core {
-  static function item_edit_form($item, $form) {
+  public static function item_edit_form($item, $form) {
     // Add a couple of drop-down boxes to allow the user to edit the date
     // that $item was created on.
         
@@ -30,7 +30,7 @@ class editcreation_event_Core {
                     ->value($item->created);
   }
 
-  static function item_edit_form_completed($item, $form) {
+  public static function item_edit_form_completed($item, $form) {
     // Change the item's created field to the specified value.
     $item->created = $form->edit_item->datecreated->value;
     $item->save();

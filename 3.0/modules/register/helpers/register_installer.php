@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class register_installer {
-  static function install() {
+  public static function install() {
     $db = Database::instance();
     $db->query("CREATE TABLE IF NOT EXISTS {pending_users} (
                  `id` int(9) NOT NULL auto_increment,
@@ -46,7 +46,7 @@ class register_installer {
   }
 
   // function added Shad Laws, v2
-  static function upgrade() {
+  public static function upgrade() {
     if (module::get_version("register") < 1) {
       module::install("register");
     }
@@ -62,7 +62,7 @@ class register_installer {
     module::set_version("register", 2);
   }
 
-  static function uninstall() {
+  public static function uninstall() {
     Database::instance()->query("DROP TABLE IF EXISTS {pending_users};");
     // added Shad Laws, v2
     module::clear_all_vars("registration");

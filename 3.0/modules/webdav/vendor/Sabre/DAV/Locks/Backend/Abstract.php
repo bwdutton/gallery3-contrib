@@ -22,7 +22,7 @@ abstract class Sabre_DAV_Locks_Backend_Abstract {
      * @param string $uri 
      * @return array 
      */
-    abstract function getLocks($uri);
+    abstract public function getLocks($uri);
 
     /**
      * Locks a uri 
@@ -31,7 +31,7 @@ abstract class Sabre_DAV_Locks_Backend_Abstract {
      * @param Sabre_DAV_Locks_LockInfo $lockInfo 
      * @return bool 
      */
-    abstract function lock($uri,Sabre_DAV_Locks_LockInfo $lockInfo);
+    abstract public function lock($uri,Sabre_DAV_Locks_LockInfo $lockInfo);
 
     /**
      * Removes a lock from a uri 
@@ -40,7 +40,7 @@ abstract class Sabre_DAV_Locks_Backend_Abstract {
      * @param Sabre_DAV_Locks_LockInfo $lockInfo 
      * @return bool 
      */
-    abstract function unlock($uri,Sabre_DAV_Locks_LockInfo $lockInfo);
+    abstract public function unlock($uri,Sabre_DAV_Locks_LockInfo $lockInfo);
 
 }
 

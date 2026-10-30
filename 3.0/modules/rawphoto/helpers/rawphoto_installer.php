@@ -18,11 +18,11 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class rawphoto_installer {
-  static function install() {
+  public static function install() {
     module::set_version("rawphoto", 3);
   }
 
-  static function activate() {
+  public static function activate() {
     rawphoto_version::report_item_conversion_support();
     $dcraw = rawphoto_graphics::detect_dcraw();
     rawphoto_graphics::report_dcraw_support($dcraw);
@@ -30,7 +30,7 @@ class rawphoto_installer {
     rawphoto_graphics::report_ppm_support($toolkit_id);
   }
 
-  static function deactivate() {
+  public static function deactivate() {
     site_status::clear("rawphoto_needs_item_conversion_support");
     site_status::clear("rawphoto_needs_dcraw");
     site_status::clear("rawphoto_needs_ppm_support");

@@ -44,11 +44,11 @@ class star_Core {
    * @param Item_Model $item    the item
    * @return Starred_Item_Model  the related starred_item model
    */
-  static function get_starred_item_model(Item_Model $item) {
+  public static function get_starred_item_model(Item_Model $item) {
     try {
       $model = model_cache::get("item", $id);
     }
-    catch (Exception $e) {
+    catch (Exception) {
       $model = ORM::factory("starred_item");
       $model->item_id = $item->id;
       $model->validate();
@@ -57,7 +57,7 @@ class star_Core {
     return $model;
   }
 
-  static function get_star_user_model() {
+  public static function get_star_user_model() {
     $model = ORM::factory("starred_only_user");
     $model->user_id = identity::active_user()->id;
     $model->validate();
@@ -70,7 +70,7 @@ class star_Core {
    * @param Item_Model $item  the item
    * @return bool
    */
-  static function can_be_starred(Item_Model $item) {
+  public static function can_be_starred(Item_Model $item) {
     if (empty($item)) {
       return false;
     }
@@ -88,7 +88,7 @@ class star_Core {
    * @param Item_Model $item  the item
    * @return bool
    */
-  static function is_starred(Item_Model $item) {
+  public static function is_starred(Item_Model $item) {
     $model = self::get_starred_item_model($item);
     return $model->loaded();
   }
@@ -98,7 +98,7 @@ class star_Core {
    *
    * @param Item_Model $item  the item to star
    */
-  static function star(Item_Model $item) {
+  public static function star(Item_Model $item) {
     if (self::is_starred($item)) {
       return;
     }
@@ -112,7 +112,7 @@ class star_Core {
    *
    * @param Item_Model $item  the item to display
    */
-  static function unstar(Item_Model $item) {
+  public static function unstar(Item_Model $item) {
     if (!self::is_starred($item)) {
       return;
     }
@@ -121,7 +121,7 @@ class star_Core {
     $starred_item->delete();
   }
 
-  static function star_only_on() {
+  public static function star_only_on() {
     if (self::show_only_starred_items()) {
       return;
     }
@@ -129,7 +129,7 @@ class star_Core {
     $star_user = self::get_star_user_model();
     $star_user->save();
   }
-  static function star_only_off() {
+  public static function star_only_off() {
     if (!self::show_only_starred_items()) {
       return;
     }
@@ -143,7 +143,7 @@ class star_Core {
    *
    * @return bool
    */
-  static function show_only_starred_items() {
+  public static function show_only_starred_items() {
     $model = self::get_star_user_model();
     return $model->loaded();
   }
@@ -153,7 +153,7 @@ class star_Core {
    *
    * @return bool
    */
-  static function can_star() {
+  public static function can_star() {
     if (identity::active_user()->admin) {
       return true;
     }

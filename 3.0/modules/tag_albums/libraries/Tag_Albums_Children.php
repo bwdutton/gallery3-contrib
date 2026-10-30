@@ -18,31 +18,29 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class Tag_Albums_Children_Core implements Iterator {
-  public $array = Array();
   private $position = 0;
   
-  public function __construct($children) {
-    $this->position = 0;
-    $this->array = $children;
-  }
-
-  function rewind() {
+  public function __construct(public $array) {
     $this->position = 0;
   }
 
-  function current() {
+  public function rewind() {
+    $this->position = 0;
+  }
+
+  public function current() {
     return $this->array[$this->position];
   }
 
-  function key() {
+  public function key() {
     return $this->position;
   }
 
-  function next() {
+  public function next() {
     ++$this->position;
   }
 
-  function valid() {
+  public function valid() {
     return isset($this->array[$this->position]);
   }
 }

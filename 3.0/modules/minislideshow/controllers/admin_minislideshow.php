@@ -74,7 +74,7 @@ class Admin_Minislideshow_Controller extends Admin_Controller {
     
     // Make a new Form.
     $form = new Forge("admin/minislideshow/saveprefs", "", "post",
-                      array("id" => "g-mini-slideshow-admin-form"));
+                      ["id" => "g-mini-slideshow-admin-form"]);
 
     // Get location of slideshow files.
     $group_slideshow_files = $form->group("Minislideshow");
@@ -87,31 +87,31 @@ class Admin_Minislideshow_Controller extends Admin_Controller {
     $group_slideshow_settings->label(t("MiniSlide Show Settings"));
     $group_slideshow_settings->dropdown('shuffle')
                              ->label(t("Shuffle:"))
-                             ->options(array('true'=>'True', ''=>'False'))
+                             ->options(['true'=>'True', ''=>'False'])
                              ->selected(module::get_var("minislideshow", "shuffle"));
     $group_slideshow_settings->dropdown('dropshadow')
                              ->label(t("Drop Shadow:"))
-                             ->options(array('true'=>'True', ''=>'False'))
+                             ->options(['true'=>'True', ''=>'False'])
                              ->selected(module::get_var("minislideshow", "dropshadow"));
     $group_slideshow_settings->dropdown('show_title')
                              ->label(t("Show Title:"))
-                             ->options(array('top'=>'Top', 'bottom'=>'Bottom', ''=>'False'))
+                             ->options(['top'=>'Top', 'bottom'=>'Bottom', ''=>'False'])
                              ->selected(module::get_var("minislideshow", "show_title"));
     $group_slideshow_settings->dropdown('trans_in_type')
                              ->label(t("Transition In:"))
-                             ->options(array('Blinds'=>'Blinds', ''=>'Fade', 'Fly'=>'Fly', 'Iris'=>'Iris', 'Photo'=>'Photo', 'PixelDissolve'=>'Pixel Dissolve', 'Rotate'=>'Rotate', 'Squeeze'=>'Squeeze', 'Wipe'=>'Wipe', 'Zoom'=>'Zoom', 'Random'=>'Random'))
+                             ->options(['Blinds'=>'Blinds', ''=>'Fade', 'Fly'=>'Fly', 'Iris'=>'Iris', 'Photo'=>'Photo', 'PixelDissolve'=>'Pixel Dissolve', 'Rotate'=>'Rotate', 'Squeeze'=>'Squeeze', 'Wipe'=>'Wipe', 'Zoom'=>'Zoom', 'Random'=>'Random'])
                              ->selected(module::get_var("minislideshow", "trans_in_type"));
     $group_slideshow_settings->dropdown('trans_out_type')
                              ->label(t("Transition Out:"))
-                             ->options(array('Blinds'=>'Blinds', ''=>'Fade', 'Fly'=>'Fly', 'Iris'=>'Iris', 'Photo'=>'Photo', 'PixelDissolve'=>'Pixel Dissolve', 'Rotate'=>'Rotate', 'Squeeze'=>'Squeeze', 'Wipe'=>'Wipe', 'Zoom'=>'Zoom', 'Random'=>'Random'))
+                             ->options(['Blinds'=>'Blinds', ''=>'Fade', 'Fly'=>'Fly', 'Iris'=>'Iris', 'Photo'=>'Photo', 'PixelDissolve'=>'Pixel Dissolve', 'Rotate'=>'Rotate', 'Squeeze'=>'Squeeze', 'Wipe'=>'Wipe', 'Zoom'=>'Zoom', 'Random'=>'Random'])
                              ->selected(module::get_var("minislideshow", "trans_out_type"));
     $group_slideshow_settings->dropdown('mask')
                              ->label(t("Mask:"))
-                             ->options(array(''=>'None', 'circleMask'=>'Circle', 'roundedMask'=>'Rounded Corners', 'starMask'=>'Star'))
+                             ->options([''=>'None', 'circleMask'=>'Circle', 'roundedMask'=>'Rounded Corners', 'starMask'=>'Star'])
                              ->selected(module::get_var("minislideshow", "mask"));
     $group_slideshow_settings->dropdown('use_full_image')
                              ->label(t("Use Full Image:"))
-                             ->options(array('true', 'false', 'Use Resize'))
+                             ->options(['true', 'false', 'Use Resize'])
                              ->selected(module::get_var("minislideshow", "use_full_image"));
     $group_slideshow_settings->input("delay")
                           ->label(t("Delay:"))

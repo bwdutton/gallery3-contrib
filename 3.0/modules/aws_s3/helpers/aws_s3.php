@@ -8,7 +8,7 @@ class aws_s3_Core {
 
     private static $_s3;
 
-    static function get_s3() {
+    public static function get_s3() {
         if (!self::$_s3) {
             require_once(MODPATH . "aws_s3/lib/s3.php");
             S3::setAuth(module::get_var("aws_s3", "access_key"), module::get_var("aws_s3", "secret_key"));
@@ -17,7 +17,7 @@ class aws_s3_Core {
         return self::$_s3;
     }
 
-    static function getHash($string) {
+    public static function getHash($string) {
         return base64_encode(extension_loaded('hash') ?
             hash_hmac('sha1', $string, module::get_var("aws_s3", "secret_key"), true) : pack('H*', sha1(
             (str_pad(module::get_var("aws_s3", "secret_key"), 64, chr(0x00)) ^ (str_repeat(chr(0x5c), 64))) .
@@ -25,9 +25,9 @@ class aws_s3_Core {
             (str_repeat(chr(0x36), 64))) . $string)))));
     }
     
-    static function generate_url($resource, $authenticated = false, $updated = null) {
-        $find = array("{guid}", "{bucket}", "{resource}");
-        $replace = array(module::get_var("aws_s3", "g3id"), module::get_var("aws_s3", "bucket_name"), $resource);
+    public static function generate_url($resource, $authenticated = false, $updated = null) {
+        $find = ["{guid}", "{bucket}", "{resource}"];
+        $replace = [module::get_var("aws_s3", "g3id"), module::get_var("aws_s3", "bucket_name"), $resource];
         $url = str_replace($find, $replace, module::get_var("aws_s3", "url_str"));
         
         if ($authenticated) {
@@ -42,12 +42,12 @@ class aws_s3_Core {
             S3::getAuthenticatedURL(module::get_var("aws_s3", "bucket_name"), $resource, module::get_var("aws_s3", "sig_exp"));
         }
         else
-            $url .= "?m=" . ($updated ? $updated : time());
+            $url .= "?m=" . ($updated ?: time());
 
         return $url;
     }
 
-    static function get_resource_url($resource) {
+    public static function get_resource_url($resource) {
         $url = self::generate_url($resource);
         preg_match("%https?://[\w\.\-]*/(.*)\?%", $url, $matches);
         if (count($matches) > 0)
@@ -55,7 +55,7 @@ class aws_s3_Core {
         return false;
     }
 
-    static function log($item) {
+    public static function log($item) {
         if (is_string($item) || is_numeric($item)) {}
         else
             $item = print_r($item, true);
@@ -65,7 +65,7 @@ class aws_s3_Core {
         fclose($fh);
     }
 
-    static function get_upload_flags() {
+    public static function get_upload_flags() {
         $flags = 0;
         if (module::get_var("aws_s3", "upload_thumbs") == 1)
             $flags += self::UPLOAD_THUMB;
@@ -76,7 +76,7 @@ class aws_s3_Core {
         return $flags;
     }
     
-    static function upload_item($item, $flags = 7) {
+    public static function upload_item($item, $flags = 7) {
         self::get_s3();
 
         $filename = urldecode($item->relative_path());
@@ -128,7 +128,7 @@ class aws_s3_Core {
         return $success;
     }
 
-    static function move_item($old_item, $new_item) {
+    public static function move_item($old_item, $new_item) {
         self::get_s3();
 
         $old_filename = urldecode($old_item->relative_path());
@@ -170,7 +170,7 @@ class aws_s3_Core {
             aws_s3::upload_item($new_item, aws_s3::UPLOAD_THUMB);
     }
 
-    static function remove_item($item) {
+    public static function remove_item($item) {
         self::get_s3();
 
         $filename = urldecode($item->relative_path());
@@ -214,24 +214,24 @@ class aws_s3_Core {
         return $success;
     }
 
-    static function getAuthenticatedURL($bucket, $uri) {
+    public static function getAuthenticatedURL($bucket, $uri) {
         self::get_s3();
 
         return S3::getAuthenticatedURL($bucket, $uri, 60);
     }
 
-    static function validate_number($field) {
+    public static function validate_number($field) {
         if (preg_match("/\D/", $field->value))
             $field->add_error("not_numeric", 1);
     }
 
-    static function validate_bucket($field) {
+    public static function validate_bucket($field) {
         if (preg_match("/[^a-zA-Z0-9\-\.]/", $field->value))
             $field->add_error("invalid", 1);
     }
 
     // @TODO: Write validation function (check with S3)
-    static function validate_access_details($access_key, $secret_key, $bucket_name) {
+    public static function validate_access_details($access_key, $secret_key, $bucket_name) {
         require_once(MODPATH . "aws_s3/lib/s3.php");
         S3::setAuth($access_key, $secret_key);
         S3::$useSSL = false;
@@ -243,12 +243,12 @@ class aws_s3_Core {
         return $success_test;
     }
 
-    static function base64_filename(Item_Model $item) {
+    public static function base64_filename(Item_Model $item) {
         $file_path = explode("/", $item->relative_path());
         return base64_encode(end($file_path));
     }
 
-    static function can_schedule() {
+    public static function can_schedule() {
         if (!module::is_active("scheduler")) {
             return false;
         }
@@ -256,23 +256,23 @@ class aws_s3_Core {
         return true;
     }
 
-    static function schedule_task($task) {
+    public static function schedule_task($task) {
         $schedule = ORM::factory("schedule");
         $schedule->add_task($task);
     }
 
-    static function schedule_full_sync2() {
+    public static function schedule_full_sync2() {
         $task_def =
             Task_Definition::factory()
                 ->callback("aws_s3_task::sync")
                 ->name("Amazon S3 bucket synchronisation")
                 ->severity(log::SUCCESS);
 
-        $task = task::create($task_def, array());
+        $task = task::create($task_def, []);
         self::schedule_task($task);
     }
 
-    static function schedule_full_sync($this_task) {
+    public static function schedule_full_sync($this_task) {
         if (!self::can_schedule())
             throw new Exception("Unable to initialize schedule");
 
@@ -303,7 +303,7 @@ class aws_s3_Core {
         return true;
     }
 
-    static function schedule_item_sync($item) {
+    public static function schedule_item_sync($item) {
         if (!self::can_schedule())
             throw new Exception("Unable to initialize schedule");
         
@@ -321,7 +321,7 @@ class aws_s3_Core {
                 ->name("Amazon S3 item upload (ID: " . $item_id . ")")
                 ->severity(log::SUCCESS);
 
-        $task = task::create($task_def, array("item_id" => $item_id));
+        $task = task::create($task_def, ["item_id" => $item_id]);
 
         self::schedule_task($task);
     }

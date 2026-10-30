@@ -1,7 +1,7 @@
 <?php defined("SYSPATH") or die("No direct script access.");
 
 class sitemap_xtra_installer {
-	static function deactivate() {
+	public static function deactivate() {
 		module::clear_var("sitemap_xtra", "path");
 		module::clear_var("sitemap_xtra", "base_url");
 		module::clear_var("sitemap_xtra", "zip");

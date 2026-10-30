@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class quotas_event_Core {  
-  static function admin_menu($menu, $theme) {
+  public static function admin_menu($menu, $theme) {
     // Add a User quotas link to the admin menu.
     $menu->get("content_menu")
       ->append(Menu::factory("link")
@@ -27,7 +27,7 @@ class quotas_event_Core {
                ->url(url::site("admin/quotas")));
   }
 
-  static function user_created($user) {
+  public static function user_created($user) {
     // Set up some default values whenever a new user is created.
     $record = ORM::factory("users_space_usage")->where("owner_id", "=", $user->id)->find();
     if (!$record->loaded()) {
@@ -39,7 +39,7 @@ class quotas_event_Core {
     }
   }
 
-  static function user_before_delete($user) {
+  public static function user_before_delete($user) {
     // When deleting a user, all of that user's items get re-assigned to the admin account,
     //   so the file sizes need to be reassigned to the admin user as well.
     $admin = identity::admin_user();
@@ -54,7 +54,7 @@ class quotas_event_Core {
     }
   }
 
-  static function item_before_create($item) {
+  public static function item_before_create($item) {
     // When creating a new item, make sure it's file size won't put the user over their limit.
     //   If it does, throw an error, which will prevent gallery from accepting the file.
     $record = ORM::factory("users_space_usage")->where("owner_id", "=", $item->owner_id)->find();
@@ -69,7 +69,7 @@ class quotas_event_Core {
     }
   }
 
-  static function item_created($item) {
+  public static function item_created($item) {
     // When a new item is created, add it's file size to the users_space_usage table.
     $record = ORM::factory("users_space_usage")->where("owner_id", "=", $item->owner_id)->find();
     if (!$record->loaded()) {
@@ -82,7 +82,7 @@ class quotas_event_Core {
     $record->add_item($item);
   }
 
-  static function item_before_delete($item) {
+  public static function item_before_delete($item) {
     // When an item is deleted, remove it's file size from the users_space_usage table.
     $record = ORM::factory("users_space_usage")->where("owner_id", "=", $item->owner_id)->find();
     $record->remove_item($item);
@@ -93,7 +93,7 @@ class quotas_event_Core {
   //   So instead, I'm using graphics_rotate to detect a rotate and remove the existing file sizes, and
   //   item_updated_data_file to add in the new data file sizes.
   //   Does item_updated_data_file fire for any other reason? (watermarking?  renaming/moving/deleting/keeporiginal do not cause updated_data_file.)
-  static function graphics_rotate($input_file, $output_file, $options) {
+  public static function graphics_rotate($input_file, $output_file, $options) {
     // Remove the current item's file size from the quotas table.
     $item = item::find_by_path(substr(str_replace(VARPATH, "", $input_file), strpos(str_replace(VARPATH, "", $input_file), "/")+1));
     if ($item->loaded()) {
@@ -102,23 +102,23 @@ class quotas_event_Core {
     }
   }
 
-  static function item_updated_data_file($item) {
+  public static function item_updated_data_file($item) {
     // Add the current item's file size into the quotas table.
     $record = ORM::factory("users_space_usage")->where("owner_id", "=", $item->owner_id)->find();
     $record->add_item($item);
   }
 
-  static function show_user_profile($data) {
+  public static function show_user_profile($data) {
     // Display # of albums and photos/movies on user profile page.
     //   Also display current disc usage.
     $v = new View("user_profile_quotas.html");
     $quotas_record = ORM::factory("users_space_usage")->where("owner_id", "=", $data->user->id)->find();
 
-    $v->user_profile_data = array();
+    $v->user_profile_data = [];
     $v->user_profile_data[(string) t("Albums")] = db::build()->from("items")->where("type", "=", "album")->where("owner_id", "=", $data->user->id)->count_records();
     $v->user_profile_data[(string) t("Uploads")] = db::build()->from("items")->where("type", "!=", "album")->where("owner_id", "=", $data->user->id)->count_records();
     $v->user_profile_data[(string) t("Disc Usage")] = $quotas_record->total_usage_string();
 
-    $data->content[] = (object) array("title" => t("User stats"), "view" => $v);
+    $data->content[] = (object) ["title" => t("User stats"), "view" => $v];
   }
 }

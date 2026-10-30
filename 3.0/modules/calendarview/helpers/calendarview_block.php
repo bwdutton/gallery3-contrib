@@ -18,11 +18,11 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class calendarview_block_Core {
-  static function get_site_list() {
-    return array("calendarview_photo" => t("More Photos From This Date"));
+  public static function get_site_list() {
+    return ["calendarview_photo" => t("More Photos From This Date")];
   }
 
-  static function get($block_id, $theme) {
+  public static function get($block_id, $theme) {
     $block = "";
 
     // Make sure the current page belongs to an item.

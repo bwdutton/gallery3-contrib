@@ -18,24 +18,24 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class batchtag_installer {
-  static function install() {
+  public static function install() {
     // Set the module's version number.
     module::set_version("batchtag", 1);
   }
 
-  static function deactivate() {
+  public static function deactivate() {
     site_status::clear("batchtag_needs_tag");
   }
 
-  static function can_activate() {
-    $messages = array();
+  public static function can_activate() {
+    $messages = [];
     if (!module::is_active("tag")) {
       $messages["warn"][] = t("The BatchTag module requires the Tags module.");
     }
     return $messages;
   }
 
-  static function uninstall() {
+  public static function uninstall() {
     module::delete("batchtag");
   }
 }

@@ -50,7 +50,7 @@ abstract class Sabre_DAV_Directory extends Sabre_DAV_Node implements Sabre_DAV_I
             $this->getChild($name);
             return true;
 
-        } catch(Sabre_DAV_Exception_FileNotFound $e) {
+        } catch(Sabre_DAV_Exception_FileNotFound) {
 
             return false;
 

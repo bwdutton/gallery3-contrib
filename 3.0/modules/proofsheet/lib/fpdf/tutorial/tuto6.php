@@ -3,12 +3,12 @@ require('../fpdf.php');
 
 class PDF extends FPDF
 {
-var $B;
-var $I;
-var $U;
-var $HREF;
+public $B;
+public $I;
+public $U;
+public $HREF;
 
-function __construct($orientation='P', $unit='mm', $size='A4')
+public function __construct($orientation='P', $unit='mm', $size='A4')
 {
 	// Call parent constructor
 	$this->FPDF($orientation,$unit,$size);
@@ -19,7 +19,7 @@ function __construct($orientation='P', $unit='mm', $size='A4')
 	$this->HREF = '';
 }
 
-function WriteHTML($html)
+public function WriteHTML($html)
 {
 	// HTML parser
 	$html = str_replace("\n",' ',$html);
@@ -44,7 +44,7 @@ function WriteHTML($html)
 				// Extract attributes
 				$a2 = explode(' ',$e);
 				$tag = strtoupper(array_shift($a2));
-				$attr = array();
+				$attr = [];
 				foreach($a2 as $v)
 				{
 					if(preg_match('/([^=]*)=["\']?([^"\']*)/',$v,$a3))
@@ -56,7 +56,7 @@ function WriteHTML($html)
 	}
 }
 
-function OpenTag($tag, $attr)
+public function OpenTag($tag, $attr)
 {
 	// Opening tag
 	if($tag=='B' || $tag=='I' || $tag=='U')
@@ -67,7 +67,7 @@ function OpenTag($tag, $attr)
 		$this->Ln(5);
 }
 
-function CloseTag($tag)
+public function CloseTag($tag)
 {
 	// Closing tag
 	if($tag=='B' || $tag=='I' || $tag=='U')
@@ -76,12 +76,12 @@ function CloseTag($tag)
 		$this->HREF = '';
 }
 
-function SetStyle($tag, $enable)
+public function SetStyle($tag, $enable)
 {
 	// Modify style and select corresponding font
 	$this->$tag += ($enable ? 1 : -1);
 	$style = '';
-	foreach(array('B', 'I', 'U') as $s)
+	foreach(['B', 'I', 'U'] as $s)
 	{
 		if($this->$s>0)
 			$style .= $s;
@@ -89,7 +89,7 @@ function SetStyle($tag, $enable)
 	$this->SetFont('',$style);
 }
 
-function PutLink($URL, $txt)
+public function PutLink($URL, $txt)
 {
 	// Put a hyperlink
 	$this->SetTextColor(0,0,255);

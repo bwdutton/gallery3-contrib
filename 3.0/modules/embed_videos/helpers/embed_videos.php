@@ -25,10 +25,10 @@
  */
 class embed_videos_Core {
 
-  static function get_add_form($album) {
-    $form = new Forge("embedded_videos/create/{$album->id}", "", "post", array("id" => "g-add-embed-form"));
+  public static function get_add_form($album) {
+    $form = new Forge("embedded_videos/create/{$album->id}", "", "post", ["id" => "g-add-embed-form"]);
     $group = $form->group("add_embedded_video")
-    ->label(t("Add embedded video to %album_title", array("album_title" => $album->title)));
+    ->label(t("Add embedded video to %album_title", ["album_title" => $album->title]));
     $group->input("title")->label(t("Title"))
     ->error_messages("required", t("You must provide a title"))
     ->error_messages("length", t("Your title is too long"));

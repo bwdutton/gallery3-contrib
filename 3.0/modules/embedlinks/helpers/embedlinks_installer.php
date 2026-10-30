@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class embedlinks_installer {
-  static function install() {
+  public static function install() {
     // Set some default values.
     module::set_var("embedlinks", "HTMLCode", true);
     module::set_var("embedlinks", "BBCode", true);
@@ -30,7 +30,7 @@ class embedlinks_installer {
     module::set_version("embedlinks", 2);
   }
 
-  static function upgrade($version) {
+  public static function upgrade($version) {
     if ($version == 1) {
       // Set some default values.
       module::set_var("embedlinks", "ToolbarLinks", true);

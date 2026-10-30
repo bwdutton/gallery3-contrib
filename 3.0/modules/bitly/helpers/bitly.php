@@ -25,7 +25,7 @@ class bitly_Core {
 
   public static $api_version = "v3";
 
-  public static $api_methods = array(
+  public static $api_methods = [
       'expand'    => 'expand',
       'shorten'   => 'shorten',
       'validate'  => 'validate',
@@ -36,10 +36,10 @@ class bitly_Core {
       'clicks_by_day' => 'clicks_by_day',
       'lookup' => 'lookup',
       'info' => 'info',
-  );
+  ];
 
-  static function get_configure_form() {
-    $form = new Forge("admin/bitly", "", "post", array("id" => "g-configure-bitly-form"));
+  public static function get_configure_form() {
+    $form = new Forge("admin/bitly", "", "post", ["id" => "g-configure-bitly-form"]);
     $group = $form->group("configure_bitly")->label(t("Configure bit.ly"));
     $group->input("login")
           ->label(t("Login"))
@@ -53,7 +53,7 @@ class bitly_Core {
           ->error_messages("required", t("You must enter an API key"));
     $group->dropdown("domain")
           ->label(t("Preferred Domain"))
-          ->options(array("bit.ly" => "bit.ly", "j.mp" => "j.mp"))
+          ->options(["bit.ly" => "bit.ly", "j.mp" => "j.mp"])
           ->selected(module::get_var("bitly", "domain"));
     $group->submit("")->value(t("Save"));
     return $form;
@@ -65,16 +65,16 @@ class bitly_Core {
    * @param  string   $api_key bit.ly API key
    * @return boolean
    */
-  static function validate_config($login, $api_key) {
+  public static function validate_config($login, $api_key) {
     if (!empty($login) && !empty($api_key)) {
-      $parameters = array(
+      $parameters = [
         'login' => $login,
         'apiKey' => $api_key,
         'x_login' => $login,
         'x_apiKey' => $api_key
-        );
+        ];
       $request = self::_build_http_request('validate', $parameters);
-      $response = self::_http_post($request, "api.bit.ly");
+      $response = self::_http_post($request);
       $json_decoded = json_decode($response->body[0]);
       if (!$json_decoded->data->valid) {
         if ("INVALID_LOGIN" == $json_decoded->status_txt) {
@@ -93,19 +93,19 @@ class bitly_Core {
    * Check whether the module's configured correctly
    * @return boolean
    */
-  static function check_config() {
+  public static function check_config() {
     $login = module::get_var("bitly", "login");
     $api_key = module::get_var("bitly", "api_key");
     if (empty($login) || empty($api_key)) {
       site_status::warning(
         t("bit.ly is not quite ready!  Please provide a <a href=\"%url\">login and API Key</a>",
-          array("url" => html::mark_clean(url::site("admin/bitly")))),
+          ["url" => html::mark_clean(url::site("admin/bitly"))]),
         "bitly_config");
 
     } else if (!self::validate_config($login, $api_key)) {
       site_status::warning(
         t("bit.ly is not properly configured!  URLs will not be shortened until its <a href=\"%url\">configuration</a> is updated.",
-          array("url" => html::mark_clean(url::site("admin/bitly")))),
+          ["url" => html::mark_clean(url::site("admin/bitly"))]),
         "bitly_config");
     } else {
       site_status::clear("bitly_config");
@@ -152,11 +152,11 @@ class bitly_Core {
         $response .= fgets($fs, 1160); // One TCP-IP packet
       }
       fclose($fs);
-      list($headers, $body) = explode("\r\n\r\n", $response);
+      [$headers, $body] = explode("\r\n\r\n", $response);
       $headers = explode("\r\n", $headers);
       $body = explode("\r\n", $body);
       $response = new ArrayObject(
-        array("headers" => $headers, "body" => $body), ArrayObject::ARRAY_AS_PROPS);
+        ["headers" => $headers, "body" => $body], ArrayObject::ARRAY_AS_PROPS);
     } else {
       throw new Exception("@todo CONNECTION TO URL SHORTENING SERVICE FAILED");
     }
@@ -171,19 +171,19 @@ class bitly_Core {
    * @param  string $format
    * @return mixed  string|false
    */
-  static function shorten_url($item_id, $format='json') {
+  public static function shorten_url($item_id, $format='json') {
     $item = ORM::factory("item", $item_id);
     $short_url = '';
     $long_url = url::abs_site($item->relative_url_cache);
-    $parameters = array(
+    $parameters = [
       "login" => module::get_var("bitly", "login"),
       'apiKey' => module::get_var("bitly", "api_key"),
       'longUrl' => $long_url,
       'domain' => module::get_var("bitly", "domain"),
       'format' => $format,
-      );
+      ];
     $request = self::_build_http_request('shorten', $parameters);    
-    $response = self::_http_post($request, self::$api_host);
+    $response = self::_http_post($request);
     $json_response = json_decode($response->body[0]);
     $status_txt = $json_response->status_txt;
 
@@ -208,7 +208,7 @@ class bitly_Core {
    * @param  string $hash
    * @return string
    */
-  static function url($hash) {
+  public static function url($hash) {
     if (!empty($hash)) {
       return "http://" . module::get_var("bitly", "domain") . "/$hash";
     }

@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class metadescription_theme_Core {
-  static function head($theme) {
+  public static function head($theme) {
     if ($theme->tag()) {
       // If the current page belongs to a tag, look up
       //   the information for that tag.

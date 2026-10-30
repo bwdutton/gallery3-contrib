@@ -53,7 +53,7 @@ class register_Controller extends Controller {
           t("There are pending user registration. <a href=\"%url\">Review now!</a>",
             // modified by Shad Laws, v2
             // array("url" => html::mark_clean(url::site("admin/register")))),
-            array("url" => html::mark_clean(url::site("admin/register")), "locale" => module::get_var("gallery", "default_locale"))),
+            ["url" => html::mark_clean(url::site("admin/register")), "locale" => module::get_var("gallery", "default_locale")]),
           "pending_user_registrations");
         message::success(t("Your registration request is awaiting administrator approval"));
         // added by Shad Laws, v2
@@ -65,9 +65,9 @@ class register_Controller extends Controller {
         message::success(t("A confirmation email has been sent to your email address."));
       }
 
-      json::reply(array("result" => "success"));
+      json::reply(["result" => "success"]);
     } else {
-      json::reply(array("result" => "error", "html" => (string)$form));
+      json::reply(["result" => "error", "html" => (string)$form]);
     }
   }
 
@@ -92,7 +92,7 @@ class register_Controller extends Controller {
           t("There are pending user registration. <a href=\"%url\">Review now!</a>",
             // modified by Shad Laws, v2
             // array("url" => html::mark_clean(url::site("admin/register")))),
-            array("url" => html::mark_clean(url::site("admin/register")), "locale" => module::get_var("gallery", "default_locale"))),
+            ["url" => html::mark_clean(url::site("admin/register")), "locale" => module::get_var("gallery", "default_locale")]),
           "pending_user_registrations");
         message::success(t("Your registration request is awaiting administrator approval"));
         // added by Shad Laws, v2
@@ -128,7 +128,7 @@ class register_Controller extends Controller {
 
   public function welcome_message() {
     $user = identity::active_user();
-    $password = substr(md5(rand()), 0, 8);
+    $password = substr(md5(random_int(0, mt_getrandmax())), 0, 8);
     $user->password = $password;
     $user->save();
 
@@ -145,7 +145,7 @@ class register_Controller extends Controller {
 
   private function _get_form() {
     $minimum_length = module::get_var("user", "mininum_password_length", 5);
-    $form = new Forge("register/handler", "", "post", array("id" => "g-register-form"));
+    $form = new Forge("register/handler", "", "post", ["id" => "g-register-form"]);
     $group = $form->group("register_user")->label(t("Register user"));
     $group->input("name")->label(t("Username"))->id("g-username")
       ->rules("required|length[1,32]")
@@ -177,7 +177,7 @@ class register_Controller extends Controller {
    */
   private function _get_change_password_form($user, $password) {
     $form = new Forge(
-      "users/change_password/$user->id", "", "post", array("id" => "g-change-password-user-form"));
+      "users/change_password/$user->id", "", "post", ["id" => "g-change-password-user-form"]);
     $group = $form->group("change_password")->label(t("Change your password"));
     $group->hidden("old_password")->value($password);
     $group->password("password")->label(t("New password"))->id("g-password")

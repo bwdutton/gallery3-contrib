@@ -12,38 +12,27 @@
 class Sabre_CalDAV_CalendarObject extends Sabre_DAV_File implements Sabre_DAV_IProperties {
 
     /**
-     * Sabre_CalDAV_Backend_Abstract 
-     * 
-     * @var array 
+     * Constructor
+     *
+     * @param Sabre_CalDAV_Backend_Abstract $caldavBackend
+     * @param array $objectData
+     * @param mixed[] $calendarInfo
      */
-    private $caldavBackend;
-
-    /**
-     * Array with information about this CalendarObject 
-     * 
-     * @var array 
-     */
-    private $objectData;
-
-    /**
-     * Array with information about the containing calendar
-     * 
-     * @var array 
-     */
-    private $calendarInfo;
-
-    /**
-     * Constructor 
-     * 
-     * @param Sabre_CalDAV_Backend_Abstract $caldavBackend 
-     * @param array $objectData 
-     */
-    public function __construct(Sabre_CalDAV_Backend_Abstract $caldavBackend,$calendarInfo,$objectData) {
-
-        $this->caldavBackend = $caldavBackend;
-        $this->calendarInfo = $calendarInfo;
-        $this->objectData = $objectData;
-
+    public function __construct(
+        /**
+         * Sabre_CalDAV_Backend_Abstract
+         */
+        private readonly Sabre_CalDAV_Backend_Abstract $caldavBackend,
+        /**
+         * Array with information about the containing calendar
+         */
+        private $calendarInfo,
+        /**
+         * Array with information about this CalendarObject
+         */
+        private $objectData
+    )
+    {
     }
 
     /**
@@ -130,7 +119,7 @@ class Sabre_CalDAV_CalendarObject extends Sabre_DAV_File implements Sabre_DAV_IP
      */
     public function getProperties($properties) {
 
-        $response = array();
+        $response = [];
         if (in_array('{urn:ietf:params:xml:ns:caldav}calendar-data',$properties)) 
             $response['{urn:ietf:params:xml:ns:caldav}calendar-data'] = str_replace("\r","",$this->objectData['calendardata']);
        

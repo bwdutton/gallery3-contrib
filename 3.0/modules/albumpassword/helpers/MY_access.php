@@ -19,7 +19,7 @@
  */
 
 class access extends access_Core {
-  static function required($perm_name, $item) {
+  public static function required($perm_name, $item) {
     // Original code from the required function in modules/gallery/helpers/access.php.
     if (!access::can($perm_name, $item)) {
       if ($perm_name == "view") {

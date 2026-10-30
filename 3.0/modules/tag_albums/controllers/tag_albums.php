@@ -181,7 +181,7 @@ class tag_albums_Controller extends Controller {
     // Generate an arry of "fake" items, one for each tag on the page.
     //   Grab thumbnails from a admin-specified photo, or the most recently 
     //   uploaded item for each tag, if available.
-    $children_array = Array();
+    $children_array = [];
     foreach ($display_tags as $one_tag) {
       $tag_thumb_url = "";
       $tag_thumb_width = "";
@@ -226,7 +226,7 @@ class tag_albums_Controller extends Controller {
     $children = new Tag_Albums_Children($children_array);
 
     // Set up breadcrumbs.
-    $tag_album_breadcrumbs = Array();
+    $tag_album_breadcrumbs = [];
     if ($id > 0) {
       $counter = 0;
       $tag_album_breadcrumbs[] = Breadcrumb::instance($album->title, $album->url())->set_last();
@@ -246,12 +246,12 @@ class tag_albums_Controller extends Controller {
     // Set up and display the actual page.
     $template = new Theme_View("page.html", "collection", "Tag Albums");
     $template->set_global(
-      array("page" => $page,
+      ["page" => $page,
             "max_pages" => $max_pages,
             "page_size" => $page_size,
             "children" => $children,
             "breadcrumbs" => $tag_album_breadcrumbs,
-            "children_count" => $all_tags_count));
+            "children_count" => $all_tags_count]);
     $template->page_title = $page_title;
     $template->content = new View("dynamic.html");
     $template->content->title = $page_title;
@@ -291,7 +291,7 @@ class tag_albums_Controller extends Controller {
     $show = Input::instance()->get("show");
     if ($show) {
       $child = ORM::factory("item", $show);
-      $index = $this->_get_position($child->$sort_page_field, $child->id, Array($id), "items." . $sort_page_field, $sort_page_direction, "OR", true);
+      $index = $this->_get_position($child->$sort_page_field, $child->id, [$id], "items." . $sort_page_field, $sort_page_direction, "OR", true);
       if ($index) {
         $page = ceil($index / $page_size);
         if ($page == 1) {
@@ -314,7 +314,7 @@ class tag_albums_Controller extends Controller {
 
     // Determine the total number of items,
     //	for page numbering purposes.
-    $count = $this->_count_records(Array($id), "OR", true);
+    $count = $this->_count_records([$id], "OR", true);
 
     // Figure out what the highest page number is.
     $max_pages = ceil($count / $page_size);
@@ -325,7 +325,7 @@ class tag_albums_Controller extends Controller {
     }
 
     // Figure out which items to display on this page.
-    $tag_children = $this->_get_records(Array($id), $page_size, $offset, "items." . $sort_page_field, $sort_page_direction, "OR", true); 
+    $tag_children = $this->_get_records([$id], $page_size, $offset, "items." . $sort_page_field, $sort_page_direction, "OR", true); 
 	
     // Set up the previous and next page buttons.
     if ($page > 1) {
@@ -338,7 +338,7 @@ class tag_albums_Controller extends Controller {
     }
 
     // Set up breadcrumbs for the page.
-    $tag_album_breadcrumbs = Array();
+    $tag_album_breadcrumbs = [];
     if ($album_id > 0) {
       $counter = 0;
       $tag_album_breadcrumbs[] = Breadcrumb::instance($display_tag->name, $str_page_url)->set_last();
@@ -370,18 +370,18 @@ class tag_albums_Controller extends Controller {
     // Set up and display the actual page.
     $template = new Theme_View("page.html", "collection", "Tag Albums");
     $template->set_global(
-      array("page" => $page,
+      ["page" => $page,
             "max_pages" => $max_pages,
             "page_size" => $page_size,
             "children" => $tag_children,
             "breadcrumbs" => $tag_album_breadcrumbs,
-            "children_count" => $count));
+            "children_count" => $count]);
     $template->page_title = $display_tag->name;
     $template->content = new View("dynamic.html");
     $template->content->title = $display_tag->name;
-    $template->content->description = isset($page_description) ? $page_description : "";
+    $template->content->description = $page_description ?? "";
 
-    $template->set_global("all_siblings", $this->_get_records(Array($id), $count, 0, "items." . $sort_page_field, $sort_page_direction, "OR", false));
+    $template->set_global("all_siblings", $this->_get_records([$id], $count, 0, "items." . $sort_page_field, $sort_page_direction, "OR", false));
     print $template;
 
     // Set breadcrumbs on the photo pages to point back to the calendar day view.
@@ -422,7 +422,7 @@ class tag_albums_Controller extends Controller {
       $sort_page_direction = $album->sort_order;
 
       // Determine search type (AND/OR) and generate an array of the tag ids.
-      $tag_ids = Array();
+      $tag_ids = [];
       foreach (explode(",", $album_tags[0]->tags) as $tag_name) {
         $tag = ORM::factory("tag")->where("name", "=", trim($tag_name))->find();
         if ($tag->loaded()) {
@@ -484,7 +484,7 @@ class tag_albums_Controller extends Controller {
       }
 
       // Set up breadcrumbs.
-      $tag_album_breadcrumbs = array();
+      $tag_album_breadcrumbs = [];
       $counter = 0;
       $tag_album_breadcrumbs[] = Breadcrumb::instance($album->title, $album->url())->set_last();
       $parent_item = ORM::factory("item", $album->parent_id);
@@ -500,12 +500,12 @@ class tag_albums_Controller extends Controller {
       // Set up and display the actual page.
       $template = new Theme_View("page.html", "collection", "Tag Albums");
       $template->set_global(
-        array("page" => $page,
+        ["page" => $page,
               "max_pages" => $max_pages,
               "page_size" => $page_size,
               "children" => $tag_children,
               "breadcrumbs" => $tag_album_breadcrumbs,
-              "children_count" => $count));
+              "children_count" => $count]);
       $template->page_title = $page_title;
       $template->content = new View("dynamic.html");
       $template->content->title = $page_title;
@@ -570,7 +570,7 @@ class tag_albums_Controller extends Controller {
     }
   }
 
-  static function get_display_context($item, $tag_id, $album_id) {
+  public static function get_display_context($item, $tag_id, $album_id) {
     // Make sure #album_id is valid, clear it out if it isn't.
     // Note:  $dynamic_siblings is used exclusively for Grey Dragon.
 
@@ -603,25 +603,25 @@ class tag_albums_Controller extends Controller {
     $next_item = "";
     $position = 0;
     $dynamic_siblings = "";
-    $siblings_callback_param=array();
+    $siblings_callback_param=[];
     if ($tag_id > 0) {	
       $album_tags_search_type = "";
-      $sibling_count = tag_albums_Controller::_count_records(Array($tag_id), "OR", false);
-      $position = tag_albums_Controller::_get_position($item->$sort_page_field, $item->id, Array($tag_id), "items." . $sort_page_field, $sort_page_direction, $album_tags_search_type, false);
+      $sibling_count = tag_albums_Controller::_count_records([$tag_id], "OR", false);
+      $position = tag_albums_Controller::_get_position($item->$sort_page_field, $item->id, [$tag_id], "items." . $sort_page_field, $sort_page_direction, $album_tags_search_type, false);
       if ($position > 1) {
-        $previous_item_object = tag_albums_Controller::_get_records(Array($tag_id), 1, $position-2, "items." . $sort_page_field, $sort_page_direction, $album_tags_search_type, false);
+        $previous_item_object = tag_albums_Controller::_get_records([$tag_id], 1, $position-2, "items." . $sort_page_field, $sort_page_direction, $album_tags_search_type, false);
         if (count($previous_item_object) > 0) {
           $previous_item = $previous_item_object[0];
         }
       }
-      $next_item_object = tag_albums_Controller::_get_records(Array($tag_id), 1, $position, "items." . $sort_page_field, $sort_page_direction, $album_tags_search_type, false);
+      $next_item_object = tag_albums_Controller::_get_records([$tag_id], 1, $position, "items." . $sort_page_field, $sort_page_direction, $album_tags_search_type, false);
       if (count($next_item_object) > 0) {
         $next_item = $next_item_object[0];
       }
-      $dynamic_siblings = tag_albums_Controller::_get_records(Array($tag_id), $sibling_count, 0, "items." . $sort_page_field, $sort_page_direction, $album_tags_search_type, false);
-      $siblings_callback_param= array(Array($tag_id), $sibling_count, 0, "items." . $sort_page_field, $sort_page_direction, $album_tags_search_type, false);
+      $dynamic_siblings = tag_albums_Controller::_get_records([$tag_id], $sibling_count, 0, "items." . $sort_page_field, $sort_page_direction, $album_tags_search_type, false);
+      $siblings_callback_param= [[$tag_id], $sibling_count, 0, "items." . $sort_page_field, $sort_page_direction, $album_tags_search_type, false];
     } else {
-      $tag_ids = Array();
+      $tag_ids = [];
       foreach (explode(",", $album_tags[0]->tags) as $tag_name) {
         $tag = ORM::factory("tag")->where("name", "=", trim($tag_name))->find();
         if ($tag->loaded()) {
@@ -642,11 +642,11 @@ class tag_albums_Controller extends Controller {
         $next_item = $next_item_object[0];
       }
       $dynamic_siblings = tag_albums_Controller::_get_records($tag_ids, $sibling_count, 0, "items." . $sort_page_field, $sort_page_direction, $album_tags_search_type, false);
-      $siblings_callback_param= array($tag_ids, $sibling_count, 0, "items." . $sort_page_field, $sort_page_direction, $album_tags_search_type, false);
+      $siblings_callback_param= [$tag_ids, $sibling_count, 0, "items." . $sort_page_field, $sort_page_direction, $album_tags_search_type, false];
     }
 
     // Set up breadcrumbs
-    $tag_album_breadcrumbs = Array();
+    $tag_album_breadcrumbs = [];
     if ($album_id > 0) {
       $counter = 0;
       $tag_album_breadcrumbs[] = Breadcrumb::instance($item->title, $item->url())->set_last();
@@ -670,7 +670,7 @@ class tag_albums_Controller extends Controller {
       $tag_album_breadcrumbs[] = Breadcrumb::instance($item->title, $item->url())->set_last();
     }
 
-    return array("position" => $position,
+    return ["position" => $position,
                  "previous_item" => $previous_item,
                  "next_item" => $next_item,
                  "tag_id" => $tag_id,
@@ -678,8 +678,8 @@ class tag_albums_Controller extends Controller {
                  "is_tagalbum_page" => true,
                  "dynamic_siblings" => $dynamic_siblings,
                  "sibling_count" => $sibling_count,
-                 "siblings_callback" => array("tag_albums_Controller::get_siblings", $siblings_callback_param),
-                 "breadcrumbs" => $tag_album_breadcrumbs);
+                 "siblings_callback" => ["tag_albums_Controller::get_siblings", $siblings_callback_param],
+                 "breadcrumbs" => $tag_album_breadcrumbs];
   }
 
   private function _get_position($item_title, $item_id, $tag_ids, $sort_field, $sort_direction, $search_type, $include_albums) {

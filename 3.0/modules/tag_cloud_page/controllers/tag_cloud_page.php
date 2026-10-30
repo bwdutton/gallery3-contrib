@@ -30,8 +30,8 @@ class Tag_Cloud_Page_Controller extends Controller {
 
     //  If the tag cloud module is active, load its settings from the database.
     if (module::is_active("tag_cloud")) {
-      $options = array();
-      foreach (array("tagcolor", "background_color", "mouseover", "transparent", "speed", "distribution")
+      $options = [];
+      foreach (["tagcolor", "background_color", "mouseover", "transparent", "speed", "distribution"]
                as $option) {
         $value = module::get_var("tag_cloud", $option, null);
         if (!empty($value)) {

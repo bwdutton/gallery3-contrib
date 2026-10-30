@@ -12,7 +12,7 @@
         <?php if ($theme->item()): ?>
           <?= $theme->item()->title ?>
         <?php elseif ($theme->tag()): ?>
-          <?= t("Photos tagged with %tag_title", array("tag_title" => $theme->tag()->name)) ?>
+          <?= t("Photos tagged with %tag_title", ["tag_title" => $theme->tag()->name]) ?>
         <?php else: /* Not an item, not a tag, no page_title specified.  Help! */ ?>
           <?= item::root()->title ?>
         <?php endif ?>

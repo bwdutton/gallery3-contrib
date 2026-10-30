@@ -59,7 +59,7 @@ class Sabre_HTTP_AWSAuth extends Sabre_HTTP_AbstractAuth {
              return false;
         }
 
-        list($this->accessKey,$this->signature) = explode(':',$authHeader[1]);
+        [$this->accessKey, $this->signature] = explode(':',$authHeader[1]);
 
         return true;
 
@@ -185,11 +185,11 @@ class Sabre_HTTP_AWSAuth extends Sabre_HTTP_AbstractAuth {
      */
     protected function getAmzHeaders() {
 
-        $amzHeaders = array();
+        $amzHeaders = [];
         $headers = $this->httpRequest->getHeaders();
         foreach($headers as $headerName => $headerValue) {
-            if (strpos(strtolower($headerName),'x-amz-')===0) {
-                $amzHeaders[strtolower($headerName)] = str_replace(array("\r\n"),array(' '),$headerValue) . "\n";
+            if (str_starts_with(strtolower($headerName), 'x-amz-')) {
+                $amzHeaders[strtolower($headerName)] = str_replace(["\r\n"],[' '],$headerValue) . "\n";
             }
         }
         ksort($amzHeaders);

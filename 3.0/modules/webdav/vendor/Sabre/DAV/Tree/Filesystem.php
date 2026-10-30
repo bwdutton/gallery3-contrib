@@ -12,13 +12,6 @@
 class Sabre_DAV_Tree_Filesystem extends Sabre_DAV_Tree {
 
     /**
-     * Base url on the filesystem.
-     *
-     * @var string 
-     */
-    protected $basePath;
-
-    /**
      * Creates this tree
      *
      * Supply the path you'd like to share.
@@ -26,10 +19,13 @@ class Sabre_DAV_Tree_Filesystem extends Sabre_DAV_Tree {
      * @param string $basePath 
      * @return void
      */
-    public function __construct($basePath) {
-
-        $this->basePath = $basePath;
-
+    public function __construct(
+        /**
+         * Base url on the filesystem.
+         */
+        protected $basePath
+    )
+    {
     }
 
     /**

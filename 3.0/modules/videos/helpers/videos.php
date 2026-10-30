@@ -22,28 +22,26 @@
 //  All occurences of server_add have been replaced with videos.
 
 class videos_Core {
-  static function check_config($paths=null) {
-    if ($paths === null) {
-      $paths = unserialize(module::get_var("videos", "authorized_paths"));
-    }
+  public static function check_config($paths=null) {
+    $paths ??= unserialize(module::get_var("videos", "authorized_paths"));
     if (empty($paths)) {
       site_status::warning(
         t("Videos needs configuration. <a href=\"%url\">Configure it now!</a>",
-          array("url" => html::mark_clean(url::site("admin/videos")))),
+          ["url" => html::mark_clean(url::site("admin/videos"))]),
         "videos_configuration");
     } else {
       site_status::clear("videos_configuration");
     }
   }
 
-  static function is_valid_path($path) {
+  public static function is_valid_path($path) {
     if (!is_readable($path) || is_link($path)) {
       return false;
     }
 
     $authorized_paths = unserialize(module::get_var("videos", "authorized_paths"));
     foreach (array_keys($authorized_paths) as $valid_path) {
-      if (strpos($path, $valid_path) === 0) {
+      if (str_starts_with($path, $valid_path)) {
         return true;
       }
     }

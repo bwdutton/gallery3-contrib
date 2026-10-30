@@ -3,13 +3,13 @@
 $username=strtoupper($_POST["username"]); //remove case sensitivity on the username
 $password=$_POST["password"];
 
-$options = array(
+$options = [
  'account_suffix' => "***REMOVED***",
  'base_dn' => "***REMOVED***",
- 'domain_controllers' => array ("ldap://***REMOVED***"),
+ 'domain_controllers' =>  ["ldap://***REMOVED***"],
  'ad_username' => '***REMOVED***',
  'ad_password' => '***REMOVED***'
- );
+ ];
 
 
 

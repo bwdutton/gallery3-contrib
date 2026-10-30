@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 ?>
-<?php/* <h2><?php t("Thank you for your order (Step 3 of 3)") ?></h2> */?>
+<?\PHP/* <h2><?php t("Thank you for your order (Step 3 of 3)") ?></h2> */?>
 <div class="g-block">
   <div id="b-complete">
   <h2><?= t("Order submitted (Step 3 of 3)") ?></h2><?php

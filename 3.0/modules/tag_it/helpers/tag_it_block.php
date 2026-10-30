@@ -18,11 +18,11 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class tag_it_block_Core {
-  static function get_site_list() {
-    return array("untagged_photo" => t("Tag it"));
+  public static function get_site_list() {
+    return ["untagged_photo" => t("Tag it")];
   }
 
-  static function get($block_id, $theme) {
+  public static function get($block_id, $theme) {
     if (identity::active_user()->guest) {
       return;
     }
@@ -47,7 +47,7 @@ class tag_it_block_Core {
         $block->content->item = $item;
 
         $form = new Forge("tags/create/{$item->id}", "", "post",
-                          array("id" => "g-tag-it-add-tag-form", "class" => "g-short-form"));
+                          ["id" => "g-tag-it-add-tag-form", "class" => "g-short-form"]);
         $label = $item->is_album() ?
           t("Add tag to album") :
           ($item->is_photo() ? t("Add tag to photo") : t("Add tag to movie"));

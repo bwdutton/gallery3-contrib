@@ -18,17 +18,17 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class quotas_theme_Core {
-  static function page_bottom($theme) {
+  public static function page_bottom($theme) {
     // If a user is logged in, display their space usage at the bottom of the page.
     if (!identity::active_user()->guest) {
       $record = ORM::factory("users_space_usage")->where("owner_id", "=", identity::active_user()->id)->find();
       if ($record->get_usage_limit() == 0) {
-        print t("You are using %usage", array("usage" => $record->total_usage_string()));
+        print t("You are using %usage", ["usage" => $record->total_usage_string()]);
       } else {
         print t("You are using %usage of your %limit limit (%percentage%)", 
-                array("usage" => $record->current_usage_string(), 
+                ["usage" => $record->current_usage_string(), 
                 "limit" => $record->get_usage_limit_string(), 
-                "percentage" => number_format((($record->current_usage() / $record->get_usage_limit()) * 100), 2)));
+                "percentage" => number_format((($record->current_usage() / $record->get_usage_limit()) * 100), 2)]);
       }
     }
   }

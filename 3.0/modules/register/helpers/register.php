@@ -20,19 +20,19 @@
 class register_Core {
   private static $_states;
 
-  static function format_registration_state($state) {
+  public static function format_registration_state($state) {
     if (empty(self::$_states)) {
       $policy = module::get_var("registration", "policy");
       $email_verification = module::get_var("registration", "email_verification");
       $pending = $policy == "admin_only" || ($policy == "admin_approval" && !$email_verification);
-      self::$_states = array(t("Unconfirmed"),
+      self::$_states = [t("Unconfirmed"),
                              $pending ? t("Pending")  : t("Confirmed"),
-                             t("Activated"));
+                             t("Activated")];
     }
     return self::$_states[$state];
   }
 
-  static function check_user_name($user_name) {
+  public static function check_user_name($user_name) {
     if (identity::lookup_user_by_name($user_name)) {
       return true;
     }
@@ -42,7 +42,7 @@ class register_Core {
     return $user->loaded();
   }
 
-  static function send_user_created_confirmation($user, $requires_first=false) {
+  public static function send_user_created_confirmation($user, $requires_first=false) {
     $message = new View("register_welcome.html");
     $message->user = $user;
     $message->site_url = $requires_first ? url::abs_site("register/first/{$user->hash}") :
@@ -50,35 +50,35 @@ class register_Core {
     // added Shad Laws, v2
     $message->subject_prefix = module::get_var("registration", "subject_prefix");
     $message->locale = $user->locale; // as stored in pending_users table
-    $message->subject = t("Welcome", array("locale" => $message->locale));
+    $message->subject = t("Welcome", ["locale" => $message->locale]);
     // modified Shad Laws, v2
     self::_sendemail($user->email, $message->subject_prefix.$message->subject, $message);
   }
 
-  static function send_confirmation($user) {
+  public static function send_confirmation($user) {
     $message = new View("confirm_registration.html");
     $message->confirm_url = url::abs_site("register/confirm/{$user->hash}");
     $message->user = $user;
     // added Shad Laws, v2
     $message->subject_prefix = module::get_var("registration", "subject_prefix");
     $message->locale = $user->locale; // as stored in pending_users table
-    $message->subject = t("User registration confirmation", array("locale" => $message->locale));
+    $message->subject = t("User registration confirmation", ["locale" => $message->locale]);
     // modified Shad Laws, v2
     self::_sendemail($user->email, $message->subject_prefix.$message->subject, $message);
   }
 
   // function added Shad Laws, v2
-  static function send_admin_notify($user) {
+  public static function send_admin_notify($user) {
     $message = new View("register_admin_notify.html");
     $message->admin_register_url = url::abs_site("admin/register");
     $message->user = $user;
     $message->subject_prefix = module::get_var("registration", "subject_prefix");
     $message->locale = module::get_var("gallery", "default_locale"); // as Gallery default
-    $message->subject = t("New pending user registration", array("locale" => $message->locale));
+    $message->subject = t("New pending user registration", ["locale" => $message->locale]);
     self::_sendemail(module::get_var("gallery", "email_reply_to"), $message->subject_prefix.$message->subject, $message);
   }
 
-  static function create_pending_request($form) {
+  public static function create_pending_request($form) {
     $email_verification = module::get_var("registration", "email_verification");
 
     $user = ORM::factory("pending_user");
@@ -88,17 +88,17 @@ class register_Core {
     $user->url = $form->register_user->inputs["url"]->value;
     $user->request_date = time();
     // added by Shad Laws, v2
-    $user->locale = locales::locale_from_http_request() ? locales::locale_from_http_request() : module::get_var("gallery", "default_locale"); // sets default locale based on browser
+    $user->locale = locales::locale_from_http_request() ?: module::get_var("gallery", "default_locale"); // sets default locale based on browser
 
     if (!$email_verification) {
       $user->state = 1;
     }
-    $user->hash = md5(rand());
+    $user->hash = md5(random_int(0, mt_getrandmax()));
     $user->save();
     return $user;
   }
 
-  static function create_new_user($id) {
+  public static function create_new_user($id) {
     $user = ORM::factory("pending_user", $id);
 
     $password = md5(uniqid(mt_rand(), true));

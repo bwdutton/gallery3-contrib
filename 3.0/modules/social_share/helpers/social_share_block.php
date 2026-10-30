@@ -18,11 +18,11 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class social_share_block_Core {
-    static function get_site_list() {
-        return array("social_share" => t("Social Share"));
+    public static function get_site_list() {
+        return ["social_share" => t("Social Share")];
     }
 
-    static function get($block_id, $theme) {
+    public static function get($block_id, $theme) {
     /// Check if the user wants to show the block on all pages or just the image and movie page types.
         $impageonly = module::get_var("social_share", "general_impage_only");
         $showblock = !$impageonly || ($impageonly && ($theme->page_subtype == "photo") || ($theme->page_subtype == "movie"));

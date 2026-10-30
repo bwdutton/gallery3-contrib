@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class item_links_theme_Core {
-  static function head($theme) {
+  public static function head($theme) {
     // If the current page is an item, and if it's in the item_links table,
     //   then redirect to the specified web page.
     if ($theme->item()) {

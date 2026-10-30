@@ -186,20 +186,20 @@ class Twitter_Controller extends Controller {
 	      $image = fread($handle, filesize($filename));
 	      fclose($handle);
 	
-	      $response = $connection->upload('statuses/update_with_media', array('media[]' => "{$image};type=image/jpeg;filename={$filename}", 'status' => $message));
+	      $response = $connection->upload('statuses/update_with_media', ['media[]' => "{$image};type=image/jpeg;filename={$filename}", 'status' => $message]);
       }
       else {
-      	      $response = $connection->post('statuses/update', array('status' => $message));
+      	      $response = $connection->post('statuses/update', ['status' => $message]);
       } 
 
       if (200 == $connection->http_code) {
         message::success(t("Tweet sent!"));
-        json::reply(array("result" => "success", "location" => $item->url()));
+        json::reply(["result" => "success", "location" => $item->url()]);
       } else {
-        message::error(t("Unable to send, your Tweet has been saved. Please try again later: %http_code, %response_error", array("http_code" => $connection->http_code, "response_error" => $response->error)));
+        message::error(t("Unable to send, your Tweet has been saved. Please try again later: %http_code, %response_error", ["http_code" => $connection->http_code, "response_error" => $response->error]));
         log::error("content", "Twitter", t("Unable to send tweet: %http_code",
-                array("http_code" => $connection->http_code)));
-        json::reply(array("result" => "success", "location" => $item->url()));
+                ["http_code" => $connection->http_code]));
+        json::reply(["result" => "success", "location" => $item->url()]);
       }
       $tweet->item_id = $item_id;
       (!empty($response->id)) ? $tweet->twitter_id = $response->id : $tweet->twitter_id = NULL;
@@ -208,7 +208,7 @@ class Twitter_Controller extends Controller {
       $this->_save_tweet($tweet);
       
     } else {
-      json::reply(array("result" => "error", "html" => (string)$form));
+      json::reply(["result" => "error", "html" => (string)$form]);
     }
   }
 

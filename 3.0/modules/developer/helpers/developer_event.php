@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class developer_event_Core {
-  static function admin_menu($menu, $theme) {
+  public static function admin_menu($menu, $theme) {
     $developer_menu = Menu::factory("submenu")
         ->id("developer_menu")
       ->label(t("Developer tools"));

@@ -2,7 +2,7 @@
 
 class ThumbNav_theme_Core {
 
-  static function head($theme) {
+  public static function head($theme) {
     $theme->css("thumbnav.css");
   }
 }

@@ -19,48 +19,48 @@
  */
  
 class fotomotorw_theme_Core {
-  static function head($theme) {
+  public static function head($theme) {
     // Load fotomoto's js file on photo and album pages.
     if(($theme->page_subtype == "photo") || ($theme->page_subtype == "album")) {
       return html::script('http://widget.fotomoto.com/stores/script/' . module::get_var("fotomotorw", "fotomoto_site_key") . '.js?api=true');
     }
   }
 
-  static function resize_bottom($theme) {
+  public static function resize_bottom($theme) {
     // Create a new block to use to display Fotomoto buy links below the photo.
     $block = new Block;
     $block->css_id = "g-fotomoto";
     $block->anchor = "fotomoto";
 
     // Generate an array of links to display below photos.
-    $link_array = array();
+    $link_array = [];
     $counter = 0;
     if (module::get_var("fotomotorw", "fotomoto_buy_prints")) {
-      $link_array[$counter] = array("100", "Buy Prints");
+      $link_array[$counter] = ["100", "Buy Prints"];
       $counter++;
     }
     if (module::get_var("fotomotorw", "fotomoto_buy_cards")) {
-      $link_array[$counter] = array("300", "Buy Cards");
+      $link_array[$counter] = ["300", "Buy Cards"];
       $counter++;
     }
     if (module::get_var("fotomotorw", "fotomoto_buy_download")) {
-      $link_array[$counter] = array("400", "Download");
+      $link_array[$counter] = ["400", "Download"];
       $counter++;
     }
     if (module::get_var("fotomotorw", "fotomoto_share_ecard")) {
-      $link_array[$counter] = array("200", "Send eCard");
+      $link_array[$counter] = ["200", "Send eCard"];
       $counter++;
     }
     if (module::get_var("fotomotorw", "fotomoto_share_facebook")) {
-      $link_array[$counter] = array("201", "Share on Facebook");
+      $link_array[$counter] = ["201", "Share on Facebook"];
       $counter++;
     }
     if (module::get_var("fotomotorw", "fotomoto_share_twitter")) {
-      $link_array[$counter] = array("202", "Share on Twitter");
+      $link_array[$counter] = ["202", "Share on Twitter"];
       $counter++;
     }
     if (module::get_var("fotomotorw", "fotomoto_share_digg")) {
-      $link_array[$counter] = array("203", "Share on Digg");
+      $link_array[$counter] = ["203", "Share on Digg"];
       $counter++;
     }
 
@@ -70,7 +70,7 @@ class fotomotorw_theme_Core {
     return $block;
   }
 
-  static function album_bottom($theme) {
+  public static function album_bottom($theme) {
     // Add some javascript to the bottom of album pages.
     $block = new Block;
     $block->css_id = "g-fotomoto";

@@ -16,7 +16,7 @@ interface Sabre_DAV_ILockable extends Sabre_DAV_INode {
      * 
      * @return Sabre_DAV_Locks_LockInfo[] 
      */
-    function getLocks();
+    public function getLocks();
 
     /**
      * Creates a new lock on the file.  
@@ -24,7 +24,7 @@ interface Sabre_DAV_ILockable extends Sabre_DAV_INode {
      * @param Sabre_DAV_Locks_LockInfo $lockInfo The lock information 
      * @return void
      */
-    function lock(Sabre_DAV_Locks_LockInfo $lockInfo);
+    public function lock(Sabre_DAV_Locks_LockInfo $lockInfo);
 
     /**
      * Unlocks a file 
@@ -32,7 +32,7 @@ interface Sabre_DAV_ILockable extends Sabre_DAV_INode {
      * @param Sabre_DAV_Locks_LockInfo $lockInfo The lock information 
      * @return void 
      */
-    function unlock(Sabre_DAV_Locks_LockInfo $lockInfo);
+    public function unlock(Sabre_DAV_Locks_LockInfo $lockInfo);
 
 }
 

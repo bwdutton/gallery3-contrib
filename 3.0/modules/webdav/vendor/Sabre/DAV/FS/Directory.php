@@ -72,7 +72,7 @@ class Sabre_DAV_FS_Directory extends Sabre_DAV_FS_Node implements Sabre_DAV_ICol
      */
     public function getChildren() {
 
-        $nodes = array();
+        $nodes = [];
         foreach(scandir($this->path) as $node) if($node!='.' && $node!='..') $nodes[] = $this->getChild($node);
         return $nodes;
 
@@ -110,10 +110,10 @@ class Sabre_DAV_FS_Directory extends Sabre_DAV_FS_Node implements Sabre_DAV_ICol
      */
     public function getQuotaInfo() {
 
-        return array(
+        return [
             disk_total_space($this->path)-disk_free_space($this->path),
             disk_free_space($this->path)
-            ); 
+            ]; 
 
     }
 

@@ -20,7 +20,7 @@
 
 class item extends item_Core {
 
-  static function viewable($model) {
+  public static function viewable($model) {
     $model = parent::viewable($model);
 
     if (star::show_only_starred_items($model)) {

@@ -2,7 +2,7 @@
 
 class rss_extra_event_Core {
 
-  static function admin_menu($menu, $theme) {
+  public static function admin_menu($menu, $theme) {
     $menu
       ->get("settings_menu")
       ->append(Menu::factory("link")

@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class pages_xtra_installer {
-  static function install() {
+  public static function install() {
     // Create a table to store pages in.
     // New database columns added for SEO metadata - description and tags  - see page.html.php of theme
     // New database columns added for Sitemap_xtra Module - relative_url_cache, type and updated  

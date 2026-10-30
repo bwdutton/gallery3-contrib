@@ -18,11 +18,11 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301!
  */
 class Dupcheck_Event_Core {
-  static function item_created($item) {
+  public static function item_created($item) {
       dupcheck::grabmd5($item);
   }
 
-  static function item_deleted($item) {
+  public static function item_deleted($item) {
     if($item->is_photo()){
       db::build()
         ->delete("fullsize_md5sums")
@@ -31,11 +31,11 @@ class Dupcheck_Event_Core {
     }
   }
 
-  static function item_updated_data_file($item) {
+  public static function item_updated_data_file($item) {
     dupcheck::updatemd5($item);
   }
 
-  static function admin_menu($menu, $theme) {
+  public static function admin_menu($menu, $theme) {
     $menu->get("content_menu")
       ->append(Menu::factory("link")
                ->id("dupcheck")

@@ -64,9 +64,9 @@ class Admin_Bitly_Controller extends Admin_Controller {
             message::success(t("Your preferred bit.ly domain has been saved."));
           }
           log::success("bitly", t("bit.ly login changed to %new_login",
-                                    array("new_login" => $new_login)));
+                                    ["new_login" => $new_login]));
           log::success("bitly", t("bit.ly API key changed to %new_key",
-                                    array("new_key" => $new_key)));
+                                    ["new_key" => $new_key]));
           
           (!$new_login || !$new_key) ? $valid_config = false : $valid_config = true;
         }

@@ -12,7 +12,7 @@
         <?php if ($theme->item()): ?>
           <?= $theme->item()->title ?>
         <?php elseif ($theme->tag()): ?>
-          <?= t("Photos tagged with %tag_title", array("tag_title" => $theme->tag()->name)) ?>
+          <?= t("Photos tagged with %tag_title", ["tag_title" => $theme->tag()->name]) ?>
         <?php else: /* Not an item, not a tag, no page_title specified.  Help! */ ?>
           <?= item::root()->title ?>
         <?php endif ?>
@@ -118,7 +118,7 @@
                 <?php $locales[$locale] = SafeString::of_safe_html($display_name); ?>
               <?php } ?>
               <?php $lang_content = new View("user_languages_block.html"); ?>
-              <?php $lang_content->installed_locales = array_merge(array("" => t("« none »")), $locales); ?>
+              <?php $lang_content->installed_locales = array_merge(["" => t("« none »")], $locales); ?>
               <?php $lang_content->selected = (string) locales::cookie_locale(); ?>
               <?= $lang_content ?>
             <?php } ?>

@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class about_installer {
-  static function deactivate() {
+  public static function deactivate() {
    	module::clear_var("about", "title");
 	module::clear_var("about", "code");
 	module::clear_var("about", "hidden");

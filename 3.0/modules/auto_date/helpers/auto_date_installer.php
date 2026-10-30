@@ -18,20 +18,20 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class auto_date_installer {
-  static function install() {
+  public static function install() {
     module::set_version("auto_date", 1);
     if (!module::get_var("auto_date", "template")) {
       module::set_var("auto_date", "template", "%Y%m%d_%H%M%S");
     }
   }
 
-  static function upgrade($version) {
+  public static function upgrade($version) {
   }
 
-  static function deactivate() {
+  public static function deactivate() {
   }
 
-  static function can_activate() {
+  public static function can_activate() {
   }
 }
 

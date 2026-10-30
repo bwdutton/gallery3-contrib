@@ -16,13 +16,6 @@
 class Sabre_DAV_Auth_Principal extends Sabre_DAV_Node implements Sabre_DAV_IProperties {
 
     /**
-     * Full uri for this principal resource 
-     * 
-     * @var string 
-     */
-    protected $principalUri;
-
-    /**
      * Struct with principal information.
      *
      * @var array 
@@ -35,9 +28,11 @@ class Sabre_DAV_Auth_Principal extends Sabre_DAV_Node implements Sabre_DAV_IProp
      * @param string $principalUri Full uri to the principal resource
      * @param array $principalProperties
      */
-    public function __construct($principalUri,array $principalProperties = array()) {
+    public function __construct(/**
+     * Full uri for this principal resource
+     */
+    protected $principalUri,array $principalProperties = []) {
 
-        $this->principalUri = $principalUri;
         $this->principalProperties = $principalProperties;
 
     }
@@ -81,18 +76,18 @@ class Sabre_DAV_Auth_Principal extends Sabre_DAV_Node implements Sabre_DAV_IProp
            
             // If all properties were requested
             // we will only returns properties from this list
-            $requestedProperties = array(
+            $requestedProperties = [
                 '{DAV:}resourcetype',
                 '{DAV:}displayname',
-            );
+            ];
 
         }
 
         // We need to always return the resourcetype
         // This is a bug in the core server, but it is easier to do it this way for now
-        $newProperties = array(
+        $newProperties = [
             '{DAV:}resourcetype' => new Sabre_DAV_Property_ResourceType('{DAV:}principal')
-        );
+        ];
         foreach($requestedProperties as $propName) switch($propName) {
             
             case '{DAV:}alternate-URI-set' :

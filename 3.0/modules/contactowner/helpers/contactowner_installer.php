@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class contactowner_installer {
-  static function install() {
+  public static function install() {
     // Set some default values
     module::set_var("contactowner", "contact_owner_link", false);
     module::set_var("contactowner", "contact_user_link", true);
@@ -29,7 +29,7 @@ class contactowner_installer {
     module::set_version("contactowner", 2);
   }
 
-  static function uninstall() {
+  public static function uninstall() {
     module::delete("contactowner");
   }
 }

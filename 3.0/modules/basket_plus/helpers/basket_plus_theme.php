@@ -19,11 +19,11 @@
  */
 class basket_plus_theme_Core {
 
-  static function head($theme) {
+  public static function head($theme) {
     $theme->css("basket_plus.css");
   }
 
-  static function header_top($theme) {
+  public static function header_top($theme) {
 
     if (!basket_plus::getBasketVar(USE_SIDE_BAR_ONLY))
     {
@@ -35,12 +35,12 @@ class basket_plus_theme_Core {
     return "";
   }
 
-  static function admin_head($theme) {
-    if (strpos(Router::$current_uri, "admin/product_lines") !== false) {
+  public static function admin_head($theme) {
+    if (str_contains(Router::$current_uri, "admin/product_lines")) {
       $theme->script("gallery.panel.js");
     }
   }
-  static function photo_top($theme){
+  public static function photo_top($theme){
     if (!basket_plus::getBasketVar(USE_SIDE_BAR_ONLY))
     {
         if ( bp_product::isForSale($theme->item()->id)){

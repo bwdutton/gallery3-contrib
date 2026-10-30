@@ -42,11 +42,11 @@ class pam_mock
    */
   public function getAccount()
   {
-    $account = array(
+    $account = [
       'name' => $this->name,
       'full_name' => $this->full_name,
       'email' => $this->email,
-    );
+    ];
 
     return (object) $account;
   }

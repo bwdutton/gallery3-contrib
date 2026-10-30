@@ -18,11 +18,11 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class rectangle_thumbs_installer {
-  static function install() {
+  public static function install() {
     // Insert a rule into the thumbnail generation pipeline that converts the source image to the
     // right aspect ratio such that when we resize it down, it comes out to the right dimensions.
     graphics::add_rule(
-      "rectangle_thumbs", "thumb", "rectangle_thumbs_graphics::crop_to_aspect_ratio", array(), 50);
+      "rectangle_thumbs", "thumb", "rectangle_thumbs_graphics::crop_to_aspect_ratio", [], 50);
     module::set_var("rectangle_thumbs", "aspect_ratio", "3:1");
     module::set_version("rectangle_thumbs", 1);
   }

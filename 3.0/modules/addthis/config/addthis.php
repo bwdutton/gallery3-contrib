@@ -23,7 +23,7 @@
  * line-length => word wrap length (PHP documentations suggest no larger tha 70 characters
  * reply-to    => what goes into the reply to header
  */
-$config["ranges"] = array(
-  "Addthis1" => array("low" => "65.249.152.0", "high" => "65.249.159.255"),
-  "Addthis2" => array("low" => "208.122.55.0", "high" => "208.122.55.255")
-);
+$config["ranges"] = [
+  "Addthis1" => ["low" => "65.249.152.0", "high" => "65.249.159.255"],
+  "Addthis2" => ["low" => "208.122.55.0", "high" => "208.122.55.255"]
+];

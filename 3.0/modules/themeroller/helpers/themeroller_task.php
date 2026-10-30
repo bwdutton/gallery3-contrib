@@ -18,12 +18,12 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class themeroller_task_Core {
-  static function available_tasks() {
+  public static function available_tasks() {
     // Return empty array so nothing appears in the maintenance screen
-    return array();
+    return [];
   }
 
-  static function create_theme($task) {
+  public static function create_theme($task) {
     try {
       $mode = $task->get("mode", "init");
       $start = microtime(true);
@@ -37,7 +37,7 @@ class themeroller_task_Core {
       $completed = $task->get("completed", 0);
       switch ($mode) {
       case "init":
-        $task->log(t("Starting theme '%theme' creation", array("theme" => $task->get("display_name"))));
+        $task->log(t("Starting theme '%theme' creation", ["theme" => $task->get("display_name")]));
         $task->set("mode", "create_directory");
         $parameters = themeroller::get_theme_parameters($task->get("original_name"),
                                                         $task->get("path"),
@@ -58,14 +58,14 @@ class themeroller_task_Core {
         break;
       case "create_directory":
         $completed = $task->get("completed");
-        foreach (array("", "css", "css/themeroller", "css/themeroller/images", "images",
-                       "js", "views") as $dir) {
+        foreach (["", "css", "css/themeroller", "css/themeroller/images", "images",
+                       "js", "views"] as $dir) {
           $path = "{$theme_path}$dir";
           $completed++;
           if (!file_exists($path)) {
             mkdir($path);
             chmod($path, 0755);
-            $task->log(t("Created directory: %path", array("path" => $path)));
+            $task->log(t("Created directory: %path", ["path" => $path]));
           }
         }
         $task->status = t("Directories created");
@@ -78,7 +78,7 @@ class themeroller_task_Core {
           $target = "{$theme_path}views/" . basename($view);
           if (!file_exists($target)) {
             copy($view, $target);
-            $task->log(t("Copied view: %path", array("path" => basename($view))));
+            $task->log(t("Copied view: %path", ["path" => basename($view)]));
           }
           $completed++;
         }
@@ -95,7 +95,7 @@ class themeroller_task_Core {
           $target = "{$theme_path}css/themeroller/images/" . basename($image);
           if (!file_exists($target)) {
             copy($image, $target);
-            $task->log(t("Copied themeroller image: %path", array("path" => basename($image))));
+            $task->log(t("Copied themeroller image: %path", ["path" => basename($image)]));
           }
           $completed++;
         }
@@ -112,7 +112,7 @@ class themeroller_task_Core {
           $target = "{$theme_path}images/" . basename($gif);
           if (!file_exists($target)) {
             copy($gif, $target);
-            $task->log(t("Copied gif image: %path", array("path" => basename($gif))));
+            $task->log(t("Copied gif image: %path", ["path" => basename($gif)]));
           }
           $completed++;
         }
@@ -149,7 +149,7 @@ class themeroller_task_Core {
           $image_file = "{$target_dir}$basename";
           themeroller::generate_image($mask, $image_file, $image_color);
           $completed++;
-          $task->log(t("Generated image: %path", array("path" => $image_file)));
+          $task->log(t("Generated image: %path", ["path" => $image_file]));
         }
         if (empty($parameters["masks"])) {
           $task->set("mode", "generate_icons");
@@ -165,7 +165,7 @@ class themeroller_task_Core {
           $icon_file = $target_dir . str_replace("mask", $color, basename($mask_file));
           themeroller::generate_image($mask_file, $icon_file, $color);
           $completed++;
-          $task->log(t("Generated themeroller icon: %path", array("path" => $icon_file)));
+          $task->log(t("Generated themeroller icon: %path", ["path" => $icon_file]));
         }
         if (empty($parameters["icons"])) {
           $task->set("mode", "copy_standard_css");
@@ -179,7 +179,7 @@ class themeroller_task_Core {
           $target = "{$theme_path}css/" . basename($css);
           if (!file_exists($target)) {
             copy($css, $target);
-            $task->log(t("Copied css file: %path", array("path" => basename($target))));
+            $task->log(t("Copied css file: %path", ["path" => basename($target)]));
           }
           $completed++;
         }
@@ -193,10 +193,10 @@ class themeroller_task_Core {
         $task->status = t("Copying javascript");
         while (!empty($parameters["js"]) && microtime(true) - $start < 1.5) {
           $js = array_shift($parameters["js"]);
-          $target = "{$theme_path}js/" . str_replace(array("admin_", "site_"), "", basename($js));
+          $target = "{$theme_path}js/" . str_replace(["admin_", "site_"], "", basename($js));
           if (!file_exists($target)) {
             copy($js, $target);
-            $task->log(t("Copied js file: %path", array("path" => basename($target))));
+            $task->log(t("Copied js file: %path", ["path" => basename($target)]));
           }
           $completed++;
         }
@@ -208,7 +208,7 @@ class themeroller_task_Core {
         break;
       case "generate_screen_css":
         $file = "{$theme_path}/css/screen.css";
-        foreach (array("screen", "screen-rtl") as $file) {
+        foreach (["screen", "screen-rtl"] as $file) {
           $css_file = "{$theme_path}/css/$file.css";
           $v = new View(($is_admin ? "admin" : "site") . "_{$file}.css");
           $v->display_name = $task->get("display_name");
@@ -221,7 +221,7 @@ class themeroller_task_Core {
           ob_end_clean();
         }
         $completed++;
-        $task->log(t("Generated screen css: %path", array("path" => $file)));
+        $task->log(t("Generated screen css: %path", ["path" => $file]));
         $task->status = t("Screen css generated");
         $task->set("mode", "generate_thumbnail");
         break;
@@ -233,7 +233,7 @@ class themeroller_task_Core {
         $task->set("mode", "generate_theme_info");
         $completed++;
         $task->log(t("Generated theme thumbnail: %path",
-                   array("path" => "{$theme_path}thumbnail.png")));
+                   ["path" => "{$theme_path}thumbnail.png"]));
         break;
       case "generate_theme_info":
         $file = "{$theme_path}/theme.info";
@@ -251,7 +251,7 @@ class themeroller_task_Core {
         file_put_contents($file, ob_get_contents());
         ob_end_clean();
         $completed++;
-        $task->log(t("Generated theme info: %path", array("path" => "{$theme_path}theme.info")));
+        $task->log(t("Generated theme info: %path", ["path" => "{$theme_path}theme.info"]));
         $task->status = t("Theme info generated");
         $task->set("mode", "done");
         break;
@@ -263,10 +263,10 @@ class themeroller_task_Core {
         $task->percent_complete = 100;
         $completed = $task->get("total_activites");
         Cache::instance()->delete("create_theme_cache:{$task->id}");
-        $message = t("Successfully generated: %name", array("name" => $display_name));
+        $message = t("Successfully generated: %name", ["name" => $display_name]);
         message::info($message);
         $task->log($message);
-        $task->status = t("'%name' generated", array("name" => $display_name));
+        $task->status = t("'%name' generated", ["name" => $display_name]);
       }
       $task->set("completed", $completed);
       if (!$task->done) {

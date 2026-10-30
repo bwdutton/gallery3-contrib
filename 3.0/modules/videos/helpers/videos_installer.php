@@ -24,7 +24,7 @@
 // The upgrader has been edited to skip everything before version 4, to keep version numbers in sync with server_add.
 
 class videos_installer {
-  static function install() {
+  public static function install() {
     $db = Database::instance();
     $db->query("CREATE TABLE {videos_entries} (
                   `id` int(9) NOT NULL auto_increment,
@@ -45,13 +45,13 @@ class videos_installer {
                         KEY (`item_id`, `id`))
                         DEFAULT CHARSET=utf8;");
     // rWatcher Edit:  My Variable.
-    module::set_var("videos", "allowed_extensions", serialize(array("avi", "mpg", "mpeg", "mov", "wmv", "asf", "mts")));
+    module::set_var("videos", "allowed_extensions", serialize(["avi", "mpg", "mpeg", "mov", "wmv", "asf", "mts"]));
 
     module::set_version("videos", 4);
     videos::check_config();
   }
 
-  static function upgrade($version) {
+  public static function upgrade($version) {
     $db = Database::instance();
 
     if ($version < 4) {
@@ -70,7 +70,7 @@ class videos_installer {
     }
   }
 
-  static function deactivate() {
+  public static function deactivate() {
     site_status::clear("videos_configuration");
   }
 }

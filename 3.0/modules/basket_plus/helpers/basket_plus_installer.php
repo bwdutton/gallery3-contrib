@@ -20,7 +20,7 @@
 
 class basket_plus_installer
 {
-  static function install(){
+  public static function install(){
 
 		$db = Database::instance();
 //===========================================================
@@ -161,7 +161,7 @@ class basket_plus_installer
   }
 
 //NOT SUPPORTED YET
-  static function upgrade($version) {
+  public static function upgrade($version) {
     $db = Database::instance();
 		$language = module::get_var("gallery","default_locale");
     if ($version == 1) {
@@ -169,7 +169,7 @@ class basket_plus_installer
   }
 
 //NOT SUPPORTED YET
-  static function uninstall(){
+  public static function uninstall(){
     $db = Database::instance();
   }
 }

@@ -18,12 +18,12 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class highroller_theme_Core {
-  static function head($theme) {
+  public static function head($theme) {
     return $theme->script("highroller.js")
       . sprintf("<script type=\"text/javascript\"> var PICK_THEME_URL = '%s'; </script>", url::site("highroller/pick_theme"));
   }
 
-  static function header_top($theme) {
+  public static function header_top($theme) {
     $session = Session::instance();
     $highroller_theme = $session->get("highroller_theme", "");
     if ($highroller_theme) {
@@ -32,7 +32,7 @@ class highroller_theme_Core {
     }
   }
 
-  static function footer($theme) {
+  public static function footer($theme) {
     $base = MODPATH . "highroller/themes/";
     $base_len = strlen($base);
     $options[] = "<none>";

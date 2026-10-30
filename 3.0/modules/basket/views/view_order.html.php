@@ -15,4 +15,4 @@ if ($order->method==Order_Model::PAYMENT_PAYPAL){
 
 
 ?><br/>
-<?= str_replace(array("\r\n", "\n", "\r"),"<br/>",$order->text);?>
+<?= str_replace(["\r\n", "\n", "\r"],"<br/>",$order->text);?>

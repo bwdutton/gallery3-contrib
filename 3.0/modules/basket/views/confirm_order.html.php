@@ -32,7 +32,7 @@ function so(){document.confirm.submit();}
         <th><?= t("Quantity") ?></th>
         <th><?= t("Cost") ?></th>
       </tr>
-      <?php foreach ($basket->contents as $key => $prod_details): ?>
+      <?php foreach ($basket->contents as $prod_details): ?>
       <tr id="" class="<?= text::alternate("gOddRow", "gEvenRow") ?>">
 
         <td id="item-<?= $prod_details->item ?>" class="core-info ">

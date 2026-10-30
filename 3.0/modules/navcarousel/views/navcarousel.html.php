@@ -81,7 +81,7 @@ foreach ($parent->viewable()->children() as $photo) {
     if (module::get_var("navcarousel", "nomouseover", false)) {
       $img_title = "";
     } else {
-      $img_title =  " title=\"". html::purify($photo->title)->for_html_attr() ." (". $parent->get_position($photo) . t("%position of %total", array("position" => "", "total" => $totalitems)) .")\"";
+      $img_title =  " title=\"". html::purify($photo->title)->for_html_attr() ." (". $parent->get_position($photo) . t("%position of %total", ["position" => "", "total" => $totalitems]) .")\"";
     }
     if ($item->id == $photo->id) {
       echo "<li><div class=\"g-button ui-corner-all ui-icon-left ui-state-hover carousel-current\" ". $navcar_divsize ."><div style=\"width: 100%; height: 100%; overflow: hidden;\"><img src=\"". $photo->thumb_url() ."\" alt=\"". html::purify($photo->title)->for_html_attr() ."\"". $img_title ." ". $navcar_thumbsize ." /></div></div></li>\n";
@@ -100,7 +100,7 @@ if ($no_ajax) {
   if (module::get_var("navcarousel", "nomouseover", false)) {
     $img_title = "";
   } else {
-    $img_title =  " title=\"' + linkCollection[url][1] + ' (' + linkCollection[url][2] + '". t("%position of %total", array("position" => "", "total" => $totalitems)) .")\"";
+    $img_title =  " title=\"' + linkCollection[url][1] + ' (' + linkCollection[url][2] + '". t("%position of %total", ["position" => "", "total" => $totalitems]) .")\"";
   }
   ?>
        if (thisurl==url)

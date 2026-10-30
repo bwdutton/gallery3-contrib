@@ -22,7 +22,7 @@
  * This is the API for handling exif data.
  */
 class author_Core {
-	static function fix($item) {
+	public static function fix($item) {
 		if ($item->is_album()) { return false; }
 		
 		$mime = $item->mime_type;
@@ -43,7 +43,7 @@ class author_Core {
 			The real threshhold for this might be somewhere between 0.16 and 0.20, 
 			but the 0.16 way of doing things is forward compatible. 
 		*/
-		$exivData = array();
+		$exivData = [];
 		if ($version < 0.20) {
 			exec("$exiv -p x " . escapeshellarg($item->file_path()), $exivData);
 			exec("$exiv -p i " . escapeshellarg($item->file_path()), $exivData);
@@ -52,20 +52,20 @@ class author_Core {
 			exec("$exiv -p a " . escapeshellarg($item->file_path()), $exivData);
 		}
 		
-		$has = array();
-		$mod = array();
+		$has = [];
+		$mod = [];
 		foreach ($exivData as $line)
 		{
 			$tokens = preg_split('/\s+/', $line, 4);
 			$has[ $tokens[0] ] = $tokens[3];
 		}
 		
-		$candidates = array(
+		$candidates = [
 			$has['Xmp.dc.creator'],
 			$has['Iptc.Application2.Byline'],
 			$has['Exif.Image.Artist'],
 			$user_name,
-			'Unknown');
+			'Unknown'];
 		
 		foreach ($candidates as $cand) {
 			if ($cand != '') { $byline = $cand; break; }
@@ -98,11 +98,11 @@ class author_Core {
 			$line .= "-M \"set $key " . escapeshellarg($value) . "\" ";
 		}
 		
-		$files = array(
+		$files = [
 			$item->file_path(),
 			$item->thumb_path(),
 			$item->resize_path()
-		);
+		];
 		
 		foreach ($files as $file) {
 			system("$line " . escapeshellarg($file));

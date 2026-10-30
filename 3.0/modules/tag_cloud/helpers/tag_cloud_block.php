@@ -18,17 +18,17 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class tag_cloud_block {
-  static function get_site_list() {
-    return array(
-      "tag_cloud_site" => t("Tag Cloud"));
+  public static function get_site_list() {
+    return [
+      "tag_cloud_site" => t("Tag Cloud")];
   }
 
-  static function get($block_id, $theme) {
+  public static function get($block_id, $theme) {
     $block = "";
     switch ($block_id) {
     case "tag_cloud_site":
-      $options = array();
-      foreach (array("tagcolor", "background_color", "mouseover", "transparent", "speed", "distribution")
+      $options = [];
+      foreach (["tagcolor", "background_color", "mouseover", "transparent", "speed", "distribution"]
                as $option) {
         $value = module::get_var("tag_cloud", $option, null);
         if (!empty($value)) {

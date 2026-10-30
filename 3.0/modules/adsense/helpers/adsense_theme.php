@@ -20,7 +20,7 @@
  
  //header_bottom or footer
 class adsense_theme {
-  static function header_bottom($theme) {
+  public static function header_bottom($theme) {
 	if(module::get_var("adsense","location") == "header") {
 		$code = module::get_var("adsense", "code");
 		if (!$code) {
@@ -36,7 +36,7 @@ class adsense_theme {
 	}
   }
   
-  static function footer($theme) {
+  public static function footer($theme) {
 	if(module::get_var("adsense","location") == "footer") {
 		$code = module::get_var("adsense", "code");
 		if (!$code) {

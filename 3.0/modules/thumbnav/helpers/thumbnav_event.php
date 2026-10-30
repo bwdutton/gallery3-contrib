@@ -1,15 +1,15 @@
 <?php defined("SYSPATH") or die("No direct script access.");
 class thumbnav_event_Core {
 
-  static function activate() {
+  public static function activate() {
     thumbnav::check_config();
   }
 
-  static function deactivate() {
+  public static function deactivate() {
     site_status::clear("thumbnav_config");
   }
 
-  static function admin_menu($menu, $theme) {
+  public static function admin_menu($menu, $theme) {
     $menu
       ->get("settings_menu")
       ->append(Menu::factory("link")

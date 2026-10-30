@@ -1,7 +1,7 @@
 <?php defined("SYSPATH") or die("No direct script access.");
 
 class default_sort_event_Core {
-    static function admin_menu($menu, $theme) {
+    public static function admin_menu($menu, $theme) {
         $menu
             ->get("settings_menu")
             ->append(Menu::factory("link")
@@ -10,7 +10,7 @@ class default_sort_event_Core {
             ->url(url::site("admin/default_sort")));
     }
 
-    static function item_created($item) {
+    public static function item_created($item) {
         if ($item->is_album()) {
             if (($s = module::get_var("default_sort", "default_sort_column", "")))
                 $item->sort_column = $s;

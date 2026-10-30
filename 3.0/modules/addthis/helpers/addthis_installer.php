@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class addthis_installer {
-  static function install() {
+  public static function install() {
     Database::instance()
       ->query("CREATE TABLE {addthis_proxies} (
                 `id` int(9) NOT NULL AUTO_INCREMENT,
@@ -32,13 +32,13 @@ class addthis_installer {
     module::set_version("addthis", 1);
   }
 
-  static function upgrade($version) {
+  public static function upgrade($version) {
     if ($version == 1) {
       module::set_version("addthis", $version = 1);
     }
   }
 
-  static function uninstall() {
+  public static function uninstall() {
     Database::instance()->query("DROP TABLE IF EXISTS {addthis_proxies}");
     module::delete("addthis");
   }

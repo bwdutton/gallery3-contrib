@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class albumpassword_task_Core {
-  static function available_tasks() {
+  public static function available_tasks() {
     // Check for any albums listed in albumpasswords but not idcaches.
     //  If found, set the severity for this task to warning, as there's 
     //  obviously something missing from idcaches.
@@ -26,7 +26,7 @@ class albumpassword_task_Core {
       ->join("albumpassword_idcaches", "items_albumpasswords.id", "albumpassword_idcaches.password_id", "LEFT OUTER")
       ->and_where("albumpassword_idcaches.password_id", "IS", NULL)->count_all();
 
-    $tasks = array();
+    $tasks = [];
 
     $tasks[] = Task_Definition::factory()
                ->callback("albumpassword_task::update_idcaches")
@@ -43,7 +43,7 @@ class albumpassword_task_Core {
     return $tasks;
   }
 
-  static function lowercase_passwords($task) {
+  public static function lowercase_passwords($task) {
     // Converts all passwords to lower case.
 
     $start = microtime(true);
@@ -89,10 +89,10 @@ class albumpassword_task_Core {
       $task->percent_complete = round(100 * $completed_passwords / count($existing_passwords));
     }
     $task->status = t2("One password fixed", "%count / %total passwords fixed", $completed_passwords,
-                       array("total" => count($existing_passwords)));
+                       ["total" => count($existing_passwords)]);
   }
 
-  static function update_idcaches($task) {
+  public static function update_idcaches($task) {
     // Populate the idcaches table with the contents of all protected albums.
 
     $start = microtime(true);

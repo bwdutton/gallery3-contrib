@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class photoannotation_Core {
-  static function search_user($q, $page_size, $offset) {
+  public static function search_user($q, $page_size, $offset) {
     $db = Database::instance();
     $q = trim($q, "*");
     $q = $db->escape($q) ."*";
@@ -26,7 +26,7 @@ class photoannotation_Core {
       $users = ORM::factory("user");
       $count = $users->count_all();
       $data = $users->order_by("name", "ASC")->find_all($page_size, $offset);
-      return array($count, $data);
+      return [$count, $data];
     } else {
       $query =
         "SELECT SQL_CALC_FOUND_ROWS {users}.*, " .
@@ -37,12 +37,12 @@ class photoannotation_Core {
         "LIMIT $page_size OFFSET $offset";
       $data = $db->query($query);
       $count = $db->query("SELECT FOUND_ROWS() as c")->current()->c;
-      return array($count, new ORM_Iterator(ORM::factory("user"), $data));
+      return [$count, new ORM_Iterator(ORM::factory("user"), $data)];
     }
   }
 
-  static function get_user_search_form($form_id) {
-    $form = new Forge("photoannotation/showuser", "", "post", array("id" => $form_id, "class" => "g-short-form"));
+  public static function get_user_search_form($form_id) {
+    $form = new Forge("photoannotation/showuser", "", "post", ["id" => $form_id, "class" => "g-short-form"]);
     $label = t("Search for a person");
 
     $group = $form->group("showuser")->label("Search for a person");
@@ -55,7 +55,7 @@ class photoannotation_Core {
     $user_parts = explode("(", $user_string);
     $user_part = rtrim(ltrim(end($user_parts)), ")");
     $user = ORM::factory("user")->where("name", "=", $user_part)->find();
-    $user_firstpart = trim(implode(array_slice($user_parts, 0, count($user_parts)-1)));
+    $user_firstpart = trim(implode('', array_slice($user_parts, 0, count($user_parts)-1)));
     if (!$user->loaded() || strcasecmp($user_firstpart, $user->display_name()) <> 0) {
       $result->found = false;
       $result->isguest = false;
@@ -164,7 +164,7 @@ class photoannotation_Core {
             //Get subject and body and send the mail
             $subject = module::get_var("photoannotation", "newtagsubject", "Someone tagged a photo of you");
             $body = module::get_var("photoannotation", "newtagbody", "Hello %name, please visit %url to view the photo.");
-            $body = str_ireplace(array("%url", "%name"), array($item->abs_url(), $recipient->display_name()), $body);
+            $body = str_ireplace(["%url", "%name"], [$item->abs_url(), $recipient->display_name()], $body);
             return self::_send_mail($recipient->email, $subject, $body);
           }
           break;
@@ -180,7 +180,7 @@ class photoannotation_Core {
             //Get subject and body and send the mail
             $subject = module::get_var("photoannotation", "newcommentsubject", "Someone added a comment to photo of you");
             $body = module::get_var("photoannotation", "newcommentbody", "Hello %name, please visit %url to read the comment.");
-            $body = str_ireplace(array("%url", "%name"), array($item->abs_url(), $recipient->display_name()), $body);
+            $body = str_ireplace(["%url", "%name"], [$item->abs_url(), $recipient->display_name()], $body);
             return self::_send_mail($recipient->email, $subject, $body);
           }
           break;
@@ -196,7 +196,7 @@ class photoannotation_Core {
             //Get subject and body and send the mail
             $subject = module::get_var("photoannotation", "updatedcommentsubject", "Someone updated a comment to photo of you");
             $body = module::get_var("photoannotation", "updatedcommentbody", "Hello %name, please visit %url to read the comment.");
-            $body = str_ireplace(array("%url", "%name"), array($item->abs_url(), $recipient->display_name()), $body);
+            $body = str_ireplace(["%url", "%name"], [$item->abs_url(), $recipient->display_name()], $body);
             return self::_send_mail($recipient->email, $subject, $body);
           }
       }
@@ -231,7 +231,7 @@ class photoannotation_Core {
     return $notification_settings;
   }
   
-  static function cloud($count) {
+  public static function cloud($count) {
     $users = ORM::factory("user")->order_by("name", "ASC")->find_all();
     if ($users) {
       $cloud = new View("photoannotation_cloud.html");
@@ -261,7 +261,7 @@ class photoannotation_Core {
     }
   }
 
-  static function comment_count($user_id) {
+  public static function comment_count($user_id) {
     if (module::is_active("comment")) {
       return ORM::factory("comment")->where("author_id", "=", $user_id)->count_all();
     } else {
@@ -269,7 +269,7 @@ class photoannotation_Core {
     }
   }
   
-  static function annotation_count($user_id) {
+  public static function annotation_count($user_id) {
     return ORM::factory("items_user")->where("user_id", "=", $user_id)->count_all();
   }
 }

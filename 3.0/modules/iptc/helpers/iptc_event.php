@@ -18,20 +18,20 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class iptc_event_Core {
-  static function item_created($item) {
+  public static function item_created($item) {
     if ($item->is_photo()) {
       iptc::extract($item);
     }
   }
 
-  static function item_deleted($item) {
+  public static function item_deleted($item) {
     db::build()
       ->delete("iptc_records")
       ->where("item_id", "=", $item->id)
       ->execute();
   }
   
-  static function admin_menu($menu, $theme) {
+  public static function admin_menu($menu, $theme) {
     // Add a link to the admin page to the Settings menu.
     $menu->get("settings_menu")
       ->append(Menu::factory("link")

@@ -18,5 +18,5 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class Item_Product_Model extends ORM {
-  protected $belongs_to= array('product_override');
+  protected $belongs_to= ['product_override'];
 }

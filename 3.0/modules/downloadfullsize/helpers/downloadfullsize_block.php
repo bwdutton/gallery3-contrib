@@ -18,11 +18,11 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class downloadfullsize_block_Core {
-  static function get_site_list() {
-    return array("downloadfullsize" => t("Download Item"));
+  public static function get_site_list() {
+    return ["downloadfullsize" => t("Download Item")];
   }
 
-  static function get($block_id, $theme) {
+  public static function get($block_id, $theme) {
     $item = $theme->item;
     switch ($block_id) {
     case "downloadfullsize":

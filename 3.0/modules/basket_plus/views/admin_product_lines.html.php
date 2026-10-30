@@ -38,7 +38,7 @@
         <th><?= t("Postage Band") ?></th>
         <th><?= t("Actions") ?></th>
       </tr>
-    <?php foreach ($products as $i => $product): ?>
+    <?php foreach ($products as $product): ?>
       <tr id="gProduct-<?= $product->id ?>" class="<?= text::alternate("gOddRow", "gEvenRow") ?>">
         <td id="product-<?= $product->id ?>" class="core-info ">
           <?= html::clean($product->name) ?></td>

@@ -30,7 +30,7 @@ class Admin_Auto_Date_Controller extends Admin_Controller {
   }
 
   private function _get_form() {
-    $form = new Forge("admin/auto_date", "", "post", array("id" => "g-admin-auto_date-form"));
+    $form = new Forge("admin/auto_date", "", "post", ["id" => "g-admin-auto_date-form"]);
 
     $group = $form->group("auto_date")->label(t("Default filename convention(php's <a href=\"http://php.net/manual/en/function.strptime.php\">strptime() format</a>)"));
 

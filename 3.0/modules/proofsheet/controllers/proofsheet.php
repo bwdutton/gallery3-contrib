@@ -102,10 +102,9 @@ class proofsheet_Controller extends Controller {
      * format the proof sheet.  If you'd like to tweak the formatting, here's
      * where to do it.
      */
-    switch($page_type) {
-      case "ltr":
+    $cfg = match ($page_type) {
         // Setup for LTR 8.5" x 11" paper (215.9mm x 279.4mm)
-        $cfg = array(
+        "ltr" => [
           'pageW'        =>   215.9, // mm
           'pageH'        =>   279.4, // mm
           'imageNumW'    =>       5, // integer number
@@ -119,35 +118,33 @@ class proofsheet_Controller extends Controller {
           'headerSpace'  =>       2, // mm (header to top row of images and to link icon)
           'footerSpace'  =>       2, // mm (bottom row of captions to footer)
           'captionSpace' =>       1, // mm (bottom of image to caption)
-          'headerFont'   => array(
+          'headerFont'   => [
             'name'       => 'Arial', // included are Arial/Helvetica, Courier, Times, Symbol, ZapfDingbats
             'size'       =>      14, // pt
             'style'      =>     'B', // combo of B, I, U
             'posn'       =>     'L', // combo of L, C, R
             'r'          =>       0, // Red 0-255
             'g'          =>       0, // Green 0-255
-            'b'          =>       0),// Blue 0-255
-          'footerFont'   => array(
+            'b'          =>       0],// Blue 0-255
+          'footerFont'   => [
             'name'       => 'Arial', // included are Arial/Helvetica, Courier, Times, Symbol, ZapfDingbats
             'size'       =>      12, // pt
             'style'      =>     'B', // combo of B, I, U
             'posn'       =>     'R', // combo of L, C, R
             'r'          =>       0, // Red 0-255
             'g'          =>       0, // Green 0-255
-            'b'          =>       0),// Blue 0-255
-          'captionFont'  => array(
+            'b'          =>       0],// Blue 0-255
+          'captionFont'  => [
             'name'       => 'Arial', // included are Arial/Helvetica, Courier, Times, Symbol, ZapfDingbats
             'size'       =>       8, // pt
             'style'      =>     'U', // combo of B, I, U
             'posn'       =>     'C', // combo of L, C, R
             'r'          =>       0, // Red 0-255
             'g'          =>       0, // Green 0-255
-            'b'          =>     255),// Blue 0-255
-        );
-        break;
-      case "a4":
+            'b'          =>     255],// Blue 0-255
+        ],
         // Setup for A4 210mm x 297mm paper (8.27" x 11.69")
-        $cfg = array(
+        "a4" => [
           'pageW'        =>     210, // mm
           'pageH'        =>     297, // mm
           'imageNumW'    =>       5, // integer number
@@ -161,35 +158,33 @@ class proofsheet_Controller extends Controller {
           'headerSpace'  =>       2, // mm (header to top row of images and to link icon)
           'footerSpace'  =>       2, // mm (bottom row of captions to footer)
           'captionSpace' =>       1, // mm (bottom of image to caption)
-          'headerFont'   => array(
+          'headerFont'   => [
             'name'       => 'Arial', // included are Arial/Helvetica, Courier, Times, Symbol, ZapfDingbats
             'size'       =>      14, // pt
             'style'      =>     'B', // combo of B, I, U
             'posn'       =>     'L', // combo of L, C, R
             'r'          =>       0, // Red 0-255
             'g'          =>       0, // Green 0-255
-            'b'          =>       0),// Blue 0-255
-          'footerFont'   => array(
+            'b'          =>       0],// Blue 0-255
+          'footerFont'   => [
             'name'       => 'Arial', // included are Arial/Helvetica, Courier, Times, Symbol, ZapfDingbats
             'size'       =>      12, // pt
             'style'      =>     'B', // combo of B, I, U
             'posn'       =>     'R', // combo of L, C, R
             'r'          =>       0, // Red 0-255
             'g'          =>       0, // Green 0-255
-            'b'          =>       0),// Blue 0-255
-          'captionFont'  => array(
+            'b'          =>       0],// Blue 0-255
+          'captionFont'  => [
             'name'       => 'Arial', // included are Arial/Helvetica, Courier, Times, Symbol, ZapfDingbats
             'size'       =>       8, // pt
             'style'      =>     'U', // combo of B, I, U
             'posn'       =>     'C', // combo of L, C, R
             'r'          =>       0, // Red 0-255
             'g'          =>       0, // Green 0-255
-            'b'          =>     255),// Blue 0-255
-        );
-        break;
-      default:
-        throw new Kohana_Exception('unhandled page type: '.$page_type);
-    }
+            'b'          =>     255],// Blue 0-255
+        ],
+        default => throw new Kohana_Exception('unhandled page type: '.$page_type),
+    };
 
     // Here are some other parameters that need defining
     $cfg['footerTextPage']       = 'Page ';   // Note that this text isn't autofixed by translate module
@@ -227,7 +222,7 @@ class proofsheet_Controller extends Controller {
      */
 
     // Initialize PDF, disable automatic margins and page breaks
-    $pdf = new proofsheet_PDF('P', 'mm', array($cfg['pageW'],$cfg['pageH']) );
+    $pdf = new proofsheet_PDF('P', 'mm', [$cfg['pageW'],$cfg['pageH']] );
     $pdf->SetMargins(0,0);
     $pdf->SetAutoPageBreak(0);
 
@@ -272,11 +267,11 @@ class proofsheet_Controller extends Controller {
    * significant modifications.
    */
   private function getFilesList($container) {
-    $files = array();
+    $files = [];
 
     if( $container instanceof Item_Model && $container->is_album() ) {
       $items = $container->viewable()
-          ->descendants(null, null, array(array("type", "<>", "album")));
+          ->descendants(null, null, [["type", "<>", "album"]]);
 
       foreach($items as $i) {
         if (!access::can('view_full', $i)) {
@@ -288,7 +283,7 @@ class proofsheet_Controller extends Controller {
           continue;
         }
 
-        $files[$thumb_realpath] = array('url' => $i->abs_url(), 'name' => $i->title);
+        $files[$thumb_realpath] = ['url' => $i->abs_url(), 'name' => $i->title];
       }
 
     } else if( $container instanceof Tag_Model ) {
@@ -309,7 +304,7 @@ class proofsheet_Controller extends Controller {
             continue;
           }
 
-          $files[$thumb_realpath] = array('url' => $i->abs_url(), 'name' => $i->title);
+          $files[$thumb_realpath] = ['url' => $i->abs_url(), 'name' => $i->title];
 
         }
       }
@@ -331,7 +326,7 @@ class proofsheet_Controller extends Controller {
     // Close output buffers
     Kohana::close_buffers(FALSE);
     // Clear any output
-    Event::add('system.display', function() { Kohana::$output = ""; });
+    Event::add('system.display', function(): void { Kohana::$output = ""; });
   }
 
   /**
@@ -386,7 +381,7 @@ class proofsheet_PDF extends FPDF {
    * It converts UTF-8 back to CP1252, which is used by FPDF.
    * This will trim formatted text to fit and add ellipsis if needed.
    */
-  function printText($text, $font, $x, $y, $w, $h, $link = null) {
+  public function printText($text, $font, $x, $y, $w, $h, $link = null) {
     $ellipsis = '…'; // ASCII character 133
     // Convert from UTF-8 back to CP1252
     $text = iconv('utf-8','cp1252',$text);
@@ -414,7 +409,7 @@ class proofsheet_PDF extends FPDF {
    * Note that this provides robustness for images with incorrect filenames, such
    * as missing_movie.png being called a jpg when copied as a thumbnail in v3.0.2.
    */
-  function printImage($imagePath, $x, $y, $w, $h, $link = null, $cfgImageMissing) {
+  public function printImage($imagePath, $x, $y, $w, $h, $link = null, $cfgImageMissing = null) {
     $imageInfo = getimagesize($imagePath); // [0]=w, [1]=h, [2]=type (1=GIF, 2=JPG, 3=PNG)
     // Figure out the filetype
     switch($imageInfo[2]) {

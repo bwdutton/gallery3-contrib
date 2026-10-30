@@ -19,7 +19,7 @@
 class Content_Warning_Controller extends Controller {
  	public function index() {
  		if(isset($_GET['cw'])) {
-			setcookie('cw_agree', '1', time() + (60 * 60 * 24), '/');
+			setcookie('cw_agree', '1', ['expires' => time() + (60 * 60 * 24), 'path' => '/']);
                         url::redirect(item::root()->abs_url());
 		}
  	}

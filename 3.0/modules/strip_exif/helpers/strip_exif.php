@@ -1,7 +1,7 @@
 <?php defined("SYSPATH") or die("No direct script access.");
 
 class strip_exif_Core {
-    static function run_exiv($base_cmd, $file) {
+    public static function run_exiv($base_cmd, $file) {
         if (module::get_var("strip_exif", "verbose", 0) >= 1)
             $logfile = VARPATH . "modules/strip_exif/log/strip_exif.log";
         else
@@ -14,7 +14,7 @@ class strip_exif_Core {
         exec($cmd);
     }
 
-    static function strip($item) {
+    public static function strip($item) {
         if (!($item->is_photo() && $item->mime_type == "image/jpeg"))
             return;
 
@@ -38,7 +38,7 @@ class strip_exif_Core {
         self::log(2, "Using command:");
         self::log(2, "  " . $base_cmd);
 
-        foreach(array($item->file_path(), $item->resize_path(), $item->thumb_path()) as $file) {
+        foreach([$item->file_path(), $item->resize_path(), $item->thumb_path()] as $file) {
             self::run_exiv($base_cmd, $file);
         }
 
@@ -50,7 +50,7 @@ class strip_exif_Core {
         self::log(1, "Successfully stripped tags from item id " . $item->id);
     }
 
-    static function whereis($app) {
+    public static function whereis($app) {
         $op = @shell_exec("whereis " . $app);
         if ($op != "") {
             $op = explode(" ", $op);
@@ -62,7 +62,7 @@ class strip_exif_Core {
         return false;
     }
 
-    static function verify_path($path) {
+    public static function verify_path($path) {
         if ($path == "")
             return 0;
         else if (!file_exists($path))
@@ -73,7 +73,7 @@ class strip_exif_Core {
         return 1;
     }
 
-    static function verify_exiv_path($field) {
+    public static function verify_exiv_path($field) {
         $v = self::verify_path($field->value);
         switch ($v) {
             case 0: $field->add_error("required", 1); break;
@@ -82,7 +82,7 @@ class strip_exif_Core {
         }
     }
 
-    static function log($verbosity, $item) {
+    public static function log($verbosity, $item) {
         if (module::get_var("strip_exif", "verbose", 0) < $verbosity)
             return;
 

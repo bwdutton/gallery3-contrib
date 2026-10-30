@@ -18,10 +18,10 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class rss_extra_installer {
-  static function install() {
+  public static function install() {
     module::set_version("rss_extra", 1);
   }
 
-  static function uninstall() {
+  public static function uninstall() {
   }
 }

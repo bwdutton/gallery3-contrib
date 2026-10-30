@@ -23,7 +23,7 @@ class proofsheet_event_Core {
    * This adds the buttons for the case of an album.  If you want to disable 
    * either the A4 or LTR part, do so here *and* below for tags.
    */
-  static function album_menu($menu, $theme) {
+  public static function album_menu($menu, $theme) {
     if (access::can("view_full", $theme->item)) {
       $proofsheetA4Link = url::site("proofsheet/makepdf/a4/album/{$theme->item->id}");
       $menu->append(Menu::factory("link")
@@ -44,7 +44,7 @@ class proofsheet_event_Core {
    * This adds the buttons for the case of a tag.  If you want to disable 
    * either the A4 or LTR part, do so here *and* above for albums.
    */
-  static function tag_menu($menu, $theme) {
+  public static function tag_menu($menu, $theme) {
     $proofsheetA4Link = url::site("proofsheet/makepdf/a4/tag/{$theme->tag()->id}");
     $menu
       ->append(Menu::factory("link")

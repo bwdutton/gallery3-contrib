@@ -26,7 +26,7 @@ class Sabre_DAV_Browser_GuessContentType extends Sabre_DAV_ServerPlugin {
      *
      * @var array
      */
-    public $extensionMap = array(
+    public $extensionMap = [
 
         // images
         'jpg' => 'image/jpeg',
@@ -40,7 +40,7 @@ class Sabre_DAV_Browser_GuessContentType extends Sabre_DAV_ServerPlugin {
         // text
         'txt' => 'text/plain',
 
-    );
+    ];
 
     /**
      * Initializes the plugin 
@@ -52,7 +52,7 @@ class Sabre_DAV_Browser_GuessContentType extends Sabre_DAV_ServerPlugin {
 
         // Using a relatively low priority (200) to allow other extensions
         // to set the content-type first.
-        $server->subscribeEvent('afterGetProperties',array($this,'afterGetProperties'),200);
+        $server->subscribeEvent('afterGetProperties',[$this,'afterGetProperties'],200);
 
     }
 

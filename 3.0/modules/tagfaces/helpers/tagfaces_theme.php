@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class tagfaces_theme_Core {
-  static function photo_bottom($theme) {
+  public static function photo_bottom($theme) {
     // Check and see if the current photo has any tagged faces
     //   or notes associated with it.
     $item = $theme->item;

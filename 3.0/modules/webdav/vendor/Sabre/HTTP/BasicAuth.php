@@ -29,7 +29,7 @@ class Sabre_HTTP_BasicAuth extends Sabre_HTTP_AbstractAuth {
         // Apache and mod_php
         if (($user = $this->httpRequest->getRawServerValue('PHP_AUTH_USER')) && ($pass = $this->httpRequest->getRawServerValue('PHP_AUTH_PW'))) {
 
-            return array($user,$pass);
+            return [$user,$pass];
 
         }
 
@@ -38,7 +38,7 @@ class Sabre_HTTP_BasicAuth extends Sabre_HTTP_AbstractAuth {
 
         if (!$auth) return false;
 
-        if (strpos(strtolower($auth),'basic')!==0) return false; 
+        if (!str_starts_with(strtolower($auth), 'basic')) return false; 
 
         return explode(':', base64_decode(substr($auth, 6)));
 

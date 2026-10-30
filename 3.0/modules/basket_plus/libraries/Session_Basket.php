@@ -19,20 +19,12 @@
  */
 class basket_item
 {
-  public $product;
-  public $item;
-  public $quantity;
-
   public $product_cost = 0;
   public $product_cost_per = 0;
 
   public $items;
 
-  public function __construct($aProduct, $aItem, $aQuantity){
-    // TODO check individual product.
-    $this->product = $aProduct;
-    $this->item = $aItem;
-    $this->quantity = $aQuantity;
+  public function __construct(public $product, public $item, public $quantity){
     $this->calculate_product_cost();
   }
 
@@ -115,7 +107,7 @@ class basket_item
 
 class Session_Basket_Core {
 
-  public $contents = array();
+  public $contents = [];
 
 // added for customer record
   public $title = "";
@@ -172,7 +164,7 @@ class Session_Basket_Core {
   public function size(){
     $size = 0;
     if (isset($this->contents)){
-      foreach ($this->contents as $product => $basket_item){
+      foreach ($this->contents as $basket_item){
         $size += $basket_item->size();
       }
     }
@@ -200,11 +192,11 @@ class Session_Basket_Core {
   //calculate total postage cost 
   public function postage_cost(){
     $postage_cost = 0;
-    $postage_bands = array();
-    $postage_quantities = array();
+    $postage_bands = [];
+    $postage_quantities = [];
     if (isset($this->contents)){
       // create array of used postage bands and product qty's
-      foreach ($this->contents as $product => $basket_item){
+      foreach ($this->contents as $basket_item){
         $postage_band = $basket_item->getProduct()->bp_postage_band;
         if (isset($postage_bands[$postage_band->id])){
           $postage_quantities[$postage_band->id] += $basket_item->quantity;
@@ -226,7 +218,7 @@ class Session_Basket_Core {
 	public function product_cost(){
     $product_cost = 0;
     if (isset($this->contents)){
-      foreach ($this->contents as $product => $basket_item){
+      foreach ($this->contents as $basket_item){
         $product_cost += $basket_item->product_cost;
       }
     }

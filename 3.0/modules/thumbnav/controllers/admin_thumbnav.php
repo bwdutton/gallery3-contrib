@@ -39,7 +39,7 @@ class Admin_thumbnav_Controller extends Admin_Controller {
   }
 
   private function _get_setting_form() {
-    $form = new Forge("admin/thumbnav/save", "", "post", array("id" => "g-admin-thumbnav-form"));
+    $form = new Forge("admin/thumbnav/save", "", "post", ["id" => "g-admin-thumbnav-form"]);
     $group = $form->group("g_admin_thumbnavcfg")->label(t("Settings"));
     $group->input("thumb_count")
       ->label(t("Thumbs displayed"))

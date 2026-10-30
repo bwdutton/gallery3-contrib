@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  *************************************************************************/
 class emboss_installer {
-  static function install() {
+  public static function install() {
     $db = Database::instance();
     $db->query("CREATE TABLE IF NOT EXISTS {emboss_overlays} (
                  `id` int(9) NOT NULL auto_increment,
@@ -44,24 +44,24 @@ class emboss_installer {
     log::success('emboss','Emboss Installed');
   }
 
-  static function upgrade($version)
+  public static function upgrade($version)
    {
      module::set_version('emboss',$verion=1);
      log::info('emboss',"Upgrade to version $version / No action taken");
    }
 
-  static function activate()
+  public static function activate()
   {
     log::info('emboss','Emboss Activated');
     emboss::reconcile();
   }
 
-  static function deactivate()
+  public static function deactivate()
   {
     log::info('emboss','Emboss Deactivated');
   }
 
-  static function uninstall() {
+  public static function uninstall() {
     emboss::uninstall();
   }
 }

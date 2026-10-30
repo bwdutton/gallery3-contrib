@@ -73,7 +73,7 @@
        for ($i = 0; ($i <= count($siblings) - 1); $i++):
          if ($siblings[$i]->rand_key == $item->rand_key): ?>
            <a style="<?= ($siblings[$i]->rand_key == $item->rand_key)? "display: static;" : "display: none;"; ?>" title="<?= $theme->get_item_title($item); ?>" <?= ($include_single)? "class=\"g-sb-preview\"" : "target=_blank;"; ?> <?= ($include_list)? "rel=\"g-preview\"" : null; ?> href="<?= (access::can("view_full", $item))? $item->file_url() : $item->resize_url(); ?>">
-           <?= $item->resize_img(array("id" => "g-item-id-{$item->id}", "class" => "g-resize", "alt" => $_title)) ?>
+           <?= $item->resize_img(["id" => "g-item-id-{$item->id}", "class" => "g-resize", "alt" => $_title]) ?>
            </a>
       <?php  if ($i < count($siblings) - 1):
             $script  .= "    var image_preload_n = new Image();\n    image_preload_n.src = \"" . $siblings[$i+1]->resize_url() . "\";\n"; 

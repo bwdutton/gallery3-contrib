@@ -78,82 +78,82 @@ class Admin_User_info_Controller extends Admin_Controller {
   private function _get_admin_form() {
     // Make a new Form.
     $form = new Forge("admin/user_info/saveprefs", "", "post",
-                      array("id" => "g-user_info-admin-form"));
+                      ["id" => "g-user_info-admin-form"]);
                       
     // Create the input boxes for the User Information Settings                      
     $user_infoGroup = $form->group("UserInformationSettings");
     $user_infoGroup->dropdown("per_page")
       ->label(t("Number of records to display per page"))
-      ->options(array("5" => t("5"),
+      ->options(["5" => t("5"),
                       "10" => t("10"),
                       "15" => t("15"),
                       "25" => t("25"),
                       "50" => t("50"),
                       "75" => t("75"),
                       "100" => t("100"),
-                      "125" => t("125")))
+                      "125" => t("125")])
       ->selected(module::get_var("user_info", "per_page"));
     $user_infoGroup->dropdown("default_sort_column")
       ->label(t("Default Column to Sort By"))
-      ->options(array("id" => t("id"),
+      ->options(["id" => t("id"),
                       "user_id" => t("user_id"),
                       "user_name" => t("user_name"),
                       "ip_address" => t("ip_address"),
                       "time_stamp" => t("time_stamp"),
-                      "action" => t("action")))
+                      "action" => t("action")])
       ->selected(module::get_var("user_info", "default_sort_column"));
     $user_infoGroup->dropdown("default_sort_order")
       ->label(t("Default Sort Order"))
-      ->options(array("ASC" => t("Ascending"),
-                      "DESC" => t("Descending")))
+      ->options(["ASC" => t("Ascending"),
+                      "DESC" => t("Descending")])
       ->selected(module::get_var("user_info", "default_sort_order"));
     $user_infoGroup->dropdown("use_default_gallery_date_format")
       ->label(t("Use Default Gallery Date/Time Format"))
-      ->options(array("Yes" => t("Yes"),
-                      "No" => t("No")))
+      ->options(["Yes" => t("Yes"),
+                      "No" => t("No")])
       ->selected(module::get_var("user_info", "use_default_gallery_date_format"));
     $user_infoGroup->input("date_format")
                    ->label(t("Format of the Date & Time - <a href='http://php.net/manual/en/function.date.php' target='_blank'>PHP Date</a>"))
                    ->value(module::get_var("user_info", "date_format"));
     $user_infoGroup->dropdown("log_logins")
       ->label(t("Log Logins"))
-      ->options(array("Yes" => t("Yes"),
-                      "No" => t("No")))
+      ->options(["Yes" => t("Yes"),
+                      "No" => t("No")])
       ->selected(module::get_var("user_info", "log_logins"));
     $user_infoGroup->input("color_login")
-                   ->label(t("<font color='%color_login'>Login Color</font> - Hex Only - <a href='http://www.w3schools.com/HTML/html_colornames.asp' target='_blank'>HTML Colors</a>",array("color_login" => module::get_var("user_info", "color_login"))))
+                   ->label(t("<font color='%color_login'>Login Color</font> - Hex Only - <a href='http://www.w3schools.com/HTML/html_colornames.asp' target='_blank'>HTML Colors</a>",["color_login" => module::get_var("user_info", "color_login")]))
                    ->value(module::get_var("user_info", "color_login"));
     $user_infoGroup->dropdown("log_logouts")
       ->label(t("Log Logouts"))
-      ->options(array("Yes" => t("Yes"),
-                      "No" => t("No")))
+      ->options(["Yes" => t("Yes"),
+                      "No" => t("No")])
       ->selected(module::get_var("user_info", "log_logouts"));
     $user_infoGroup->input("color_logout")
-                   ->label(t("<font color='%color_logout'>Logout Color</font> - Hex Only - <a href='http://www.w3schools.com/HTML/html_colornames.asp' target='_blank'>HTML Colors</a>",array("color_logout" => module::get_var("user_info", "color_logout"))))
+                   ->label(t("<font color='%color_logout'>Logout Color</font> - Hex Only - <a href='http://www.w3schools.com/HTML/html_colornames.asp' target='_blank'>HTML Colors</a>",["color_logout" => module::get_var("user_info", "color_logout")]))
                    ->value(module::get_var("user_info", "color_logout"));
     $user_infoGroup->dropdown("log_failed_logins")
       ->label(t("Log Failed Logins"))
-      ->options(array("Yes" => t("Yes"),
-                      "No" => t("No")))
+      ->options(["Yes" => t("Yes"),
+                      "No" => t("No")])
       ->selected(module::get_var("user_info", "log_failed_logins"));
     $user_infoGroup->input("color_failed_login")
-                   ->label(t("<font color='%color_failed_login'>Failed Login Color</font> - Hex Only - <a href='http://www.w3schools.com/HTML/html_colornames.asp' target='_blank'>HTML Colors</a>",array("color_failed_login" => module::get_var("user_info", "color_failed_login"))))
+                   ->label(t("<font color='%color_failed_login'>Failed Login Color</font> - Hex Only - <a href='http://www.w3schools.com/HTML/html_colornames.asp' target='_blank'>HTML Colors</a>",["color_failed_login" => module::get_var("user_info", "color_failed_login")]))
                    ->value(module::get_var("user_info", "color_failed_login"));
     $user_infoGroup->dropdown("log_re_authenticate_logins")
       ->label(t("Log Re-Authenticate Logins"))
-      ->options(array("Yes" => t("Yes"),
-                      "No" => t("No")))
+      ->options(["Yes" => t("Yes"),
+                      "No" => t("No")])
       ->selected(module::get_var("user_info", "log_re_authenticate_logins"));
     $user_infoGroup->input("color_re_authenticate_login")
-                   ->label(t("<font color='%color_re_authenticate_login'>Re-Authenticate Login Color</font> - Hex Only - <a href='http://www.w3schools.com/HTML/html_colornames.asp' target='_blank'>HTML Colors</a>",array("color_re_authenticate_login" => module::get_var("user_info", "color_re_authenticate_login"))))
+                   ->label(t("<font color='%color_re_authenticate_login'>Re-Authenticate Login Color</font> - Hex Only - <a href='http://www.w3schools.com/HTML/html_colornames.asp' target='_blank'>HTML Colors</a>",["color_re_authenticate_login" => module::get_var("user_info", "color_re_authenticate_login")]))
                    ->value(module::get_var("user_info", "color_re_authenticate_login"));
     $user_infoGroup->dropdown("log_user_created")
       ->label(t("Log User Created"))
-      ->options(array("Yes" => t("Yes"),
-                      "No" => t("No")))
+      ->options(["Yes" => t("Yes"),
+                      "No" => t("No")])
       ->selected(module::get_var("user_info", "log_user_created"));
     $user_infoGroup->input("color_user_created")
-                   ->label(t("<font color='%color_user_created'>User Created Color</font> - Hex Only - <a href='http://www.w3schools.com/HTML/html_colornames.asp' target='_blank'>HTML Colors</a>",array("color_user_created" => module::get_var("user_info", "color_user_created"))))
+                   ->label(t("<font color='%color_user_created'>User Created Color</font> - Hex Only - <a href='http://www.w3schools.com/HTML/html_colornames.asp' target='_blank'>HTML Colors</a>",["color_user_created" => module::get_var("user_info", "color_user_created")]))
                    ->value(module::get_var("user_info", "color_user_created"));
 
     // Add a save button to the form.

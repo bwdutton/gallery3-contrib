@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class editowner_event_Core {
-  static function item_edit_form($item, $form) {
+  public static function item_edit_form($item, $form) {
 
     // We don't want to allow changes of the root album
     if ($item->id == 1)
@@ -45,7 +45,7 @@ class editowner_event_Core {
     }
   }
 
-  static function item_edit_form_completed($item, $form) {
+  public static function item_edit_form_completed($item, $form) {
     // Change the item's captured field to the specified value.
   
     // We don't want to change the root element, so check for that

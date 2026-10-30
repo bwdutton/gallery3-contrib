@@ -30,7 +30,7 @@ class Sabre_DAV_Browser_MapGetToPropFind extends Sabre_DAV_ServerPlugin {
     public function initialize(Sabre_DAV_Server $server) {
 
         $this->server = $server;
-        $this->server->subscribeEvent('beforeMethod',array($this,'httpGetInterceptor'));
+        $this->server->subscribeEvent('beforeMethod',[$this,'httpGetInterceptor']);
     }
 
     /**

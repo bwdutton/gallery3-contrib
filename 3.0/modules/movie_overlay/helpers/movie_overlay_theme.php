@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class movie_overlay_theme_Core {
-  static function get_movie_time($item) {
+  public static function get_movie_time($item) {
     $ffmpeg = movie::find_ffmpeg();
     if (empty($ffmpeg)) {
       return t("00:00");
@@ -33,7 +33,7 @@ class movie_overlay_theme_Core {
       return '00';
     }
   }
-  static function head($theme, $child) {
+  public static function head($theme, $child) {
 	if ($theme->page_type == "collection") {
 	$trans 		= module::get_var("movie_overlay", "trans");
 	return "\t<style type=\"text/css\"> 
@@ -69,12 +69,12 @@ class movie_overlay_theme_Core {
 	</style>";
 	}
   }
-  static function thumb_top($theme, $child) {
+  public static function thumb_top($theme, $child) {
 	if ($child->type == "movie") {
 	return ("<div class=\"g-movie-thumb\" style=\"width: {$child->thumb_width}px;\">\n");
 	}
   }  
-  static function thumb_bottom($theme, $child) {
+  public static function thumb_bottom($theme, $child) {
 	if ($child->type == "movie") {
 	  $view = new View("movie_thumb_bottom.html");
 	  // pass some variable to the view 

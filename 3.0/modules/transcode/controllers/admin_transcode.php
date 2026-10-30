@@ -2,7 +2,7 @@
 
 class Admin_Transcode_Controller extends Admin_Controller {
     public function verify() {
-        $data = array();
+        $data = [];
         $data['success'] = false;
 
         if (($val = transcode::verify_path($_REQUEST['ffmpeg_path'])) > 0) {
@@ -12,12 +12,12 @@ class Admin_Transcode_Controller extends Admin_Controller {
         }
         else {
             $error = "";
-            switch ($val) {
-                case 0: $error = "Empty file path provided"; break;
-                case -1: $error = "File does not exist"; break;
-                case -2: $error = "Path is a directory"; break;
-                default: $error = "Unspecified error";
-            }
+            $error = match ($val) {
+                0 => "Empty file path provided",
+                -1 => "File does not exist",
+                -2 => "Path is a directory",
+                default => "Unspecified error",
+            };
             $data['error'] = $error;
         }
         echo json_encode($data);
@@ -33,14 +33,14 @@ class Admin_Transcode_Controller extends Admin_Controller {
                 module::set_var("transcode", "ffmpeg_path",        $_POST['ffmpeg_path']);
                 module::set_var("transcode", "ffmpeg_flags",       $_POST['ffmpeg_flags']);
                 module::set_var("transcode", "audio_codec",        $_POST['audio_codec']);
-                module::set_var("transcode", "ffmpeg_audio_kbits", (isset($_POST['ffmpeg_audio_kbits']) ? $_POST['ffmpeg_audio_kbits'] : false));
+                module::set_var("transcode", "ffmpeg_audio_kbits", ($_POST['ffmpeg_audio_kbits'] ?? false));
 
-                module::set_var("transcode", "resolution_240p",    (isset($_POST['resolution_240p'])    ? $_POST['resolution_240p']    : false));
-                module::set_var("transcode", "resolution_360p",    (isset($_POST['resolution_360p'])    ? $_POST['resolution_360p']    : false));
-                module::set_var("transcode", "resolution_480p",    (isset($_POST['resolution_480p'])    ? $_POST['resolution_480p']    : false));
-		module::set_var("transcode", "resolution_576p",    (isset($_POST['resolution_576p'])    ? $_POST['resolution_576p']    : false));
-                module::set_var("transcode", "resolution_720p",    (isset($_POST['resolution_720p'])    ? $_POST['resolution_720p']    : false));
-                module::set_var("transcode", "resolution_1080p",   (isset($_POST['resolution_1080p'])   ? $_POST['resolution_1080p']   : false));
+                module::set_var("transcode", "resolution_240p",    ($_POST['resolution_240p'] ?? false));
+                module::set_var("transcode", "resolution_360p",    ($_POST['resolution_360p'] ?? false));
+                module::set_var("transcode", "resolution_480p",    ($_POST['resolution_480p'] ?? false));
+		module::set_var("transcode", "resolution_576p",    ($_POST['resolution_576p'] ?? false));
+                module::set_var("transcode", "resolution_720p",    ($_POST['resolution_720p'] ?? false));
+                module::set_var("transcode", "resolution_1080p",   ($_POST['resolution_1080p'] ?? false));
 
                 message::success(t("Settings have been saved"));
                 url::redirect("admin/transcode");
@@ -65,7 +65,7 @@ class Admin_Transcode_Controller extends Admin_Controller {
 
     private function _get_supported_audio_codecs($given_path = null) {
 
-        $flv_compatible_codecs = array("aac" => "aac", "adpcm_swf" => "adpcm_swf", "mp3" => "libmp3lame");
+        $flv_compatible_codecs = ["aac" => "aac", "adpcm_swf" => "adpcm_swf", "mp3" => "libmp3lame"];
 
         if ($given_path)
             $ffmpegPath = $given_path;
@@ -82,7 +82,7 @@ class Admin_Transcode_Controller extends Admin_Controller {
         $search = true;
         if ($legacy) $search = false;
 
-        $found = array();
+        $found = [];
         foreach ($codecs as $line) {
             if ($search) {
                 if (strpos($line, "DEA")) {
@@ -94,7 +94,7 @@ class Admin_Transcode_Controller extends Admin_Controller {
                }
             }
 
-            if ($legacy && strpos($line, "Codecs:") !== false) {
+            if ($legacy && str_contains($line, "Codecs:")) {
                 $search = true;
                 continue;
             }
@@ -107,7 +107,7 @@ class Admin_Transcode_Controller extends Admin_Controller {
     }
 
     private function _get_form() {
-        $form = new Forge("admin/transcode", "", "post", array("id" => "g-admin-transcode-form"));
+        $form = new Forge("admin/transcode", "", "post", ["id" => "g-admin-transcode-form"]);
 
         $group = $form->group("system")->label(t("System"));
 

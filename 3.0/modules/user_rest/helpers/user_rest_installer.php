@@ -18,11 +18,11 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class user_rest_installer {
-  static function install() {
+  public static function install() {
     module::set_version("user_rest", 2);
   }
 
-  static function upgrade($version) {
+  public static function upgrade($version) {
     if ($version == 1.0 || $version == 1.1) {
       module::set_version("user_rest", $version = 2);
     }

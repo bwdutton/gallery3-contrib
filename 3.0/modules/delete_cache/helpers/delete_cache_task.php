@@ -18,16 +18,16 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class delete_cache_task_Core {
-  static function available_tasks() {
-    return array(Task_Definition::factory()
+  public static function available_tasks() {
+    return [Task_Definition::factory()
                  ->callback("delete_cache_task::delete_cache")
                  ->name(t("Delete cache"))
                  ->description(t("Truncate the cache table from the database."))
                  ->severity(log::SUCCESS),
-                 );
+                 ];
   }
 
-  static function delete_cache($task) {
+  public static function delete_cache($task) {
     $start = microtime(true);
 
     $total = $task->get("total");
@@ -65,6 +65,6 @@ class delete_cache_task_Core {
       $task->percent_complete = round(100 * $completed / $total);
     }
     $task->status = t2("One row updated", "%count / %total rows truncated from the cache table", $completed,
-                       array("total" => $total));
+                       ["total" => $total]);
   }
 }

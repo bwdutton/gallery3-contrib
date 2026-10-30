@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class tag_cloud_page_theme_Core {
-  static function head($theme) {
+  public static function head($theme) {
     // If the tag cloud module is active, load additional javascript code.
     if (module::is_active("tag_cloud")) {
       $theme->script("tag_cloud_page.js");

@@ -19,7 +19,7 @@
  */
 class auto_date_task_Core {
 
-  static function available_tasks() {
+  public static function available_tasks() {
     $tasks[] = Task_Definition::factory()
       ->callback("auto_date_task::set_auto_date_all")
       ->name(t("Set captured date for all unset items"))
@@ -31,8 +31,8 @@ class auto_date_task_Core {
   /**
    * @param Task_Model the task
    */
-  static function set_auto_date_all($task) {
-    $errors = array();
+  public static function set_auto_date_all($task) {
+    $errors = [];
     try {
       $start = microtime(true);
       $last_item_id= $task->get("last_item_id", null);

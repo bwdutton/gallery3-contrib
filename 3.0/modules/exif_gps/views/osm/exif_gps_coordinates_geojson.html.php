@@ -1,11 +1,11 @@
 <?php defined("SYSPATH") or die("No direct script access.") ?>
 [
 <?php
-    $thumb_arr=array();
-    $items_id=array();;
+    $thumb_arr=[];
+    $items_id=[];;
     foreach ($items as $item) {
         array_push($items_id, $item->id);
-        $thumb_arr[$item->id] = $item->thumb_img(array("class" => "g-exif-gps-thumbnail"));
+        $thumb_arr[$item->id] = $item->thumb_img(["class" => "g-exif-gps-thumbnail"]);
     }
     $item_coordinates_all = ORM::factory("exif_coordinate")->where("item_id", "IN", $items_id)->find_all();
     foreach ($item_coordinates_all as $zero_index => $item_coordinates) {

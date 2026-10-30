@@ -18,22 +18,22 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class movie_tools_installer {
-  static function install() {
+  public static function install() {
     $formats = movie_tools::get_formats();
     foreach ($formats as $id => $data) {
       module::set_var("movie_tools", "allow_$id", 0);
     }
   }
 
-  static function can_activate() {
-    $messages = array();
+  public static function can_activate() {
+    $messages = [];
     if (module::get_version("gallery") < 56) {
       $messages["warn"][] = t("Movie Tools requires Gallery v3.0.5 or newer.");
     }
     return $messages;
   }
 
-  static function uninstall() {
+  public static function uninstall() {
     module::clear_all_vars("movie_tools");
   }
 }

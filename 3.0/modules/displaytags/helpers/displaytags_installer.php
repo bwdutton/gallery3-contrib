@@ -18,16 +18,16 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class displaytags_installer {
-  static function install() {
+  public static function install() {
     module::set_version("displaytags", 1);
   }
 
-  static function deactivate() {
+  public static function deactivate() {
     site_status::clear("displaytags_needs_tag");
   }
 
-  static function can_activate() {
-    $messages = array();
+  public static function can_activate() {
+    $messages = [];
     if (!module::is_active("tag")) {
       $messages["warn"][] = t("The DisplayTags module requires the Tags module.");
     }

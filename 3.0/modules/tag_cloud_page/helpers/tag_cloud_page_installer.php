@@ -18,12 +18,12 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class tag_cloud_page_installer {
-  static function deactivate() {
+  public static function deactivate() {
     site_status::clear("tag_cloud_page_needs_tag");
   }
 
-  static function can_activate() {
-    $messages = array();
+  public static function can_activate() {
+    $messages = [];
     if (!module::is_active("tag")) {
       $messages["warn"][] = t("The Tag Cloud Page module requires the Tags module.");
     }

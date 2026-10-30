@@ -75,7 +75,7 @@ class Admin_Moduleorder_Controller extends Admin_Controller {
   }
 
   private function _get_modules() {
-    $active_blocks = array();
+    $active_blocks = [];
     $available_modules = moduleorder::get_available_site_modules();
     return $available_modules;
   }

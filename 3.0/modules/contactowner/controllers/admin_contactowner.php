@@ -69,14 +69,14 @@ class Admin_ContactOwner_Controller extends Admin_Controller {
   private function _get_admin_form() {
     // Make a new Form.
     $form = new Forge("admin/contactowner/saveprefs", "", "post",
-                      array("id" => "g-contact-owner-adminForm"));
+                      ["id" => "g-contact-owner-adminForm"]);
 
     // Make an array for the different types of link codes.
     $add_contactlinks = $form->group("contactOwnerLinks");
-    $linkOptions["ContactOwner"] = array("Display Contact Site Owner Link", 
-                                   module::get_var("contactowner", "contact_owner_link"));
-    $linkOptions["ContactUser"] = array("Display Contact Item Owner Link", 
-                                  module::get_var("contactowner", "contact_user_link"));
+    $linkOptions["ContactOwner"] = ["Display Contact Site Owner Link", 
+                                   module::get_var("contactowner", "contact_owner_link")];
+    $linkOptions["ContactUser"] = ["Display Contact Item Owner Link", 
+                                  module::get_var("contactowner", "contact_user_link")];
                                   
     // Turn the array into a series of checkboxes.
     $add_contactlinks->checklist("ContactOwnerLinkTypes")

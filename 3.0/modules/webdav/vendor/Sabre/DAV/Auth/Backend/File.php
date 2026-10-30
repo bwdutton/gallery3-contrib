@@ -18,7 +18,7 @@ class Sabre_DAV_Auth_Backend_File extends Sabre_DAV_Auth_Backend_AbstractDigest 
      * 
      * @var array
      */
-    protected $users = array();
+    protected $users = [];
 
     /**
      * Creates the backend object. 
@@ -49,15 +49,15 @@ class Sabre_DAV_Auth_Backend_File extends Sabre_DAV_Auth_Backend_AbstractDigest 
             if (substr_count($line, ":") !== 2) 
                 throw new Sabre_DAV_Exception('Malformed htdigest file. Every line should contain 2 colons');
             
-            list($username,$realm,$A1) = explode(':',$line);
+            [$username, $realm, $A1] = explode(':',$line);
 
             if (!preg_match('/^[a-zA-Z0-9]{32}$/', $A1))
                 throw new Sabre_DAV_Exception('Malformed htdigest file. Invalid md5 hash');
                 
-            $this->users[$username] = array(
+            $this->users[$username] = [
                 'digestHash' => $A1,
                 'uri'        => 'principals/' . $username
-            );
+            ];
 
         }
 
@@ -72,7 +72,7 @@ class Sabre_DAV_Auth_Backend_File extends Sabre_DAV_Auth_Backend_AbstractDigest 
      */
     public function getUserInfo($realm, $username) {
 
-        return isset($this->users[$username])?$this->users[$username]:false;
+        return $this->users[$username] ?? false;
 
     }
 
@@ -86,12 +86,12 @@ class Sabre_DAV_Auth_Backend_File extends Sabre_DAV_Auth_Backend_AbstractDigest 
      */
     public function getUsers() {
 
-        $re = array();
+        $re = [];
         foreach($this->users as $userName=>$A1) {
 
-            $re[] = array(
+            $re[] = [
                 'uri'=>'principals/' . $userName
-            );
+            ];
 
         }
 

@@ -23,7 +23,7 @@ class ORM_MPTT extends ORM_MPTT_Core {
    * Copied from modules/gallery/libraries/ORM_MPTT.php, not sure of the reason...
    */
   private $model_name = null;
-  function __construct($id=null) {
+  public function __construct($id=null) {
     parent::__construct($id);
     $this->model_name = inflector::singular($this->table_name);
   }
@@ -33,7 +33,7 @@ class ORM_MPTT extends ORM_MPTT_Core {
    *
    * @return ORM
    */
-  function parent() {
+  public function parent() {
     if( user_chroot::album() && user_chroot::album()->id == $this->id ) {
       return null;
     } else {
@@ -46,7 +46,7 @@ class ORM_MPTT extends ORM_MPTT_Core {
    *
    * @return array ORM
    */
-  function parents() {
+  public function parents() {
     $select = $this
       ->where('left_ptr', '<=', $this->left_ptr)
       ->where('right_ptr', '>=', $this->right_ptr)

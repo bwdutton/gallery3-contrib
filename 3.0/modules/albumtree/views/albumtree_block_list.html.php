@@ -19,7 +19,7 @@ function makelist($album,$level){
   </li>
 <?php
   //recurse over the children, and print their list items as well
-  foreach ($album->viewable()->children(null, null, array(array("type", "=", "album"))) as $child){
+  foreach ($album->viewable()->children(null, null, [["type", "=", "album"]]) as $child){
     makelist($child,$level+1);
   }
 }

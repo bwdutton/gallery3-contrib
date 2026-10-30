@@ -18,23 +18,23 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class calendarview_installer {
-  static function install() {
+  public static function install() {
     module::set_version("calendarview", 1);
   }
 
-  static function deactivate() {
+  public static function deactivate() {
     site_status::clear("calendarview_needs_exif");
   }
 
-  static function can_activate() {
-    $messages = array();
+  public static function can_activate() {
+    $messages = [];
     if (!module::is_active("exif")) {
       $messages["warn"][] = t("The CalendarView module requires the EXIF module.");
     }
     return $messages;
   }
 
-  static function uninstall() {
+  public static function uninstall() {
     module::delete("calendarview");
   }
 }

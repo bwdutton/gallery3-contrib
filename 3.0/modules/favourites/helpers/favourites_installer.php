@@ -20,7 +20,7 @@
 
 class favourites_installer
 {
-  static function install(){
+  public static function install(){
    module::set_version("favourites", 1);
    favourites_configuration::setEmailTemplate("Hi %name,
 

@@ -24,7 +24,7 @@
 //  download link for unplayable videos and references to admin.js are now admin_videos.js.
 
 class videos_theme_Core {
-  static function head($theme) {
+  public static function head($theme) {
     $buf = "";
     if (identity::active_user()->admin) {
       $buf .= $theme->css("videos.css");
@@ -43,9 +43,9 @@ class videos_theme_Core {
     return $buf;
   }
 
-  static function admin_head($theme) {
+  public static function admin_head($theme) {
     $buf = "";
-    if (strpos(Router::$current_uri, "admin/videos") !== false) {
+    if (str_contains(Router::$current_uri, "admin/videos")) {
       $buf .= $theme->css("videos.css")
         . $theme->css("jquery.autocomplete.css");
       $base = url::site("__ARGS__");

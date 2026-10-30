@@ -19,7 +19,7 @@
  */
 class Admin_Session_Explorer_Controller extends Admin_Controller {
   public function index() {
-    list($uas, $ips, $sample_size) = $this->get_uas_and_ips();
+    [$uas, $ips, $sample_size] = $this->get_uas_and_ips();
 
     $view = new Admin_View("admin.html");
     $view->page_title = t("Session explorer");
@@ -31,8 +31,8 @@ class Admin_Session_Explorer_Controller extends Admin_Controller {
   }
 
   private function get_uas_and_ips() {
-    $uas = array();
-    $ips = array();
+    $uas = [];
+    $ips = [];
     $sample_size = 0;
 
     $d = new Session_Database_Driver();
@@ -43,12 +43,8 @@ class Admin_Session_Explorer_Controller extends Admin_Controller {
       $data = $this->unserialize_session($d->read($r->session_id));
       $ua = $data["user_agent"];
       $ip = $data["ip_address"];
-      if (!isset($uas[$ua])) {
-        $uas[$ua] = 0;
-      }
-      if (!isset($ips[$ip])) {
-        $ips[$ip] = 0;
-      }
+      $uas[$ua] ??= 0;
+      $ips[$ip] ??= 0;
       $uas[$ua]++;
       $ips[$ip]++;
 
@@ -64,21 +60,21 @@ class Admin_Session_Explorer_Controller extends Admin_Controller {
     array_splice($uas, 15);
     array_splice($ips, 15);
 
-    return array($uas, $ips, $sample_size);
+    return [$uas, $ips, $sample_size];
   }
 
   // Adapted from
   // http://us3.php.net/manual/en/function.session-decode.php#101687
   // by jason at joeymail dot net
-  function unserialize_session($data) {
+  public function unserialize_session($data) {
     if (strlen($data) == 0) {
-      return array();
+      return [];
     }
 
     // match all the session keys and offsets
     preg_match_all('/(^|;|\})([a-zA-Z0-9_]+)\|/i', $data, $matches_array, PREG_OFFSET_CAPTURE);
 
-    $return_array = array();
+    $return_array = [];
 
     $last_offset = null;
     $current_key = '';
@@ -95,10 +91,10 @@ class Admin_Session_Explorer_Controller extends Admin_Controller {
     $value_text = substr($data, $last_offset);
     try {
       $return_array[$current_key] = unserialize($value_text);
-    } catch (ErrorException $e) {
+    } catch (ErrorException) {
       // Dunno why unserialize fails.  If it fails enough, it'll show up in the aggregate
       // counts and we can deal with it.
-      return array("user_agent" => "[unserialize fail]", "ip_address" => "[unserialize fail]");
+      return ["user_agent" => "[unserialize fail]", "ip_address" => "[unserialize fail]"];
     }
     return $return_array;
   }

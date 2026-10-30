@@ -21,7 +21,7 @@ function _transliterate_to_ascii($str, $case = 0) {
   // NOTE: unlike Kohana's standard transliterate_to_ascii, we ignore the $case argument
   // and always convert both uppercase and lowercase letters.
 
-  static $UTF8_TRANSLATE = array(
+  static $UTF8_TRANSLATE = [
     "¢" => "C", "£" => "PS", "¥" => "Y=", "§" => "SS", "©" => "(c)", "ª" => "a",
     "®" => "(r)", "°" => "deg", "²" => "2", "³" => "3", "µ" => "u", "¶" => "P",
     "¹" => "1", "º" => "o", "¼" => "1/4", "½" => "1/2", "¾" => "3/4", "À" => "A",
@@ -6503,7 +6503,7 @@ function _transliterate_to_ascii($str, $case = 0) {
     "ￏ" => "oe", "ￒ" => "yo", "ￓ" => "u", "ￔ" => "weo", "ￕ" => "we", "ￖ" => "wi",
     "ￗ" => "yu", "ￚ" => "eu", "ￛ" => "yi", "ￜ" => "i", "￠" => "C", "￡" => "PS",
     "￥" => "Y=", "￦" => "W=", "￮" => "O"
-  );
+  ];
 
   static $keys = null;
   static $values = null;

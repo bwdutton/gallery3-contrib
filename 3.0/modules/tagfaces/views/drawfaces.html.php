@@ -88,7 +88,7 @@
   <div id="g-select-photo" align="center">
   <h1><?= html::clean($title) ?></h1>
   <p><?=t("Use the mouse to select a face on the image below."); ?></p>
-      <?= $item->resize_img(array("id" => "g-select-photo-id-{$item->id}", "class" => "g-select-resize", "style" => "position: fixed;")) ?>
+      <?= $item->resize_img(["id" => "g-select-photo-id-{$item->id}", "class" => "g-select-resize", "style" => "position: fixed;"]) ?>
   </div>
 </div>
 

@@ -36,7 +36,7 @@ class Admin_Schedule_Controller extends Admin_Maintenance_Controller {
                       "%count tasks are stalled",
                       $stalled_count),
                    t('<a href="%url">view</a>',
-                     array("url" => html::mark_clean(url::site("admin/maintenance")))));
+                     ["url" => html::mark_clean(url::site("admin/maintenance"))]));
     }
 
     $view = new Admin_View("admin.html");
@@ -81,7 +81,7 @@ class Admin_Schedule_Controller extends Admin_Maintenance_Controller {
     $v = new View("admin_schedule_confirm.html");
     $v->name = $schedule->name;
     $v->form = new Forge("admin/schedule/remove_event/{$id}", "", "post",
-                         array("id" => "g-remove-schedule"));
+                         ["id" => "g-remove-schedule"]);
     $group = $v->form->group("remove");
     $group->submit("")->value(t("Continue"));
     print $v;
@@ -92,8 +92,8 @@ class Admin_Schedule_Controller extends Admin_Maintenance_Controller {
     $schedule = ORM::factory("schedule", $id);
     $schedule->delete();
 
-    message::success(t("Removed scheduled task: %name", array("name" => $schedule->name)));
-    json::reply(array("result" => "success", "reload" => 1));
+    message::success(t("Removed scheduled task: %name", ["name" => $schedule->name]));
+    json::reply(["result" => "success", "reload" => 1]);
   }
 
   public function define() {
@@ -117,18 +117,18 @@ class Admin_Schedule_Controller extends Admin_Maintenance_Controller {
       $schedule->task_callback = $form->schedule_group->callback->value;
       $schedule->save();
       if ($method == "define") {
-        message::success(t("Added scheduled task: %name", array("name" => $schedule->name)));
+        message::success(t("Added scheduled task: %name", ["name" => $schedule->name]));
       } else {
-        message::success(t("Updated scheduled task: %name", array("name" => $schedule->name)));
+        message::success(t("Updated scheduled task: %name", ["name" => $schedule->name]));
       }
-      json::reply(array("result" => "success", "reload" => 1));
+      json::reply(["result" => "success", "reload" => 1]);
     } else {
-      json::reply(array("result" => "error", "html" => (string)$form));
+      json::reply(["result" => "error", "html" => (string)$form]);
     }
   }
 
   private function _start_date($dow, $time) {
-    list ($hour, $minutes) = explode(":", $time);
+    [$hour, $minutes] = explode(":", $time);
     $local_time = localtime();
     $days = ($dow < $local_time[6] ? 7 : 0) + $dow - $local_time[6];
     return

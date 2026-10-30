@@ -20,11 +20,11 @@
 class exif_gps_Core {
   protected static $exif_keys;
 
-  static function extract($item) {
-    $keys = array();
+  public static function extract($item) {
+    $keys = [];
     // Extract Latitude and Longitude from the image (if they exist).
     if ($item->is_photo() && $item->mime_type == "image/jpeg") {
-      $data = array();
+      $data = [];
       require_once(MODPATH . "exif/lib/exif.php");
       $exif_raw = read_exif_data_raw($item->file_path(), false);
       if (isset($exif_raw['ValidEXIFData'])) {
@@ -32,7 +32,7 @@ class exif_gps_Core {
           if (isset($exif_raw[$exifvar[0]][$exifvar[1]])) {
             $value = $exif_raw[$exifvar[0]][$exifvar[1]];
             if (function_exists("mb_detect_encoding") && mb_detect_encoding($value) != "UTF-8") {
-              $value = utf8_encode($value);
+              $value = mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1');
             }
             $keys[$field] = Input::clean($value);
           }
@@ -47,10 +47,10 @@ class exif_gps_Core {
       $record->latitude = str_replace(",", ".", $keys["Latitude"]);
       $record->longitude = str_replace(",", ".", $keys["Longitude"]);
       // Represent N/S/E/W as postive and negative numbers
-      if (substr(strtoupper($keys["Latitude Reference"]), 0, 1) == "S") {
+      if (str_starts_with(strtoupper($keys["Latitude Reference"]), "S")) {
         $record->latitude = "-" . $record->latitude;
       }
-      if (substr(strtoupper($keys["Longitude Reference"]), 0, 1) == "W") {
+      if (str_starts_with(strtoupper($keys["Longitude Reference"]), "W")) {
         $record->longitude = "-" . $record->longitude;
       }
       $record->save();
@@ -59,14 +59,12 @@ class exif_gps_Core {
 
   private static function _keys() {
     // EXIF fields to extract.
-    if (!isset(self::$exif_keys)) {
-      self::$exif_keys = array(
-        "Latitude Reference"     => array("GPS",    "Latitude Reference",       t("GPS: Latitude Reference"), ),
-        "Longitude Reference"    => array("GPS",    "Longitude Reference",      t("GPS: Longitude Reference"),),
-        "Latitude"        => array("GPS",    "Latitude",          t("GPS: Latitude"),    ),
-        "Longitude"       => array("GPS",    "Longitude",         t("GPS: Longitude"),   )
-      );
-    }
+    self::$exif_keys ??= [
+      "Latitude Reference"     => ["GPS",    "Latitude Reference",       t("GPS: Latitude Reference"), ],
+      "Longitude Reference"    => ["GPS",    "Longitude Reference",      t("GPS: Longitude Reference"),],
+      "Latitude"        => ["GPS",    "Latitude",          t("GPS: Latitude"),    ],
+      "Longitude"       => ["GPS",    "Longitude",         t("GPS: Longitude"),   ]
+    ];
     return self::$exif_keys;
   }
 }

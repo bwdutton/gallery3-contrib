@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class iptc_installer {
-  static function install() {
+  public static function install() {
     $db = Database::instance();
     $db->query("CREATE TABLE IF NOT EXISTS {iptc_records} (
                  `id` int(9) NOT NULL auto_increment,
@@ -32,15 +32,15 @@ class iptc_installer {
     module::set_version("iptc", 1);
   }
 
-  static function activate() {
+  public static function activate() {
     iptc::check_index();
   }
 
-  static function deactivate() {
+  public static function deactivate() {
     site_status::clear("iptc_index_out_of_date");
   }
 
-  static function uninstall() {
+  public static function uninstall() {
     Database::instance()->query("DROP TABLE IF EXISTS {iptc_records};");
   }
 }

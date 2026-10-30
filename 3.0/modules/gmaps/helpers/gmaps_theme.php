@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class gmaps_theme_Core {
-  static function sidebar_blocks($theme) {
+  public static function sidebar_blocks($theme) {
     if ($theme->item()) {
       $block = new Block();
       $block->css_id = "g-maps";

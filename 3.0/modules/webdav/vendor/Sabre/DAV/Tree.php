@@ -19,7 +19,7 @@ abstract class Sabre_DAV_Tree {
      * @throws Exception_FileNotFound
      * @return Sabre_DAV_INode 
      */
-    abstract function getNodeForPath($path);
+    abstract public function getNodeForPath($path);
 
     /**
      * This function allows you to check if a node exists.
@@ -37,7 +37,7 @@ abstract class Sabre_DAV_Tree {
             $this->getNodeForPath($path);
             return true;
 
-        } catch (Sabre_DAV_Exception_FileNotFound $e) {
+        } catch (Sabre_DAV_Exception_FileNotFound) {
 
             return false;
 
@@ -57,7 +57,7 @@ abstract class Sabre_DAV_Tree {
         $sourceNode = $this->getNodeForPath($sourcePath);
        
         // grab the dirname and basename components
-        list($destinationDir, $destinationName) = Sabre_DAV_URLUtil::splitPath($destinationPath);
+        [$destinationDir, $destinationName] = Sabre_DAV_URLUtil::splitPath($destinationPath);
 
         $destinationParent = $this->getNodeForPath($destinationDir);
         $this->copyNode($sourceNode,$destinationParent,$destinationName);
@@ -75,8 +75,8 @@ abstract class Sabre_DAV_Tree {
      */
     public function move($sourcePath, $destinationPath) {
 
-        list($sourceDir, $sourceName) = Sabre_DAV_URLUtil::splitPath($sourcePath);
-        list($destinationDir, $destinationName) = Sabre_DAV_URLUtil::splitPath($destinationPath);
+        [$sourceDir, $sourceName] = Sabre_DAV_URLUtil::splitPath($sourcePath);
+        [$destinationDir, $destinationName] = Sabre_DAV_URLUtil::splitPath($destinationPath);
 
         if ($sourceDir===$destinationDir) {
             $renameable = $this->getNodeForPath($sourcePath);
@@ -101,7 +101,7 @@ abstract class Sabre_DAV_Tree {
         $node = $this->getNodeForPath($path);
         $node->delete();
         
-        list($parent) = Sabre_DAV_URLUtil::splitPath($path);
+        [$parent] = Sabre_DAV_URLUtil::splitPath($path);
         $this->markDirty($parent);
 
     }
@@ -181,7 +181,7 @@ abstract class Sabre_DAV_Tree {
         }
         if ($source instanceof Sabre_DAV_IProperties && $destination instanceof Sabre_DAV_IProperties) {
 
-            $props = $source->getProperties(array());
+            $props = $source->getProperties([]);
             $destination->updateProperties($props);
 
         }

@@ -11,11 +11,11 @@ class Admin_rss_extra_Controller extends Admin_Controller {
   }
 
   private function get_rss_feeds() {
-    $feeds = array();
+    $feeds = [];
     $class_name = "rss_extra_rss";
     if (method_exists($class_name, "supported_feeds")) {
       $feeds = array_merge($feeds,
-        call_user_func(array($class_name, "supported_feeds"), null, null));
+        call_user_func([$class_name, "supported_feeds"], null, null));
     }
     return $feeds;
   }
@@ -33,7 +33,7 @@ class Admin_rss_extra_Controller extends Admin_Controller {
     if (isset($hash)):
       return unserialize($hash);
     else:
-      return Array();
+      return [];
     endif;
   }
 
@@ -42,7 +42,7 @@ class Admin_rss_extra_Controller extends Admin_Controller {
 
     $form = $this->_get_setting_form();
     if ($form->validate()):
-			$state = array();
+			$state = [];
 			$feeds = $this->get_rss_feeds();
 			$i = 1;
 			foreach($feeds as $url => $title):
@@ -67,7 +67,7 @@ class Admin_rss_extra_Controller extends Admin_Controller {
   }
 
   private function _get_setting_form() {
-    $form = new Forge("admin/rss_extra/save", "", "post", array("id" => "g-admin-rssextra-form"));
+    $form = new Forge("admin/rss_extra/save", "", "post", ["id" => "g-admin-rssextra-form"]);
 
     $group = $form->group("g_admin_rssextra")->label(t("Settings - Active RSS Feeds"));
 

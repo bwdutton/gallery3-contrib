@@ -27,13 +27,13 @@ class Display_Controller extends Controller {
    */
   public function hide($id) {
     $item = model_cache::get("item", $id);
-    $msg = t("Hidden <b>%title</b> item", array("title" => html::purify($item->title)));
+    $msg = t("Hidden <b>%title</b> item", ["title" => html::purify($item->title)]);
 
     $this->_check_hide_permissions($item);
     hide::hide($item);
     message::success($msg);
 
-    json::reply(array("result" => "success", "reload" => 1));
+    json::reply(["result" => "success", "reload" => 1]);
   }
 
   /**
@@ -43,13 +43,13 @@ class Display_Controller extends Controller {
    */
   public function show($id) {
     $item = model_cache::get("item", $id);
-    $msg = t("Displayed <b>%title</b> item", array("title" => html::purify($item->title)));
+    $msg = t("Displayed <b>%title</b> item", ["title" => html::purify($item->title)]);
 
     $this->_check_hide_permissions($item);
     hide::show($item);
     message::success($msg);
 
-    json::reply(array("result" => "success", "reload" => 1));
+    json::reply(["result" => "success", "reload" => 1]);
   }
 
   /**

@@ -18,10 +18,10 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class Postage_Band_Model extends ORM {
-    var $rules = array(
-	"name" => array("rules" => array("length[1,32]")),
-    );
+    public $rules = [
+	"name" => ["rules" => ["length[1,32]"]],
+    ];
 
-    protected $has_many=array('products');
+    protected $has_many=['products'];
 
 }

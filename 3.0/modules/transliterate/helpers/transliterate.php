@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class transliterate_Core {
-  static $UTF8_TRANSLATE = array(
+  static $UTF8_TRANSLATE = [
     "¢" => "C", "£" => "PS", "¥" => "Y=", "§" => "SS", "©" => "(c)", "ª" => "a",
     "®" => "(r)", "°" => "deg", "²" => "2", "³" => "3", "µ" => "u", "¶" => "P",
     "¹" => "1", "º" => "o", "¼" => "1/4", "½" => "1/2", "¾" => "3/4", "À" => "A",
@@ -6500,9 +6500,9 @@ class transliterate_Core {
     "ￏ" => "oe", "ￒ" => "yo", "ￓ" => "u", "ￔ" => "weo", "ￕ" => "we", "ￖ" => "wi",
     "ￗ" => "yu", "ￚ" => "eu", "ￛ" => "yi", "ￜ" => "i", "￠" => "C", "￡" => "PS",
     "￥" => "Y=", "￦" => "W=", "￮" => "O"
-  );
+  ];
 
-  static function utf8_to_ascii($str) {
+  public static function utf8_to_ascii($str) {
     static $keys = null;
     static $values = null;
     if (!$keys) {

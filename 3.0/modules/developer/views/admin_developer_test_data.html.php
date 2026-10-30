@@ -19,7 +19,7 @@
     <?php endif ?>
   });
 </script>
-<?= form::open($action, array("method" => "post", "id" => "g-generate-test-data")) ?>
+<?= form::open($action, ["method" => "post", "id" => "g-generate-test-data"]) ?>
   <?php if (!empty($album_count)): ?>
     <p><?= t("Currently:") ?><br />
 
@@ -33,10 +33,10 @@
     <li <?php if (!empty($errors["albums"])): ?> class="g-error"<?php endif ?>>
       <fieldset>
         <?= form::label("g-generate-albums", t("Generate Albums")) ?>
-        <?= form::checkbox(array("id" => "g-generate-albums", "name" => "generate_albums", "class" => "g-generate-checkbox", "style" => "display:inline", "checked" => !empty($form["generate_albums"])), ".g-radio-album") ?>
-        <?php foreach (array(1, 10, 50, 100, 500, 1000) as $number): ?>
+        <?= form::checkbox(["id" => "g-generate-albums", "name" => "generate_albums", "class" => "g-generate-checkbox", "style" => "display:inline", "checked" => !empty($form["generate_albums"])], ".g-radio-album") ?>
+        <?php foreach ([1, 10, 50, 100, 500, 1000] as $number): ?>
           <span style="float:left;padding-right: .5em;"><?= form::label("album_$number", "$number") ?>
-          <?= form::radio(array("id" => "album_$number", "name" => "albums", "style" => "display:inline", "checked" => $number == 10, "disabled" => true, "class" => "g-radio-album"), $number) ?></span>
+          <?= form::radio(["id" => "album_$number", "name" => "albums", "style" => "display:inline", "checked" => $number == 10, "disabled" => true, "class" => "g-radio-album"], $number) ?></span>
         <?php endforeach ?>
       </fieldset>
       <?php if (!empty($errors["albums"]) && $errors["albums"] == "numeric"): ?>
@@ -46,10 +46,10 @@
     <li <?php if (!empty($errors["photos"])): ?> class="g-error"<?php endif ?>>
       <fieldset>
         <?= form::label("g-generate-photos", t("Generate Photos and Albums")) ?>
-        <?= form::checkbox(array("id" => "g-generate-photos", "name" => "generate_photos", "class" => "g-generate-checkbox", "style" => "display:inline", "checked" => !empty($form["generate_photos"])), ".g-radio-photo") ?>
-        <?php foreach (array(1, 10, 50, 100, 500, 1000) as $number): ?>
+        <?= form::checkbox(["id" => "g-generate-photos", "name" => "generate_photos", "class" => "g-generate-checkbox", "style" => "display:inline", "checked" => !empty($form["generate_photos"])], ".g-radio-photo") ?>
+        <?php foreach ([1, 10, 50, 100, 500, 1000] as $number): ?>
           <span style="float:left;padding-right: .5em;"><?= form::label("photo_$number", "$number") ?>
-          <?= form::radio(array("id" => "photo_$number", "name" => "photos", "style" => "display:inline", "checked" => $number == 10, "disabled" => true, "class" => "g-radio-photo"), $number) ?></span>
+          <?= form::radio(["id" => "photo_$number", "name" => "photos", "style" => "display:inline", "checked" => $number == 10, "disabled" => true, "class" => "g-radio-photo"], $number) ?></span>
         <?php endforeach ?>
       </fieldset>
       <?php if (!empty($errors["photos"]) && $errors["photos"] == "numeric"): ?>
@@ -60,10 +60,10 @@
     <li <?php if (!empty($errors["comments"])): ?> class="g-error"<?php endif ?>>
       <fieldset>
         <?= form::label("g-generate-comments", t("Generate Comments")) ?>
-        <?= form::checkbox(array("id" => "g-generate-comments", "name" => "generate_comments", "class" => "g-generate-checkbox", "style" => "display:inline", "checked" => !empty($form["generate_comments"])), ".g-radio-comment") ?>
-        <?php foreach (array(1, 10, 50, 100, 500, 1000) as $number): ?>
+        <?= form::checkbox(["id" => "g-generate-comments", "name" => "generate_comments", "class" => "g-generate-checkbox", "style" => "display:inline", "checked" => !empty($form["generate_comments"])], ".g-radio-comment") ?>
+        <?php foreach ([1, 10, 50, 100, 500, 1000] as $number): ?>
           <span style="float:left;padding-right: .5em;"><?= form::label("comment_$number", "$number") ?>
-          <?= form::radio(array("id" => "comment_$number", "name" => "comments", "style" => "display:inline", "checked" => $number == 10, "disabled" => true, "class" => "g-radio-comment"), $number) ?></span>
+          <?= form::radio(["id" => "comment_$number", "name" => "comments", "style" => "display:inline", "checked" => $number == 10, "disabled" => true, "class" => "g-radio-comment"], $number) ?></span>
         <?php endforeach ?>
       </fieldset>
       <?php if (!empty($errors["comments"]) && $errors["comments"] == "numeric"): ?>
@@ -75,10 +75,10 @@
     <li <?php if (!empty($errors["tags"])): ?> class="g-error"<?php endif ?>>
       <fieldset>
         <?= form::label("g-generate-tags", t("Generate Tags")) ?>
-        <?= form::checkbox(array("id" => "g-generate-tags", "name" => "generate_tags", "class" => "g-generate-checkbox", "style" => "display:inline", "checked" => !empty($form["generate_tags"])), ".g-radio-tag") ?>
-        <?php foreach (array(1, 10, 50, 100, 500, 1000) as $number): ?>
+        <?= form::checkbox(["id" => "g-generate-tags", "name" => "generate_tags", "class" => "g-generate-checkbox", "style" => "display:inline", "checked" => !empty($form["generate_tags"])], ".g-radio-tag") ?>
+        <?php foreach ([1, 10, 50, 100, 500, 1000] as $number): ?>
           <span style="float:left;padding-right: .5em;"><?= form::label("tag_$number", "$number") ?>
-          <?= form::radio(array("id" => "tag_$number", "name" => "tags", "style" => "display:inline", "checked" => $number == 10, "disabled" => true, "class" => "g-radio-tag"), $number) ?></span>
+          <?= form::radio(["id" => "tag_$number", "name" => "tags", "style" => "display:inline", "checked" => $number == 10, "disabled" => true, "class" => "g-radio-tag"], $number) ?></span>
         <?php endforeach ?>
       </fieldset>
       <?php if (!empty($errors["tags"]) && $errors["tags"] == "numeric"): ?>
@@ -87,7 +87,7 @@
     </li>
     <?php endif ?>
     <li>
-      <?= form::submit(array("id" => "g-generate-data", "name" => "generate", "class" => "submit", "style" => "clear:both!important"), t("Generate")) ?>
+      <?= form::submit(["id" => "g-generate-data", "name" => "generate", "class" => "submit", "style" => "clear:both!important"], t("Generate")) ?>
     </li>
   </ul>
 </fieldset>

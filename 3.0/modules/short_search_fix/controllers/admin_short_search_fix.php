@@ -46,7 +46,7 @@ class Admin_Short_Search_Fix_Controller extends Admin_Controller {
 
   private function _get_admin_form() {
     $form = new Forge("admin/short_search_fix/save", "", "post",
-                      array("id" => "g-short-search-fix-admin-form"));
+                      ["id" => "g-short-search-fix-admin-form"]);
     $short_search_fix_settings = $form->group("short_search_fix_settings")->label(t("Prefix and search record rebuild"));
     $short_search_fix_settings->input("search_prefix")
       ->label(t("Enter the prefix to be added to the start of every search word (Default: 1Z)"))

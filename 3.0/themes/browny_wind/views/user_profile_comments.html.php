@@ -5,11 +5,11 @@
   <li id="g-comment-<?= $comment->id ?>">
     <p class="g-author">
       <a href="<?= $comment->item()->url() ?>">
-        <?= $comment->item()->thumb_img(array(), 70) ?>
+        <?= $comment->item()->thumb_img([], 70) ?>
       </a>
       <?= t("<i><strong>on</strong> %date <strong>for</strong> %title</i> ",
-            array("date" => gallery::date_time($comment->created),
-                  "title" => $comment->item()->title)); ?>
+            ["date" => gallery::date_time($comment->created),
+                  "title" => $comment->item()->title]); ?>
     </p>
     <hr />
     <div>

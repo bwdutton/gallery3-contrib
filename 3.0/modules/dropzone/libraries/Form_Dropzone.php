@@ -18,18 +18,18 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class Form_Dropzone_Core extends Form_Input {
-  protected $data = array(
+  protected $data = [
     "name" => false,
     "type"  => "UNKNOWN",
     "url" => "",
-    "text" => "");
+    "text" => ""];
 
   public function __construct($name) {
     parent::__construct($name);
-    $this->data["script_data"] = array(
+    $this->data["script_data"] = [
       "g3sid" => Session::instance()->id(),
       "user_agent" => Input::instance()->server("HTTP_USER_AGENT"),
-      "csrf" => access::csrf_token());
+      "csrf" => access::csrf_token()];
   }
 
   public function album(Item_Model $album) {
@@ -42,7 +42,7 @@ class Form_Dropzone_Core extends Form_Input {
   }
 
   public function get_filters($without_asterisk=false) {
-    $filters = array();
+    $filters = [];
     $prefix = $without_asterisk ? '.' : '*.';
     foreach (legal_file::get_extensions() as $extension) {
       array_push($filters, $prefix . $extension, $prefix . strtoupper($extension));
@@ -59,7 +59,7 @@ class Form_Dropzone_Core extends Form_Input {
     $v->extensions = $this->get_filters(true);
     $v->suhosin_session_encrypt = (bool) ini_get("suhosin.session.encrypt");
 
-    list ($toolkit_max_filesize_bytes, $toolkit_max_filesize) = graphics::max_filesize();
+    [$toolkit_max_filesize_bytes, $toolkit_max_filesize] = graphics::max_filesize();
 
     $upload_max_filesize = trim(ini_get("upload_max_filesize"));
     $upload_max_filesize_bytes = num::convert_to_bytes($upload_max_filesize);

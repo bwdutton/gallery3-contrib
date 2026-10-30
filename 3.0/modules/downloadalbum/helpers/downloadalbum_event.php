@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class downloadalbum_event_Core {
-  static function album_menu($menu, $theme) {
+  public static function album_menu($menu, $theme) {
     if( access::can("downloadalbum", $theme->item) && $theme->children_count > 0 ) {
       $downloadLink = url::site("downloadalbum/zip/album/{$theme->item->id}");
       $menu
@@ -30,7 +30,7 @@ class downloadalbum_event_Core {
     }
   }
 
-  static function tag_menu($menu, $theme) {
+  public static function tag_menu($menu, $theme) {
     if( $theme->children_count > 0 ) {
       $downloadLink = url::site("downloadalbum/zip/tag/{$theme->tag()->id}");
       $menu

@@ -24,7 +24,7 @@ class user_homes_event_Core {
    * user home if it exists on the database. This means when the page
    * is refreshed after logging in the direction can occur.
    */
-  static function user_login($user) {
+  public static function user_login($user) {
     $home = ORM::factory("user_home")->where("id", "=", $user->id)->find();
     if ($home->loaded() && $home->home != 0) {
       $continue_url = Session::instance()->get("continue_url", null);
@@ -39,7 +39,7 @@ class user_homes_event_Core {
    * if the home variable exists on the session then a redirect will
    * occur to that home and the variable removed from the session to
    */
-  static function gallery_ready() {
+  public static function gallery_ready() {
     $session = Session::instance();
     $home = $session->get("redirect_home");
     if ($home) {
@@ -53,7 +53,7 @@ class user_homes_event_Core {
    * Called just before a user is deleted. This will remove the user from
    * the user_homes directory.
    */
-  static function user_before_delete($user) {
+  public static function user_before_delete($user) {
     ORM::factory("user_home")
       ->where("id", "=", $user->id)
       ->delete_all();
@@ -62,7 +62,7 @@ class user_homes_event_Core {
   /**
    * Called when admin is adding a user
    */
-  static function user_add_form_admin($user, $form) {
+  public static function user_add_form_admin($user, $form) {
     $form->add_user->dropdown("user_home")
       ->label(t("Home Gallery"))
       ->options(self::createGalleryArray())
@@ -72,7 +72,7 @@ class user_homes_event_Core {
   /**
    * Called after a user has been added
    */
-  static function user_add_form_admin_completed($user, $form) {
+  public static function user_add_form_admin_completed($user, $form) {
     $home = ORM::factory("user_home")->where("id", "=", $user->id)->find();
     $home->id = $user->id;
     $home->home = $form->add_user->user_home->value;
@@ -82,7 +82,7 @@ class user_homes_event_Core {
   /**
    * Called when admin is editing a user
    */
-  static function user_edit_form_admin($user, $form) {
+  public static function user_edit_form_admin($user, $form) {
     $home = ORM::factory("user_home")->where("id", "=", $user->id)->find();
     if ($home->loaded()) {
       $selected = $home->home;
@@ -98,7 +98,7 @@ class user_homes_event_Core {
   /**
    * Called after a user had been edited by the admin
    */
-  static function user_edit_form_admin_completed($user, $form) {
+  public static function user_edit_form_admin_completed($user, $form) {
     $home = ORM::factory("user_home")->where("id", "=", $user->id)->find();
     if ($home->loaded()) {
       $home->home = $form->edit_user->user_home->value;
@@ -110,7 +110,7 @@ class user_homes_event_Core {
   /**
    * Called when user is editing their own form
    */
-  static function user_edit_form($user, $form) {
+  public static function user_edit_form($user, $form) {
     $home = ORM::factory("user_home")->where("id", "=", $user->id)->find();
 
     if ($home->loaded()) {
@@ -128,7 +128,7 @@ class user_homes_event_Core {
   /**
    * Called after a user had been edited by the user
    */
-  static function user_edit_form_completed($user, $form) {
+  public static function user_edit_form_completed($user, $form) {
     $home = ORM::factory("user_home")->where("id", "=", $user->id)->find();
     $home->id = $user->id;
     $home->home = $form->edit_user->user_home->value;
@@ -138,7 +138,7 @@ class user_homes_event_Core {
   /**
    * Creates an array of galleries
    */
-  static function createGalleryArray() {
+  public static function createGalleryArray() {
     $array[0] = "none";
     $root = ORM::factory("item", 1);
     self::tree($root, "", $array);
@@ -148,7 +148,7 @@ class user_homes_event_Core {
   /**
    * recursive function to build array for drop down list
    */
-  static function tree($parent, $dashes, &$array) {
+  public static function tree($parent, $dashes, &$array) {
     if ($parent->id == "1") {
       $array[$parent->id] = ORM::factory("item", 1)->title;
     } else {
@@ -166,7 +166,7 @@ class user_homes_event_Core {
     return;
   }
 
-  static function show_user_profile($data) {
+  public static function show_user_profile($data) {
     $home = ORM::factory("user_home")->where("id", "=", $data->user->id)->find();
 
     if ($home->loaded()) {
@@ -174,12 +174,12 @@ class user_homes_event_Core {
       $item = ORM::factory("item")->where("id", "=", $home->home)->find();
       if ($item->loaded()) {
         $view->item = $item;
-        $data->content[] = (object)array("title" => t("Home album"), "view" => $view);
+        $data->content[] = (object)["title" => t("Home album"), "view" => $view];
       }
     }
   }
 
-  static function album_add_form($parent, $form){
+  public static function album_add_form($parent, $form){
 
     $group = $form->group("privacy")
       ->label(t("album privacy settings"));
@@ -202,7 +202,7 @@ class user_homes_event_Core {
   /**
    * Validate the user name.  Make sure there are no conflicts.
    */
-  static function valid_password($field) {
+  public static function valid_password($field) {
     $input = Input::instance();
     $method = $field->method;
     $checked = $input->$method("private", false);
@@ -225,7 +225,7 @@ class user_homes_event_Core {
   /**
    * Validate the user name.  Make sure there are no conflicts.
    */
-  static function valid_name($field) {
+  public static function valid_name($field) {
     $input = Input::instance();
     $method = $field->method;
     $checked = $input->$method("private", false);
@@ -244,7 +244,7 @@ class user_homes_event_Core {
   }
 
 
-  static function album_add_form_completed($album, $form){
+  public static function album_add_form_completed($album, $form){
     if ($form->privacy->private->checked)
     {
       $username = $form->privacy->username->value;

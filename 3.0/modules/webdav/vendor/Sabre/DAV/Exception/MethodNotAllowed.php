@@ -35,9 +35,9 @@ class Sabre_DAV_Exception_MethodNotAllowed extends Sabre_DAV_Exception {
 
         $methods = $server->getAllowedMethods($server->getRequestUri());
 
-        return array(
+        return [
             'Allow' => strtoupper(implode(', ',$methods)),
-        );
+        ];
 
     }
 

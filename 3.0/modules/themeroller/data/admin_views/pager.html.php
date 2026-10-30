@@ -5,9 +5,9 @@
      $from_to_msg = t2("Item %from_number of %count",
                        "Items %from_number - %to_number of %count",
                        $total_items,
-                       array("from_number" => $current_first_item,
+                       ["from_number" => $current_first_item,
                              "to_number" => $current_last_item,
-                             "count" => $total_items)) ?>
+                             "count" => $total_items]) ?>
   <li>
   <?php if ($first_page): ?>
     <a href="<?= str_replace('{page}', 1, $url) ?>" class="g-button ui-icon-left ui-state-default ui-corner-all">

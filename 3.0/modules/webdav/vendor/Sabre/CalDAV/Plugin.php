@@ -61,18 +61,18 @@ class Sabre_CalDAV_Plugin extends Sabre_DAV_ServerPlugin {
 
         // The MKCALENDAR is only available on unmapped uri's, whose
         // parents extend IExtendedCollection
-        list($parent, $name) = Sabre_DAV_URLUtil::splitPath($uri);
+        [$parent, $name] = Sabre_DAV_URLUtil::splitPath($uri);
 
         $node = $this->server->tree->getNodeForPath($parent);
 
         if ($node instanceof Sabre_DAV_IExtendedCollection) {
             try {
                 $node->getChild($name);
-            } catch (Sabre_DAV_Exception_FileNotFound $e) {
-                return array('MKCALENDAR');
+            } catch (Sabre_DAV_Exception_FileNotFound) {
+                return ['MKCALENDAR'];
             }
         }
-        return array();
+        return [];
 
     }
 
@@ -83,7 +83,7 @@ class Sabre_CalDAV_Plugin extends Sabre_DAV_ServerPlugin {
      */
     public function getFeatures() {
 
-        return array('calendar-access');
+        return ['calendar-access'];
 
     }
 
@@ -96,10 +96,10 @@ class Sabre_CalDAV_Plugin extends Sabre_DAV_ServerPlugin {
     public function initialize(Sabre_DAV_Server $server) {
 
         $this->server = $server;
-        $server->subscribeEvent('unknownMethod',array($this,'unknownMethod'));
+        $server->subscribeEvent('unknownMethod',[$this,'unknownMethod']);
         //$server->subscribeEvent('unknownMethod',array($this,'unknownMethod2'),1000);
-        $server->subscribeEvent('report',array($this,'report'));
-        $server->subscribeEvent('afterGetProperties',array($this,'afterGetProperties'));
+        $server->subscribeEvent('report',[$this,'report']);
+        $server->subscribeEvent('afterGetProperties',[$this,'afterGetProperties']);
 
         $server->xmlNamespaces[self::NS_CALDAV] = 'cal';
         $server->xmlNamespaces[self::NS_CALENDARSERVER] = 'cs';
@@ -183,7 +183,7 @@ class Sabre_CalDAV_Plugin extends Sabre_DAV_ServerPlugin {
         $body = $this->server->httpRequest->getBody(true);
         $dom = Sabre_DAV_XMLUtil::loadDOMDocument($body);
 
-        $properties = array();
+        $properties = [];
         foreach($dom->firstChild->childNodes as $child) {
 
             if (Sabre_DAV_XMLUtil::toClarkNotation($child)!=='{DAV:}set') continue;
@@ -193,7 +193,7 @@ class Sabre_CalDAV_Plugin extends Sabre_DAV_ServerPlugin {
         
         }
 
-        $resourceType = array('{DAV:}collection','{urn:ietf:params:xml:ns:caldav}calendar');
+        $resourceType = ['{DAV:}collection','{urn:ietf:params:xml:ns:caldav}calendar'];
 
         $this->server->createCollection($uri,$resourceType,$properties);
 
@@ -232,7 +232,7 @@ class Sabre_CalDAV_Plugin extends Sabre_DAV_ServerPlugin {
             if (array_key_exists($calProp,$properties[404])) {
 
                 // Do we have an email address?
-                $props = $currentNode->getProperties(array('{http://sabredav.org/ns}email-address'));
+                $props = $currentNode->getProperties(['{http://sabredav.org/ns}email-address']);
                 if (isset($props['{http://sabredav.org/ns}email-address'])) {
                     $email = $props['{http://sabredav.org/ns}email-address'];
                 } else {
@@ -249,12 +249,12 @@ class Sabre_CalDAV_Plugin extends Sabre_DAV_ServerPlugin {
 
         if ($currentNode instanceof Sabre_CalDAV_Calendar || $currentNode instanceof Sabre_CalDAV_CalendarObject) {
             if (array_key_exists('{DAV:}supported-report-set', $properties[200])) {
-                $properties[200]['{DAV:}supported-report-set']->addReport(array(
+                $properties[200]['{DAV:}supported-report-set']->addReport([
                      '{' . self::NS_CALDAV . '}calendar-multiget',
                      '{' . self::NS_CALDAV . '}calendar-query',
                 //     '{' . self::NS_CALDAV . '}supported-collation-set',
                 //     '{' . self::NS_CALDAV . '}free-busy-query',
-                ));
+                ]);
             }
         }
 
@@ -277,7 +277,7 @@ class Sabre_CalDAV_Plugin extends Sabre_DAV_ServerPlugin {
         $hrefElems = $dom->getElementsByTagNameNS('urn:DAV','href');
         foreach($hrefElems as $elem) {
             $uri = $this->server->calculateUri($elem->nodeValue);
-            list($objProps) = $this->server->getPropertiesForPath($uri,$properties);
+            [$objProps] = $this->server->getPropertiesForPath($uri,$properties);
             $propertyList[]=$objProps;
 
         }
@@ -321,7 +321,7 @@ class Sabre_CalDAV_Plugin extends Sabre_DAV_ServerPlugin {
         // These are the list of nodes that potentially match the requirement
         $candidateNodes = $this->server->getPropertiesForPath($this->server->getRequestUri(),$requestedProperties,$this->server->getHTTPDepth(0));
 
-        $verifiedNodes = array();
+        $verifiedNodes = [];
 
         foreach($candidateNodes as $node) {
 
@@ -472,7 +472,7 @@ class Sabre_CalDAV_Plugin extends Sabre_DAV_ServerPlugin {
             if ($isDateTime) {
                 $dtend = Sabre_CalDAV_XMLUtil::parseICalendarDateTime((string)$xdtend[0],$tz);
             } else {
-                $dtend = Sabre_CalDAV_XMLUtil::parseICalendarDate((string)$xdtend[0],$tz);
+                $dtend = Sabre_CalDAV_XMLUtil::parseICalendarDate((string)$xdtend[0]);
             }
 
         } 
@@ -693,10 +693,10 @@ class Sabre_CalDAV_Plugin extends Sabre_DAV_ServerPlugin {
                 // we don't want this.
                 $haystack = str_replace(range('a','z'), range('A','Z'), $haystack);
                 $needle = str_replace(range('a','z'), range('A','Z'), $needle);
-                return strpos($haystack, $needle)!==false;
+                return str_contains($haystack, $needle);
 
             case 'i;octet' :
-                return strpos($haystack, $needle)!==false;
+                return str_contains($haystack, $needle);
             
             default:
                 throw new Sabre_DAV_Exception_BadRequest('Unknown collation: ' . $collation);

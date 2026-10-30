@@ -28,14 +28,14 @@ class Admin_Dynamic_Controller extends Admin_Controller {
     $errors = array_fill_keys(array_keys($form), "");
     if ($_POST) {
       $post = new Validation($_POST);
-      $post->add_rules("updates_enabled", array("valid", "numeric"));
-      $post->add_rules("popular_enabled", array("valid", "numeric"));
-      $post->add_rules("updates_limit", array("valid", "numeric"));
-      $post->add_rules("popular_limit", array("valid", "numeric"));
+      $post->add_rules("updates_enabled", ["valid", "numeric"]);
+      $post->add_rules("popular_enabled", ["valid", "numeric"]);
+      $post->add_rules("updates_limit", ["valid", "numeric"]);
+      $post->add_rules("popular_limit", ["valid", "numeric"]);
       $post->add_rules("updates_description", "length[0,2048]");
       $post->add_rules("popular_description", "length[0,2048]");
       if ($post->validate()) {
-        foreach (array("updates", "popular") as $album) {
+        foreach (["updates", "popular"] as $album) {
           $album_defn = unserialize(module::get_var("dynamic", $album));
           $album_defn->enabled = $post["{$album}_enabled"];
           $album_defn->description = $post["{$album}_description"];
@@ -59,14 +59,14 @@ class Admin_Dynamic_Controller extends Admin_Controller {
     $v = new Admin_View("admin.html");
     $v->content = new View("admin_dynamic.html");
     $v->content->form = empty($form) ? $this->_get_form() : $form;
-    $v->content->tabs = array("updates" => t("Recent changes"), "popular" => t("Most viewed"));
+    $v->content->tabs = ["updates" => t("Recent changes"), "popular" => t("Most viewed")];
     $v->content->errors = $errors;
     return $v;
   }
 
   private function _get_form() {
-    $form = array();
-    foreach (array("updates", "popular") as $album) {
+    $form = [];
+    foreach (["updates", "popular"] as $album) {
       $album_defn = unserialize(module::get_var("dynamic", $album));
       $form["{$album}_enabled"] = $album_defn->enabled;
       $form["{$album}_limit"] = $album_defn->limit;
@@ -79,9 +79,9 @@ class Admin_Dynamic_Controller extends Admin_Controller {
   private function _get_form2() {
 
     $form = new Forge("admin/dynamic/handler", "", "post",
-                      array("id" => "g-admin-form"));
+                      ["id" => "g-admin-form"]);
 
-    foreach (array("updates", "popular") as $album) {
+    foreach (["updates", "popular"] as $album) {
       $album_defn = unserialize(module::get_var("dynamic", $album));
 
       $group = $form->group($album)->label(t($album_defn->title));

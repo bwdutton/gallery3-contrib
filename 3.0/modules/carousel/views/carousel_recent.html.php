@@ -40,7 +40,7 @@ $(function() {
 		}
 	?>
 		<li><a href="<?= $photo->abs_url() ?>">
-			<?= $photo->thumb_img(array("class" => "g-thumbnail", "title" => $ctitle), $thumbsize) ?>
+			<?= $photo->thumb_img(["class" => "g-thumbnail", "title" => $ctitle], $thumbsize) ?>
 			</a>
 		</li>
 	<?php endforeach ?>

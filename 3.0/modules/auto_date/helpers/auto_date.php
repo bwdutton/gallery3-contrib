@@ -18,10 +18,10 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class auto_date {
-  static function set_auto_date($item) {
+  public static function set_auto_date($item) {
 
     if (!$item->is_album() && !$item->captured) {
-      $base_name = str_ireplace(array(".flv", ".jpg", ".gif"), "", $item->name);
+      $base_name = str_ireplace([".flv", ".jpg", ".gif"], "", $item->name);
       $date_format = module::get_var("auto_date", "template");
       $time = strptime($base_name, $date_format);
       if ($time) {

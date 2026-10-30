@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class exif_gps_installer {
-  static function install() {
+  public static function install() {
     // Create a table to store GPS data in.
     $db = Database::instance();
     $db->query("CREATE TABLE IF NOT EXISTS {exif_coordinates} (
@@ -53,7 +53,7 @@ class exif_gps_installer {
     module::set_version("exif_gps", 3);
   }
 
-  static function upgrade($version) {
+  public static function upgrade($version) {
     if ($version == 1) {
       // If tagsmap is installed, copy the API key over.
       if (module::is_active("tagsmap")) {
@@ -77,19 +77,19 @@ class exif_gps_installer {
     }
   }
 
-  static function deactivate() {
+  public static function deactivate() {
     site_status::clear("exif_gps_needs_exif");
   }
 
-  static function can_activate() {
-    $messages = array();
+  public static function can_activate() {
+    $messages = [];
     if (!module::is_active("exif")) {
       $messages["warn"][] = t("The EXIF_GPS module requires the EXIF module.");
     }
     return $messages;
   }
 
-  static function uninstall() {
+  public static function uninstall() {
     // Delete the GPS table before uninstalling.
     $db = Database::instance();
     $db->query("DROP TABLE IF EXISTS {exif_coordinates};");

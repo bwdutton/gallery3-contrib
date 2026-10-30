@@ -130,7 +130,7 @@
             <?php elseif ($task->state == "stalled"): ?>
             <?= t("Stalled") ?>
             <?php else: ?>
-            <?= t("%percent_complete% Complete", array("percent_complete" => $task->percent_complete)) ?>
+            <?= t("%percent_complete% Complete", ["percent_complete" => $task->percent_complete]) ?>
             <?php endif ?>
           </td>
           <td>

@@ -28,7 +28,7 @@ class Sabre_DAV_Mount_Plugin extends Sabre_DAV_ServerPlugin {
     public function initialize(Sabre_DAV_Server $server) {
 
         $this->server = $server;
-        $this->server->subscribeEvent('beforeMethod',array($this,'beforeMethod'), 90);
+        $this->server->subscribeEvent('beforeMethod',[$this,'beforeMethod'], 90);
 
     }
 
@@ -47,7 +47,7 @@ class Sabre_DAV_Mount_Plugin extends Sabre_DAV_ServerPlugin {
         $currentUri = $this->server->httpRequest->getAbsoluteUri();
 
         // Stripping off everything after the ?
-        list($currentUri) = explode('?',$currentUri);
+        [$currentUri] = explode('?',$currentUri);
 
         $this->davMount($currentUri);
 

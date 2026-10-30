@@ -21,10 +21,10 @@ include("Mail.php");
 include("Mail/mime.php");
 
 class Gallery3 {
-  var $url;
-  var $token;
-  var $data;
-  var $file;
+  public $url;
+  public $token;
+  public $data;
+  public $file;
 
   protected $original_entity;
 
@@ -36,9 +36,9 @@ class Gallery3 {
    * @param   string password
    * @return  string authentication token
    */
-  static function login($url, $user, $pass) {
+  public static function login($url, $user, $pass) {
     $response = Gallery3_Helper::request(
-      "post", $url, null, array("user" => $user, "password" => $pass));
+      "post", $url, null, ["user" => $user, "password" => $pass]);
     return $response;
   }
 
@@ -48,7 +48,7 @@ class Gallery3 {
    * @param   string authentication token
    * @return  object Gallery3
    */
-  static function factory($url=null, $token=null) {
+  public static function factory($url=null, $token=null) {
     $obj = new Gallery3();
     $obj->token = $token;
     $obj->url = $url;
@@ -116,7 +116,7 @@ class Gallery3 {
     }
 
     $response = Gallery3_Helper::request(
-      "post", $url, $token, array("entity" => $this->data->entity), $this->file);
+      "post", $url, $token, ["entity" => $this->data->entity], $this->file);
     $this->url = $response->url;
     $this->token = $token;
     return $this->load();
@@ -129,7 +129,7 @@ class Gallery3 {
    * @return object  Gallery3
    */
   public function save() {
-    $data = array();
+    $data = [];
     $data["entity"] = array_diff((array)$this->data->entity, $this->original_entity);
     if (isset($this->data->members)) {
       $data["members"] = $this->data->members;
@@ -149,7 +149,7 @@ class Gallery3 {
    */
   public function delete() {
     Gallery3_Helper::request("delete", $this->url, $this->token);
-    $this->data = array();
+    $this->data = [];
     $this->url = null;
     return $this;
   }
@@ -171,7 +171,7 @@ class Gallery3 {
 class Gallery3_Helper {
   static $instance = null;
 
-  static function request($method, $url, $token=null, $params=array(), $file=null) {
+  public static function request($method, $url, $token=null, $params=[], $file=null) {
     if (!isset(self::$instance)) {
       @include("HTTP/Request2.php");
       if (class_exists("HTTP_Request2")) {
@@ -186,7 +186,7 @@ class Gallery3_Helper {
 }
 
 class Gallery3_Helper_HTTP_Request2 {
-  function request($method, $url, $token, $params, $file) {
+  public function request($method, $url, $token, $params, $file) {
     $req = new HTTP_Request2($url);
     $req->setMethod($method == "get" ? 'GET' : 'POST');
     $req->setHeader("X-Gallery-Request-Method", $method);
@@ -217,7 +217,7 @@ class Gallery3_Helper_HTTP_Request2 {
 }
 
 class Gallery3_Helper_HTTP_Request {
-  function request($method, $url, $token, $params, $file) {
+  public function request($method, $url, $token, $params, $file) {
     $req = new HTTP_Request($url);
     $req->setMethod($method == "get" ? HTTP_REQUEST_METHOD_GET : HTTP_REQUEST_METHOD_POST);
     $req->addHeader("X-Gallery-Request-Method", $method);

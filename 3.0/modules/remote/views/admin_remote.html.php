@@ -32,15 +32,15 @@
       	<li>
       		<p>
             <?= t("To use GalleryRemote 1.5.1 you need to edit %file and change line <br />%from <br />to line <br />%to",
-                  array( "file" => 'modules/gallery/config/cookie.php'
+                  [ "file" => 'modules/gallery/config/cookie.php'
                   			,"from" => '$config[\'httponly\'] = true;'
-                  			,"to" => '$config[\'httponly\'] = false;') ) ?>
+                  			,"to" => '$config[\'httponly\'] = false;'] ) ?>
       		</p>
       	</li>      	
         <li>
           <p>
             <?= t("In any case you need to enable the G3 Gallery Remote interface: <br />Put the following block at the top of %path and the Gallery Remote module will be available",
-                  array("path" => '.htaccess') ) ?>
+                  ["path" => '.htaccess'] ) ?>
           </p>
 
           <textarea id="g-remote-redirect-rules" rows="4" cols="60">&lt;IfModule mod_rewrite.c&gt;

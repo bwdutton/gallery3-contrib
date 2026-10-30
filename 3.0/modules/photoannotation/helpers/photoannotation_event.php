@@ -18,14 +18,14 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class photoannotation_event_Core {
-  static function module_change($changes) {
+  public static function module_change($changes) {
     // See if the Tags module is installed,
     //   tell the user to install it if it isn't.
     if (!module::is_active("tag") || in_array("tag", $changes->deactivate)) {
       site_status::warning(
         t("The Photo Annotation module requires the Tags module.  " .
           "<a href=\"%url\">Activate the Tags module now</a>",
-          array("url" => url::site("admin/modules"))),
+          ["url" => url::site("admin/modules")]),
         "photoannotation_needs_tag");
     } else {
       site_status::clear("photoannotation_needs_tag");
@@ -34,14 +34,14 @@ class photoannotation_event_Core {
       site_status::warning(
         t("The Photo Annotation module cannot be used together with the TagFaces module.  " .
           "<a href=\"%url\">Dectivate the TagFaces module now</a>",
-          array("url" => url::site("admin/modules"))),
+          ["url" => url::site("admin/modules")]),
         "photoannotation_incompatibility_tagfaces");
     } else {
       site_status::clear("photoannotation_incompatibility_tagfaces");
     }
   }
 
-  static function site_menu($menu, $theme) {
+  public static function site_menu($menu, $theme) {
     // Create a menu option for adding face data.
     if (!$theme->item()) {
       return;
@@ -59,7 +59,7 @@ class photoannotation_event_Core {
     }
   }
 
-  static function item_deleted($item) {
+  public static function item_deleted($item) {
     // Check for and delete existing Faces and Notes.
     $existingFaces = ORM::factory("items_face")
                           ->where("item_id", "=", $item->id)
@@ -83,7 +83,7 @@ class photoannotation_event_Core {
     }
   }
 
-  static function user_deleted($old) {
+  public static function user_deleted($old) {
     // Check for and delete existing Annotations linked to that user.
     $existingFaces = ORM::factory("items_user")
                           ->where("user_id", "=", $old->id)
@@ -128,7 +128,7 @@ class photoannotation_event_Core {
     }
   }
 
-  static function user_created($user) {
+  public static function user_created($user) {
     // Write notification settings
     $notify = module::get_var("photoannotation", "notificationoptout", false);
     $notification_settings = ORM::factory("photoannotation_notification");
@@ -138,7 +138,7 @@ class photoannotation_event_Core {
     $notification_settings->save();
   }
   
-  static function admin_menu($menu, $theme) {
+  public static function admin_menu($menu, $theme) {
     $menu->get("settings_menu")
       ->append(Menu::factory("link")
                ->id("photoannotation_menu")
@@ -146,7 +146,7 @@ class photoannotation_event_Core {
                ->url(url::site("admin/photoannotation")));
   }
   
-  static function show_user_profile($data) {
+  public static function show_user_profile($data) {
     $view = new Theme_View("dynamic.html", "collection", "userprofiles");
     //load thumbs
     $item_users = ORM::factory("items_user")->where("user_id", "=", $data->user->id)->find_all();
@@ -190,11 +190,11 @@ class photoannotation_event_Core {
     $view->set_global("total", $max_pages);
     $view->set_global("position", t("Page") ." ". $page);
     if ($children_count > 0) {
-      $data->content[] = (object)array("title" => t("Photos"), "view" => $view);
+      $data->content[] = (object)["title" => t("Photos"), "view" => $view];
     }
   }
 
-  static function user_edit_form($user, $form) {
+  public static function user_edit_form($user, $form) {
     // Allow users to modify notification settings.
     if (!module::get_var("photoannotation", "nonotifications", false)) {
       $notification_settings = photoannotation::get_user_notification_settings($user);
@@ -206,7 +206,7 @@ class photoannotation_event_Core {
     }
   }
 
-  static function user_edit_form_completed($user, $form) {
+  public static function user_edit_form_completed($user, $form) {
     // Save notification settings.
     if (!module::get_var("photoannotation", "nonotifications", false)) {
       $notification_settings = ORM::factory("photoannotation_notification")->where("user_id", "=", $user->id)->find();
@@ -220,7 +220,7 @@ class photoannotation_event_Core {
     }
   }
 
-  static function comment_created($comment) {
+  public static function comment_created($comment) {
     //Check if there are any user annotations on the photo and send notification if applicable
     $item_users = ORM::factory("items_user")->where("item_id", "=", $comment->item_id)->find_all();
     if (count($item_users) > 0) {
@@ -233,7 +233,7 @@ class photoannotation_event_Core {
     }
   }
 
-  static function comment_updated($comment) {
+  public static function comment_updated($comment) {
     //Check if there are any user annotations on the photo and send notification if applicable
     $item_users = ORM::factory("items_user")->where("item_id", "=", $comment->item_id)->find_all();
     if (count($item_users) > 0) {

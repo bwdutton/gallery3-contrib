@@ -19,7 +19,7 @@
  */
 class content_warning_event_Core {
 		
-	static function admin_menu($menu, $theme) {
+	public static function admin_menu($menu, $theme) {
     	$menu->get("settings_menu")
 			->append(Menu::factory("link")
 			->id("content_warning_menu")

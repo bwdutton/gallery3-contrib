@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class downloadfullsize_theme {
-  static function head($theme) {
+  public static function head($theme) {
     if ($theme->item && access::can("view_full", $theme->item)) {
       return $theme->css("downloadfullsize_menu.css");
     }

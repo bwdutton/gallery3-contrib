@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class addthis_theme_Core {
-  static function head($theme) {
+  public static function head($theme) {
     $addthisuser = module::get_var("addthis", "username");
     $theme->css("addthis_menu.css");
     return "<script type=\"text/javascript\" src=\"http://s7.addthis.com/js/250/addthis_widget.js#username=$addthisuser\"></script>\n" .

@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class albumpassword_event_Core {
-  static function site_menu($menu, $theme) {
+  public static function site_menu($menu, $theme) {
     // Add menu options for Adding / Removing / Using passwords to the menu.
 
     // If this page doesn't belong to an item, don't display the menu.
@@ -108,7 +108,7 @@ class albumpassword_event_Core {
     }
   }
 
-  static function item_deleted($item) {
+  public static function item_deleted($item) {
     // Check for and delete the password and any cached ids assigned to it.
     $existing_password = ORM::factory("items_albumpassword")->where("album_id", "=", $item->id)->find_all();
     if (count($existing_password) > 0) {
@@ -122,7 +122,7 @@ class albumpassword_event_Core {
     }
   }
 
-  static function item_created($item) {
+  public static function item_created($item) {
     // Check for any already existing password on parent album(s), if found, generate cache data for the new item.
     $existing_password = ORM::factory("albumpassword_idcache")->where("item_id", "=", $item->parent_id)->order_by("cache_id")->find_all();
     if (count($existing_password) > 0) {
@@ -133,7 +133,7 @@ class albumpassword_event_Core {
     }
   }
   
-  static function item_moved($item, $old_parent) {
+  public static function item_moved($item, $old_parent) {
     // Delete any existing cache data.
     db::build()->delete("albumpassword_idcaches")->where("item_id", "=", $item->id)->execute();
 
@@ -147,7 +147,7 @@ class albumpassword_event_Core {
     }
   }
   
-  static function admin_menu($menu, $theme) {
+  public static function admin_menu($menu, $theme) {
     // Add a link to the Album Password admin page to the Content menu.
     $menu->get("settings_menu")
       ->append(Menu::factory("link")

@@ -19,7 +19,7 @@
  */
 
 class embed_videos_installer {
-  static function install() {
+  public static function install() {
     $db = Database::instance();
     $db->query("CREATE TABLE {embedded_videos} (
 						`id` int(9) NOT NULL auto_increment,
@@ -33,10 +33,10 @@ class embed_videos_installer {
     //exec("cd modules/gallery/controllers/; ln -s ../../embed/controllers/embeds.php embeds.php");
   }
 
-  static function deactivate() {
+  public static function deactivate() {
 
   }
-  static function uninstall() {
+  public static function uninstall() {
     $db = Database::instance();
     $db->query("DROP TABLE IF EXISTS {embedded_videos};");
     module::delete("embed_videos");

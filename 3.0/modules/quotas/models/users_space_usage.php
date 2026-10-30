@@ -18,8 +18,8 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class Users_Space_Usage_Model_Core extends ORM {
-  static function _format_usage($bytes) {
-    $usage_unit = array("B","kB","MB","GB","TB","PB","EB","ZB","YB");
+  public static function _format_usage($bytes) {
+    $usage_unit = ["B","kB","MB","GB","TB","PB","EB","ZB","YB"];
     $unit_counter = 0;
     while ($bytes >= 1024) {
       $bytes = $bytes / 1024;

@@ -20,7 +20,7 @@
 
 class item extends item_Core {
 
-  static function viewable($model) {
+  public static function viewable($model) {
     $model = parent::viewable($model);
 
     if (!hide::can_view_hidden_items($model)) {

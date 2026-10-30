@@ -44,13 +44,13 @@ function uncheckAllOverlays()
 <h2>Upload New Overlay</h2>
 <?=form::open_multipart('admin/emboss/new_overlay')?>
 <?=access::csrf_form_field()?>
-<?=form::upload(array('name'=>'overlay','style'=>'margin: .5em 0 .5em 0'))?>
-<?=form::submit(array('name'=>'Upload','style'=>'display:block; float:none'),'Upload')?>
+<?=form::upload(['name'=>'overlay','style'=>'margin: .5em 0 .5em 0'])?>
+<?=form::submit(['name'=>'Upload','style'=>'display:block; float:none'],'Upload')?>
 </form>
 </div>
 <hr>
 <div>
-<?=form::open('admin/emboss/update',array('name'=>'options'))?>
+<?=form::open('admin/emboss/update',['name'=>'options'])?>
 <?=access::csrf_form_field()?>
 <h2>Available Overlays</h2>
 <table style="margin:.5em 0 .5em 0">
@@ -78,20 +78,20 @@ function uncheckAllOverlays()
 <a href='javascript:uncheckAllOverlays()'>Uncheck All</a>
 </td></tr>
 </table>
-<?=form::submit(array('name'=>'Update','style'=>'display:block; float:none'),'Update')?>
+<?=form::submit(['name'=>'Update','style'=>'display:block; float:none'],'Update')?>
 <div style="margin:.5cm 0 .5cm 0">
 <h2>Embossing Parameters</h2>
 <table style="margin:.5em 0 .5em 0">
   <tr><th></th><th></th></tr>
   <tr class="<?=text::alternate('g-odd','g-even')?>">
     <td style="width:15; text-align:right">Best Fit Method:</td>
-      <td style="width:85%"><?= form::dropdown('method',array('area'  =>'Maximum Overlay Area',
+      <td style="width:85%"><?= form::dropdown('method',['area'  =>'Maximum Overlay Area',
                                                               'margin'=>'Minimize Borders',
-                                                              'diag'  =>'Aspect Ratio Weighted'),
+                                                              'diag'  =>'Aspect Ratio Weighted'],
                                                module::get_var('emboss','method','area')) ?></td></tr>
   <tr class="<?=text::alternate('g-odd','g-even')?>">
     <td style="width:15; text-align:right">Location:</td>
-      <td style="width:85%"><?=form::dropdown('gravity',array('northwest' => 'Northwest',
+      <td style="width:85%"><?=form::dropdown('gravity',['northwest' => 'Northwest',
                                                               'north'     => 'North',
                                                               'northeast' => 'Northeast',
                                                               'east'      => 'East',
@@ -99,7 +99,7 @@ function uncheckAllOverlays()
                                                               'south'     => 'South',
                                                               'southwest' => 'Southwest',
                                                               'south'     => 'South',
-                                                              'center'    => 'Center'),
+                                                              'center'    => 'Center'],
                                               module::get_var('emboss','gravity','Center')) ?></td></tr>
 <?php for($i=100; $i>0; $i-=5)  { $sizes["$i"]="$i%"; } ?>
 <?php for($i=0; $i<100; $i+=10) { $transparencies["$i"]="$i%"; } ?>
@@ -113,7 +113,7 @@ function uncheckAllOverlays()
                                               module::get_var('emboss','transparency',50)) ?></td></tr>
 </table>
 </div>
-<?=form::submit(array('name'=>'Update','style'=>'display:block; float:none'),'Update')?> </form>
+<?=form::submit(['name'=>'Update','style'=>'display:block; float:none'],'Update')?> </form>
 </div>
 <hr>
 <div style="margin:.5cm 0 0 0">

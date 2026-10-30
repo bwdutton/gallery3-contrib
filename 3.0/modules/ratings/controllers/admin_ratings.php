@@ -77,7 +77,7 @@ class Admin_Ratings_Controller extends Admin_Controller {
 
     // Make a new Form.
     $form = new Forge("admin/ratings/saveprefs", "", "post",
-                      array("id" => "g-ratings-api-adminForm"));
+                      ["id" => "g-ratings-api-adminForm"]);
 
     // Set up some text boxes for the site owners Name, email and the
     //   text for the contact link.

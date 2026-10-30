@@ -34,7 +34,7 @@ class Gallery3_DAV_Tree extends Sabre_DAV_Tree {
       access::required("edit", $source_item);
       access::required("view", $target_item);
       access::required("edit", $target_item);
-    } catch (Kohana_404_Exception $e) {
+    } catch (Kohana_404_Exception) {
       throw new Sabre_DAV_Exception_Forbidden("Access denied");
     }
 

@@ -26,7 +26,7 @@ class ecard_installer {
 	module::set_version("ecard", self::getversion()); 
   }
   
-  static function install() {
+  public static function install() {
 	module::set_var("ecard","send_plain",false); 
     module::set_var("ecard", "subject", "You have been sent an eCard");
     module::set_var("ecard", "message",
@@ -38,7 +38,7 @@ class ecard_installer {
     self::setversion();
   }
   
-  static function upgrade($version) {
+  public static function upgrade($version) {
 	if($version <= 8) {
 		module::set_var("ecard", "message",
 						"Hello, \r\n%fromname has sent you an eCard. " .

@@ -128,17 +128,17 @@ class latestupdates_Controller extends Controller {
     $template = new Theme_View("page.html", "collection", "LatestUpdates");
     $template->page_title = t("Gallery :: Latest Updates");
     $template->set_global(
-      array("page" => $page,
+      ["page" => $page,
             "max_pages" => $max_pages,
             "page_size" => $page_size,
             "children" => $children,
-            "breadcrumbs" => array(
+            "breadcrumbs" => [
               Breadcrumb::instance($root->title, $root->url())->set_first(),
-              Breadcrumb::instance(t("User profile: %name", array("name" => $current_user->display_name())), 
+              Breadcrumb::instance(t("User profile: %name", ["name" => $current_user->display_name()]), 
                                    url::site("user_profile/show/{$user_id}")),
               Breadcrumb::instance($str_page_title,
-                                   url::site("latestupdates/users/{$str_display_type}/{$user_id}"))->set_last()),
-            "children_count" => $count));
+                                   url::site("latestupdates/users/{$str_display_type}/{$user_id}"))->set_last()],
+            "children_count" => $count]);
     $template->content = new View("dynamic.html");
     $template->content->title = $str_page_title;
 
@@ -209,7 +209,7 @@ class latestupdates_Controller extends Controller {
     }
 
     // Set up breadcrumbs.
-    $breadcrumbs = array();
+    $breadcrumbs = [];
     $counter = 0;
     $breadcrumbs[] = Breadcrumb::instance(t("Recent Uploads"), url::site("latestupdates/albums/{$item->id}"))->set_last();
     $parent_item = $item;
@@ -225,12 +225,12 @@ class latestupdates_Controller extends Controller {
     $template = new Theme_View("page.html", "collection", "LatestUpdates");
     $template->page_title = t("Gallery :: Latest Updates");
     $template->set_global(
-      array("page" => $page,
+      ["page" => $page,
             "max_pages" => $max_pages,
             "page_size" => $page_size,
             "children" => $children,
             "breadcrumbs" => $breadcrumbs,
-            "children_count" => $count));
+            "children_count" => $count]);
     $template->content = new View("dynamic.html");
     $template->content->title = t("Recent Uploads");
 
@@ -302,15 +302,15 @@ class latestupdates_Controller extends Controller {
     $template = new Theme_View("page.html", "collection", "LatestUpdates");
 	$template->page_title = t("Gallery :: Latest Updates");
     $template->set_global(
-      array("page" => $page,
+      ["page" => $page,
             "max_pages" => $max_pages,
             "page_size" => $page_size,
             "children" => $items,
-            "breadcrumbs" => array(
+            "breadcrumbs" => [
               Breadcrumb::instance($root->title, $root->url())->set_first(),
               Breadcrumb::instance(t("Recent Uploads"),
-                                   url::site("latestupdates/updates"))->set_last()),
-            "children_count" => $count));
+                                   url::site("latestupdates/updates"))->set_last()],
+            "children_count" => $count]);
     $template->content = new View("dynamic.html");
     $template->content->title = t("Recent Uploads");
 
@@ -323,7 +323,7 @@ class latestupdates_Controller extends Controller {
                                        "recent", 0);
   }
 
-  static function get_display_context($item, $str_display_type, $user_id) {
+  public static function get_display_context($item, $str_display_type, $user_id) {
     // Set up display elements on the photo page to link to the virtual album.
     //  Valid $str_display_type values are popular, recent, albums and descendants.
     //  $user_id can be set to "0" to search site wide.
@@ -346,11 +346,11 @@ class latestupdates_Controller extends Controller {
 
     // Figure out which items are the previous and next items with the virtual album.
     if ($position > 1) {
-      list ($previous_item, $ignore, $next_item) =
+      [$previous_item, $ignore, $next_item] =
         latestupdates_Controller::items($str_display_type, $user_id, 3, $position - 2);
     } else {
       $previous_item = null;
-      list ($next_item) = latestupdates_Controller::items($str_display_type, $user_id, 1, $position);
+      [$next_item] = latestupdates_Controller::items($str_display_type, $user_id, 1, $position);
     }
 
     // Figure out total number of items (excluding albums).
@@ -358,7 +358,7 @@ class latestupdates_Controller extends Controller {
 
     // Set up breadcrumbs.
     $root = item::root();
-    $breadcrumbs = array();
+    $breadcrumbs = [];
     if ($user_id == 0) {
       $breadcrumbs[0] = Breadcrumb::instance($root->title, $root->url())->set_first();
       $breadcrumbs[1] = Breadcrumb::instance($str_page_title,
@@ -379,7 +379,7 @@ class latestupdates_Controller extends Controller {
       } else {
         $current_user = ORM::factory("user", $user_id);
         $breadcrumbs[0] = Breadcrumb::instance($root->title, $root->url())->set_first();
-        $breadcrumbs[1] = Breadcrumb::instance(t("User profile: %name", array("name" => $current_user->display_name())),
+        $breadcrumbs[1] = Breadcrumb::instance(t("User profile: %name", ["name" => $current_user->display_name()]),
                                                url::site("user_profile/show/{$user_id}"));
         $breadcrumbs[2] = Breadcrumb::instance($str_page_title,
                                url::site("latestupdates/users/{$str_display_type}/{$user_id}?show={$item->id}"));
@@ -388,16 +388,16 @@ class latestupdates_Controller extends Controller {
     }
 
     // Return the display elements.
-    return array("position" => $position,
+    return ["position" => $position,
                  "previous_item" => $previous_item,
                  "next_item" => $next_item,
                  "sibling_count" => $count,
-                 "siblings_callback" => array("latestupdates_Controller::items", array($str_display_type, $user_id)),
+                 "siblings_callback" => ["latestupdates_Controller::items", [$str_display_type, $user_id]],
                  "breadcrumbs" => $breadcrumbs
-                );
+                ];
   }
 
-  static function items_count($str_display_type, $user_id) {
+  public static function items_count($str_display_type, $user_id) {
     // Figure out the total number of items.
     //  Valid $str_display_type values are popular, recent, albums and descendants.
     //  $user_id can be set to "0" to search site wide.
@@ -444,23 +444,23 @@ class latestupdates_Controller extends Controller {
     return $count;
   }
 
-  static function items($str_display_type, $user_id, $limit=null, $offset=null) {
+  public static function items($str_display_type, $user_id, $limit=null, $offset=null) {
     // Query the database for a list of items to display in the virtual album.
     //  Valid $str_display_type values are popular, recent, albums and descendants.
     //  $user_id can be set to "0" to search site wide.
     //  For "descendants", $user_id should be the album id #.
 
     // Figure out search parameters based on $str_display_type.
-    $str_where = array();
+    $str_where = [];
     $str_orderby_field = "";
     if ($str_display_type == "recent") {
-      $str_where = array(array("type", "!=", "album"));
+      $str_where = [["type", "!=", "album"]];
       $str_orderby_field = "created";
     } elseif ($str_display_type == "albums") {
-      $str_where = array(array("type", "=", "album"));
+      $str_where = [["type", "=", "album"]];
       $str_orderby_field = "created";
     } else {
-      $str_where = array(array("type", "!=", "album"));
+      $str_where = [["type", "!=", "album"]];
       $str_orderby_field = "view_count";
     }
 
@@ -503,16 +503,16 @@ class latestupdates_Controller extends Controller {
     //  For "descendants", $user_id should be the album id #.
 
     // Figure out search conditions.
-    $str_where = array();
+    $str_where = [];
     $str_orderby_field = "";
     if ($str_display_type == "recent") {
-      $str_where = array(array("type", "!=", "album"));
+      $str_where = [["type", "!=", "album"]];
       $str_orderby_field = "created";
     } elseif ($str_display_type == "albums") {
-      $str_where = array(array("type", "=", "album"));
+      $str_where = [["type", "=", "album"]];
       $str_orderby_field = "created";
     } else {
-      $str_where = array(array("type", "!=", "album"));
+      $str_where = [["type", "!=", "album"]];
       $str_orderby_field = "view_count";
     }
 

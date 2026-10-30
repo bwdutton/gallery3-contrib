@@ -58,9 +58,9 @@ class Admin_Product_Lines_Controller extends Controller
         );
 
       $product->save();
-      message::success(t("Created product %product_name", array(
-        "product_name" => html::clean($product->name))));
-      print json::reply(array("result" => "success"));
+      message::success(t("Created product %product_name", [
+        "product_name" => html::clean($product->name)]));
+      print json::reply(["result" => "success"]);
     } else {
       print $form;
     }
@@ -90,10 +90,10 @@ class Admin_Product_Lines_Controller extends Controller
       print $form;
     }
 
-    $message = t("Deleted user %product_name", array("product_name" => html::clean($name)));
+    $message = t("Deleted user %product_name", ["product_name" => html::clean($name)]);
     log::success("user", $message);
     message::success($message);
-    print json::reply(array("result" => "success"));
+    print json::reply(["result" => "success"]);
   }
 
   public function edit_product($id) {
@@ -124,8 +124,8 @@ class Admin_Product_Lines_Controller extends Controller
       $product->bp_postage_band_id = $form->edit_product->postage_band->value;
       $product->save();
 
-      message::success(t("Changed product %product_name",array("product_name" => html::clean($product->name))));
-      print json::reply(array("result" => "success"));
+      message::success(t("Changed product %product_name",["product_name" => html::clean($product->name)]));
+      print json::reply(["result" => "success"]);
     } else {
       print $form;
     }

@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class rawphoto_event_Core {
-  static function item_created($item) {
+  public static function item_created($item) {
     if ($item->is_photo()) {
       $input_file = $item->file_path();
       $output_file = system::temp_filename("rawphoto-", "jpg");
@@ -31,7 +31,7 @@ class rawphoto_event_Core {
     }
   }
 
-  static function admin_menu($menu, $theme) {
+  public static function admin_menu($menu, $theme) {
     $menu->get("settings_menu")
          ->append(Menu::factory("link")
          ->id("rawphoto")
@@ -39,14 +39,14 @@ class rawphoto_event_Core {
          ->url(url::site("admin/rawphoto")));
   }
 
-  static function legal_photo_extensions($extensions_wrapper) {
+  public static function legal_photo_extensions($extensions_wrapper) {
     array_push($extensions_wrapper->extensions,
                "3fr", "arw", "bay", "bmq", "cr2", "crw", "cs1", "dc2", "dcr", "dng", "erf",
                "fff", "k25", "kdc", "mef", "mos", "mrw", "nef", "orf", "pef", "raf", "raw",
                "rdc", "rw2", "sr2", "srf", "x3f");
   }
 
-  static function legal_photo_types($types_wrapper) {
+  public static function legal_photo_types($types_wrapper) {
     array_push($types_wrapper->types,
                // Most raw photos are detected as TIFF.
                "image/tiff",
@@ -56,11 +56,11 @@ class rawphoto_event_Core {
                "");
   }
 
-  static function module_change($changes) {
+  public static function module_change($changes) {
     rawphoto_version::report_item_conversion_support();
   }
 
-  static function graphics_toolkit_change($toolkit_id) {
+  public static function graphics_toolkit_change($toolkit_id) {
     rawphoto_graphics::report_ppm_support($toolkit_id);
   }
 }

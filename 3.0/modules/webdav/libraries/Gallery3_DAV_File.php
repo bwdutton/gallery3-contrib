@@ -22,7 +22,7 @@ class Gallery3_DAV_File extends Sabre_DAV_File {
   private $stat;
   private $path;
 
-  function __construct($path) {
+  public function __construct($path) {
     $this->cache = Gallery3_DAV_Cache::instance();
     $this->item = $this->cache->to_item($path);
 
@@ -42,7 +42,7 @@ class Gallery3_DAV_File extends Sabre_DAV_File {
     $this->item->delete();
   }
 
-  function setName($name) {
+  public function setName($name) {
     if (!access::can("edit", $this->item)) {
       throw new Sabre_DAV_Exception_Forbidden("Access denied");
     };
@@ -54,22 +54,22 @@ class Gallery3_DAV_File extends Sabre_DAV_File {
     return $this->item->updated;
   }
 
-  function get() {
+  public function get() {
     if (!access::can("view", $this->item)) {
       throw new Sabre_DAV_Exception_Forbidden("Access denied");
     };
     return fopen($this->path, "r");
   }
 
-  function getSize() {
+  public function getSize() {
     return $this->stat[7];
   }
 
-  function getName() {
+  public function getName() {
     return $this->item->name;
   }
 
-  function getETag() {
+  public function getETag() {
     if (!access::can("view", $this->item)) {
       throw new Sabre_DAV_Exception_Forbidden("Access denied");
     };

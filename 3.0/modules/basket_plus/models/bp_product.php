@@ -18,10 +18,10 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class Bp_Product_Model extends ORM {
-  var $rules = array(
+  public $rules = [
     "name" => "length[1,32]",
-    "description" => "length[0,255]");
+    "description" => "length[0,255]"];
 	//FK to table postage_bands	
-  protected $belongs_to = array('bp_postage_band');
+  protected $belongs_to = ['bp_postage_band'];
 
 }

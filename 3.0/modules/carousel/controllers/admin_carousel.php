@@ -94,7 +94,7 @@ class Admin_Carousel_Controller extends Admin_Controller {
     for ($i = 5; $i <= 50; $i+=5) {
       $range[$i] = "$i";
 	   }
-	$shortrange = array();
+	$shortrange = [];
 	for ($i = 1; $i < 21; $i++) {
 		$key=((float)$i / 2);
   		$shortrange["$key"] = sprintf("%.1f", (float)$i / 2);
@@ -104,7 +104,7 @@ class Admin_Carousel_Controller extends Admin_Controller {
 		} else {
 		$disableme = "true";
   	}
-    $form = new Forge("admin/carousel/handler", "", "post", array("id" => "g-admin-form"));
+    $form = new Forge("admin/carousel/handler", "", "post", ["id" => "g-admin-form"]);
     
     $group = $form->group("carousel")->label(t("General carousel settings"));
 	$group->checkbox("circular")->label(t('Enable the carousel to be circular so it starts over again from the beginning.'))

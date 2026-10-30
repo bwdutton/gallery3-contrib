@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class social_share_theme_Core {
-    static function head($theme) {
+    public static function head($theme) {
         $impageonly = module::get_var("social_share", "general_impage_only");
         $showblock = !$impageonly || ($impageonly && ($theme->page_subtype == "photo") || ($theme->page_subtype == "movie"));
 

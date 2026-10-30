@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
-  
+
 /* ============================================================
  * DEFINED CONSTANTS aim: improve readability of basket code
  * ============================================================ */
@@ -35,11 +35,11 @@ define("EMAIL_CONTACT", "email_contact");
 define("EMAIL_ORDER", "email_order");
 define("EMAIL_FROM", "email_from");
 define("USE_SIDE_BAR_ONLY", "use_side_bar_only");
-define("ALLOW_PICKUP", "allow_pickup"); 
-define("IS_PICKUP_DEFAULT", "is_pickup_default"); 
-define("PICKUP_LOCATION", "pickup_location"); 
+define("ALLOW_PICKUP", "allow_pickup");
+define("IS_PICKUP_DEFAULT", "is_pickup_default");
+define("PICKUP_LOCATION", "pickup_location");
 define("USE_PAYPAL", "use_paypal");
-define("PAYPAL_ACCOUNT", "paypal_account"); 
+define("PAYPAL_ACCOUNT", "paypal_account");
 define("PAYPAL_TEST_MODE", "paypal_test_mode");
 define("CURRENCY", "currency");
 define("DECIMAL_SEPARATOR", "decimal_separator");
@@ -47,42 +47,42 @@ define("DATE_TIME_FORMAT", "date_time_format");
 define("ORDER_PREFIX", "order_prefix");
 define("ORDER_BANK_ACCOUNT", "order_bank_account");
 define("ORDER_BANK_ACCOUNT_OWNER", "order_bank_account_owner");
-define("PAYMENT_OPTIONS", "payment_options"); 
+define("PAYMENT_OPTIONS", "payment_options");
 define("ADDRESS_FORMAT", "address_format");
 define("USE_ADDRESS_SUBURB", "use_address_suburb");
 define("USE_ADDRESS_PROVINCE", "use_address_province");
 define("USE_ADDRESS_COUNTRY", "use_address_country");
 
 //templates
-define("PAYMENT_DETAILS", "payment_details"); 
-define("CUSTOMER_DETAILS", "customer_details"); 
-define("ORDER_COMPLETE_PAGE", "order_complete_page"); 
-define("ORDER_PAID_COMPLETE_PAGE", "order_paid_complete_page"); 
-define("ORDER_THANKYOU", "order_thankyou"); 
-define("ORDER_DETAILS", "order_details"); 
-define("ORDER_COMPLETE_EMAIL_SUBJECT", "order_complete_email_subject"); 
-define("EMAIL_TEMPLATE_STYLE", "email_template_style"); 
-define("ORDER_PAID_EMAIL_SUBJECT", "order_paid_email_subject"); 
-define("ORDER_PAID_EMAIL", "order_paid_email"); 
-define("ORDER_PAID_DELIVERED_EMAIL_SUBJECT", "order_paid_delivered_email_subject"); 
-define("ORDER_PAID_DELIVERED_EMAIL", "order_paid_delivered_email"); 
-define("ORDER_LATE_PAYMENT_EMAIL_SUBJECT", "order_late_payment_email_subject"); 
-define("ORDER_LATE_PAYMENT_EMAIL", "order_late_payment_email"); 
-define("ORDER_DELIVERED_EMAIL_SUBJECT", "order_delivered_email_subject"); 
-define("ORDER_DELIVERED_EMAIL", "order_delivered_email"); 
-define("ORDER_DELIVERED_NOTPAID_EMAIL_SUBJECT", "order_delivered_notpaid_email_subject"); 
-define("ORDER_DELIVERED_NOTPAID_EMAIL", "order_delivered_notpaid_email"); 
-define("ORDER_DELAYED_EMAIL_SUBJECT", "order_delayed_email_subject"); 
-define("ORDER_DELAYED_EMAIL", "order_delayed_email"); 
-define("ORDER_CANCELLED_EMAIL_SUBJECT", "order_cancelled_email_subject"); 
-define("ORDER_CANCELLED_EMAIL", "order_cancelled_email"); 
-define("ORDER_EMAIL_CLOSING", "order_email_closing"); 
-define("ORDER_EMAIL_FOOTER", "order_email_footer"); 
+define("PAYMENT_DETAILS", "payment_details");
+define("CUSTOMER_DETAILS", "customer_details");
+define("ORDER_COMPLETE_PAGE", "order_complete_page");
+define("ORDER_PAID_COMPLETE_PAGE", "order_paid_complete_page");
+define("ORDER_THANKYOU", "order_thankyou");
+define("ORDER_DETAILS", "order_details");
+define("ORDER_COMPLETE_EMAIL_SUBJECT", "order_complete_email_subject");
+define("EMAIL_TEMPLATE_STYLE", "email_template_style");
+define("ORDER_PAID_EMAIL_SUBJECT", "order_paid_email_subject");
+define("ORDER_PAID_EMAIL", "order_paid_email");
+define("ORDER_PAID_DELIVERED_EMAIL_SUBJECT", "order_paid_delivered_email_subject");
+define("ORDER_PAID_DELIVERED_EMAIL", "order_paid_delivered_email");
+define("ORDER_LATE_PAYMENT_EMAIL_SUBJECT", "order_late_payment_email_subject");
+define("ORDER_LATE_PAYMENT_EMAIL", "order_late_payment_email");
+define("ORDER_DELIVERED_EMAIL_SUBJECT", "order_delivered_email_subject");
+define("ORDER_DELIVERED_EMAIL", "order_delivered_email");
+define("ORDER_DELIVERED_NOTPAID_EMAIL_SUBJECT", "order_delivered_notpaid_email_subject");
+define("ORDER_DELIVERED_NOTPAID_EMAIL", "order_delivered_notpaid_email");
+define("ORDER_DELAYED_EMAIL_SUBJECT", "order_delayed_email_subject");
+define("ORDER_DELAYED_EMAIL", "order_delayed_email");
+define("ORDER_CANCELLED_EMAIL_SUBJECT", "order_cancelled_email_subject");
+define("ORDER_CANCELLED_EMAIL", "order_cancelled_email");
+define("ORDER_EMAIL_CLOSING", "order_email_closing");
+define("ORDER_EMAIL_FOOTER", "order_email_footer");
 define("ORDER_EMAIL_LOGO", "order_email_logo");
- 
+
 class basket_plus_Core {
 
-  static $currencies = array(
+  static $currencies = [
     "EUR" => "Euro",
     "GBP" => "Pounds Sterling",
     "USD" => "U.S. Dollar",
@@ -97,9 +97,9 @@ class basket_plus_Core {
     "HKD" => "Hong Kong Dollar",
     "SGD" => "Singapore Dollar",
     "ILS" => "Israeli Shekel",
-    "MXN" => "Mexican Peso");
+    "MXN" => "Mexican Peso"];
 
-  static $curr_symbols= array(
+  static $curr_symbols= [
     "AUD" => "$",
     "CAD" => "$",
     "EUR" => "€",
@@ -115,9 +115,9 @@ class basket_plus_Core {
     "NOK" => "",
     "ILS" => "",
     "MXN" => "",
-    "none" => "");
+    "none" => ""];
 
-  static $curr_symbols_web= array(
+  static $curr_symbols_web= [
     "AUD" => "$",
     "CAD" => "$",
     "EUR" => "&euro;",
@@ -132,24 +132,24 @@ class basket_plus_Core {
     "DKK" => "",
     "NOK" => "",
     "ILS" => "",
-    "MXN" => "");
+    "MXN" => ""];
 
-		static $decimal_separators = array(
+		static $decimal_separators = [
     "." => ". (period)",
-		"," => ", (comma)");
+		"," => ", (comma)"];
 
-		static $date_time_formats = array(
+		static $date_time_formats = [
     "m/d/Y g:i A" => "m/d/Y g:i A (12/28/2013 6:44 PM)",
-		"d-m-Y G:i" => "d-m-Y G:i (28-12-2013 18:44)");
+		"d-m-Y G:i" => "d-m-Y G:i (28-12-2013 18:44)"];
 		
 /* ============================================================
- * Generic functions 
+ * Generic functions
  * ============================================================ */
 /*
  * USED IN: basket admin functions
  * DESCRIPTION: Reset the cache of variables
  */
-  static function reset_var_cache() {
+  public static function reset_var_cache() {
 		self::$var_cache = Cache::instance()->get("var_cache");
 		// Rebuild cache
 		foreach (db::build()
@@ -161,24 +161,24 @@ class basket_plus_Core {
 			// Mute the "Creating default object from empty value" warning below
 			@self::$var_cache->{$row->module_name}->{$row->name} = $row->value;
 		}
-		Cache::instance()->set("var_cache", self::$var_cache, array("vars"));
+		Cache::instance()->set("var_cache", self::$var_cache, ["vars"]);
   }
-  
+
 //@TODO: clear table function, see class basket_plus_installer_local
 
 /*
  * USED IN: various situations
  * DESCRIPTION: Returns a basket setting (from db table 'vars')
  */
-  static function getBasketVar($basket_var){
+  public static function getBasketVar($basket_var){
     return module::get_var("basket_plus",$basket_var);
   }
-  
+
 /*
  * USED IN: various situations
  * DESCRIPTION: Sets a basket setting (in db table 'vars')
  */
-  static function setBasketVar($basket_var_name,$var_value){
+  public static function setBasketVar($basket_var_name,$var_value){
     module::set_var("basket_plus","$basket_var_name",$var_value);
   }
 
@@ -187,7 +187,7 @@ class basket_plus_Core {
  * DESCRIPTION: Formats a technical name to use as a label shown with a setting
  * Replaces each underscore by a space and capitalize each word
  */
-  static function formatLabel($var){
+  public static function formatLabel($var){
     $label = str_replace("_", " ",$var);
 		$label = ucwords($label);
     return $label;
@@ -195,21 +195,21 @@ class basket_plus_Core {
 
 // Format money with 2 decimals (eg. 5.00)
 // Thousands separator not used
-  static function formatMoney($money){
+  public static function formatMoney($money){
 		$decimal_separator = basket_plus::getBasketVar(DECIMAL_SEPARATOR);
     return self::$curr_symbols[self::getCurrency()].number_format($money,2,$decimal_separator,'');
   }
 
 // Format money with money symbol and 2 decimals (eg $ 3.00)
 // Thousands separator not used
-  static function formatMoneyForWeb($money){
+  public static function formatMoneyForWeb($money){
 		$decimal_separator = basket_plus::getBasketVar(DECIMAL_SEPARATOR);
     return self::$curr_symbols_web[self::getCurrency()]." ".number_format($money,2,$decimal_separator,'');
   }
 
 // Format money with money symbol as text and 2 decimals (eg EUR 4,00)
 // Thousands separator not used
-  static function formatMoneyForMail($money){
+  public static function formatMoneyForMail($money){
 		$decimal_separator = basket_plus::getBasketVar(DECIMAL_SEPARATOR);
     return basket_plus::getCurrency()." ".number_format($money,2,$decimal_separator,'');
   }
@@ -218,12 +218,12 @@ class basket_plus_Core {
  * USED IN: various situations
  * DESCRIPTION: Replaces a string with a variable set of key-value combinations
  */
-  static function replaceStrings($string, $key_values) {
+  public static function replaceStrings($string, $key_values) {
     // Replace x_y before replacing x.
     krsort($key_values, SORT_STRING);
 
-    $keys = array();
-    $values = array();
+    $keys = [];
+    $values = [];
     foreach ($key_values as $key => $value) {
       $keys[] = "%$key";
       $values[] = $value;
@@ -235,8 +235,8 @@ class basket_plus_Core {
  * USED IN: various situations
  * DESCRIPTION: Replaces a fixed set of basket variables in a string with basket and order values
  */
-  static function replaceStringsAll($string, $order) {
-		$string_new = basket_plus::replaceStrings($string,Array(
+  public static function replaceStringsAll($string, $order) {
+		$string_new = basket_plus::replaceStrings($string,[
 			"name" => $order->name,
 			"order_number"=> basket_plus::getBasketVar(ORDER_PREFIX).$order->id,
 			"total_cost" => basket_plus::formatMoneyForMail($order->cost),
@@ -244,7 +244,7 @@ class basket_plus_Core {
 			EMAIL_ORDER => basket_plus::getBasketVar(EMAIL_ORDER),	
 			PICKUP_LOCATION => basket_plus::getPickupLocation(),
 			WEBSITE => basket_plus::getBasketVar(WEBSITE),
-			WEBSHOP => basket_plus::getBasketVar(WEBSHOP)));
+			WEBSHOP => basket_plus::getBasketVar(WEBSHOP)]);
 
 		return $string_new;
   }
@@ -253,11 +253,9 @@ class basket_plus_Core {
  * USED IN: various situations
  * DESCRIPTION: Returns the current basket currency; if not set, returns EUR
  */
-  static function getCurrency(){
+  public static function getCurrency(){
     $cur = basket_plus::getBasketVar(CURRENCY);
-    if (!isset($cur)) {
-      $cur = "EUR";
-    }
+    $cur ??= "EUR";
     return $cur;
   }
 
@@ -266,17 +264,17 @@ class basket_plus_Core {
  * DESCRIPTION: strips html from a text
  * DOC: see http://php.net/manual/en/function.strip-tags.php, user comment
  */
-  static function html2txt($document){ 
-		$search = array('@<script[^>]*?>.*?</script>@si',  // Strip out javascript 
-						 '@<[\/\!]*?[^<>]*?>@si',            // Strip out HTML tags 
-						 '@<style[^>]*?>.*?</style>@siU',    // Strip style tags properly 
-						 '@<![\s\S]*?--[ \t\n\r]*>@'         // Strip multi-line comments including CDATA 
-		); 
-		$text = preg_replace($search, '', $document); 
-		return $text; 
-  } 
+  public static function html2txt($document){
+		$search = ['@<script[^>]*?>.*?</script>@si',  // Strip out javascript
+						 '@<[\/\!]*?[^<>]*?>@si',            // Strip out HTML tags
+						 '@<style[^>]*?>.*?</style>@siU',    // Strip style tags properly
+						 '@<![\s\S]*?--[ \t\n\r]*>@'         // Strip multi-line comments including CDATA
+		];
+		$text = preg_replace($search, '', $document);
+		return $text;
+  }
 
-  /** MODIFIED function item::thumb_img 
+  /** MODIFIED function item::thumb_img
 	 * USED IN: order process: order e-mail
    * Return an <img> tag for the thumbnail with an absolute url, for use in mail etc.
    * @param $abs_url  Absolute url to prepend the thumbnail url (format 'http://www.domain.com')
@@ -284,18 +282,18 @@ class basket_plus_Core {
    * @param boolean (optional) $center_vertically Center vertically (default: false)
    * @return string
    */
-  static function thumb_img_abs($extra_attrs=array(), $max=null, $center_vertically=false, $item, $abs_url) {
-		list ($height, $width) = $item->scale_dimensions($max);
+  public static function thumb_img_abs($extra_attrs=[], $max=null, $center_vertically=false, $item = null, $abs_url = null) {
+		[$height, $width] = $item->scale_dimensions($max);
     if ($center_vertically && $max) {
       // The constant is divided by 2 to calculate the file and 10 to convert to em
       $margin_top = (int)(($max - $height) / 20);
     }
     $attrs = array_merge($extra_attrs,
-            array(
+            [
               "src" => $abs_url.$item->thumb_url(),
               "alt" => $item->title,
               "width" => $width,
-              "height" => $height)
+              "height" => $height]
 						);
     return "<img" . html::attributes($attrs) . "/>";
   }
@@ -304,7 +302,7 @@ class basket_plus_Core {
  * USED IN: order process: create_order
  * DESCRIPTION: Gets pickup location from user profile unless it's empty. Then gets it from the basket configuration.
  */
-  static function getPickupLocation(){
+  public static function getPickupLocation(){
 		$user = identity::active_user();
 
 		//get user_basket setting
@@ -318,19 +316,19 @@ class basket_plus_Core {
 		return $pickup_location;
   }
 
-  static function getUserIsGroup() {
+  public static function getUserIsGroup() {
 		$user = identity::active_user();
 		//get user_basket setting
 		$user_basket = ORM::factory("bp_user_basket")->where("id", "=", $user->id)->find();
 		$is_group = $user_basket->is_group;
 		return $is_group;
   }
-  
+
 /*
  * USED IN: order process: create_order
  * DESCRIPTION: Creates a string with the customers full name incl. title, initials and insertion
  */
-  static function createFullName($basket) {
+  public static function createFullName($basket) {
 		$fullname = "";
     if ($basket->title <> ""){
 			$fullname = $basket->title." ";
@@ -350,7 +348,7 @@ class basket_plus_Core {
  * DESCRIPTION: provides delivery method string for presentation after delivery
  * @TODO: configurable delivery methods
  */
-  static function deliveredMethodText($order) {
+  public static function deliveredMethodText($order) {
   if ($order->delivery_method == Bp_Order_Model::DELIVERY_MAIL) {
 		$delivered_method = t(basket_plus_label::TEXT_DELIVERED_MAIL);
 		}
@@ -370,9 +368,9 @@ class basket_plus_Core {
 /*
  * USED IN: order process: create_order
  * DESCRIPTION: creates and saves a new customer record
- * @TODO: support other address formats 
+ * @TODO: support other address formats
  */
-  static function createCustomer($basket){
+  public static function createCustomer($basket){
     $customer = ORM::factory("bp_customer");
     $customer->title = $basket->title;
     $customer->initials = $basket->initials;
@@ -398,8 +396,8 @@ class basket_plus_Core {
   public static $var_cache = null;
 
 /*
- * USED IN: basket views 
- * DESCRIPTION: Determines if the active user may see the orders; returns true if allowed 
+ * USED IN: basket views
+ * DESCRIPTION: Determines if the active user may see the orders; returns true if allowed
  */
   static public function can_view_orders() {
     //admin users can view orders
@@ -423,10 +421,10 @@ class basket_plus_Core {
  * ============================================================ */
 /*
  * USED IN: basket admin functions: configuration
- * DESCRIPTION: Creates the basket configuration form 
+ * DESCRIPTION: Creates the basket configuration form
  */
-  static function get_configure_form() {
-    $form = new Forge("admin/configure", "", "post", array("id" => "g-configure-basket-form"));
+  public static function get_configure_form() {
+    $form = new Forge("admin/configure", "", "post", ["id" => "g-configure-basket-form"]);
     $group = $form->group("configure")->label(t("Configure Basket"));
     $group->input("WEBSITE")->label(t(basket_plus::formatLabel(WEBSITE)))->id("g-WEBSITE");
     $group->input("WEBSHOP")->label(t(basket_plus::formatLabel(WEBSHOP)))->id("g-WEBSHOP");
@@ -463,9 +461,9 @@ class basket_plus_Core {
 
 /*
  * USED IN: basket admin functions: templates
- * DESCRIPTION: Fills the basket configuration form  
+ * DESCRIPTION: Fills the basket configuration form
  */
-  static function populateForm($form){
+  public static function populateForm($form){
 		//rebuild the variable cache to ensure the use of the latest DB values
 		basket_plus::reset_var_cache();
 		
@@ -502,9 +500,9 @@ class basket_plus_Core {
 
 /*
  * USED IN: basket admin functions: configuration
- * DESCRIPTION: Saves the values of the basket configuration form 
+ * DESCRIPTION: Saves the values of the basket configuration form
  */
-  static function extractForm($form){
+  public static function extractForm($form){
     basket_plus::setBasketVar(WEBSITE,$form->configure->WEBSITE->value);
     basket_plus::setBasketVar(WEBSHOP,$form->configure->WEBSHOP->value);
     basket_plus::setBasketVar(WEBSHOP_OWNER,$form->configure->WEBSHOP_OWNER->value);
@@ -542,10 +540,10 @@ class basket_plus_Core {
  * ============================================================ */
 /*
  * USED IN: basket admin functions: templates
- * DESCRIPTION: Creates the basket templates form 
+ * DESCRIPTION: Creates the basket templates form
  */
-  static function get_template_form() {
-    $form = new Forge("admin/configure/templates", "", "post", array("id" => "g-configure-form"));
+  public static function get_template_form() {
+    $form = new Forge("admin/configure/templates", "", "post", ["id" => "g-configure-form"]);
     $group = $form->group("configure")->label(t("Configure Basket"));
     $group->textarea("PAYMENT_DETAILS")->label(t(basket_plus::formatLabel(PAYMENT_DETAILS)))->id("g-PAYMENT_DETAILS");
     $group->textarea("CUSTOMER_DETAILS")->label(t(basket_plus::formatLabel(CUSTOMER_DETAILS)))->id("g-CUSTOMER_DETAILS");
@@ -578,9 +576,9 @@ class basket_plus_Core {
 
 /*
  * USED IN: basket admin functions: templates
- * DESCRIPTION: Fills the basket templates form  
+ * DESCRIPTION: Fills the basket templates form
  */
-  static function populateTemplateForm($form){
+  public static function populateTemplateForm($form){
 	//rebuild the variable cache to ensure the use of the latest DB values
 		basket_plus::reset_var_cache();
     $form->configure->PAYMENT_DETAILS->value(basket_plus::getBasketVar(PAYMENT_DETAILS));
@@ -612,9 +610,9 @@ class basket_plus_Core {
 
 /*
  * USED IN: basket admin functions: templates
- * DESCRIPTION: Saves the values of the basket templates form  
+ * DESCRIPTION: Saves the values of the basket templates form
  */
-  static function extractTemplateForm($form){
+  public static function extractTemplateForm($form){
     basket_plus::setBasketVar(PAYMENT_DETAILS,$form->configure->PAYMENT_DETAILS->value);
     basket_plus::setBasketVar(CUSTOMER_DETAILS,$form->configure->CUSTOMER_DETAILS->value);
     basket_plus::setBasketVar(ORDER_COMPLETE_PAGE,$form->configure->ORDER_COMPLETE_PAGE->value);
@@ -650,14 +648,14 @@ class basket_plus_Core {
  * DESCRIPTION: Creates an order after the customer has confirmed the order.
  *						  Create and saves a customer record, create order confirmation e-mail text
  * 							for the customer and internal order e-mail text for order handling and saves them in the order.
- * 
+ *
  * @TODO: create order lines for each basket item and link them to the order.
  */
-  static function createOrder($basket, $payment_method){
+  public static function createOrder($basket, $payment_method){
 		//create a new order and set a temp value
 		$order = ORM::factory("bp_order");
     $order->text = t("processing");
- 
+
 		//cost calculation
     $product_cost = $basket->product_cost();
     $postage = $basket->postage_cost();
@@ -699,8 +697,8 @@ class basket_plus_Core {
 		// The mail has many parts, each containing variables that need to be replaced.
 		// Replaced variables may contain other variables, so the replacement takes more than one step
 		//-------------
-	/** 
-	* first replace: all variables in the order Email template 
+	/**
+	* first replace: all variables in the order Email template
 		%meta_tag: SYSTEM VAR: <meta> tag; workaround for Kohana limitations
 		%email_template_style: VAR: CSS style definitions for e-mails
 		%order_email_title: fixed email title
@@ -716,7 +714,7 @@ class basket_plus_Core {
 		%delivery_method: function: how the order is delivered
 		%order_lines: function: the actual order
 		*/
-		$body = basket_plus::replaceStrings($body,Array(
+		$body = basket_plus::replaceStrings($body,[
 			META_TAG => basket_plus::getBasketVar(META_TAG),
 			EMAIL_TEMPLATE_STYLE => basket_plus::getBasketVar(EMAIL_TEMPLATE_STYLE),
 			"order_email_title" => t("Order confirmation"),
@@ -731,10 +729,10 @@ class basket_plus_Core {
 			ORDER_DETAILS => basket_plus::getBasketVar(ORDER_DETAILS),
 			"cost_details" => basket_plus::getCostDetailsHtml($postage, $product_cost, $pickup),//$basket),
 			"delivery_method" => basket_plus::getDeliveryMethodHtml($delivery_method,false),
-			"order_lines" => basket_plus::getOrderLinesHtml($basket)));
+			"order_lines" => basket_plus::getOrderLinesHtml($basket)]);
 
-	/** 
-	 * second replace: all remaining variables in the resulting body variable 
+	/**
+	 * second replace: all remaining variables in the resulting body variable
 		%email_order: VAR
 		%email_from: VAR
 		%email_contact: VAR
@@ -744,7 +742,7 @@ class basket_plus_Core {
 		%order_bank_account_owner: VAR
 		%order_email_closing: VAR: email closing message
 	 */
-		$body = basket_plus::replaceStrings($body,Array(
+		$body = basket_plus::replaceStrings($body,[
 			EMAIL_ORDER => basket_plus::getBasketVar(EMAIL_ORDER),
 			EMAIL_FROM => basket_plus::getBasketVar(EMAIL_FROM),
 			EMAIL_CONTACT => basket_plus::getBasketVar(EMAIL_CONTACT),
@@ -758,20 +756,20 @@ class basket_plus_Core {
 			"address" => basket_plus::getAddressHtml($basket),
 			"phone" => $basket->phone,
 			"email" => $basket->email,
-			"comments" => basket_plus::getOrderCommentsHtml($basket)));
+			"comments" => basket_plus::getOrderCommentsHtml($basket)]);
 
-	/** third replace: all remaining variables in the resulting body variable 
+	/** third replace: all remaining variables in the resulting body variable
 	 * %website: VAR: website URL
 	 * %webshop_XX: VARS with webshop info
 	 */
-		$body = basket_plus::replaceStrings($body,Array(
+		$body = basket_plus::replaceStrings($body,[
 			WEBSITE => basket_plus::getBasketVar(WEBSITE),
 			WEBSHOP_ADDRESS => basket_plus::getBasketVar(WEBSHOP_ADDRESS),
 			WEBSHOP_POSTALCODE => basket_plus::getBasketVar(WEBSHOP_POSTALCODE),
 			WEBSHOP_CITY => basket_plus::getBasketVar(WEBSHOP_CITY),
 			WEBSHOP_PHONE => basket_plus::getBasketVar(WEBSHOP_PHONE),
 			WEBSHOP_OWNER => basket_plus::getBasketVar(WEBSHOP_OWNER),
-			WEBSHOP => basket_plus::getBasketVar(WEBSHOP))); 
+			WEBSHOP => basket_plus::getBasketVar(WEBSHOP)]);
 
 		//convert to valid html and save in the order record
 		$order->text = htmlspecialchars_decode($body);
@@ -783,16 +781,16 @@ class basket_plus_Core {
 		$body = $email_template->email_text;
 		$title = t("Internal Order confirmation");
 		
-	//	first replace: all variables in the order Email template 
-		$body = basket_plus::replaceStrings($body,Array(
+	//	first replace: all variables in the order Email template
+		$body = basket_plus::replaceStrings($body,[
 			"order_number" => $order_number,
 			"total_cost" => basket_plus::formatMoneyForWeb($total_cost),
 			"order_datetime" => $order_datetime,
 			CUSTOMER_DETAILS => basket_plus::html2txt(basket_plus::getBasketVar(CUSTOMER_DETAILS)),
 			"delivery_method" => basket_plus::html2txt(basket_plus::getDeliveryMethodHtml($delivery_method,false)),
-			"order_lines" => basket_plus::getOrderDetailsText($basket)));
-	//	second replace: all remaining variables in the resulting body variable 
-		$body = basket_plus::replaceStrings($body,Array(
+			"order_lines" => basket_plus::getOrderDetailsText($basket)]);
+	//	second replace: all remaining variables in the resulting body variable
+		$body = basket_plus::replaceStrings($body,[
 			EMAIL_ORDER => basket_plus::getBasketVar(EMAIL_ORDER),
 			EMAIL_FROM => basket_plus::getBasketVar(EMAIL_FROM),
 			"order_email_title" => $title,
@@ -801,7 +799,7 @@ class basket_plus_Core {
 			"address" => basket_plus::html2txt(basket_plus::getAddressHtml($basket)),
 			"phone" => $basket->phone,
 			"email" => $basket->email,
-			"comments" => basket_plus::html2txt(str_replace(array("<br/>","<br>"),"\n",basket_plus::getOrderCommentsHtml($basket)))));
+			"comments" => basket_plus::html2txt(str_replace(["<br/>","<br>"],"\n",basket_plus::getOrderCommentsHtml($basket)))]);
 		$body = str_replace("nbsp;"," ",$body);
 	//put the internal mail text and order status in the order
 		$order->internal_text = $body;
@@ -815,7 +813,7 @@ class basket_plus_Core {
  * USED IN: order confirmation e-mail
  * DESCRIPTION: creates a html cost details block
  */
-	static function getCostDetailsHtml($postage, $cost, $pickup) {
+	public static function getCostDetailsHtml($postage, $cost, $pickup) {
 		$cost_details = "<br>".t(basket_plus_label::TEXT_ORDER_AMOUNT).": <strong>".basket_plus::formatMoneyForWeb($cost)."</strong><br />";
 		if ($pickup && $postage > 0){
 			$cost_details .= t(basket_plus_label::TEXT_PACKAGING_POSTING).": <strong>".basket_plus::formatMoneyForWeb(0)."</strong>";
@@ -835,13 +833,13 @@ class basket_plus_Core {
  * USED IN: order confirmation e-mail, view 'confirm_order.html'
  * DESCRIPTION: creates a html delivery method block, with the label formatted strong or the delivery method
  */
-	static function getDeliveryMethodHtml($delivery_method,$label_strong) {
+	public static function getDeliveryMethodHtml($delivery_method,$label_strong) {
 		if ($label_strong){
 			$method_html = "<strong>".t(basket_plus_label::TEXT_DELIVERY_METHOD).": </strong>";
 		}else{
 			$method_html = t(basket_plus_label::TEXT_DELIVERY_METHOD).": <strong>";
 		}
-		//mail 
+		//mail
 		if ($delivery_method == Bp_Order_Model::DELIVERY_MAIL){
       $method_html .= t(basket_plus_label::TEXT_DELIVERY_MAIL);
     }
@@ -849,7 +847,7 @@ class basket_plus_Core {
     elseif ($delivery_method == Bp_Order_Model::DELIVERY_EMAIL){
       $method_html .= t(basket_plus_label::TEXT_DELIVERY_EMAIL);
 		}
-    // pickup 
+    // pickup
     elseif ($delivery_method == Bp_Order_Model::DELIVERY_PICKUP){
       $method_html .= t(basket_plus_label::TEXT_DELIVERY_PICKUP)." ".basket_plus::getPickupLocation();
     }
@@ -869,13 +867,13 @@ class basket_plus_Core {
  * USED IN: order confirmation e-mail, view 'confirm_order.html'
  * DESCRIPTION: creates a html payment method block, with the label formatted strong or the payment method
  */
-	static function getPaymentMethodHtml($payment_method,$label_strong) {
+	public static function getPaymentMethodHtml($payment_method,$label_strong) {
 		if ($label_strong){
 			$method_html = "<strong>".t(basket_plus_label::TEXT_PAYMENT_METHOD).": </strong>";
 		}else{
 			$method_html = t(basket_plus_label::TEXT_PAYMENT_METHOD).": <strong>";
 		}
-		// offline 
+		// offline
 		if ($payment_method == Bp_Order_Model::PAYMENT_OFFLINE){
       $method_html .= t(basket_plus_label::TEXT_PAYMENT_OFFLINE);
     }
@@ -899,7 +897,7 @@ class basket_plus_Core {
  * USED IN: getOrderCommentsHtml (for use in order confirmation e-mail)
  * DESCRIPTION: gets order reference label from user basket or sets a default label
  */
-	static function getOrderRef($refnr){
+	public static function getOrderRef($refnr){
 
 		$is_group = basket_plus::getUserIsGroup();
 		if ($is_group){
@@ -928,7 +926,7 @@ class basket_plus_Core {
  * USED IN: order confirmation e-mail
  * DESCRIPTION: creates a html order reference and order comments block
  */
-	static function getOrderCommentsHtml($basket) {
+	public static function getOrderCommentsHtml($basket) {
 		$order_comments = "";
 		if ($basket->order_ref1 <> "") {
 			$order_ref_lbl = t(basket_plus::getOrderRef(1));
@@ -951,44 +949,44 @@ class basket_plus_Core {
  * USED IN: order confirmation e-mail
  * DESCRIPTION: creates a html address block
  */
-	static function getAddressHtml($basket) {
+	public static function getAddressHtml($basket) {
 		$address = basket_plus::getBasketVar(ADDRESS_FORMAT);
-		$address = basket_plus::replaceStrings($address,Array(
+		$address = basket_plus::replaceStrings($address,[
 			"house" => $basket->house,
 			"street" => $basket->street,
 			"postalcode" => $basket->postalcode,
 			"suburb" => $basket->suburb,
 			"town" => $basket->town,
 			"province" => $basket->province,
-			"country" => $basket->country));
+			"country" => $basket->country]);
 		return $address;	
 	}	
 	
 /*
  * USED IN: order confirmation e-mail
  * DESCRIPTION: creates a html table of the order items with a header row
- * REMARKS: contains a thumbnail of each item; as inline display doesn't work (due to authorisation model), 
+ * REMARKS: contains a thumbnail of each item; as inline display doesn't work (due to authorisation model),
  *					the thumbnails are replaced with attachments before sending the e-mail and must not be visible
  *					as broken images in the e-mail. Therefor, $max_thumb_size is set to 1.
  */
-	static function getOrderLinesHtml($basket) {
+	public static function getOrderLinesHtml($basket) {
 		
 		// TODO make heading labels configurable
-    $website = basket_plus::getBasketVar(WEBSITE);
+		$website = basket_plus::getBasketVar(WEBSITE);
 		$website_url = "http://".$website;
 
 		//		$max_thumb_size = 60;
 		// WORKAROUND: the inline images (created by function prepareHtml) in the mail aren't displayed correctly. Size '1' makes them invisible in the table.
 		$max_thumb_size = 1;
 		$body_details = "					<table width=&quot;100%&quot;>
-																	<tr>          
+																	<tr>
 																		<th style=&quot;text-align:left;&quot;>".t("Photo")."</th>
 																		<th style=&quot;text-align:left;&quot;>".t("Product")."</th>
 																		<th style=&quot;text-align:right;&quot;>".t("Quantity")."</th>
 																		<th style=&quot;text-align:right;&quot;>".t("Price")."</th>
 																	</tr>";
 		// loop through all basket items
-		// create a row for each item with thumbnail, product description, quantity and cost 
+		// create a row for each item with thumbnail, product description, quantity and cost
     foreach ($basket->contents as $basket_item){
       $item = $basket_item->getItem();
       $prod = ORM::factory("bp_product", $basket_item->product);
@@ -998,7 +996,7 @@ class basket_plus_Core {
 																	<tr>
 																		<td width=&quot;20%&quot; style=&quot;text-align:left;&quot;>
 																			<div id=&quot;basketThumb&quot;>
-																				".basket_plus::thumb_img_abs(array("style" => "display:none;"),$max_thumb_size,false,$item, $website_url)."&nbsp;".$item->title."
+																				".basket_plus::thumb_img_abs(["style" => "display:none;"],$max_thumb_size,false,$item, $website_url)."&nbsp;".$item->title."
 																			</div>
 																		</td>
 																		<td width=&quot;55%&quot; style=&quot;text-align:left;&quot;>".$prod->description."</td>
@@ -1016,7 +1014,7 @@ class basket_plus_Core {
  * USED IN: order confirmation e-mail
  * DESCRIPTION: returns the delivery method as a code. See models/Order.
  */
-	static function getDeliveryMethod($pickup, $postage) {
+	public static function getDeliveryMethod($pickup, $postage) {
     // posting by mail
     if ($postage > 0 && !$pickup){
       $delivery_method = Bp_Order_Model::DELIVERY_MAIL;
@@ -1037,7 +1035,7 @@ class basket_plus_Core {
  * DESCRIPTION: creates a list of the order items with a header row
  * @TODO: create order lines for each basket item and link them to the order.
  */
-	static function getOrderDetailsText($basket) {		
+	public static function getOrderDetailsText($basket) {		
 		$text = "
 ".t("Photo").";".t("Quantity").";".t("Product").";".t("Cost")."
 ";
@@ -1058,14 +1056,14 @@ class basket_plus_Core {
  * USED IN: order e-mail
  * DESCRIPTION: Sends the order confirmation e-mail to the customer (Html) and to the order email address
  */
-  static function send_order($order){
+  public static function send_order($order){
 	// order confirmation mail to customer
     $to = $order->email;
 		$from = basket_plus::getBasketVar(EMAIL_FROM);
 		$subject = basket_plus::replaceStringsAll(basket_plus::getBasketVar(ORDER_COMPLETE_EMAIL_SUBJECT),$order);
 		$final_msg = basket_plus::preparehtmlmail($order->text,$from); // give a function your html
 
-		mail($to, $subject, $final_msg['multipart'], $final_msg['headers']); 
+		mail($to, $subject, $final_msg['multipart'], $final_msg['headers']);
 
 		//order mail to internal order handling (text only)
     $to = basket_plus::getBasketVar(EMAIL_ORDER);
@@ -1081,8 +1079,8 @@ class basket_plus_Core {
  * USED IN: order update e-mails
  * DESCRIPTION: Generic function to send an order update mail
  */
-	static function send_order_update($order, $subject, $body_text){
-  // order update mail to customer 
+	public static function send_order_update($order, $subject, $body_text){
+  // order update mail to customer
     $to = $order->email;
 		$from = basket_plus::getBasketVar(EMAIL_FROM);
 		$email_template_name = "order_update";
@@ -1091,7 +1089,7 @@ class basket_plus_Core {
 		$body = $email_template->email_html;
 		$subject = basket_plus::replaceStringsAll(basket_plus::getBasketVar($subject),$order);
 	//first replace variables
-		$body = basket_plus::replaceStrings($body, Array(
+		$body = basket_plus::replaceStrings($body, [
 			META_TAG => basket_plus::getBasketVar(META_TAG),
 			EMAIL_TEMPLATE_STYLE => basket_plus::getBasketVar(EMAIL_TEMPLATE_STYLE),
 			"order_email_title" => t("Order Update"),
@@ -1099,9 +1097,9 @@ class basket_plus_Core {
 			ORDER_EMAIL_LOGO => basket_plus::getBasketVar(ORDER_EMAIL_LOGO),
 			ORDER_EMAIL_FOOTER => basket_plus::getBasketVar(ORDER_EMAIL_FOOTER),
 			"body_text" => basket_plus::getBasketVar($body_text),
-			WEBSHOP_DETAILS => basket_plus::getBasketVar(WEBSHOP_DETAILS)));
+			WEBSHOP_DETAILS => basket_plus::getBasketVar(WEBSHOP_DETAILS)]);
 	//second replace variables
-		$body = basket_plus::replaceStrings($body,Array(
+		$body = basket_plus::replaceStrings($body,[
 			ORDER_EMAIL_CLOSING => basket_plus::getBasketVar(ORDER_EMAIL_CLOSING),
 "GT" => "<", //TEMP WORKAROUND FOR Kohana limitations (save of certain tags is not working)
 			ORDER_BANK_ACCOUNT_OWNER => basket_plus::getBasketVar(ORDER_BANK_ACCOUNT_OWNER),
@@ -1114,33 +1112,33 @@ class basket_plus_Core {
 			WEBSHOP_PHONE => basket_plus::getBasketVar(WEBSHOP_PHONE),
 			WEBSHOP_OWNER => basket_plus::getBasketVar(WEBSHOP_OWNER),
 			EMAIL_CONTACT => basket_plus::getBasketVar(EMAIL_CONTACT),
-			WEBSHOP => basket_plus::getBasketVar(WEBSHOP))); 
+			WEBSHOP => basket_plus::getBasketVar(WEBSHOP)]);
 	//third replace variables
 		$body = basket_plus::replaceStringsAll($body,$order);
 		$final_msg = basket_plus::preparehtmlmail($body,$from);
 	//send mail
-    mail($to, $subject, $final_msg['multipart'], $final_msg['headers']); 
+    mail($to, $subject, $final_msg['multipart'], $final_msg['headers']);
   }
 
 /*
  * USED IN: order update e-mails
  * DESCRIPTION: Send a copy of the the order confirmation e-mail to the customer (Html)
  */
-	static function send_order_copy($order){
+	public static function send_order_copy($order){
     $to = $order->email;
 		$from = basket_plus::getBasketVar(EMAIL_FROM);
 		//add text 'COPY' to the subject
 		$subject = basket_plus::replaceStringsAll(basket_plus::getBasketVar(ORDER_COMPLETE_EMAIL_SUBJECT),$order)." (".t("COPY").")";
 		$final_msg = basket_plus::preparehtmlmail($order->text,$from); // give a function your html
 
-		mail($to, $subject, $final_msg['multipart'], $final_msg['headers']); 
+		mail($to, $subject, $final_msg['multipart'], $final_msg['headers']);
   }
 
 /*
  * USED IN: order update e-mails
  * DESCRIPTION: Send the payment confirmation e-mail to the customer (Html)
  */
-	static function send_payment_confirmation($order){
+	public static function send_payment_confirmation($order){
 		if ($order->status == Bp_Order_Model::PAYMENT_CONFIRMED) {
 			basket_plus::send_order_update($order,ORDER_PAID_EMAIL_SUBJECT,ORDER_PAID_EMAIL);
 		}
@@ -1154,7 +1152,7 @@ class basket_plus_Core {
  * USED IN: order update e-mails
  * DESCRIPTION: Send a payment reminder e-mail to the customer (Html)
  */
-  static function send_payment_reminder($order){
+  public static function send_payment_reminder($order){
 		basket_plus::send_order_update($order,ORDER_LATE_PAYMENT_EMAIL_SUBJECT,ORDER_LATE_PAYMENT_EMAIL);
   }
 
@@ -1162,8 +1160,8 @@ class basket_plus_Core {
  * USED IN: order update e-mails
  * DESCRIPTION: Send the delivery confirmation e-mail to the customer (Html)
  */
-  static function send_delivery_confirmation($order){
-		// order delivered 
+  public static function send_delivery_confirmation($order){
+		// order delivered
 		if ($order->status == Bp_Order_Model::DELIVERED) {
 			basket_plus::send_order_update($order,ORDER_DELIVERED_EMAIL_SUBJECT,ORDER_DELIVERED_EMAIL);
 		}
@@ -1177,7 +1175,7 @@ class basket_plus_Core {
  * USED IN: order update e-mails
  * DESCRIPTION: Send the delay notification e-mail to the customer (Html)
  */
-  static function send_delay_notification($order){
+  public static function send_delay_notification($order){
 		basket_plus::send_order_update($order,ORDER_DELAYED_EMAIL_SUBJECT,ORDER_DELAYED_EMAIL);
   }
 
@@ -1185,7 +1183,7 @@ class basket_plus_Core {
  * USED IN: order update e-mails
  * DESCRIPTION: Send the cancellation confirmation e-mail to the customer (Html)
  */
-  static function send_cancellation_confirmation($order){
+  public static function send_cancellation_confirmation($order){
 		basket_plus::send_order_update($order,ORDER_CANCELLED_EMAIL_SUBJECT,ORDER_CANCELLED_EMAIL);
   }
 
@@ -1193,16 +1191,16 @@ class basket_plus_Core {
  * USED IN: order update e-mails
  * DESCRIPTION: Support function to prepare the html for an e-mail with inline photos
  */
-	static function preparehtmlmail($html,$from) {
+	public static function preparehtmlmail($html,$from) {
 
 		preg_match_all('~<img.*?src=.([\/.a-z0-9:_-]+).*?>~si',$html,$matches);
 		$i = 0;
-		$paths = array();
+		$paths = [];
 
 		foreach ($matches[1] as $img) {
 			$img_old = $img;
 
-			if(strpos($img, "http://") == false) {
+			if(!str_contains($img, "http://")) {
 				$uri = parse_url($img);
 				$paths[$i]['path'] = $_SERVER['DOCUMENT_ROOT'].$uri['path'];
 				$content_id = md5($img);
@@ -1262,7 +1260,7 @@ class basket_plus_Core {
 		}
 
 		$multipart .= "--$boundary--\n";
-		return array('multipart' => $multipart, 'headers' => $headers);  
+		return ['multipart' => $multipart, 'headers' => $headers];
 	}
 
-} 
+}

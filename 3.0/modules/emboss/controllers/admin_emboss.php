@@ -31,7 +31,7 @@ class Admin_Emboss_Controller extends Admin_Controller {
     print $view;
   }
 
-  static function update() {
+  public static function update() {
     access::verify_csrf();
     emboss::update_overlay_options($_POST);
     emboss::evaluate_overlays();
@@ -39,7 +39,7 @@ class Admin_Emboss_Controller extends Admin_Controller {
     url::redirect('admin/emboss');
   }
 
-  static function new_overlay() {
+  public static function new_overlay() {
     access::verify_csrf();
     $file = $_FILES['overlay'];
     emboss::upload_new_overlay($file);
@@ -47,14 +47,14 @@ class Admin_Emboss_Controller extends Admin_Controller {
     url::redirect('admin/emboss');
   }
 
-  static function delete_overlay() {
+  public static function delete_overlay() {
     access::verify_csrf();
     emboss::_delete_overlay($_REQUEST['name']);
     emboss::check_for_dirty();
     url::redirect('admin/emboss');
   }
 
-  static function clear_log() {
+  public static function clear_log() {
     db::build()
       ->delete()
       ->from('logs')
@@ -63,7 +63,7 @@ class Admin_Emboss_Controller extends Admin_Controller {
     url::redirect('admin/emboss');
   }
 
-  static function uninstall() {
+  public static function uninstall() {
     access::verify_csrf();
     emboss::uninstall();
     url::redirect('admin/modules');

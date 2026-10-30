@@ -12,7 +12,7 @@ class Admin_Aws_S3_Controller extends Admin_Controller {
                 ($s3_axs_correct = aws_s3::validate_access_details($_POST['access_key'], $_POST['secret_key'], $_POST['bucket_name']))) {
 
                 // get variable values before changes so we can act on certain changes later
-                $vars = array();
+                $vars = [];
                 foreach (ORM::factory("var")->where("module_name", "=", "aws_s3")->find_all() as $var) {
                     $vars[$var->name] = $var->value;
                 }
@@ -68,7 +68,7 @@ class Admin_Aws_S3_Controller extends Admin_Controller {
                         // i CAN'T schedule it..
                         site_status::warning(
                             t('Your site has not been synchronised to Amazon S3. Until it has, your server will continue to serve image content to your visitors. Click <a href="%url" class="g-dialog-link">here</a> to start the synchronisation task.',
-                              array("url" => html::mark_clean(url::site("admin/maintenance/start/aws_s3_task::manual_sync?csrf=__CSRF__")))
+                              ["url" => html::mark_clean(url::site("admin/maintenance/start/aws_s3_task::manual_sync?csrf=__CSRF__"))]
                             ),
                             "aws_s3_not_synced"
                         );
@@ -100,7 +100,7 @@ class Admin_Aws_S3_Controller extends Admin_Controller {
     }
 
     private function _get_s3_form() {
-        $form = new Forge("admin/aws_s3", "", "post", array("id" => "g-admin-s3-form"));
+        $form = new Forge("admin/aws_s3", "", "post", ["id" => "g-admin-s3-form"]);
 
         $group = $form->group("aws_s3")->label(t("Amazon S3 Settings"));
 

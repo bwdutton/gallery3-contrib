@@ -35,7 +35,7 @@ class Admin_Albumpassword_Controller extends Admin_Controller {
   private function _get_admin_form() {
     // Make a new form for changing admin settings for this module.
     $form = new Forge("admin/albumpassword/saveprefs", "", "post",
-                      array("id" => "g-album-password-admin-form"));
+                      ["id" => "g-album-password-admin-form"]);
 
     // Should protected items be hidden, or completely in-accessable?
     $albumpassword_group = $form->group("album_password_group");

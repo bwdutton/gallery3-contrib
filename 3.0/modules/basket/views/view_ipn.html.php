@@ -24,7 +24,7 @@
 
 <ul>
 <?php
-  foreach ($ipn_messages as $i => $ipn_message){
+  foreach ($ipn_messages as $ipn_message){
     ?><li><a href="javascript:ld(<?=$ipn_message->id?>)"><?= $ipn_message->date." ".$ipn_message->status ?></a></li><?php
   }
 ?>

@@ -19,12 +19,12 @@
  */
 
 class latestalbums_rss_Core {
-  static function available_feeds($item, $tag) {
+  public static function available_feeds($item, $tag) {
     $feeds["latestalbums/latest"] = t("Latest albums");
     return $feeds;
   }
 
-  static function feed($feed_id, $offset, $limit, $id) {
+  public static function feed($feed_id, $offset, $limit, $id) {
     switch ($feed_id) {
     case "latest":
       $feed = new stdClass();

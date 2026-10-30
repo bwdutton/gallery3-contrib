@@ -29,17 +29,17 @@ class Admin_Custom_Menus_Controller extends Admin_Controller {
 
   public function form_create($id) {
     // Display the create new menu form.
-    print $this->get_new_menu_form($id);
+    print static::get_new_menu_form($id);
   }
 
   public function form_edit($id) {
     // Display the edit menu form.
-    print $this->get_edit_menu_form($id);
+    print static::get_edit_menu_form($id);
   }
 
-  static function get_new_menu_form($id) {
+  public static function get_new_menu_form($id) {
     // Generate the create new menu form.
-    $form = new Forge("admin/custom_menus/create/$id", "", "post", array("id" => "g-create-menu-form"));
+    $form = new Forge("admin/custom_menus/create/$id", "", "post", ["id" => "g-create-menu-form"]);
     $group = $form->group("create_menu")
              ->label(t("Add new menu"));
     $group->input("menu_title")
@@ -50,10 +50,10 @@ class Admin_Custom_Menus_Controller extends Admin_Controller {
     return $form;
   }
   
-  static function get_edit_menu_form($id) {
+  public static function get_edit_menu_form($id) {
     // Generate the edit menu form.
     $existing_menu = ORM::factory("custom_menu", $id);
-    $form = new Forge("admin/custom_menus/edit/$id", "", "post", array("id" => "g-edit-menu-form"));
+    $form = new Forge("admin/custom_menus/edit/$id", "", "post", ["id" => "g-edit-menu-form"]);
     $group = $form->group("edit_menu")
              ->label(t("Edit menu"));
     $group->input("menu_title")
@@ -92,9 +92,9 @@ class Admin_Custom_Menus_Controller extends Admin_Controller {
 
     // Save new menu to the database.
     $new_menu->save();
-    message::success(t("Menu %menu_name created", array("menu_name" => $new_menu->title)));
-    log::success("custom_menus", t("Menu %menu_name created", array("menu_name" => $new_menu->title)));
-    json::reply(array("result" => "success"));
+    message::success(t("Menu %menu_name created", ["menu_name" => $new_menu->title]));
+    log::success("custom_menus", t("Menu %menu_name created", ["menu_name" => $new_menu->title]));
+    json::reply(["result" => "success"]);
   }
 
   public function edit($id) {
@@ -108,17 +108,17 @@ class Admin_Custom_Menus_Controller extends Admin_Controller {
       $existing_menu->title = Input::instance()->post("menu_title");
       $existing_menu->url = Input::instance()->post("menu_url");
       $existing_menu->save();
-      message::success(t("Menu %menu_name saved", array("menu_name" => $existing_menu->title)));
-      log::success("custom_menus", t("Menu %menu_name saved", array("menu_name" => $existing_menu->title)));
-      json::reply(array("result" => "success"));
+      message::success(t("Menu %menu_name saved", ["menu_name" => $existing_menu->title]));
+      log::success("custom_menus", t("Menu %menu_name saved", ["menu_name" => $existing_menu->title]));
+      json::reply(["result" => "success"]);
     } else {
-      message::error(t("Unable to load menu %menu_id", array("menu_id" => $id)));
-      log::success("custom_menus", t("Unable to load menu %menu_id", array("menu_id" => $id)));
-      json::reply(array("result" => "success"));
+      message::error(t("Unable to load menu %menu_id", ["menu_id" => $id]));
+      log::success("custom_menus", t("Unable to load menu %menu_id", ["menu_id" => $id]));
+      json::reply(["result" => "success"]);
     }
   }
 
-  function get_html_list($parent_id) {
+  public function get_html_list($parent_id) {
     // Generate an HTML list of existing menu items.
     $existing_menu = ORM::factory("custom_menu")
                      ->where("parent_id", "=", $parent_id)
@@ -156,7 +156,7 @@ class Admin_Custom_Menus_Controller extends Admin_Controller {
     // Display a form asking the user if they want to delete a menu.
     $one_menu = ORM::factory("custom_menu", $id);
     if ($one_menu->loaded()) {
-      print $this->get_delete_form($one_menu);
+      print static::get_delete_form($one_menu);
     }
   }
 
@@ -172,20 +172,20 @@ class Admin_Custom_Menus_Controller extends Admin_Controller {
     }
 
     // If the form validates, delete the specified menu.
-    $form = $this->get_delete_form($one_menu);
+    $form = static::get_delete_form($one_menu);
     if ($form->validate()) {
       $name = $one_menu->title;
       $this->delete_sub_menus($one_menu->id);
       $one_menu->delete();
-      message::success(t("Deleted menu %menu_name", array("menu_name" => $name)));
-      log::success("custom_menus", t("Deleted menu %menu_name", array("menu_name" => $name)));
-      json::reply(array("result" => "success", "location" => url::site("admin/custom_menus")));
+      message::success(t("Deleted menu %menu_name", ["menu_name" => $name]));
+      log::success("custom_menus", t("Deleted menu %menu_name", ["menu_name" => $name]));
+      json::reply(["result" => "success", "location" => url::site("admin/custom_menus")]);
     } else {
       print $form;
     }
   }
 
-  function delete_sub_menus($parent_id) {
+  public function delete_sub_menus($parent_id) {
     // Delete all sub menus associated with $parent_id.
     $existing_menu = ORM::factory("custom_menu")
                      ->where("parent_id", "=", $parent_id)
@@ -197,11 +197,11 @@ class Admin_Custom_Menus_Controller extends Admin_Controller {
     }
   }
 
-  static function get_delete_form($one_menu) {
+  public static function get_delete_form($one_menu) {
     // Generate a new form asking the user if they want to delete a menu.
-    $form = new Forge("admin/custom_menus/delete/$one_menu->id", "", "post", array("id" => "g-delete-menu-form"));
+    $form = new Forge("admin/custom_menus/delete/$one_menu->id", "", "post", ["id" => "g-delete-menu-form"]);
     $group = $form->group("delete_menu")
-      ->label(t("Really delete menu %menu_name & sub-menus?", array("menu_name" => $one_menu->title)));
+      ->label(t("Really delete menu %menu_name & sub-menus?", ["menu_name" => $one_menu->title]));
     $group->submit("")->value(t("Delete Menu"));
     return $form;
   }
@@ -222,8 +222,8 @@ class Admin_Custom_Menus_Controller extends Admin_Controller {
 		$second_menu->order_by = $temp_position;
         $one_menu->save();
         $second_menu->save();
-        message::success(t("Menu %menu_title moved up", array("menu_title" => $one_menu->title)));
-        log::success("custom_menus", t("Menu %menu_title moved up", array("menu_title" => $one_menu->title)));
+        message::success(t("Menu %menu_title moved up", ["menu_title" => $one_menu->title]));
+        log::success("custom_menus", t("Menu %menu_title moved up", ["menu_title" => $one_menu->title]));
       }
     }
     url::redirect("admin/custom_menus");
@@ -245,8 +245,8 @@ class Admin_Custom_Menus_Controller extends Admin_Controller {
 		$second_menu->order_by = $temp_position;
         $one_menu->save();
         $second_menu->save();
-        message::success(t("Menu %menu_title moved down", array("menu_title" => $one_menu->title)));
-        log::success("custom_menus", t("Menu %menu_title moved down", array("menu_title" => $one_menu->title)));
+        message::success(t("Menu %menu_title moved down", ["menu_title" => $one_menu->title]));
+        log::success("custom_menus", t("Menu %menu_title moved down", ["menu_title" => $one_menu->title]));
       }
     }
     url::redirect("admin/custom_menus");

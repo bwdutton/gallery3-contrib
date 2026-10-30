@@ -197,7 +197,7 @@ class Sabre_HTTP_DigestAuth extends Sabre_HTTP_AbstractAuth {
         // most other servers
         $digest = $this->httpRequest->getHeader('Authorization');
 
-        if ($digest && strpos(strtolower($digest),'digest')===0) {
+        if ($digest && str_starts_with(strtolower($digest), 'digest')) {
             return substr($digest,7);
         } else {
             return null;
@@ -217,13 +217,13 @@ class Sabre_HTTP_DigestAuth extends Sabre_HTTP_AbstractAuth {
     protected function parseDigest($digest) {
 
         // protect against missing data
-        $needed_parts = array('nonce'=>1, 'nc'=>1, 'cnonce'=>1, 'qop'=>1, 'username'=>1, 'uri'=>1, 'response'=>1);
-        $data = array();
+        $needed_parts = ['nonce'=>1, 'nc'=>1, 'cnonce'=>1, 'qop'=>1, 'username'=>1, 'uri'=>1, 'response'=>1];
+        $data = [];
 
         preg_match_all('@(\w+)=(?:(?:")([^"]+)"|([^\s,$]+))@', $digest, $matches, PREG_SET_ORDER);
 
         foreach ($matches as $m) {
-            $data[$m[1]] = $m[2] ? $m[2] : $m[3];
+            $data[$m[1]] = $m[2] ?: $m[3];
             unset($needed_parts[$m[1]]);
         }
 

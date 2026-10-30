@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class pdf_installer {
-  static function install() {
+  public static function install() {
     // Set gs_path variable
     if ($gs_path = exec("which gs")) {
       module::set_var("pdf", "gs_path", $gs_path);
@@ -30,20 +30,20 @@ class pdf_installer {
     module::set_version("pdf", 1);
   }
 
-  static function can_activate() {
-    $messages = array();
+  public static function can_activate() {
+    $messages = [];
     if (module::get_version("gallery") < 56) {
       $messages["warn"][] = t("PDF requires Gallery v3.0.5 or newer.");
     }
     return $messages;
   }
 
-  static function activate() {
+  public static function activate() {
     // Fix mime types of all existing PDFs
     pdf::fix_mime_types();
   }
 
-  static function uninstall() {
+  public static function uninstall() {
     // Delete vars from database
     module::clear_all_vars("pdf");
   }

@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class scheduler_event_Core {
-  static function admin_menu($menu, $theme) {
+  public static function admin_menu($menu, $theme) {
       $menu->get("maintenance")
         ->url(url::site("admin/schedule"));
   }
@@ -27,7 +27,7 @@ class scheduler_event_Core {
    * At this point, the output has been sent to the browser, so we can take some time
    * to run a schedule task.
    */
-  static function gallery_shutdown() {
+  public static function gallery_shutdown() {
     try {
       $schedule = ORM::factory("schedule")
         ->where("next_run_datetime", "<=", time())

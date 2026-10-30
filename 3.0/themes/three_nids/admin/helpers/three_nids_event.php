@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class three_nids_event_Core {
-  static function theme_edit_form($form) {
+  public static function theme_edit_form($form) {
     $group = $form->group("three_nids")->label(t("3nids Theme Settings"));
     $group->input("title")
       ->rules("required")
@@ -34,7 +34,7 @@ class three_nids_event_Core {
       ->value(module::get_var("three_nids", "photo_size"));
   }
 
-  static function theme_edit_form_completed($form) {
+  public static function theme_edit_form_completed($form) {
     module::set_var("three_nids", "description", $form->three_nids->description->value);
     module::set_var("three_nids", "title", $form->three_nids->title->value);
     module::set_var("three_nids", "photo_size", $form->three_nids->photo_size->value);

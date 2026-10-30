@@ -9,7 +9,7 @@ $(function() { bodyLoad('grid',''); });
 <div id="mosaicGridContainer">
   <div id="g-movie" class="ui-helper-clearfix">
     <?= $theme->resize_top($item) ?>
-    <?= $item->movie_img(array("class" => "g-movie", "id" => "g-item-id-{$item->id}")) ?>
+    <?= $item->movie_img(["class" => "g-movie", "id" => "g-item-id-{$item->id}"]) ?>
     <?= $theme->resize_bottom($item) ?>
   </div>
 

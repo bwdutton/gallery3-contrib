@@ -34,10 +34,10 @@ class pam_Controller extends Login_Controller {
   public function auth_html() {
   access::verify_csrf();
 
-    list ($valid, $form) = $this->_auth("pam/auth__html");
+    [$valid, $form] = $this->_auth("pam/auth__html");
     if ($valid) {
       $continue_url = $form->continue_url->value;
-      url::redirect($continue_url ? $continue_url : item::root()->abs_url());
+      url::redirect($continue_url ?: item::root()->abs_url());
     } else {
       $view = new Theme_View("page.html", "other", "login");
       $view->page_title = t("Log in to Gallery");
@@ -62,12 +62,12 @@ class pam_Controller extends Login_Controller {
   public function auth_ajax() {
   access::verify_csrf();
 
-    list ($valid, $form) = $this->_auth("pam/auth_ajax");
+    [$valid, $form] = $this->_auth("pam/auth_ajax");
     if ($valid) {
       print json_encode(
-        array("result" => "success"));
+        ["result" => "success"]);
     } else {
-      print json_encode(array("result" => "error", "form" => (string) $form));
+      print json_encode(["result" => "error", "form" => (string) $form]);
     }
   }
 
@@ -107,7 +107,7 @@ class pam_Controller extends Login_Controller {
       if (!$validuser || !$checkpass) {
         $form->login->inputs["name"]->add_error("invalid_login", 1);
         $name = $form->login->inputs["name"]->value;
-        log::warning("user", t("Failed login for %name", array("name" => $name)));
+        log::warning("user", t("Failed login for %name", ["name" => $name]));
         module::event("user_auth_failed", $name);
       }
 
@@ -136,7 +136,7 @@ class pam_Controller extends Login_Controller {
     // regenerate the session id to avoid session trapping
     Session::instance()->regenerate();
 
-    return array($valid, $form);
+    return [$valid, $form];
   }
 
   /**
@@ -185,7 +185,7 @@ class pam_Controller extends Login_Controller {
    * @return array
    */
   private function _read_plugins() {
-    $plugins = array();
+    $plugins = [];
     $plugin_path = MODPATH .'pam/plugins';
 
     // build plugin list from plugin folder
@@ -208,9 +208,9 @@ class pam_Controller extends Login_Controller {
       include MODPATH .'pam/config/config.php';
     }
 
-    $this->plugins = isset($plugins)?$plugins:false;
-    $this->plugin_path = isset($plugin_path)?$plugin_path:$default_plugin_path;
-    $this->create_account = isset($create_account)?$create_account:false;
+    $this->plugins = $plugins ?? false;
+    $this->plugin_path = $plugin_path ?? $default_plugin_path;
+    $this->create_account = $create_account ?? false;
 
   }
 

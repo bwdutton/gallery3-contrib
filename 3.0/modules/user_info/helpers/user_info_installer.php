@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class user_info_installer {
-  static function activate() {
+  public static function activate() {
     $db = Database::instance();
     $db->query("CREATE TABLE IF NOT EXISTS {user_infos} (
                  `id` int(11) NOT NULL auto_increment,
@@ -49,7 +49,7 @@ class user_info_installer {
   }
 
 
-  static function upgrade($version) {
+  public static function upgrade($version) {
 //    $db = Database::instance();
     if ($version == 1) {
 //      $db->query("ALTER TABLE {comments} CHANGE `state` `state` varchar(15) default 'unpublished'");
@@ -64,7 +64,7 @@ class user_info_installer {
 
 
 
-  static function uninstall() {
+  public static function uninstall() {
 //    $db = Database::instance();
 //    $db->query("DROP TABLE IF EXISTS {userinfo};");
 //    /* @todo Put database table drops here */

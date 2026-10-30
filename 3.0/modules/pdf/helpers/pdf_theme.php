@@ -19,7 +19,7 @@
  */
 class pdf_theme_Core {
   // Add CSS for PDF resize view
-  static function head($theme) {
+  public static function head($theme) {
     $buf = $theme->css("pdf_resize.css");
     if (module::get_var("pdf", "movie_overlay_hide", false)) {
       $buf .= $theme->css("pdf_thumb.css");
@@ -28,7 +28,7 @@ class pdf_theme_Core {
   }
 
   // Add class for thumb view (useful for CSS)
-  static function thumb_bottom($theme, $child) {
+  public static function thumb_bottom($theme, $child) {
     if (strtolower(pathinfo($child->name, PATHINFO_EXTENSION)) == "pdf") {
       $id = "g-item-id-" . $child->id;
       $class = "g-pdf-thumb";

@@ -62,7 +62,7 @@ class Admin_Iptc_Controller extends Admin_Controller {
 
   private function _get_admin_form() {
     // Make a new Form.
-    $form = new Forge("admin/iptc/saveprefs", "", "post", array("id" => "g-iptc-adminForm"));
+    $form = new Forge("admin/iptc/saveprefs", "", "post", ["id" => "g-iptc-adminForm"]);
 
     // Create group for display settings
     $iptc_display_group = $form->group("Global")
@@ -71,7 +71,7 @@ class Admin_Iptc_Controller extends Admin_Controller {
     $show = t("Show");
     foreach (iptc::keys() as $keyword => $iptcvar) {
       unset($checkbox);
-      $checkbox[$keyword] = array($show." \"".$iptcvar[1]."\" ?", module::get_var("iptc", "show_".$keyword));
+      $checkbox[$keyword] = [$show." \"".$iptcvar[1]."\" ?", module::get_var("iptc", "show_".$keyword)];
       $iptc_display_group->checklist($keyword)
         ->options($checkbox);
     }

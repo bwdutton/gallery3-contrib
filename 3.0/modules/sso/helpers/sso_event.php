@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class sso_event {
-  static function gallery_ready() {
+  public static function gallery_ready() {
     $sso_username = Input::instance()->server("REMOTE_USER");
     $user = Session::instance()->get("user");
     if (empty($user) || $user->name != $sso_username) {
@@ -30,7 +30,7 @@ class sso_event {
     }
   }
 
-  static function user_menu($menu, $theme) {
+  public static function user_menu($menu, $theme) {
     $menu->remove("user_menu_logout");
   }
 }

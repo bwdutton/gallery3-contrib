@@ -10,9 +10,9 @@
 ?>
 <ul>
   <li>
-    <?= t("Database size: %dbsize MB", array("dbsize" => number_format($database_size, 2))) ?>
+    <?= t("Database size: %dbsize MB", ["dbsize" => number_format($database_size, 2)]) ?>
   </li>
   <li>
-    <?= t("Number of tables: %dbtables", array("dbtables" => isset($tables) ? count($tables) : 0)) ?>
+    <?= t("Number of tables: %dbtables", ["dbtables" => isset($tables) ? count($tables) : 0]) ?>
   </li>
 </ul>

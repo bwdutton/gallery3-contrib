@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class videodimensions_event_Core {
-  static function item_edit_form($item, $form) {
+  public static function item_edit_form($item, $form) {
     // Retrieve the existing height and width and display it on the form.
     if ($item->is_movie()) {
       $form->edit_item->input("vidheight")->label(t("Video Height"))
@@ -28,7 +28,7 @@ class videodimensions_event_Core {
     }
   }
 
-  static function item_edit_form_completed($item, $form) {
+  public static function item_edit_form_completed($item, $form) {
     // Save the new height and width to the database.
     if ($item->is_movie()) {
       $item->height = $form->edit_item->vidheight->value;

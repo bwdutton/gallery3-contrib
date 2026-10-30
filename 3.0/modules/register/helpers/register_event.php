@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class register_event {
-  static function admin_menu($menu, $theme) {
+  public static function admin_menu($menu, $theme) {
     $menu->get("settings_menu")
       ->append( Menu::factory("link")
       ->id("register_users")
@@ -25,7 +25,7 @@ class register_event {
       ->url(url::site("admin/register")));
   }
 
-  static function user_menu($menu, $theme) {
+  public static function user_menu($menu, $theme) {
     $user = identity::active_user();
     if ($user->guest) {
       $menu->append(Menu::factory("dialog")

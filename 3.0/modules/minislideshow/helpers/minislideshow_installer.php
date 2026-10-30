@@ -19,12 +19,12 @@
  */
 
 class minislideshow_installer {
-  static function deactivate() {
+  public static function deactivate() {
     site_status::clear("minislideshow_needs_rss");
   }
 
-  static function can_activate() {
-    $messages = array();
+  public static function can_activate() {
+    $messages = [];
     if (!module::is_active("rss")) {
       $messages["warn"][] = t("The MiniSlide Show module requires the RSS module.");
     }

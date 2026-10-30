@@ -47,7 +47,7 @@ class Admin_Content_Warning_Controller extends Admin_Controller {
   
 	private function _get_form() {
     	$form = new Forge("admin/content_warning/handler", "", "post",
-                      array("id" => "gAdminContentWerning"));
+                      ["id" => "gAdminContentWerning"]);
     	$group = $form->group("content_warning");
     	$group->input("title")->label(t('Title (Will be displayed within H3)'))->rules("required")->value(module::get_var("content_warning", "title"));
     	$group->textarea("message")->label(t('Message (you can use HTML tags)'))->rules("required")->value(module::get_var("content_warning", "message"));

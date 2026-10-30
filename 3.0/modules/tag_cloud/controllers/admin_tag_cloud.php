@@ -62,7 +62,7 @@ class Admin_Tag_Cloud_Controller extends Admin_Controller {
 
   private function _get_admin_form() {
     $form = new Forge("admin/tag_cloud/edit", "", "post",
-                      array("id" => "g-tag-cloud-admin-form"));
+                      ["id" => "g-tag-cloud-admin-form"]);
     $group = $form->group("tag_cloud_options")->label(t("Tag Cloud Options"));
     $group->input("tagcolor")    ->label(t("Tag color"))
       ->value(module::get_var("tag_cloud", "tagcolor", '333333'))

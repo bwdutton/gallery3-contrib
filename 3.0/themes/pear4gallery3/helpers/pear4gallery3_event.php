@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class pear4gallery3_event_Core {
-  static function item_edit_form($item, $form) {
+  public static function item_edit_form($item, $form) {
     $db = Database::instance();
     $db->query("CREATE TABLE IF NOT EXISTS {pear_album_views} (
                `id` int(9) NOT NULL auto_increment,
@@ -35,18 +35,18 @@ class pear4gallery3_event_Core {
       if ($record->loaded()) {
         $pearsettings->dropdown("view_mode")
           ->label(t("View Mode"))
-          ->options(array("grid" => t("Grid (Default)"), "mosaic" => t("Mosaic"), "carousel" => t("Carousel")))
+          ->options(["grid" => t("Grid (Default)"), "mosaic" => t("Mosaic"), "carousel" => t("Carousel")])
           ->selected($record->view_mode);
       } else {
        $pearsettings->dropdown("view_mode")
           ->label(t("View Mode"))
-          ->options(array("grid" => t("Grid (Default)"), "mosaic" => t("Mosaic"), "carousel" => t("Carousel")))
+          ->options(["grid" => t("Grid (Default)"), "mosaic" => t("Mosaic"), "carousel" => t("Carousel")])
           ->selected("grid");
       }
     }
   }
 
-  static function item_edit_form_completed($item, $form) {
+  public static function item_edit_form_completed($item, $form) {
     if (!$item->is_album()){
       return;
     }

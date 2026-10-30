@@ -23,7 +23,7 @@ class pdf_event_Core {
    * Add PDFs as a type of "movie"
    * (ref: legal_file::get_movie_types_by_extension())
    */
-  static function movie_types_by_extension($types_by_extension_wrapper) {
+  public static function movie_types_by_extension($types_by_extension_wrapper) {
     $types_by_extension_wrapper->types_by_extension["pdf"] = "application/pdf";
   }
 
@@ -31,7 +31,7 @@ class pdf_event_Core {
    * Generate the thumbnails for PDFs
    * (ref: graphics::generate())
    */
-  static function movie_extract_frame($input_file, $output_file, $movie_options_wrapper=null, $item=null) {
+  public static function movie_extract_frame($input_file, $output_file, $movie_options_wrapper=null, $item=null) {
     $RESOLUTION = 300; // (DPI) - we extract high-res frames so resize has plenty to work with.
     if (strtolower(pathinfo($input_file, PATHINFO_EXTENSION)) == "pdf") {
       if (module::get_var("pdf", "make_thumb") && ($path = pdf::find_gs())) {
@@ -58,13 +58,13 @@ class pdf_event_Core {
    * Make resize image to show the PDF object
    * (ref: Item_Model::movie_img())
    */
-  static function movie_img($movie_img, $item) {
+  public static function movie_img($movie_img, $item) {
     if (strtolower(pathinfo($item->name, PATHINFO_EXTENSION)) == "pdf") {
       $view = new View("pdf_movie_img.html");
       $view->url = $item->file_url(true);
       $view->attrs = $movie_img->attrs;
-      $view->object_attrs = array("data" => $view->url, "class" => "g-pdf-resize",
-                                  "type" => "application/pdf");
+      $view->object_attrs = ["data" => $view->url, "class" => "g-pdf-resize",
+                                  "type" => "application/pdf"];
       $movie_img->view[] = $view;
     }
   }
@@ -73,7 +73,7 @@ class pdf_event_Core {
    * Add admin menu
    * (ref: Admin_View::admin_menu())
    */
-  static function admin_menu($menu, $theme) {
+  public static function admin_menu($menu, $theme) {
     $menu->get("settings_menu")
       ->append(
         Menu::factory("link")
@@ -86,13 +86,13 @@ class pdf_event_Core {
    * Get PDF file metadata (height and width)
    * (ref: movie::get_file_metadata())
    */
-  static function movie_get_file_metadata($file_path, $metadata) {
+  public static function movie_get_file_metadata($file_path, $metadata) {
     if ((strtolower(pathinfo($file_path, PATHINFO_EXTENSION)) == "pdf") && ($path = pdf::find_gs())) {
       // Parsing gs output properly can be a pain.  So, let's go for a reliable albeit inefficient
       // approach: re-extract the frame (into tmp) and get its image size.
       $temp_file = system::temp_filename("pdf_", "jpg");
       pdf_event::movie_extract_frame($file_path, $temp_file, null, null);
-      list($metadata->height, $metadata->width) = photo::get_file_metadata($temp_file);
+      [$metadata->height, $metadata->width] = photo::get_file_metadata($temp_file);
     }
   }
 }

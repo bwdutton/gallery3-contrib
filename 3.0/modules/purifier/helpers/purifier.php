@@ -19,7 +19,7 @@
 class purifier {
   private static $_purifier = null;
 
-  static function purify($dirty_html) {
+  public static function purify($dirty_html) {
     if (!isset(self::$_purifier)) {
       $config = HTMLPurifier_Config::createDefault();
       foreach (Kohana::config("purifier") as $category => $key_value) {

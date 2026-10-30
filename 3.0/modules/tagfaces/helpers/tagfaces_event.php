@@ -18,21 +18,21 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class tagfaces_event_Core {
-  static function module_change($changes) {
+  public static function module_change($changes) {
     // See if the Tags module is installed,
     //   tell the user to install it if it isn't.
     if (!module::is_active("tag") || in_array("tag", $changes->deactivate)) {
       site_status::warning(
         t("The TagFaces module requires the Tags module.  " .
           "<a href=\"%url\">Activate the Tags module now</a>",
-          array("url" => url::site("admin/modules"))),
+          ["url" => url::site("admin/modules")]),
         "tagfaces_needs_tag");
     } else {
       site_status::clear("tagfaces_needs_tag");
     }
   }
 
-  static function site_menu($menu, $theme) {
+  public static function site_menu($menu, $theme) {
     // Create a menu option for adding face data.
     if (!$theme->item()) {
       return;
@@ -52,7 +52,7 @@ class tagfaces_event_Core {
     }
   }
 
-  static function item_deleted($item) {
+  public static function item_deleted($item) {
     // Check for and delete existing Faces and Notes.
     $existingFaces = ORM::factory("items_face")
                           ->where("item_id", "=", $item->id)

@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class ogp_tags_theme_Core {
-  static function head($theme) {
+  public static function head($theme) {
     if ($theme->item()) {
       return new View("ogp_tags_block.html");
     }

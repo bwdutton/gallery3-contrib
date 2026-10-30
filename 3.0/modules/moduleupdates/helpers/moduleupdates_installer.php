@@ -20,7 +20,7 @@
 
 class moduleupdates_installer {
 
-  static function install() {
+  public static function install() {
   
     $version = module::get_version("moduleupdates");
     if ($version < 1) {
@@ -28,21 +28,21 @@ class moduleupdates_installer {
       //Remove the ModuleUpdates cache entry 'JIC'
       Cache::instance()->delete("ModuleUpdates");
       //create the blank ModuleUpdates cache entry with an expiration of 0 days
-      Cache::instance()->set("moduleupdates_cache", "", array("ModuleUpdates"), null);
-      Cache::instance()->set("moduleupdates_cache_updates", "", array("ModuleUpdates"), null);
+      Cache::instance()->set("moduleupdates_cache", "", ["ModuleUpdates"], null);
+      Cache::instance()->set("moduleupdates_cache_updates", "", ["ModuleUpdates"], null);
     }
   }
 
-  static function upgrade($version) {
+  public static function upgrade($version) {
     module::set_version("moduleupdates", 12);
     //Remove the ModuleUpdates cache entry 'JIC'
     Cache::instance()->delete("ModuleUpdates");
     //Empty the ModuleUpdates cache entry so our new version starts from scratch
-    Cache::instance()->set("moduleupdates_cache", "", array("ModuleUpdates"), null);
-    Cache::instance()->set("moduleupdates_cache_updates", "", array("ModuleUpdates"), null);
+    Cache::instance()->set("moduleupdates_cache", "", ["ModuleUpdates"], null);
+    Cache::instance()->set("moduleupdates_cache_updates", "", ["ModuleUpdates"], null);
   }
 
-  static function uninstall() {
+  public static function uninstall() {
 	
     //Remove the ModuleUpdates cache entry as we remove the module
     Cache::instance()->delete("ModuleUpdates");

@@ -18,14 +18,14 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class language_flags_installer {
-  static function install() {
+  public static function install() {
     // Set the default flag type.
     module::set_var("language_flags", "flag_shape", "rectangular");
 
     module::set_version("language_flags", 1);
   }
 
-  static function uninstall() {
+  public static function uninstall() {
     module::delete("language_flags");
   }
 }

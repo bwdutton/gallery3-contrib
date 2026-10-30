@@ -73,17 +73,17 @@ class Admin_EXIF_GPS_Controller extends Admin_Controller {
   private function _get_admin_form() {
     // Make a new Form.
     $form = new Forge("admin/exif_gps/saveprefs", "", "post",
-                      array("id" => "g-exif-gps-adminForm"));
+                      ["id" => "g-exif-gps-adminForm"]);
 
     // Create group for global settings, like the Maps API Key
     $gps_global_group = $form->group("Global")
                              ->label(t("Global Settings"));
     $gps_global_group->dropdown("provider")
                ->label(t("Map Provider"))
-               ->options(array(
+               ->options([
                  "gmaps" => "Google Maps",
                  "osm" => "OpenStreetMap"
-               ))
+               ])
                ->selected(module::get_var("exif_gps", "provider"));
 
     // switch (module::get_var("exif_gps", "provider")) {
@@ -122,12 +122,12 @@ class Admin_EXIF_GPS_Controller extends Admin_Controller {
                         ->rules("required");
             $gps_sidebar->dropdown("sidebar_mapformat")
                         ->label(t("Map Interface"))
-                        ->options(array(t("Static"), t("Interactive")))
+                        ->options([t("Static"), t("Interactive")])
                         ->selected(module::get_var("exif_gps", "sidebar_mapformat"));
             $gps_sidebar->dropdown("sidebar_maptype")
                         ->label(t("Default Map Type"))
-                        ->options(array(t("Map"), t("Satellite"),
-                                        t("Hybrid"), t("Terrain")))
+                        ->options([t("Map"), t("Satellite"),
+                                        t("Hybrid"), t("Terrain")])
                         ->selected(module::get_var("exif_gps", "sidebar_maptype"));
 
             // Create a group for map album/user settings
@@ -135,8 +135,8 @@ class Admin_EXIF_GPS_Controller extends Admin_Controller {
                                         ->label(t("Map Album/User Settings"));
             $gps_large_map_group->dropdown("largemap_maptype")
                                 ->label(t("Default Map Type"))
-                                ->options(array(t("Map"), t("Satellite"),
-                                                t("Hybrid"), t("Terrain")))
+                                ->options([t("Map"), t("Satellite"),
+                                                t("Hybrid"), t("Terrain")])
                                 ->selected(module::get_var("exif_gps", "largemap_maptype"));
         // break;
         // case "osm":

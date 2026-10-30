@@ -70,7 +70,7 @@ class Item_Model extends Item_Model_Core {
     }
 
     public function __get($column) {
-        if (substr($column, 0, 3) == "s3_") {
+        if (str_starts_with($column, "s3_")) {
             $var = substr($column, 3);
             return $this->get_aws_s3_meta()->$var;
         }
@@ -78,7 +78,7 @@ class Item_Model extends Item_Model_Core {
     }
 
     public function __set($column, $value) {
-        if (substr($column, 0, 3) == "s3_") {
+        if (str_starts_with($column, "s3_")) {
             $var = substr($column, 3);
             $this->get_aws_s3_meta()->$var = $value;
         }

@@ -19,11 +19,11 @@
  */
 class author_event_Core
 {
-	static function item_created($item) {
+	public static function item_created($item) {
 		$byline = author::fix($item);
 	}
 		
-	static function item_deleted($item) {
+	public static function item_deleted($item) {
 	    db::build()
     		->delete("author_records")
       		->where("item_id", "=", $item->id)

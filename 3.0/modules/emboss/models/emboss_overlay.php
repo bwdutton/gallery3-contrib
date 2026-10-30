@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  *************************************************************************/
 class Emboss_Overlay_Model_Core extends ORM {
-  protected $sorting = array('width' => 'desc', 'height' => 'desc');
+  protected $sorting = ['width' => 'desc', 'height' => 'desc'];
 
   public function score($W,$H,$function)
   {

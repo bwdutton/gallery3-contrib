@@ -19,7 +19,7 @@
  */
 
 class fotomotorw_event_Core {
-  static function admin_menu($menu, $theme) {
+  public static function admin_menu($menu, $theme) {
     // Display an option under the admin Settings menu.
     $menu->get("settings_menu")
       ->append(Menu::factory("link")
@@ -28,7 +28,7 @@ class fotomotorw_event_Core {
         ->url(url::site("admin/fotomotorw")));
   }
 
-  static function context_menu($menu, $theme, $item) {
+  public static function context_menu($menu, $theme, $item) {
     // Add a "Buy Prints" option to the photo's thumbnail menu.
     if ($item->type == "photo") {
       $menu->get("options_menu")

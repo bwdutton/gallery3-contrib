@@ -25,7 +25,7 @@ class Ratings_Controller extends Controller {
 #    access::required("edit", $id);e
     echo "Would you like to clear all the ratings and votes for this item?<br>";
     echo "<i><font color=#ff6666>This cannot be undone!</font></i><br><br><hr>";
-    $form = new Forge("ratings/doClear/{$id}","","post", array("id" => "g-ratings-clear-form"));
+    $form = new Forge("ratings/doClear/{$id}","","post", ["id" => "g-ratings-clear-form"]);
     $group = $form->group("clear")->label(t("Clear all ratings/votes"));
     $group->submit("")
       ->value(t("Clear Them!"));
@@ -49,7 +49,7 @@ class Ratings_Controller extends Controller {
 		->execute()
 		->count() < 1){
 		  message::warning(t("No votes have been registered for this item:  Nothing cleared!"));
-		  json::reply(array("result" => "success", "location" => $photo->url()));
+		  json::reply(["result" => "success", "location" => $photo->url()]);
 		  return;
 		}
 
@@ -60,6 +60,6 @@ class Ratings_Controller extends Controller {
 
 
     message::success(t("All ratings and votes for this item have been cleared!"));
-    json::reply(array("result" => "success", "location" => $photo->url()));
+    json::reply(["result" => "success", "location" => $photo->url()]);
   }
 }

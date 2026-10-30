@@ -18,16 +18,16 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class rescue_task_Core {
-  static function available_tasks() {
-    return array(Task_Definition::factory()
+  public static function available_tasks() {
+    return [Task_Definition::factory()
                  ->callback("rescue_task::fix_internet_addresses")
                  ->name(t("Fix internet addresses"))
                  ->description(t("Fix internet addresses broken when upgrading to Beta 3"))
                  ->severity(log::SUCCESS),
-                 );
+                 ];
   }
 
-  static function fix_internet_addresses($task) {
+  public static function fix_internet_addresses($task) {
     $start = microtime(true);
 
     $total = $task->get("total");
@@ -69,6 +69,6 @@ class rescue_task_Core {
       $task->percent_complete = round(100 * $completed / $total);
     }
     $task->status = t2("One row updated", "%count / %total rows updated", $completed,
-                       array("total" => $total));
+                       ["total" => $total]);
   }
 }

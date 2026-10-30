@@ -1,5 +1,5 @@
 <?php defined("SYSPATH") or die("No direct script access.") ?>
-<?php date_default_timezone_set('Australia/ACT'); ?> 
+<?php date_default_timezone_set('Australia/ACT'); ?>
 <div class="g-metadata">
 <span class="g-about-this">
 <table cellspacing="0" cellpadding="0" border="0">
@@ -19,7 +19,7 @@
   </tr>
 </table>
   <span >
-  
+
   <!--This Div will insert a margin either side of the desciption if there are tags to display-->
   <?php if (count($all_tags) > 0): ?>
 	<div style="margin-top: 10px; margin-bottom: 10px;">
@@ -30,7 +30,7 @@
     <?= $description ?>
   </span ><br>
   <?php endif ?>
-  
+
     <?php if (count($all_tags) > 0): ?>
 	</div>
   <span >
@@ -38,22 +38,22 @@
   </span >
   <?php
   // Create an array to store the tag names and urls in.
-  $display_tags = array();  
-  
+  $display_tags = [];
+
   // Loop through all tags in the album, copying their
   //   names and urls into the array and skipping duplicates.
   $last_tagid = "";
   foreach ($all_tags as $one_tag) {
     if ($last_tagid != $one_tag->id) {
       $tag = ORM::factory("tag", $one_tag->id);
-      $display_tags[] = array(html::clean($tag->name), $tag->url());
+      $display_tags[] = [html::clean($tag->name), $tag->url()];
       $last_tagid = $one_tag->id;
     }
   }
-  
+
   // Sort the array.
   asort($display_tags);
-  
+
   // Print out the list of tags as clickable links.
   $not_first = 0;
   foreach ($display_tags as $one_tag) {

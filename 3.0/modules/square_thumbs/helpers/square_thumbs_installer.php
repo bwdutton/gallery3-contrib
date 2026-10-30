@@ -18,10 +18,10 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class square_thumbs_installer {
-  static function install() {
+  public static function install() {
     // Add rules for generating our thumbnails and resizes
     graphics::add_rule(
-      "square_thumbs", "thumb", "square_thumbs_graphics::crop_to_square", array(),
+      "square_thumbs", "thumb", "square_thumbs_graphics::crop_to_square", [],
       50);
     module::set_version("square_thumbs", 1);
   }

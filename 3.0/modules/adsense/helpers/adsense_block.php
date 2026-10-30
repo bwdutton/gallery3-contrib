@@ -18,11 +18,11 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class adsense_block_Core {
-  static function get_site_list() {
-    return array("adsense" => t("Adsense"));
+  public static function get_site_list() {
+    return ["adsense" => t("Adsense")];
   }
 
-  static function get($block_id, $theme) {
+  public static function get($block_id, $theme) {
     $block = "";
     switch ($block_id) {
     case "adsense":

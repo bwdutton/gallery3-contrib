@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class themeroller_installer {
-  static function install() {
+  public static function install() {
     $version = module::get_version("themeroller");
     if ($version == 0) {
       /* @todo Put database creation here */
@@ -25,19 +25,19 @@ class themeroller_installer {
     }
   }
 
-  static function upgrade($version) {
+  public static function upgrade($version) {
   }
 
-  static function uninstall() {
+  public static function uninstall() {
     /* @todo Put database table drops here */
     module::delete("themeroller");
   }
 
-  static function can_activate() {
-    $messages = array();
+  public static function can_activate() {
+    $messages = [];
     if (!(extension_loaded("zip") || extension_loaded("zlib"))) {
       $messages["warn"][] = t("Themeroller requires either the '%zip' or '%zlib' extension to be loaded",
-                              array("zip" => "zip", "zlib" => "zlib"));
+                              ["zip" => "zip", "zlib" => "zlib"]);
     }
     return $messages;
   }

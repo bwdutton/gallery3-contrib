@@ -58,15 +58,15 @@ class Admin_Sitemap_Xtra_Controller extends Admin_Controller {
 	}
 
 	private function _get_form() {
-		$freq_range = array("always"=>t("Always"), "hourly"=>t("Hourly"), "daily"=>t("Daily"), "weekly"=>t("Weekly"),
-				"monthly"=>t("Monthly"), "yearly"=>t("Yearly"), "never"=>t("Never"));
+		$freq_range = ["always"=>t("Always"), "hourly"=>t("Hourly"), "daily"=>t("Daily"), "weekly"=>t("Weekly"),
+				"monthly"=>t("Monthly"), "yearly"=>t("Yearly"), "never"=>t("Never")];
 
-		$prio_range = array("0"=>0, "0.1"=>0.1, "0.2"=>0.2, "0.3"=>0.3, "0.4"=>0.4, "0.5"=>0.5, "0.6"=>0.6,
-			"0.7"=>0.7, "0.8"=>0.8, "0.9"=>0.9, "1.0"=>1.0);
+		$prio_range = ["0"=>0, "0.1"=>0.1, "0.2"=>0.2, "0.3"=>0.3, "0.4"=>0.4, "0.5"=>0.5, "0.6"=>0.6,
+			"0.7"=>0.7, "0.8"=>0.8, "0.9"=>0.9, "1.0"=>1.0];
 
-		$form = new Forge("admin/sitemap_xtra/handler", "", "post", array("id" => "g-admin-form"));
+		$form = new Forge("admin/sitemap_xtra/handler", "", "post", ["id" => "g-admin-form"]);
 		$group = $form->group("sitemap")->label(t("Sitemap"));
-		$group->input("sitemap_path")->label(t("Enter physical file system path for sitemap. This should be %dirr or below, since sitemaps are not valid outside their scope.", array("dirr" => DOCROOT)))
+		$group->input("sitemap_path")->label(t("Enter physical file system path for sitemap. This should be %dirr or below, since sitemaps are not valid outside their scope.", ["dirr" => DOCROOT]))
 			->value(module::get_var("sitemap_xtra", "path", DOCROOT));
 		$group->input("sitemap_base_url")->label(t("Enter base URL for your Gallery 3 installation on the form http://your.domain.com/, http://your.domain.com/gallery3/, https://your.domain.com/index.php/ or similar."))
 			->value(module::get_var("sitemap_xtra", "base_url", "http://your.domain.com/"));
@@ -92,7 +92,7 @@ class Admin_Sitemap_Xtra_Controller extends Admin_Controller {
 				->checked(module::get_var("sitemap_xtra", "robots_txt"));
 		} else {
 			$dir = $_SERVER['DOCUMENT_ROOT'];
-			$group->checkbox("sitemap_robots_txt")->label(t("Add sitemap location to robots.txt [ %dird ] not writable.", array("dird" => DOCROOT)))
+			$group->checkbox("sitemap_robots_txt")->label(t("Add sitemap location to robots.txt [ %dird ] not writable.", ["dird" => DOCROOT]))
 				->checked(module::get_var("sitemap_xtra", "robots_txt", false))
 				->disabled("disabled", "disabled");
 		}

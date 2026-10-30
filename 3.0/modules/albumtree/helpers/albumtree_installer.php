@@ -18,12 +18,12 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class albumtree_installer {
-  static function install() {
+  public static function install() {
     module::set_var("albumtree", "style", "select");
     module::set_version("albumtree", 3);
   }
 
-  static function upgrade($version) {
+  public static function upgrade($version) {
     $db = Database::instance();
     if ($version == 1) {
       module::set_var("albumtree", "style", "select");

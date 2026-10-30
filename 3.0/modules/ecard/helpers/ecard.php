@@ -24,8 +24,8 @@
  * Note: by design, this class does not do any permission checking.
  */
 class ecard_Core {
-  static function get_send_form($item_id) {
-    $form = new Forge("ecard/send/{$item_id}", "", "post", array("id" => "g-ecard-form"));
+  public static function get_send_form($item_id) {
+    $form = new Forge("ecard/send/{$item_id}", "", "post", ["id" => "g-ecard-form"]);
     $group = $form->group("send_ecard")->label(t("Send eCard"));
     $group->input("from_name")
       ->label(t("Your name"))
@@ -71,7 +71,7 @@ class ecard_Core {
     return $form;
   }
 
-  static function prefill_send_form($form) {
+  public static function prefill_send_form($form) {
     $active = identity::active_user();
     if (!$active->guest) {
       $group = $form->send_ecard;
@@ -81,7 +81,7 @@ class ecard_Core {
     return $form;
   }
 
-  static function can_send_ecard() {
+  public static function can_send_ecard() {
     return !identity::active_user()->guest ||
       module::get_var("ecard", "access_permissions") == "everybody";
   }

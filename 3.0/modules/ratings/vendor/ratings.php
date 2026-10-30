@@ -14,7 +14,7 @@
 class RabidRatings { 
 
 	/* Edit the lines below to configure this widget. */
-	function configuration() { 
+	public function configuration() { 
 
 ///////////////////////////////////////////////////////////////////////////////
 //////////                       CONFIGURATION                       //////////
@@ -86,7 +86,7 @@ if(!isset($this->dbUser)){
 
 	}
 
-	function __construct() {
+	public function __construct() {
 		$this->configuration();
 		$this->initializeDatabase();
 	}
@@ -100,7 +100,7 @@ if(!isset($this->dbUser)){
 	 *     ratableKey should be made up in whatever manner works best for the
 	 *     site using it. 
 	 */
-	function showStars($ratableKey) {
+	public function showStars($ratableKey) {
 		$rating = $this->loadRating($ratableKey);
 		$ratingId = $rating['keyID'];
 		$stars = $this->percentToStars($rating['rating']);
@@ -123,10 +123,10 @@ if(!isset($this->dbUser)){
 			 ."</span></div>".$afterText."</div>";
 	}
 
-	function getStarMessage($rating) {
+	public function getStarMessage($rating) {
 		$stars = $this->percentToStars($rating['rating']);
-		if ($rating[totalRatings] > 1) $s = "s";
-		if ($rating[totalRatings] < 1) $s = "s";
+		if ($rating[\TOTALRATINGS] > 1) $s = "s";
+		if ($rating[\TOTALRATINGS] < 1) $s = "s";
 		$this->imageword .= "s";
 		return "$stars/$this->stars $this->imageword ($rating[totalRatings] $this->votestring$s)";
 	}
@@ -144,7 +144,7 @@ if(!isset($this->dbUser)){
 	 * @param integer id      - The id of key to register a rating for. 
 	 * @param integer percent - The rating in percentages.
 	 */
-	function doVote($ratableId, $percent) {
+	public function doVote($ratableId, $percent) {
 		$ip = $_SERVER['REMOTE_ADDR'];
 
 
@@ -215,7 +215,7 @@ if($regonly){
 	 * failure, since nobody likes their entire page dying and throwing ugly
 	 * errors just because a minor widget fails.
 	 */
-	 function initializeDatabase() {
+	 public function initializeDatabase() {
 		error_reporting(1);
 
 /* GALLERY3 PATCH */
@@ -240,7 +240,7 @@ if(!isset($this->dbUser)){
 	 * RabidRatings::ensureTables
 	 * Creates the necessary database tables, should they not  exist.
 	 */
-	function ensureTables() {
+	public function ensureTables() {
 
 		if (!$this->allowDuplicates) {
 			$unique = ", UNIQUE KEY `ratableKey` (`ratableKey`)";
@@ -275,7 +275,7 @@ if(!isset($this->dbUser)){
 		if ($ratingsFound  != true) { mysql_query($SQL_CREATE_RATINGS);  }
 	}
 
-	function loadRating($ratableKey) {
+	public function loadRating($ratableKey) {
 		if (is_numeric($ratableKey)) $crit = "$this->ratables.id"; 
 		else $crit = 'ratableKey';
 		$WHERE = "WHERE $crit = '$ratableKey'"; 
@@ -291,7 +291,7 @@ if(!isset($this->dbUser)){
 		return $result;
 	}
 
-	function createNewKey($key) {
+	public function createNewKey($key) {
 		if (is_numeric($key)) { return false; }
 		$SQL_INSERT_KEY  = "INSERT INTO $this->ratables(ratableKey) "
 		."VALUES ('$key');";
@@ -304,7 +304,7 @@ if(!isset($this->dbUser)){
 		return $newKey;
 	}
 
-	function percentToStars($percent) {
+	public function percentToStars($percent) {
 		$modifier = 100 / $this->stars;
 		return round($percent / $modifier, 1);
 	}

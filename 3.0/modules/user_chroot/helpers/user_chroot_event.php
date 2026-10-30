@@ -39,7 +39,7 @@ class user_chroot_event_Core {
   /**
    * Called when building the 'Add user' form for an admin.
    */
-  static function user_add_form_admin($user, $form) {
+  public static function user_add_form_admin($user, $form) {
     $form->add_user->dropdown('user_chroot')
       ->label(t("Root Album"))
       ->options(self::albumsTreeArray())
@@ -98,7 +98,7 @@ class user_chroot_event_Core {
    * Generate an array representing the hierarchy of albums.
    */
   private static function albumsTreeArray($level_marker = '    ') {
-    $tree = array();
+    $tree = [];
     $albums = ORM::factory('item')
       ->where('type', '=', 'album')
       ->order_by('left_ptr', 'ASC')

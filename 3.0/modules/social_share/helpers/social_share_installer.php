@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class social_share_installer {
-    static function deactivate() {
+    public static function deactivate() {
         module::clear_var("social_share", "general_impage_only");
         module::clear_var("social_share", "facebook_share_enabled");
         module::clear_var("social_share", "facebook_share_layout");
@@ -41,7 +41,7 @@ class social_share_installer {
         module::clear_var("social_share", "twitter_count_location");
         module::clear_var("social_share", "twitter_size");
     }
-    static function upgrade($version) {
+    public static function upgrade($version) {
         if ($version < 1) {
             module::set_version("social_share", $version = 1);
         }

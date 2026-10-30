@@ -28,10 +28,10 @@ class Sabre_DAV_URLUtil {
      * @param string $path 
      * @return string 
      */
-    static function encodePath($path) {
+    public static function encodePath($path) {
 
         $path = explode('/',$path);
-        return implode('/',array_map(array('Sabre_DAV_URLUtil','encodePathSegment'), $path));
+        return implode('/',array_map(['Sabre_DAV_URLUtil','encodePathSegment'], $path));
 
     }
 
@@ -43,7 +43,7 @@ class Sabre_DAV_URLUtil {
      * @param string $pathSegment 
      * @return string 
      */
-    static function encodePathSegment($pathSegment) {
+    public static function encodePathSegment($pathSegment) {
 
         $newStr = '';
         for($i=0;$i<strlen($pathSegment);$i++) {
@@ -82,7 +82,7 @@ class Sabre_DAV_URLUtil {
      * @param string $path 
      * @return string 
      */
-    static function decodePath($path) {
+    public static function decodePath($path) {
 
         return self::decodePathSegment($path);
 
@@ -94,15 +94,15 @@ class Sabre_DAV_URLUtil {
      * @param string $path 
      * @return string 
      */
-    static function decodePathSegment($path) {
+    public static function decodePathSegment($path) {
 
         $path = urldecode($path);
-        $encoding = mb_detect_encoding($path, array('UTF-8','ISO-8859-1'));
+        $encoding = mb_detect_encoding($path, ['UTF-8','ISO-8859-1']);
 
         switch($encoding) {
 
             case 'ISO-8859-1' : 
-                $path = utf8_encode($path);
+                $path = mb_convert_encoding($path, 'UTF-8', 'ISO-8859-1');
         }
 
         return $path;
@@ -127,13 +127,13 @@ class Sabre_DAV_URLUtil {
      * @param string $path 
      * @return array 
      */
-    static function splitPath($path) {
+    public static function splitPath($path) {
 
-        $matches = array();
+        $matches = [];
         if(preg_match('/^(?:(?:(.*)(?:\/+))?([^\/]+))(?:\/?)$/u',$path,$matches)) {
-            return array($matches[1],$matches[2]);
+            return [$matches[1],$matches[2]];
         } else {
-            return array(null,null);
+            return [null,null];
         }
 
     }

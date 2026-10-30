@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class scheduler_installer {
-  static function install() {
+  public static function install() {
     $db = Database::instance();
     $db->query("CREATE TABLE {schedules} (
                  `id` int(9) NOT NULL auto_increment,
@@ -35,7 +35,7 @@ class scheduler_installer {
     module::set_version("scheduler", $version = 1);
   }
 
-  static function uninstall() {
+  public static function uninstall() {
     $db = Database::instance();
     $db->query("DROP TABLE IF EXISTS {schedules}");
   }

@@ -18,11 +18,11 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class albumtree_block_Core {
-  static function get_site_list() {
-    return array("albumtree" => t("Album tree"));
+  public static function get_site_list() {
+    return ["albumtree" => t("Album tree")];
   }
 
-  static function get($block_id) {
+  public static function get($block_id) {
     $block = new Block();
     switch ($block_id) {
     case "albumtree":

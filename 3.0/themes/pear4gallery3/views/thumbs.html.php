@@ -26,7 +26,7 @@ if (count($children)) {
       <?php if ($child->has_thumb()) { ?>
       <img id="thumb_<?= $child->id ?>" alt="<?= $child->id ?>" class="<?= $img_class ?>" style="width: 200px; height; 200px;" src="<?= $theme->url("icons/empty_image.png") ?>"/>
  <?php $javaScript .= "thumbImages['thumb_" . $child->id . "'] = '" . $child->thumb_url() . "';\n" ?>
-        <?php// = $child->thumb_img(array("class" => $img_class, "id" => "thumb_$child->id", "style" => "width: 200px; height 200px;")) ?>
+        <?\PHP// = $child->thumb_img(array("class" => $img_class, "id" => "thumb_$child->id", "style" => "width: 200px; height 200px;")) ?>
       <?php } else { ?>
         <span style="display: block; width: 200px; height: 200px;"></span>
       <?php } ?>
@@ -42,8 +42,8 @@ foreach ($granchildren as $i => $granchild) {
       if(++$i > module::get_var("th_pear4gallery3", "skimm_lim", "50")) break;
       if ($granchild->has_thumb()) {
 ?>
-      <?= $granchild->thumb_img(array("style" => "display: none;")) ?>
- <?php $javaScript .= "thumbImages['area_" . $granchild->id ."'] = '" . $granchild->thumb_img(array("style" => "display: none;")) . "';\n" ?>
+      <?= $granchild->thumb_img(["style" => "display: none;"]) ?>
+ <?php $javaScript .= "thumbImages['area_" . $granchild->id ."'] = '" . $granchild->thumb_img(["style" => "display: none;"]) . "';\n" ?>
     <div class="skimm_div" style="height: 200px; width: <?=$step?>px; left: <?=$offset?>px; top: 0px;" onmouseover="$('#thumb_<?=$child->id?>').attr('src', '<?=$granchild->thumb_url()?>');skimimg=<?=$i-1?>;" id="area_<?=$granchild->id?>"></div>
       <?php } ?>
 <?php		$offset+=$step; ?>
@@ -56,7 +56,7 @@ foreach ($granchildren as $i => $granchild) {
   <?php } ?>
 <script  type="text/javascript">
 <?php $item_no = ($page*$page_size)-$page_size; ?>
-<?php foreach ($children as $i => $child) { ?>
+<?php foreach ($children as $child) { ?>
 <?php if(!($child->is_album() || $child->is_movie())) { ?>
 slideshowImages[<?= $item_no++ ?>] = (['<?= $child->resize_url() ?>', '<?= $child->id ?>', '<?= $child->resize_width ?>','<?= $child->resize_height ?>', '<?= htmlentities($child->title, ENT_QUOTES) ?>', '<?php if (access::can("view_full", $child)) print "true" ?>', '<?= $child->url() ?>']);
 <?php } ?>
@@ -67,7 +67,7 @@ slideshowImages[<?= $item_no++ ?>] = (['<?= $child->resize_url() ?>', '<?= $chil
   <?php if ($user->admin || access::can("add", $item)) { ?>
   <?php $addurl = url::site("uploader/index/$item->id") ?>
   <li><?= t("There aren't any photos here yet! <a %attrs>Add some</a>.",
-    array("attrs" => html::mark_clean("href=\"$addurl\" class=\"g-dialog-link\""))) ?></li>
+    ["attrs" => html::mark_clean("href=\"$addurl\" class=\"g-dialog-link\"")]) ?></li>
   <?php } else { ?>
   <li><?= t("There aren't any photos here yet!") ?></li>
   <?php } ?>

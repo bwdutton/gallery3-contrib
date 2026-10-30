@@ -2,7 +2,7 @@
 <div id="g-admin-session-explorer" class="g-block">
   <h1> <?= t("Top user agents and ips") ?> </h1>
   <p>
-    <?= t("Numbers are based on a sample size of %sample_size sessions", array("sample_size" => $sample_size)) ?>
+    <?= t("Numbers are based on a sample size of %sample_size sessions", ["sample_size" => $sample_size]) ?>
   </p>
 
   <div class="g-block-content">

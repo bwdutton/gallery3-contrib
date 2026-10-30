@@ -4,15 +4,14 @@ class PHPCalendar_Core {
   // Month and year to use for calendaring
   protected $month;
   protected $year;
-  protected $month_url;
 
   // First Day of the Week (0 = Sunday or 1 = Monday).
   protected $week_start = 0;
 
   // Events for the current month.
-  protected $event_data = Array();
+  protected $event_data = [];
 
-  public function __construct($month = NULL, $year = NULL, $url = NULL)
+  public function __construct($month = NULL, $year = NULL, protected $month_url = NULL)
   {
     empty($month) and $month = date('n'); // Current month
     empty($year)  and $year  = date('Y'); // Current year
@@ -20,12 +19,11 @@ class PHPCalendar_Core {
     // Set the month and year
     $this->month = (int) $month;
     $this->year  = (int) $year;
-    $this->month_url = $url;
   }
 
-  public function event($day_of_the_week, $event_url = NULL, $css_id = NULL, $custom_text = NULL) 
+  public function event($day_of_the_week, $event_url = NULL, $css_id = NULL, $custom_text = NULL)
   {
-    $this->event_data += Array($day_of_the_week => Array($event_url, $css_id, $custom_text));
+    $this->event_data += [$day_of_the_week => [$event_url, $css_id, $custom_text]];
   }
 
   public function render()
@@ -37,17 +35,17 @@ class PHPCalendar_Core {
   # http://keithdevens.com/software/php_calendar
   #  see example at http://keithdevens.com/weblog
   # License: http://keithdevens.com/software/license
-  function generate_calendar($year, $month, $days = array(), $day_name_length = 3, $month_href = NULL, $first_day = 0, $pn = array())
+  public function generate_calendar($year, $month, $days = [], $day_name_length = 3, $month_href = NULL, $first_day = 0, $pn = [])
   {
     $first_of_month = gmmktime(0,0,0,$month,1,$year);
     #remember that mktime will automatically correct if invalid dates are entered
     # for instance, mktime(0,0,0,12,32,1997) will be the date for Jan 1, 1998
     # this provides a built in "rounding" feature to generate_calendar()
 
-    if ($first_day == 0) $day_names = array("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"); 
-    if ($first_day == 1) $day_names = array("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"); 
+    if ($first_day == 0) $day_names = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    if ($first_day == 1) $day_names = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
-    list($month, $year, $month_name, $weekday) = explode(',',gmstrftime('%m,%Y,%B,%w',$first_of_month));
+    [$month, $year, $month_name, $weekday] = explode(',',gmstrftime('%m,%Y,%B,%w',$first_of_month));
     $weekday = ($weekday + 7 - $first_day) % 7; #adjust for $first_day
     $title   = t(date("F", mktime(0, 0, 0, $month, 1, $year))) . '&nbsp;' . $year;
 
@@ -55,8 +53,8 @@ class PHPCalendar_Core {
 	#previous and next links, if applicable
 	$p = $pl = $n = $nl = null;
 	if ($pn && is_array($pn)) {
-		list($p, $pl) = current($pn);
-		list($n, $nl) = current($pn);
+		[$p, $pl] = current($pn);
+		[$n, $nl] = current($pn);
 	}
     if($p) $p = '<span class="calendar-prev">'.($pl ? '<a href="'.htmlspecialchars($pl).'">'.$p.'</a>' : $p).'</span>&nbsp;';
     if($n) $n = '&nbsp;<span class="calendar-next">'.($nl ? '<a href="'.htmlspecialchars($nl).'">'.$n.'</a>' : $n).'</span>';
@@ -77,8 +75,8 @@ class PHPCalendar_Core {
         $calendar .= "</tr>\n<tr>";
       }
       if(isset($days[$day]) and is_array($days[$day])){
-        @list($link, $classes, $content) = $days[$day];
-        if(is_null($content))  $content  = $day;
+        @[$link, $classes, $content] = $days[$day];
+        $content ??= $day;
           $calendar .= '<td'.($classes ? ' class="'.htmlspecialchars($classes).'">' : '>').
             ($link ? '<a href="'.htmlspecialchars($link).'">'.$content.'</a>' : $content).'</td>';
       }

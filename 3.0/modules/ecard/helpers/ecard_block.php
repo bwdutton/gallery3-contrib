@@ -18,11 +18,11 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class ecard_block_Core {
-  static function get_site_list() {
-    return array("ecard" => t("eCard"));
+  public static function get_site_list() {
+    return ["ecard" => t("eCard")];
   }
 
-  static function get($block_id, $theme) {
+  public static function get($block_id, $theme) {
     $block = "";
     switch ($block_id) {
     case "ecard":

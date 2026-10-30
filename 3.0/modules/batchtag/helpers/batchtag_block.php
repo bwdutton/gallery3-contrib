@@ -18,11 +18,11 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class batchtag_block_Core {
-  static function get_site_list() {
-    return array("batch_tag" => t("Batch Tag"));
+  public static function get_site_list() {
+    return ["batch_tag" => t("Batch Tag")];
   }
 
-  static function get($block_id, $theme) {
+  public static function get($block_id, $theme) {
     $block = "";
 
     // Only display on album pages that the user can edit.
@@ -41,7 +41,7 @@ class batchtag_block_Core {
 
       // Make a new form to place in the sidebar block.
       $form = new Forge("batchtag/tagitems", "", "post",
-                        array("id" => "g-batch-tag-form"));
+                        ["id" => "g-batch-tag-form"]);
       $label = t("Tag everything in this album:");
       $group = $form->group("add_tag")->label("Add Tag");
       $group->input("name")->label($label)->rules("required|length[1,64]");

@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 class event_watcher_Core {
-  static function watch_event($event,$args)
+  public static function watch_event($event,$args)
   {
     $msg=date('H:i:s',time()-4*3600)." $event: ";
     $sep="";
@@ -8,7 +8,7 @@ class event_watcher_Core {
     {
       if(is_object($arg))
       {
-        $class = get_class($arg);
+        $class = $arg::class;
         if( strcmp($class,'User_Model')==0 || 
             strcmp($class,'Group_Model')==0 || 
             strcmp($class,'Item_Model')==0 ||
@@ -27,7 +27,7 @@ class event_watcher_Core {
         }
         else
         {
-          $msg = $msg . $sep . get_class($arg);
+          $msg = $msg . $sep . $arg::class;
         }
       }
       else

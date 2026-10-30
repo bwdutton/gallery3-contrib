@@ -4,10 +4,10 @@ class transcode_task_Core {
     
     static $duration = 0;
 
-    static function available_tasks() {
-        return array();
+    public static function available_tasks() {
+        return [];
     }
-    static function transcode($task) {
+    public static function transcode($task) {
         transcode::log("Transcoding task " . $task->id . " started.");
 
         $cmd = $task->get("ffmpeg_cmd");
@@ -63,13 +63,13 @@ class transcode_task_Core {
 
     }
 
-    static function fork($shellCmd, $logfile) {
+    public static function fork($shellCmd, $logfile) {
         $cmd = "nice " . $shellCmd . " > " . $logfile . " 2>&1 &";
         transcode::log("executing: " . $cmd);
         exec($cmd);
     }
 
-    static function GetEncodedTime($logfile) {
+    public static function GetEncodedTime($logfile) {
         if (!file_exists($logfile)) {
             transcode::log("can't open FFMPEG-Log '" . $logfile . "'");
             return false;
@@ -97,8 +97,8 @@ class transcode_task_Core {
         }
     }
 
-    static function durationToSecs($durstr) {
-        list($hr, $min, $sec) = explode(":", $durstr);
+    public static function durationToSecs($durstr) {
+        [$hr, $min, $sec] = explode(":", $durstr);
 
         $secs = $hr * 3600;
         $secs += $min * 60;

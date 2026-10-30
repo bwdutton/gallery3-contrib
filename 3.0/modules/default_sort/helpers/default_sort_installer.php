@@ -4,25 +4,25 @@ class default_sort_installer {
     private static function getversion() { return 1; }
     private static function setversion() { module::set_version("default_sort", self::getversion()); }
 
-    static function install() {
+    public static function install() {
         self::setversion();
     }
 
-    static function upgrade($version) {
+    public static function upgrade($version) {
         if ($version < self::getversion())
             self::setversion();
     }
 
-    static function can_activate() {
+    public static function can_activate() {
     }
 
-    static function activate() {
+    public static function activate() {
     }
 
-    static function deactivate() {
+    public static function deactivate() {
     }
 
-    static function uninstall() {
+    public static function uninstall() {
     }
 }
 

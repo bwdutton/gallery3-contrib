@@ -19,7 +19,7 @@
  */
 
 class item extends item_Core {
-  static function viewable($model) {
+  public static function viewable($model) {
     $model = parent::viewable($model);
 
     if( user_chroot::album() ) {
@@ -32,9 +32,7 @@ class item extends item_Core {
     return $model;
   }
 
-  static function root() {
-    return ( user_chroot::album() )
-      ? user_chroot::album()
-      : parent::root();
+  public static function root() {
+    return user_chroot::album() ?: parent::root();
   }
 }

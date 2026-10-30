@@ -18,8 +18,8 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class image_optimizer_installer {
-  static function install() {
-    $defaults = array('jpg' => '1', 'png' => '2', 'gif' => '1');
+  public static function install() {
+    $defaults = ['jpg' => '1', 'png' => '2', 'gif' => '1'];
     foreach ($defaults as $type => $optlevel) {
       // set default path as the pre-compiled versions in the lib
       module::set_var("image_optimizer", "path_".$type, MODPATH."image_optimizer/lib/".image_optimizer::tool_name($type));
@@ -47,7 +47,7 @@ class image_optimizer_installer {
     image_optimizer::add_image_optimizer_rule("resize");
   }
   
-  static function activate() {
+  public static function activate() {
     // add graphics rules if enabled
     if (module::get_var("image_optimizer", "enable_thumb")) {
       image_optimizer::add_image_optimizer_rule("thumb");
@@ -57,7 +57,7 @@ class image_optimizer_installer {
     }
   }
 
-  static function deactivate() {
+  public static function deactivate() {
     // ensure that update modes are disabled
     image_optimizer::deactivate_update_mode("thumb");
     image_optimizer::deactivate_update_mode("resize");
@@ -66,7 +66,7 @@ class image_optimizer_installer {
     image_optimizer::remove_image_optimizer_rule("resize");
   }
   
-  static function uninstall() {
+  public static function uninstall() {
     // deactivate
     module::deactivate("image_optimizer");
     // delete vars from database

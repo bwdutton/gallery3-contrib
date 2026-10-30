@@ -400,7 +400,7 @@ function addtree($album){
 ?>
 albumTree.add(<?= $album->id -1 ?>, <?= $album->parent_id -1 ?>, "<?= html::purify($album->title) ?>", pf+'<?= $album->relative_url() ?>');
 <?php
-  foreach ($album->viewable()->children(null, null, array(array("type", "=", "album"))) as $child){
+  foreach ($album->viewable()->children(null, null, [["type", "=", "album"]]) as $child){
     addtree($child);
   }
 }

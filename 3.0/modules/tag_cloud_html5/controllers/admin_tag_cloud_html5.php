@@ -44,7 +44,7 @@ class Admin_Tag_Cloud_Html5_Controller extends Admin_Controller {
         module::set_var("tag_cloud_html5", "width".$groupname, $form->{"size".$groupname}->{"width".$groupname}->value);
         module::set_var("tag_cloud_html5", "height".$groupname, $form->{"size".$groupname}->{"height".$groupname}->value);
         
-        $optionsarray = array();
+        $optionsarray = [];
         // group size
         $optionsarray['shape'] = $form->{"size".$groupname}->{"shape".$groupname}->value;
         $optionsarray['zoom'] = $form->{"size".$groupname}->{"zoom".$groupname}->value;
@@ -55,7 +55,7 @@ class Admin_Tag_Cloud_Html5_Controller extends Admin_Controller {
         $optionsarray['minSpeed'] = $form->{"motion".$groupname}->{"minSpeed".$groupname}->value;
         $optionsarray['deadZone'] = $form->{"motion".$groupname}->{"deadZone".$groupname}->value;
         $optionsarray['decel'] = $form->{"motion".$groupname}->{"decel".$groupname}->value;
-        $optionsarray['initial'] = array($form->{"motion".$groupname}->{"initialX".$groupname}->value, $form->{"motion".$groupname}->{"initialY".$groupname}->value);
+        $optionsarray['initial'] = [$form->{"motion".$groupname}->{"initialX".$groupname}->value, $form->{"motion".$groupname}->{"initialY".$groupname}->value];
         $optionsarray['maxInputZone'] = $form->{"motion".$groupname}->{"maxInputZone".$groupname}->value;
         // group select
         $optionsarray['outlineMethod'] = $form->{"select".$groupname}->{"outlineMethod".$groupname}->value;
@@ -71,19 +71,14 @@ class Admin_Tag_Cloud_Html5_Controller extends Admin_Controller {
         $optionsarray['wheelZoom'] = false; // otherwise scrolling through the page screws everything up (was a problem in v1)
         $optionsarray['initialDecel'] = true; // this was an option in v4, but it's sorta useless - use minSpeed for a related but better effect
         $optionsarray['physModel'] = true; // this is the big enhancement for v5, and is a major modification that I did to TagCanvas
-        switch ($optionsarray['shape']) {
-          case "hcylinder":
+        $optionsarray['lock'] = match ($optionsarray['shape']) {
             // keep it horizontal - lock x-axis rotation
-            $optionsarray['lock'] = "x";
-            break;
-          case "vcylinder":
+            "hcylinder" => "x",
             // keep it vertical - lock y-axis rotation
-            $optionsarray['lock'] = "y";
-            break;
-          default:
+            "vcylinder" => "y",
             // do not lock either axis
-            $optionsarray['lock'] = "";
-        }
+            default => "",
+        };
         module::set_var("tag_cloud_html5", "options".$groupname, json_encode($optionsarray));
       }
       // all done; redirect with message
@@ -96,11 +91,11 @@ class Admin_Tag_Cloud_Html5_Controller extends Admin_Controller {
 
   private function _get_config() {
     // these define the two variable name groups, along with their labels which are always shown with t() for i18n.
-    $cfg['groups'] = array("_sidebar"=>t("Sidebar"), "_wholecloud"=>t("Whole cloud"));
+    $cfg['groups'] = ["_sidebar"=>t("Sidebar"), "_wholecloud"=>t("Whole cloud")];
     // this defines the separator that's used between the group name and the attribute, and is *not* put through t().
     $cfg['sep'] = " : ";
     // this is used in the labels of the width/height parameters
-    $cfg['size'] = array("_sidebar"=>t("as fraction of sidebar width, e.g. 'g-block-content' class"), "_wholecloud"=>t("as fraction of browser window height"));
+    $cfg['size'] = ["_sidebar"=>t("as fraction of sidebar width, e.g. 'g-block-content' class"), "_wholecloud"=>t("as fraction of browser window height")];
     return $cfg;
   }
   
@@ -122,7 +117,7 @@ class Admin_Tag_Cloud_Html5_Controller extends Admin_Controller {
     $sep = $cfg['sep'];
     
     // Make the main form.  This form has *nine* groups: general, then size, motion, select, and appearance for _sidebar and _wholecloud.
-    $form = new Forge("admin/tag_cloud_html5/edit", "", "post", array("id" => "g-tag-cloud-html5-admin-form"));
+    $form = new Forge("admin/tag_cloud_html5/edit", "", "post", ["id" => "g-tag-cloud-html5-admin-form"]);
 
     // group general
     $group_general = $form->group("general")->label(t("General"))->set_attr("id","g-tag-cloud-html5-admin-form-general");
@@ -161,7 +156,7 @@ class Admin_Tag_Cloud_Html5_Controller extends Admin_Controller {
         ->rules("required|numrange[0]");
       ${"group_size".$groupname}->dropdown("shape".$groupname)
         ->label(t("shape of cloud")." {shape,lock}")
-        ->options(array("sphere"=>t("sphere"),"hcylinder"=>t("horizontal cylinder"),"vcylinder"=>t("vertical cylinder")))
+        ->options(["sphere"=>t("sphere"),"hcylinder"=>t("horizontal cylinder"),"vcylinder"=>t("vertical cylinder")])
         ->selected($options['shape']);
       ${"group_size".$groupname}->input("zoom".$groupname)
         ->label(t("zoom (<1.0 is zoom out, >1.0 is zoom in)")." {zoom}")
@@ -211,7 +206,7 @@ class Admin_Tag_Cloud_Html5_Controller extends Admin_Controller {
       ${"group_select".$groupname} = $form->group("select".$groupname)->label(t("Tag selection").$sep.$grouptext);
       ${"group_select".$groupname}->dropdown("outlineMethod".$groupname)
         ->label(t("change of display for selected tag")." {outlineMethod}")
-        ->options(array("colour"=>t("change text color"),"outline"=>t("add outline around text"),"block"=>t("add block behind text")))
+        ->options(["colour"=>t("change text color"),"outline"=>t("add outline around text"),"block"=>t("add block behind text")])
         ->selected($options['outlineMethod']);
       ${"group_select".$groupname}->input("outlineOffset".$groupname)
         ->label(t("mouseover region around tag text (in pixels - 0 is tight around text)")." {outlineOffset}")

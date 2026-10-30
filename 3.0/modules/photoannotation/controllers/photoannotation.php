@@ -42,7 +42,7 @@ class photoannotation_Controller extends Controller {
     if ($page < 1) {
       $page = 1;
     }
-    list ($count, $result) = photoannotation::search_user($user_id, $page_size, $offset);
+    [$count, $result] = photoannotation::search_user($user_id, $page_size, $offset);
     $max_pages = max(ceil($count / $page_size), 1);
     if ($page > 1) {
       $previous_page_url = url::site("photoannotation/showuser?name=". $user_id ."&amp;page=". ($page - 1));
@@ -57,7 +57,7 @@ class photoannotation_Controller extends Controller {
     $template->set_global("position", $page);
     $template->set_global("total", $max_pages);
     $template->content = new View("photoannotation_user_search.html");      
-    $template->content->search_form = photoannotation::get_user_search_form(g-user-search-form); 
+    $template->content->search_form = photoannotation::get_user_search_form(\G-\USER-\SEARCH-\FORM); 
     $template->content->users = $result;
     $template->content->q = $user_id;
     $template->content->count = $count;
@@ -88,7 +88,7 @@ class photoannotation_Controller extends Controller {
     if ($user_id != "") {
       $getuser = photoannotation::getuser($user_id);
       if (!$getuser->found) {
-        message::error(t("Could not find anyone with the name %user.", array("user" => $user_id)));
+        message::error(t("Could not find anyone with the name %user.", ["user" => $user_id]));
         url::redirect($redir_uri);
         return;
       }
@@ -230,7 +230,7 @@ class photoannotation_Controller extends Controller {
   
   public function autocomplete() {
     if (!identity::active_user()->guest || module::get_var("photoannotation", "allowguestsearch", false)) {
-      $users = array();
+      $users = [];
       $user_parts = explode(",", Input::instance()->get("q"));
       $limit = Input::instance()->get("limit");
       $user_part = ltrim(end($user_parts));

@@ -20,27 +20,25 @@
 class Gallery3_DAV_Album extends Sabre_DAV_Directory {
   private $item;
   private $stat;
-  private $path;
 
-  function __construct($path) {
+  public function __construct(private $path) {
     $this->cache = Gallery3_DAV_Cache::instance();
-    $this->path = $path;
-    $this->item = $this->cache->to_item($path);
+    $this->item = $this->cache->to_item($this->path);
   }
 
-  function getName() {
+  public function getName() {
     return $this->item->name;
   }
 
-  function getChildren() {
-    $return = array();
+  public function getChildren() {
+    $return = [];
     foreach ($this->item->viewable()->children() as $child) {
       $return[] = $this->getChild($child->name);
     }
     return $return;
   }
 
-  function getChild($name) {
+  public function getChild($name) {
     $rp = "{$this->path}/$name";
     $child = $this->cache->to_item($rp);
 
@@ -62,7 +60,7 @@ class Gallery3_DAV_Album extends Sabre_DAV_Directory {
     } catch (Kohana_404_Exception $e) {
       throw new Sabre_DAV_Exception_Forbidden("Access denied");
     }
-    if (substr($name, 0, 1) == ".") {
+    if (str_starts_with($name, ".")) {
       return true;
     };
 
@@ -90,7 +88,7 @@ class Gallery3_DAV_Album extends Sabre_DAV_Directory {
     try {
       access::required("view", $this->item);
       access::required("add", $this->item);
-    } catch (Kohana_404_Exception $e) {
+    } catch (Kohana_404_Exception) {
       throw new Sabre_DAV_Exception_Forbidden("Access denied");
     }
 
@@ -106,11 +104,11 @@ class Gallery3_DAV_Album extends Sabre_DAV_Directory {
     $this->item->reload();
   }
 
-  function getLastModified() {
+  public function getLastModified() {
     return $this->item->updated;
   }
 
-  function setName($name) {
+  public function setName($name) {
     if (!access::can("edit", $this->item)) {
       throw new Sabre_DAV_Exception_Forbidden("Access denied");
     };

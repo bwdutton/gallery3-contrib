@@ -18,11 +18,11 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class iptc_block_Core {
-  static function get_site_list() {
-    return array("iptc" => t("IPTC info"));
+  public static function get_site_list() {
+    return ["iptc" => t("IPTC info")];
   }
 
-  static function get($block_id, $theme) {
+  public static function get($block_id, $theme) {
     $block = "";
     switch ($block_id) {
     case "iptc":

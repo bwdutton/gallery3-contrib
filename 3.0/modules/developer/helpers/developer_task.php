@@ -18,12 +18,12 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class developer_task_Core {
-  static function available_tasks() {
+  public static function available_tasks() {
     // Return empty array so nothing appears in the maintenance screen
-    return array();
+    return [];
   }
 
-  static function create_module($task) {
+  public static function create_module($task) {
     $context = unserialize($task->context);
 
     if (empty($context["module"])) {
@@ -34,7 +34,7 @@ class developer_task_Core {
 
     switch ($context["step"]) {
     case 0:               // Create directory tree
-      foreach (array("", "controllers", "helpers", "views") as $dir) {
+      foreach (["", "controllers", "helpers", "views"] as $dir) {
         $path = "{$context['module_path']}/$dir";
         if (!file_exists($path)) {
           mkdir($path);
@@ -43,15 +43,15 @@ class developer_task_Core {
       }
       break;
     case 1:               // Generate installer
-      $context["installer"] = array();
+      $context["installer"] = [];
       self::_render_helper_file($context, "installer");
       break;
     case 2:               // Generate theme helper
-      $context["theme"] = !isset($context["theme"]) ? array() : $context["theme"];
+      $context["theme"] = !isset($context["theme"]) ? [] : $context["theme"];
       self::_render_helper_file($context, "theme");
       break;
     case 3:               // Generate block helper
-      $context["block"] = array();
+      $context["block"] = [];
       self::_render_helper_file($context, "block");
       break;
     case 4:               // Generate event helper
@@ -148,14 +148,14 @@ class developer_task_Core {
       $v->module_name = $context["name"];
       $v->css_id = strtr($context["name"], " ", "");
       $v->css_id = preg_replace("#\s#", "", $context["name"]);
-      $v->callbacks = empty($context[$helper]) ? array() : array_fill_keys($context[$helper], 1);
+      $v->callbacks = empty($context[$helper]) ? [] : array_fill_keys($context[$helper], 1);
       print $v->render();
       file_put_contents($file, ob_get_contents());
       ob_end_clean();
     }
   }
 
-  static function create_content($task) {
+  public static function create_content($task) {
     $context = unserialize($task->context);
     $batch_cnt = $context["batch"];
     while ($context["albums"] > 0 && $batch_cnt > 0) {
@@ -193,21 +193,21 @@ class developer_task_Core {
   }
 
   private static function _add_album_or_photo($desired_type=null) {
-    srand(time());
+    mt_srand(time());
     $parents = ORM::factory("item")->where("type", "=", "album")->find_all()->as_array();
     $owner_id = identity::active_user()->id;
 
-    $test_images = glob(dirname(dirname(__FILE__)) . "/data/*.[Jj][Pp][Gg]");
+    $test_images = glob(dirname(__FILE__, 2) . "/data/*.[Jj][Pp][Gg]");
 
     $parent = $parents[array_rand($parents)];
     $parent->reload();
     $type = $desired_type;
     if (!$type) {
-      $type = rand(0, 10) ? "photo" : "album";
+      $type = random_int(0, 10) ? "photo" : "album";
     }
     if ($type == "album") {
       $thumb_size = module::get_var("core", "thumb_size");
-      $rand = rand();
+      $rand = random_int(0, mt_getrandmax());
       $item = ORM::factory("item");
       $item->type = "album";
       $item->parent_id = $parent->id;
@@ -217,13 +217,13 @@ class developer_task_Core {
       $item->owner_id = $owner_id;
       $parents[] = $item->save();
     } else {
-      $photo_index = rand(0, count($test_images) - 1);
+      $photo_index = random_int(0, count($test_images) - 1);
       $item = ORM::factory("item");
       $item->type = "photo";
       $item->parent_id = $parent->id;
       $item->set_data_file($test_images[$photo_index]);
       $item->name = basename($test_images[$photo_index]);
-      $item->title = "rnd_" . rand();
+      $item->title = "rnd_" . random_int(0, mt_getrandmax());
       $item->description = "sample thumb";
       $item->owner_id = $owner_id;
       $item->save();
@@ -231,7 +231,7 @@ class developer_task_Core {
   }
 
   private static function _add_comment() {
-    srand(time());
+    mt_srand(time());
     $photos = ORM::factory("item")->where("type", "=", "photo")->find_all()->as_array();
     $users = ORM::factory("user")->find_all()->as_array();
 
@@ -245,14 +245,14 @@ class developer_task_Core {
 
     $photo = $photos[array_rand($photos)];
     $author = $users[array_rand($users)];
-    $guest_name = ucfirst(self::_random_phrase(rand(1, 3)));
+    $guest_name = ucfirst(self::_random_phrase(random_int(1, 3)));
     $guest_email = sprintf("%s@%s.com", self::_random_phrase(1), self::_random_phrase(1));
     $guest_url = sprintf("http://www.%s.com", self::_random_phrase(1));
 
     $comment = ORM::factory("comment");
     $comment->author_id = $author->id;
     $comment->item_id = $photo->id;
-    $comment->text = self::_random_phrase(rand(8, 500));
+    $comment->text = self::_random_phrase(random_int(8, 500));
     $comment->guest_name = $guest_name;
     $comment->guest_email = $guest_email;
     $comment->guest_url = $guest_url;
@@ -299,7 +299,7 @@ class developer_task_Core {
       $words = preg_split('/\s+/', $sample_text);
     }
 
-    $chosen = array();
+    $chosen = [];
     for ($i = 0; $i < $count; $i++) {
       $chosen[] = $words[array_rand($words)];
     }

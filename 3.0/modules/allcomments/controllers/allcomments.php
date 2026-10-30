@@ -38,7 +38,7 @@ class allcomments_Controller extends Controller
 	*/
             $v = new Theme_View("page.html", "other");
             $v->page_title = t("All comments");
-            $v->content = new View("allcomments.html", array('comments' => $comments, 'page' => $page_no));
+            $v->content = new View("allcomments.html", ['comments' => $comments, 'page' => $page_no]);
 	    print $v;
 	}
 }

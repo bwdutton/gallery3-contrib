@@ -1,6 +1,6 @@
 <?php defined("SYSPATH") or die("No direct script access.") ?>
 <?= $theme->dynamic_top() ?>
-<?php/* Treat dynamic pages just lite album pages. */ ?>
+<?\PHP/* Treat dynamic pages just lite album pages. */ ?>
 <?= new View("album.html") ?>
 <?= $theme->dynamic_bottom() ?>
 

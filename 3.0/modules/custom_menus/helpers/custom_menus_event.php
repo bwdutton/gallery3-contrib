@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class custom_menus_event_Core {
-  static function admin_menu($menu, $theme) {
+  public static function admin_menu($menu, $theme) {
     // Add a settings link to the admin menu.
     $menu->get("content_menu")
       ->append(Menu::factory("link")
@@ -27,7 +27,7 @@ class custom_menus_event_Core {
                ->url(url::site("admin/custom_menus")));
   }
 
-  static function site_menu($menu, $theme) {
+  public static function site_menu($menu, $theme) {
     // Add user definied menu and sub-menu items to the site menu.
     $existing_menu = ORM::factory("custom_menu")
                      ->where("parent_id", "=", "0")
@@ -50,7 +50,7 @@ class custom_menus_event_Core {
     }
   }
 
-  function add_sub_menus($parent_id, $parent_menu) {
+  public function add_sub_menus($parent_id, $parent_menu) {
     // Populate the menu bar with any sub-menu items on the current menu ($parent_menu).
     $existing_menu = ORM::factory("custom_menu")
                      ->where("parent_id", "=", $parent_id)

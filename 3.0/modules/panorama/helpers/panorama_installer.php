@@ -19,7 +19,7 @@
  */
 
 class panorama_installer {
-  static function install() {
+  public static function install() {
     $db = Database::instance();
     $db->query("CREATE TABLE IF NOT EXISTS {panoramas} (
       `id` int(9) NOT NULL auto_increment,
@@ -33,7 +33,7 @@ class panorama_installer {
     module::set_version("panorama", 1);
   }
 
-  static function upgrade($version) {
+  public static function upgrade($version) {
     $db = Database::instance();
     $db->query("CREATE TABLE IF NOT EXISTS {panoramas} (
       `id` int(9) NOT NULL auto_increment,
@@ -47,6 +47,6 @@ class panorama_installer {
     module::set_version("panorama", 1);
   }
 
-  static function deactivate() {
+  public static function deactivate() {
   }
 }

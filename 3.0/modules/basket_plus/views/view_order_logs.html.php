@@ -27,7 +27,7 @@
         <th><?= t("Event") ?></th>
         <th><?= t("Date/Time") ?></th>
       </tr>     
-    <?php foreach ($order_logs as $i => $order_log){
+    <?php foreach ($order_logs as $order_log){
       ?>
       <tr>
         <td><?=basket_plus::getBasketVar(ORDER_PREFIX).$order_log->id?></td>

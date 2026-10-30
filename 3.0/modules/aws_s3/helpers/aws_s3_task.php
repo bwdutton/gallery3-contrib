@@ -2,24 +2,24 @@
 
 class aws_s3_task_Core {
 
-    static function available_tasks() {
+    public static function available_tasks() {
         if (aws_s3::can_schedule())
-            return array(Task_Definition::factory()
+            return [Task_Definition::factory()
                              ->callback("aws_s3::schedule_full_sync")
                              ->name(t("Synchronise with Amazon S3"))
                              ->description(t("Schedule a task to synchronise your Gallery 3 data/images with your Amazon S3 bucket"))
                              ->severity(log::SUCCESS)
-                             ->set_flags(Task_Definition::CAN_RUN_NOW));
+                             ->set_flags(Task_Definition::CAN_RUN_NOW)];
         else
-            return array(Task_Definition::factory()
+            return [Task_Definition::factory()
                              ->callback("aws_s3_task::manual_sync")
                              ->name(t("Synchronise with Amazon S3"))
                              ->description(t("Synchronise your Gallery 3 data/images with your Amazon S3 bucket"))
-                             ->severity(log::SUCCESS));
+                             ->severity(log::SUCCESS)];
 
     }
 
-    static function upload_item($task) {
+    public static function upload_item($task) {
         aws_s3::log("aws_s3_task::upload_item called");
         
         $item = ORM::factory("item", $task->get("item_id"));
@@ -43,7 +43,7 @@ class aws_s3_task_Core {
         $task->save();
     }
 
-    static function manual_sync($task) {
+    public static function manual_sync($task) {
         aws_s3::log("Amazon S3 manual re-sync started.");
         
         if (!$task->get("mode")) {
@@ -126,7 +126,7 @@ class aws_s3_task_Core {
         $task->save();
     }
 
-    static function sync($task) {
+    public static function sync($task) {
         aws_s3::log("Amazon S3 Re-sync task started..");
 
         batch::start();
@@ -169,7 +169,7 @@ class aws_s3_task_Core {
                 if ($item->id > 1)
                     aws_s3::upload_item($item, aws_s3::get_upload_flags());
             }
-            catch (Exception $err) {}
+            catch (Exception) {}
             $completed++;
 
             $task->set("completed", $completed);

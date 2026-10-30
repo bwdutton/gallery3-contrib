@@ -32,7 +32,7 @@
 <div class="left" style="width:150px;float:left;font-size:10px;display:block;">
 <ul>
 <?php
-  foreach ($orders as $i => $order){
+  foreach ($orders as $order){
     ?><li class="order-status-<?=$order->status?>"><a href="javascript:ld(<?=$order->id?>)"><?= $order->title()?></a></li><?php
   }
 ?>

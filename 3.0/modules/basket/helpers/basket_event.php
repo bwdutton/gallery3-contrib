@@ -22,7 +22,7 @@ class basket_event_Core{
   /**
    * adds the shopping basket administration controls to the admin menu
    */
-  static function admin_menu($menu, $theme){
+  public static function admin_menu($menu, $theme){
 
     $menu->add_after("users_groups",
       $basket_menu = Menu::factory("submenu")
@@ -56,7 +56,7 @@ class basket_event_Core{
 
   }
 
-  static function item_edit_form($item, $form){
+  public static function item_edit_form($item, $form){
    $group = $form->group("products")->label(t("Available Products"));
 
    $product_override = ORM::factory("product_override")->where('item_id', "=", $item->id)->find();
@@ -91,7 +91,7 @@ class basket_event_Core{
    }
   }
 
-  static function item_edit_form_completed($item, $form){
+  public static function item_edit_form_completed($item, $form){
     $product_override = ORM::factory("product_override")->where('item_id', "=", $item->id)->find();
 
     if ($form->products->all->checked)

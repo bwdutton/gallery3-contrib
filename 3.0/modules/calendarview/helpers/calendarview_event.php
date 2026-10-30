@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class calendarview_event_Core {
-  static function photo_menu($menu, $theme) {
+  public static function photo_menu($menu, $theme) {
     $menu->append(Menu::factory("link")
          ->id("calendarview")
          ->label(t("View Calendar"))
@@ -26,7 +26,7 @@ class calendarview_event_Core {
          ->css_id("g-calendarview-link"));
   }
 
-  static function movie_menu($menu, $theme) {
+  public static function movie_menu($menu, $theme) {
     $menu->append(Menu::factory("link")
          ->id("calendarview")
          ->label(t("View Calendar"))
@@ -34,7 +34,7 @@ class calendarview_event_Core {
          ->css_id("g-calendarview-link"));
   }
   
-  static function album_menu($menu, $theme) {
+  public static function album_menu($menu, $theme) {
     $menu->append(Menu::factory("link")
          ->id("calendarview")
          ->label(t("View Calendar"))
@@ -42,7 +42,7 @@ class calendarview_event_Core {
          ->css_id("g-calendarview-link"));
   }
 
-  static function tag_menu($menu, $theme) {
+  public static function tag_menu($menu, $theme) {
     $menu->append(Menu::factory("link")
          ->id("calendarview")
          ->label(t("View Calendar"))
@@ -50,27 +50,27 @@ class calendarview_event_Core {
          ->css_id("g-calendarview-link"));
   }
 
-  static function pre_deactivate($data) {
+  public static function pre_deactivate($data) {
     // If the admin is about to deactivate EXIF, warn them that this module requires it.
     if ($data->module == "exif") {
       $data->messages["warn"][] = t("The CalendarView module requires the EXIF module.");
     }
   }
 
-  static function module_change($changes) {
+  public static function module_change($changes) {
     // If EXIF is deactivated, display a warning that it is required for this module to function properly.
     if (!module::is_active("exif") || in_array("exif", $changes->deactivate)) {
       site_status::warning(
         t("The CalendarView module requires the EXIF module.  " .
           "<a href=\"%url\">Activate the EXIF module now</a>",
-          array("url" => html::mark_clean(url::site("admin/modules")))),
+          ["url" => html::mark_clean(url::site("admin/modules"))]),
         "calendarview_needs_exif");
     } else {
       site_status::clear("calendarview_needs_exif");
     }
   }
 
-  static function show_user_profile($data) {
+  public static function show_user_profile($data) {
     // Display a few months on the user profile screen.
     $v = new View("user_profile_calendarview.html");
     $v->user_id = $data->user->id;
@@ -94,6 +94,6 @@ class calendarview_event_Core {
       $v->user_month = date('n');
     }
 
-    $data->content[] = (object) array("title" => t("User calendar"), "view" => $v);
+    $data->content[] = (object) ["title" => t("User calendar"), "view" => $v];
   }
 }

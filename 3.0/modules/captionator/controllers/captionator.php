@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class Captionator_Controller extends Controller {
-  function dialog($album_id) {
+  public function dialog($album_id) {
     $album = ORM::factory("item", $album_id);
     access::required("view", $album);
 
@@ -32,10 +32,10 @@ class Captionator_Controller extends Controller {
     $v->content->album = $album;
     $v->content->enable_tags = module::is_active("tag");
     if ($v->content->enable_tags) {
-      $v->content->tags = array();
+      $v->content->tags = [];
       foreach ($album->viewable()->children() as $child) {
         $item = ORM::factory("item", $child->id);
-        $tag_names = array();
+        $tag_names = [];
         foreach (tag::item_tags($item) as $tag) {
           $tag_names[] = $tag->name;
         }
@@ -45,7 +45,7 @@ class Captionator_Controller extends Controller {
     print $v;
   }
 
-  function save($album_id) {
+  public function save($album_id) {
     access::verify_csrf();
 
     $album = ORM::factory("item", $album_id);

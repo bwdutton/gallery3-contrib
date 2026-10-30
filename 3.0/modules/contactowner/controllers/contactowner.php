@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class ContactOwner_Controller extends Controller {
-  static function get_email_form($user_id, $item_id=null) {
+  public static function get_email_form($user_id, $item_id=null) {
     // Determine name of the person the message is going to.
     $str_to_name = "";
     if ($user_id == -1) {
@@ -41,7 +41,7 @@ class ContactOwner_Controller extends Controller {
 
     // Make a new form with a couple of text boxes.
     $form = new Forge("contactowner/sendemail/{$user_id}", "", "post",
-                      array("id" => "g-contact-owner-send-form"));
+                      ["id" => "g-contact-owner-send-form"]);
     $sendmail_fields = $form->group("contactOwner");
     $sendmail_fields->input("email_to")
                     ->label(t("To:"))->value($str_to_name)
@@ -84,7 +84,7 @@ class ContactOwner_Controller extends Controller {
 
     // Set up and display the actual page.
     $view = new View("contactowner_emailform.html");
-    $view->sendmail_form = $this->get_email_form("-1", $item_id);
+    $view->sendmail_form = static::get_email_form("-1", $item_id);
 
     print $view;
   }
@@ -100,7 +100,7 @@ class ContactOwner_Controller extends Controller {
     // Set up and display the actual page.
     // Set up and display the actual page.
     $view = new View("contactowner_emailform.html");
-    $view->sendmail_form = $this->get_email_form($user_id, $item_id);
+    $view->sendmail_form = static::get_email_form($user_id, $item_id);
 
     print $view;
   }
@@ -116,7 +116,7 @@ class ContactOwner_Controller extends Controller {
     }
 
     // Make sure the form submission was valid.
-    $form = $this->get_email_form($user_id);
+    $form = static::get_email_form($user_id);
     $valid = $form->validate();
     if ($valid) {
         // Copy the data from the email form into a couple of variables.
@@ -160,23 +160,23 @@ class ContactOwner_Controller extends Controller {
         {
           Kohana_Log::add("error", wordwrap($t->getMessage()));
           message::error(t("Unable to send message."));
-          json::reply(array("result" => "success"));
+          json::reply(["result" => "success"]);
           return false;
         }
         catch (Exception $e) // Executed only in PHP 5
         {
           Kohana_Log::add("error", wordwrap($e->getMessage()));
           message::error(t("Unable to send message."));
-          json::reply(array("result" => "success"));
+          json::reply(["result" => "success"]);
           return false;
         }
 
         message::info(t("Your Message Has Been Sent."));
-        json::reply(array("result" => "success"));
+        json::reply(["result" => "success"]);
 
     } else {
       // Set up and display the actual page.
-      json::reply(array("result" => "error", "html" => (string) $form));
+      json::reply(["result" => "error", "html" => (string) $form]);
     }
   }
 }

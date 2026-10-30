@@ -19,7 +19,7 @@
  */
 class bp_email_template_Core {
 
-  static function create($name, $email_text, $email_html) {
+  public static function create($name, $email_text, $email_html) {
     $mail_templ = ORM::factory("bp_email_template")->where("name", "=", $name)->find();
     if ($mail_templ->loaded()) {
       throw new Exception("Email template already EXISTS $name");
@@ -33,8 +33,8 @@ class bp_email_template_Core {
     return $mail_templ;
   }
 	
-	static function get_add_form_admin() {
-    $form = new Forge("admin/email_templates/add_email_template", "", "post", array("id" => "gAddEmailTemplateForm"));
+	public static function get_add_form_admin() {
+    $form = new Forge("admin/email_templates/add_email_template", "", "post", ["id" => "gAddEmailTemplateForm"]);
     $group = $form->group("add_email_template")->label(t("Add Email template"));
     $group->input("name")->label(t("Name"))->id("gEmailTemplateName")
       ->error_messages("in_use", t("There is already an email_template with that name"));
@@ -52,10 +52,10 @@ class bp_email_template_Core {
     return $form;
   }
 
-  static function get_edit_form_admin($email_template) {
+  public static function get_edit_form_admin($email_template) {
 
     $form = new Forge("admin/email_templates/edit_email_template/$email_template->id", "", "post",
-        array("id" => "gEditEmailTemplateForm"));
+        ["id" => "gEditEmailTemplateForm"]);
     $group = $form->group("edit_email_template")->label(t("Edit Email template"));
     $group->input("name")->label(t("Name"))->id("gEmailTemplateName")->value($email_template->name);
     //$group->inputs["name"]->error_messages(
@@ -72,12 +72,12 @@ class bp_email_template_Core {
     return $form;
   }
 
-  static function get_delete_form_admin($email_template) {
+  public static function get_delete_form_admin($email_template) {
     $form = new Forge("admin/email_templates/delete_email_template/$email_template->id", "", "post",
-                      array("id" => "gDeleteEmailTemplateForm"));
+                      ["id" => "gDeleteEmailTemplateForm"]);
     $group = $form->group("delete_email_template")->label(
-      t("Are you sure you want to delete Email template %name?", array("name" => $email_template->name)));
-    $group->submit("")->value(t("Delete Email template %name", array("name" => $email_template->name)));
+      t("Are you sure you want to delete Email template %name?", ["name" => $email_template->name]));
+    $group->submit("")->value(t("Delete Email template %name", ["name" => $email_template->name]));
     return $form;
   }
 

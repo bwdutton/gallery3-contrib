@@ -33,14 +33,14 @@ class Pages_xtra_Controller extends Controller {
     }
 
     // Set up breadcrumbs.
-    $breadcrumbs = array();    
+    $breadcrumbs = [];    
     $root = item::root();
     $breadcrumbs[] = Breadcrumb::instance($root->title, $root->url())->set_first();
     $breadcrumbs[] = Breadcrumb::instance(t($existing_page[0]->title), url::site("pages_xtra/show/{$page_name}"))->set_last();
 
     // Display the page.
     $template = new Theme_View("page.html", "other", "Pages");
-    $template->set_global(array("breadcrumbs" => $breadcrumbs));
+    $template->set_global(["breadcrumbs" => $breadcrumbs]);
     
 //  Call database variables into page header (off-page content).
     $site_title = module::get_var("pages_xtra", "site_title");

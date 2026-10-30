@@ -45,7 +45,7 @@ class Sabre_CalDAV_XMLUtil {
      * @param array $filters used for recursive calls.
      * @return array 
      */
-    static public function parseCalendarQueryFilters($domNode,$basePath = '/c:iCalendar', &$filters = array()) {
+    static public function parseCalendarQueryFilters($domNode,$basePath = '/c:iCalendar', &$filters = []) {
 
         foreach($domNode->childNodes as $child) {
 
@@ -55,7 +55,7 @@ class Sabre_CalDAV_XMLUtil {
                 case '{urn:ietf:params:xml:ns:caldav}prop-filter' :
                    
                     $filterName = $basePath . '/' . 'c:' . strtolower($child->getAttribute('name'));
-                    $filters[$filterName] = array(); 
+                    $filters[$filterName] = []; 
 
                     self::parseCalendarQueryFilters($child, $filterName,$filters);
                     break;
@@ -77,10 +77,10 @@ class Sabre_CalDAV_XMLUtil {
                         throw new Sabre_DAV_Exception_BadRequest('The end-date must be larger than the start-date in the time-range filter');
                     }
 
-                    $filters[$basePath]['time-range'] = array(
+                    $filters[$basePath]['time-range'] = [
                         'start' => $start,
                         'end'   => $end
-                    );
+                    ];
                     break;
 
                 case '{urn:ietf:params:xml:ns:caldav}is-not-defined' :
@@ -90,7 +90,7 @@ class Sabre_CalDAV_XMLUtil {
                 case '{urn:ietf:params:xml:ns:caldav}param-filter' :
                
                     $filterName = $basePath . '/@' . strtolower($child->getAttribute('name'));
-                    $filters[$filterName] = array();
+                    $filters[$filterName] = [];
                     self::parseCalendarQueryFilters($child, $filterName, $filters);
                     break;
 
@@ -99,11 +99,11 @@ class Sabre_CalDAV_XMLUtil {
                     $collation = $child->getAttribute('collation');
                     if (!$collation) $collation = 'i;ascii-casemap';
 
-                    $filters[$basePath]['text-match'] = array(
+                    $filters[$basePath]['text-match'] = [
                         'collation' => $collation,
                         'negate-condition' => $child->getAttribute('negate-condition')==='yes',
                         'value' => $child->nodeValue,
-                    );
+                    ];
                     break;
 
             }
@@ -185,13 +185,13 @@ class Sabre_CalDAV_XMLUtil {
             throw new Sabre_DAV_Exception_BadRequest('The supplied iCalendar duration value is incorrect: ' . $duration);
         }
        
-        $parts = array(
+        $parts = [
             'week',
             'day',
             'hour',
             'minute',
             'second',
-        );
+        ];
 
         $newDur = '';
         foreach($parts as $part) {

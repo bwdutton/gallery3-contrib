@@ -15,16 +15,15 @@
 class Sabre_DAV_Locks_Backend_FS extends Sabre_DAV_Locks_Backend_Abstract {
 
     /**
-     * The default data directory 
-     * 
-     * @var string 
+     * @param string $dataDir
      */
-    private $dataDir;
-
-    public function __construct($dataDir) {
-
-        $this->dataDir = $dataDir;
-
+    public function __construct(
+        /**
+         * The default data directory
+         */
+        private $dataDir
+    )
+    {
     }
 
     protected function getFileNameForUri($uri) {
@@ -45,7 +44,7 @@ class Sabre_DAV_Locks_Backend_FS extends Sabre_DAV_Locks_Backend_Abstract {
      */
     public function getLocks($uri) {
 
-        $lockList = array();
+        $lockList = [];
         $currentPath = '';
 
         foreach(explode('/',$uri) as $uriPart) {
@@ -132,7 +131,7 @@ class Sabre_DAV_Locks_Backend_FS extends Sabre_DAV_Locks_Backend_Abstract {
     protected function getData($uri) {
 
         $path = $this->getFilenameForUri($uri);
-        if (!file_exists($path)) return array();
+        if (!file_exists($path)) return [];
 
         // opening up the file, and creating a shared lock
         $handle = fopen($path,'r');
@@ -149,7 +148,7 @@ class Sabre_DAV_Locks_Backend_FS extends Sabre_DAV_Locks_Backend_Abstract {
 
         // Unserializing and checking if the resource file contains data for this file
         $data = unserialize($data);
-        if (!$data) return array();
+        if (!$data) return [];
         return $data;
 
     }

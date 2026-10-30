@@ -40,15 +40,15 @@ class Admin_adsense_Controller extends Admin_Controller {
   }
 
   private function _get_admin_form() {
-    $form = new Forge("admin/adsense/save", "", "post", array("id" => "g-adsense-admin-form"));
+    $form = new Forge("admin/adsense/save", "", "post", ["id" => "g-adsense-admin-form"]);
     $adsense_settings = $form->group("adsense")->label(t("Adsense settings"));
     $adsense_settings->textarea("code")->label(t("Adsense code"))
       ->value(module::get_var("adsense", "code"));
     $adsense_settings->dropdown("location")
       ->label(t("Where should the ads be displayed?"))
-      ->options(array("header" => t("In the header"),
+      ->options(["header" => t("In the header"),
                       "sidebar" => t("In the sidebar"),
-					  "footer" => t("In the footer")))
+					  "footer" => t("In the footer")])
       ->selected(module::get_var("adsense", "location"));	  
     $adsense_settings->submit("save")->value(t("Save"));
     return $form;

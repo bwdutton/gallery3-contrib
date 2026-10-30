@@ -11,7 +11,7 @@
   </p>
 
   <p>
-  <?= t("First things first.  You're logged in to the <b>%user_name</b> account. We have generated a password for you (%password). You should change your password to something that you'll remember.", array("user_name" => $user->name, "password" => $password)) ?>
+  <?= t("First things first.  You're logged in to the <b>%user_name</b> account. We have generated a password for you (%password). You should change your password to something that you'll remember.", ["user_name" => $user->name, "password" => $password]) ?>
   </p>
 
   <p>
@@ -27,10 +27,10 @@
   </p>
 
   <p>
-    <?= t("Want to learn more? The <a href=\"%url\">Gallery website</a> has news and information about the Gallery project and community.", array("url" => "http://gallery.menalto.com")) ?>
+    <?= t("Want to learn more? The <a href=\"%url\">Gallery website</a> has news and information about the Gallery project and community.", ["url" => "http://gallery.menalto.com"]) ?>
   </p>
 
   <p>
-    <?= t("Having problems? There's lots of information in our <a href=\"%codex_url\">documentation site</a> or you can <a href=\"%forum_url\">ask for help in the forums!</a>", array("codex_url" => "http://codex.gallery2.org/Main_Page", "forum_url" => "http://gallery.menalto.com/forum")) ?>
+    <?= t("Having problems? There's lots of information in our <a href=\"%codex_url\">documentation site</a> or you can <a href=\"%forum_url\">ask for help in the forums!</a>", ["codex_url" => "http://codex.gallery2.org/Main_Page", "forum_url" => "http://gallery.menalto.com/forum"]) ?>
   </p>
 </div>

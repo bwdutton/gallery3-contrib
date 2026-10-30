@@ -6,7 +6,7 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <title>
       <?php if ($page_title): ?>
-        <?= t("Gallery Admin: %page_title", array("page_title" => $page_title)) ?>
+        <?= t("Gallery Admin: %page_title", ["page_title" => $page_title]) ?>
       <?php else: ?>
         <?= t("Admin dashboard") ?>
       <?php endif ?>

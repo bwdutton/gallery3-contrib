@@ -30,18 +30,17 @@
 class FLVMetaData {
     private $buffer;
     private $metaData;
-    private $fileName;
     private $typeFlagsAudio;
     private $typeFlagsVideo;
 
-    public $VCidMap = array(
+    public $VCidMap = [
       2=>"Sorenson H.263",
       3=>"Screen Video",
       4=>"VP6",
       5=>"VP6 with Alpha channel",
-    );      //Video Codec ID(s)
+    ];      //Video Codec ID(s)
 
-    public $ACidMap = array(
+    public $ACidMap = [
       "Linear PCM, platform endian",
       "ADPCM",
       "MP3",
@@ -56,16 +55,14 @@ class FLVMetaData {
       "Speex",
       14=>"MP3 8-Khz",
       15=>"Device-specific sound"
-    );      //Audio Codec ID(s)
-
-/**
- *  CONSTRUCTOR : initialize class members
- *
- * @param string $flv : flv file path
- */
-    public function  __construct($flv) {
-        $this->fileName = $flv;
-        $this->metaData = array(
+    ];      //Audio Codec ID(s)
+    /**
+     *  CONSTRUCTOR : initialize class members
+     *
+     * @param string $fileName : flv file path
+     */
+    public function  __construct(private $fileName) {
+        $this->metaData = [
         "duration"=>null,
         "size"=>null,
         "framerate"=>null,
@@ -80,7 +77,7 @@ class FLVMetaData {
         "videocodecid"=>null,
         "version"=>null,
         "headersize"=>0
-        );
+        ];
     }
 
 /**
@@ -121,7 +118,7 @@ class FLVMetaData {
 
         $this->buffer = fread($f, 400);
         fclose($f);
-        if(strpos($this->buffer, "onMetaData") === false){
+        if(!str_contains($this->buffer, "onMetaData")){
             echo "Error! No MetaData Exists.";
             return false;
         }
@@ -165,8 +162,8 @@ class FLVMetaData {
             $exponent = substr($strBin, 1, 11); // 11 bits exponent
             $fraction = "1".substr($strBin, 12, 52);    //52 bits fraction (1.F)
 
-            $s = pow(-1, bindec($sb));
-            $dec = pow(2, (bindec($exponent) - 1023));  //Decode exponent
+            $s = (-1) ** bindec($sb);
+            $dec = 2 ** (bindec($exponent) - 1023);  //Decode exponent
 
             if($dec == 2047){
                 if($fraction == 0){
@@ -183,7 +180,7 @@ class FLVMetaData {
             if($dec > 0 && $dec < 2047){
                 $t = 1;
                 for($i=1 ; $i <= 53; $i++){
-                    $t += ((int)substr($fraction, $i, 1)) * pow(2, -$i);    //decode significand
+                    $t += ((int)substr($fraction, $i, 1)) * 2 ** -$i;    //decode significand
                 }
                 $total = $s * $t * $dec ;
                 return  $total;

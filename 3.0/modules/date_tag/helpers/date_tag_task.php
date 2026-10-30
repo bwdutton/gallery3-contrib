@@ -19,7 +19,7 @@
  */
 class date_tag_task_Core {
 
-  static function available_tasks() {
+  public static function available_tasks() {
     $tasks[] = Task_Definition::factory()
       ->callback("date_tag_task::date_tag_all")
       ->name(t("Add tags for dates"))
@@ -31,8 +31,8 @@ class date_tag_task_Core {
   /**
    * @param Task_Model the task
    */
-  static function date_tag_all($task) {
-    $errors = array();
+  public static function date_tag_all($task) {
+    $errors = [];
     try {
       $start = microtime(true);
       $last_item_id= $task->get("last_item_id", null);

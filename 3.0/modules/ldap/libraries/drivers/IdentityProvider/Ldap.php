@@ -66,7 +66,7 @@ class IdentityProvider_Ldap_Driver implements IdentityProvider_Driver {
   /**
    * @see IdentityProvider_Driver::create_user.
    */
-  public function create_user($name, $full_name, $password, $email) {
+  public function create_user($name, $full_name, $password, $email): never {
     throw new Exception("@todo INVALID OPERATION");
   }
 
@@ -128,7 +128,7 @@ class IdentityProvider_Ldap_Driver implements IdentityProvider_Driver {
   /**
    * @see IdentityProvider_Driver::create_group.
    */
-  public function create_group($name) {
+  public function create_group($name): never {
     throw new Exception("@todo INVALID OPERATION");
   }
 
@@ -203,7 +203,7 @@ class IdentityProvider_Ldap_Driver implements IdentityProvider_Driver {
    * @see IdentityProvider_Driver::get_user_list.
    */
   public function get_user_list($ids) {
-    $users = array();
+    $users = [];
     foreach ($ids as $id) {
       if ($user = $this->lookup_user($id)) {
         $users[] = $user;
@@ -216,7 +216,7 @@ class IdentityProvider_Ldap_Driver implements IdentityProvider_Driver {
    * @see IdentityProvider_Driver::groups.
    */
   public function groups() {
-    $groups = array();
+    $groups = [];
     foreach (self::$_params["groups"] as $group_name) {
       if ($group = $this->lookup_group_by_name($group_name)) {
         $groups[] = $group;
@@ -225,12 +225,12 @@ class IdentityProvider_Ldap_Driver implements IdentityProvider_Driver {
     return $groups;
   }
 
-  static function groups_for($user) {
+  public static function groups_for($user) {
     $result = ldap_search(self::$_connection, self::$_params["group_domain"],
                           "(memberUid=$user->name)", explode(",", LDAP_GROUP_ATTRIBUTES));
 
     $associated_groups = self::$_params["groups"];
-    $groups = array();
+    $groups = [];
     $in_everybody_group = false;
     $in_registered_users_group = false;
     for ($entry_id = ldap_first_entry(self::$_connection, $result);
@@ -240,11 +240,11 @@ class IdentityProvider_Ldap_Driver implements IdentityProvider_Driver {
       $group_name = ldap_get_values(self::$_connection, $entry_id, "cn");
       if ($group_name[0] == self::$_params["everybody_group"]) {
         $in_everybody_group = true;
-	$group_id=array(LDAP_EVERYBODY_ID);
+	$group_id=[LDAP_EVERYBODY_ID];
       }
       if ($group_name[0] == self::$_params["registered_users_group"]) {
         $in_registered_users_group = true;
-	$group_id=array(LDAP_REGISTERED_USERS_ID);
+	$group_id=[LDAP_REGISTERED_USERS_ID];
       }
       if (in_array($group_name[0], $associated_groups)) {
         $groups[] = new Ldap_Group($group_id[0], $group_name[0]);
@@ -262,23 +262,21 @@ class IdentityProvider_Ldap_Driver implements IdentityProvider_Driver {
   /**
    * @see IdentityProvider_Driver::add_user_to_group.
    */
-  public function add_user_to_group($user, $group) {
+  public function add_user_to_group($user, $group): never {
     throw new Exception("@todo INVALID OPERATION");
   }
 
   /**
    * @see IdentityProvider_Driver::remove_user_to_group.
    */
-  public function remove_user_from_group($user, $group) {
+  public function remove_user_from_group($user, $group): never {
     throw new Exception("@todo INVALID OPERATION");
   }
 } // End Identity Gallery Driver
 
 class Ldap_User implements User_Definition {
-  private $ldap_entry;
-
-  public function __construct($ldap_entry=null) {
-    $this->ldap_entry = $ldap_entry;
+  public function __construct(private $ldap_entry=null)
+  {
   }
 
   public function display_name() {
@@ -350,12 +348,7 @@ class Ldap_User implements User_Definition {
 }
 
 class Ldap_Group implements Group_Definition {
-  public $id;
-  public $name;
-
-  public function __construct($id, $name) {
-    $this->id = $id;
-    $this->name = $name;
+  public function __construct(public $id, public $name) {
     $this->special = false;
   }
 }

@@ -34,7 +34,7 @@ class Sabre_DAV_TemporaryFileFilterPlugin extends Sabre_DAV_ServerPlugin {
      * 
      * @var array
      */
-    public $temporaryFilePatterns = array(
+    public $temporaryFilePatterns = [
         '/^\._(.*)$/',     // OS/X resource forks
         '/^.DS_Store$/',   // OS/X custom folder settings
         '/^desktop.ini$/', // Windows custom folder settings
@@ -42,7 +42,7 @@ class Sabre_DAV_TemporaryFileFilterPlugin extends Sabre_DAV_ServerPlugin {
         '/^.(.*).swp$/',   // ViM temporary files
         '/^\.dat(.*)$/',   // Smultron seems to create these
         '/^~lock.(.*)#$/', // Windows 7 lockfiles
-    );
+    ];
     
     /**
      * This is the directory where this plugin
@@ -87,8 +87,8 @@ class Sabre_DAV_TemporaryFileFilterPlugin extends Sabre_DAV_ServerPlugin {
      */
     public function initialize(Sabre_DAV_Server $server) {
         $this->server = $server;
-        $server->subscribeEvent('beforeMethod',array($this,'beforeMethod'));
-        $server->subscribeEvent('beforeCreateFile',array($this,'beforeCreateFile'));
+        $server->subscribeEvent('beforeMethod',[$this,'beforeMethod']);
+        $server->subscribeEvent('beforeCreateFile',[$this,'beforeCreateFile']);
 
     }
 
@@ -105,18 +105,13 @@ class Sabre_DAV_TemporaryFileFilterPlugin extends Sabre_DAV_ServerPlugin {
 
         if (!$tempLocation = $this->isTempFile($uri))
             return true;
-
-        switch($method) {
-            case 'GET' :
-                return $this->httpGet($tempLocation);
-            case 'PUT' :
-                return $this->httpPut($tempLocation);
-            case 'PROPFIND' :
-                return $this->httpPropfind($tempLocation, $uri);
-            case 'DELETE' :
-                return $this->httpDelete($tempLocation);
-         }
-         return true;
+        return match ($method) {
+            'GET' => $this->httpGet($tempLocation),
+            'PUT' => $this->httpPut($tempLocation),
+            'PROPFIND' => $this->httpPropfind($tempLocation, $uri),
+            'DELETE' => $this->httpDelete($tempLocation),
+            default => true,
+        };
 
     }
 
@@ -254,18 +249,18 @@ class Sabre_DAV_TemporaryFileFilterPlugin extends Sabre_DAV_ServerPlugin {
 
         $requestedProps = $this->server->parsePropFindRequest($this->server->httpRequest->getBody(true)); 
 
-        $properties = array(
+        $properties = [
             'href' => $uri,
-            200 => array(
+            200 => [
                 '{DAV:}getlastmodified' => new Sabre_DAV_Property_GetLastModified(filemtime($tempLocation)),
                 '{DAV:}getcontentlength' => filesize($tempLocation),
                 '{DAV:}resourcetype' => new Sabre_DAV_Property_ResourceType(null),
                 '{'.Sabre_DAV_Server::NS_SABREDAV.'}tempFile' => true, 
 
-            ),
-         );
+            ],
+         ];
 
-        $data = $this->server->generateMultiStatus(array($properties));
+        $data = $this->server->generateMultiStatus([$properties]);
         $hR->sendBody($data);
         return false;
 

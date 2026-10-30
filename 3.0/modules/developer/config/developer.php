@@ -21,8 +21,8 @@
 /**
  * Defines the available callback methods
  */
-$config["methods"] = array(
-  "theme" => array("album_blocks" => t("Album block"),
+$config["methods"] = [
+  "theme" => ["album_blocks" => t("Album block"),
                    "album_bottom" => t("Bottom of album content"),
                    "album_top" => t("Top of Album content"),
                    "admin_credits" => t("Administration page credits"),
@@ -51,4 +51,4 @@ $config["methods"] = array(
                    "sidebar_top" => t("Top of sidebar"),
                    "thumb_bottom" => t("Bottom of thumbnail"),
                    "thumb_info" => t("Thumbnail information"),
-                   "thumb_top" => t("Top of thumbnail display")));
+                   "thumb_top" => t("Top of thumbnail display")]];

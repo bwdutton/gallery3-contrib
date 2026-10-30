@@ -19,13 +19,13 @@
  */
 
 class embed_videos_event_Core {
-  static function item_deleted($item) {
+  public static function item_deleted($item) {
     ORM::factory("embedded_video")
     ->where("item_id", "=", $item->id)
     ->find()
     ->delete();
   }
-  static function site_menu($menu, $theme) {
+  public static function site_menu($menu, $theme) {
     $item = $theme->item();
     if ($can_add = $item && access::can("add", $item)) {
       $menu->get("add_menu")

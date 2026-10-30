@@ -1,6 +1,6 @@
 <?php defined("SYSPATH") or die("No direct script access.") ?>
 
-<?= form::open($action, array("method" => "post")) ?>
+<?= form::open($action, ["method" => "post"]) ?>
   <fieldset>
     <ul>
       <li><?= access::csrf_form_field() ?></li>
@@ -32,11 +32,11 @@
         <ul>
           <li>
             <?= form::label("theme[]", t("Theme callbacks")) ?>
-            <?= form::dropdown(array("name" => "theme[]", "multiple" => true, "size" => 6), $theme, $form["theme[]"]) ?>
+            <?= form::dropdown(["name" => "theme[]", "multiple" => true, "size" => 6], $theme, $form["theme[]"]) ?>
           </li>
           <li style="padding-left: 1em" >
             <?= form::label("event[]", t("Gallery event handlers")) ?>
-            <?= form::dropdown(array("name" => "event[]", "multiple" => true, "size" => 6), $event, $form["event[]"]) ?>
+            <?= form::dropdown(["name" => "event[]", "multiple" => true, "size" => 6], $event, $form["event[]"]) ?>
           </li>
         </ul>
       </li>

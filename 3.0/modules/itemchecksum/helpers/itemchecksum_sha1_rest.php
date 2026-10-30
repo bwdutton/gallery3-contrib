@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class itemchecksum_sha1_rest_Core {
-  static function get($request) {
+  public static function get($request) {
     $item = rest::resolve($request->url);
     access::required("view", $item);
     $checksum = "0";
@@ -34,14 +34,14 @@ class itemchecksum_sha1_rest_Core {
     } else {
       $checksum = sha1_file($item->file_path());
     }
-    $data = array("checksum" => $checksum);
+    $data = ["checksum" => $checksum];
 
-    return array(
+    return [
       "url" => $request->url,
-      "entity" => $data);
+      "entity" => $data];
   }
 
-  static function resolve($id) {
+  public static function resolve($id) {
     $item = ORM::factory("item", $id);
     if (!access::can("view", $item)) {
       throw new Kohana_404_Exception();
@@ -49,7 +49,7 @@ class itemchecksum_sha1_rest_Core {
     return $item;
   }
 
-  static function url($item) {
+  public static function url($item) {
     return url::abs_site("rest/itemchecksum_sha1/{$item->id}");
   }
 }

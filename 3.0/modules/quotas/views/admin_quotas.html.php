@@ -20,7 +20,7 @@
             <th><?= t("Limit") ?></th>
           </tr>
 
-          <?php foreach ($users as $i => $user): ?>
+          <?php foreach ($users as $user): ?>
           <?php $record = ORM::factory("users_space_usage")->where("owner_id", "=", $user->id)->find(); ?>
           <tr id="g-user-<?= $user->id ?>" class="<?= text::alternate("g-odd", "g-even") ?> g-user <?= $user->admin ? "g-admin" : "" ?>">
             <td id="g-user-<?= $user->id ?>" class="g-core-info">
@@ -67,7 +67,7 @@
             <th><?= t("Limit") ?></th>
             <th><?= t("Actions") ?></th>
           </tr>
-          <?php foreach ($groups as $i => $group): ?>
+          <?php foreach ($groups as $group): ?>
           <?php $record = ORM::factory("groups_quota")->where("group_id", "=", $group->id)->find(); ?>
           <tr id="g-group-<?= $group->id ?>" class="<?= text::alternate("g-odd", "g-even") ?> g-user ">
             <td id="g-group-<?= $group->id ?>" class="g-core-info">

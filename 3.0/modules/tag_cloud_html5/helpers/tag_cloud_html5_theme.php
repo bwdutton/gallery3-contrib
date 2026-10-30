@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class tag_cloud_html5_theme_Core {
-  static function head($theme) {
+  public static function head($theme) {
     $theme->script("jquery.tagcanvas.mod.min.js");
     $theme->css("tag_cloud_html5.css");
   }

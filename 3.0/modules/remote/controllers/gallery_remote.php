@@ -90,7 +90,7 @@ class Gallery_Remote_Controller extends Controller {
       $reply->send(gallery_remote::PROTO_MAJ_VER_INVAL);
       return false;
     }
-    else if(strpos($version, '.')===false) {
+    else if(!str_contains($version, '.')) {
       $reply->send(gallery_remote::PROTO_MAJ_FMT_INVAL);
       return false;
     }
@@ -116,7 +116,7 @@ class Gallery_Remote_Controller extends Controller {
     $regex = "/^([\w\+\-\.\/]+)\s+(\w+\s)*($fileext\s)/i";
     $lines = file("$mimePath/mime.types");
     foreach($lines as $line) {
-      if (substr($line, 0, 1) == '#') continue; // skip comments
+      if (str_starts_with($line, '#')) continue; // skip comments
       $line = rtrim($line) . ' ';
       if (!preg_match($regex, $line, $matches)) continue; // no match to the extension
       return ($matches[1]);
@@ -177,7 +177,7 @@ class Gallery_Remote_Controller extends Controller {
     $reply->set('album.info.extrafields.'.$count, 'Summary');
     // </FIXME> */
 
-    foreach( $root->descendants(null, null, array(array("type", "=", "album"))) as $item )
+    foreach( $root->descendants(null, null, [["type", "=", "album"]]) as $item )
     {
       if(!$use_permissions || access::can('view', $item))
       {
@@ -210,9 +210,9 @@ class Gallery_Remote_Controller extends Controller {
   
   private function _new_album(&$input, &$reply) {
     $album = trim($input->post('set_albumName'));
-    $name = $this->decode($input->post('newAlbumName'));
-    $title = $this->decode($input->post('newAlbumTitle'));
-    $desc = $this->decode($input->post('newAlbumDesc'));
+    $name = self::decode($input->post('newAlbumName'));
+    $title = self::decode($input->post('newAlbumTitle'));
+    $desc = self::decode($input->post('newAlbumDesc'));
 
     if($album=='0') $parent = item::root();
     else $parent = ORM::factory("item")->where("id", "=", $album)->find();
@@ -241,18 +241,18 @@ class Gallery_Remote_Controller extends Controller {
           $reply->set('status_text', 'New album created successfuly.');
           $reply->send();
 
-        } catch (Exception $e) {
-          $reply->set('status_text', t('Failed to save album with name %name.', array('name' => $name)));
+        } catch (Exception) {
+          $reply->set('status_text', t('Failed to save album with name %name.', ['name' => $name]));
           $reply->send(gallery_remote::CREATE_ALBUM_FAILED);
         }
 
-      } catch (ORM_Validation_Exception $e) {
-        $reply->set('status_text', t('Failed to validate album with name %name.', array('name' => $name)));
+      } catch (ORM_Validation_Exception) {
+        $reply->set('status_text', t('Failed to validate album with name %name.', ['name' => $name]));
         $reply->send(gallery_remote::CREATE_ALBUM_FAILED);
       }
     }
     else {
-      $reply->set('status_text', t('Failed to load album with name %name.', array('name' => $album)));
+      $reply->set('status_text', t('Failed to load album with name %name.', ['name' => $album]));
       $reply->send(gallery_remote::CREATE_ALBUM_FAILED);
     }
   }
@@ -274,16 +274,16 @@ class Gallery_Remote_Controller extends Controller {
       $reply->send();
     }
     else {
-      $reply->set('status_text', t('Failed to load album with name %name.', array('name' => $album)));
+      $reply->set('status_text', t('Failed to load album with name %name.', ['name' => $album]));
       $reply->send(gallery_remote::NO_VIEW_PERMISSION);
     }
   }
   
   private function _add_item(&$input, &$reply) {
     $album = trim($input->post('set_albumName'));
-    $userfilename = $this->decode($input->post('userfile_name'));
-    $title = $this->decode($input->post('caption'));
-    $forcefilename = $this->decode($input->post('force_filename'));
+    $userfilename = self::decode($input->post('userfile_name'));
+    $title = self::decode($input->post('caption'));
+    $forcefilename = self::decode($input->post('force_filename'));
     $autorotate = trim($input->post('auto_rotate'));
 
     if($album=='0') $parent = item::root();
@@ -311,8 +311,8 @@ class Gallery_Remote_Controller extends Controller {
       /* </any ugly idea is welcome here> */
       
             
-      if ($type!='' && !in_array($type, array('image/jpeg', 'image/gif', 'image/png'))) {
-        $reply->set('status_text', t("'%path' is an unsupported image type '%type'", array('path' => $_FILES['userfile']['tmp_name'], 'type' => $type)));
+      if ($type!='' && !in_array($type, ['image/jpeg', 'image/gif', 'image/png'])) {
+        $reply->set('status_text', t("'%path' is an unsupported image type '%type'", ['path' => $_FILES['userfile']['tmp_name'], 'type' => $type]));
         $reply->send(gallery_remote::UPLOAD_PHOTO_FAIL);
         return;
       }
@@ -331,7 +331,7 @@ class Gallery_Remote_Controller extends Controller {
       //*/
 
       //*/ suddenly gallery fails because the uploaded(!) file (of cause!) doesn't contain a file extension
-      if(strpos($_FILES['userfile']['tmp_name'], '.')===false) {
+      if(!str_contains($_FILES['userfile']['tmp_name'], '.')) {
         $moveto = $_FILES['userfile']['tmp_name'].'.'.substr($type, strpos($type, '/')+1);
         rename($_FILES['userfile']['tmp_name'], $moveto);
         $_FILES['userfile']['tmp_name'] = $moveto;
@@ -365,29 +365,29 @@ class Gallery_Remote_Controller extends Controller {
           catch (ORM_Validation_Exception $e) {
             $validation = $e->validation;
             //print_r($validation->errors()); exit;
-            $reply->set('status_text', t('Failed to validate item %item: %errors', array('item' => $filename, 'errors' => str_replace("\n", ' ', print_r($validation->errors(),true))) ));
+            $reply->set('status_text', t('Failed to validate item %item: %errors', ['item' => $filename, 'errors' => str_replace("\n", ' ', print_r($validation->errors(),true))] ));
             $reply->send(gallery_remote::UPLOAD_PHOTO_FAIL); //FIXME gallery remote ignores this return value and continues to wait
           }
           catch (Exception $e) {
-            $reply->set('status_text', t('Failed to add item %item.', array('item' => $filename)));
+            $reply->set('status_text', t('Failed to add item %item.', ['item' => $filename]));
             $reply->send(gallery_remote::UPLOAD_PHOTO_FAIL); //FIXME gallery remote ignores this return value and continues to wait
           }
 
         } catch (ORM_Validation_Exception $e) {
           $validation = $e->validation;
           //print_r($validation->errors()); exit;
-          $reply->set('status_text', t('Failed to validate item %item: %errors', array('item' => $filename, 'errors' => str_replace("\n", ' ', print_r($validation->errors(),true))) ));
+          $reply->set('status_text', t('Failed to validate item %item: %errors', ['item' => $filename, 'errors' => str_replace("\n", ' ', print_r($validation->errors(),true))] ));
           $reply->send(gallery_remote::UPLOAD_PHOTO_FAIL); //FIXME gallery remote ignores this return value and continues to wait
         }
 
-      } catch (Exception $e) {
-        $reply->set('status_text', t("Corrupt image '%path'", array('path' => $_FILES['userfile']['tmp_name'])));
+      } catch (Exception) {
+        $reply->set('status_text', t("Corrupt image '%path'", ['path' => $_FILES['userfile']['tmp_name']]));
         $reply->send(gallery_remote::UPLOAD_PHOTO_FAIL); //FIXME gallery remote ignores this return value and continues to wait
       }
 
     }
     else {
-      $reply->set('status_text', t('Failed to load album with name %name.', array('name' => $album)));
+      $reply->set('status_text', t('Failed to load album with name %name.', ['name' => $album]));
       $reply->send(gallery_remote::UPLOAD_PHOTO_FAIL); //FIXME gallery remote ignores this return value and continues to wait
     }
   }
@@ -413,18 +413,18 @@ class Gallery_Remote_Controller extends Controller {
           $reply->set('status_text', 'Album moved successfuly.');
           $reply->send();
 
-        } catch (Exception $e) {
-          $reply->set('status_text', t('Failed to save album with name %name.', array('name' => $name)));
+        } catch (Exception) {
+          $reply->set('status_text', t('Failed to save album with name %name.', ['name' => $name]));
           $reply->send(gallery_remote::MOVE_ALBUM_FAILED);
         }
 
-      } catch (ORM_Validation_Exception $e) {
-        $reply->set('status_text', t('Failed to validate album with name %name.', array('name' => $name)));
+      } catch (ORM_Validation_Exception) {
+        $reply->set('status_text', t('Failed to validate album with name %name.', ['name' => $name]));
         $reply->send(gallery_remote::MOVE_ALBUM_FAILED);
       }
     }
     else {
-      $reply->set('status_text', t('Failed to load album with name %album or destination with name %dest.', array('name' => $name, 'dest' => $destination)));
+      $reply->set('status_text', t('Failed to load album with name %album or destination with name %dest.', ['name' => $name, 'dest' => $destination]));
       $reply->send(gallery_remote::MOVE_ALBUM_FAILED);
     }
   }
@@ -450,20 +450,20 @@ class Gallery_Remote_Controller extends Controller {
           $reply->send();
 
         } catch (Exception $e) {
-          $reply->set('status_text', t('Failed to save item %item.', array('item' => $name)));
+          $reply->set('status_text', t('Failed to save item %item.', ['item' => $name]));
           $reply->send(gallery_remote::NO_WRITE_PERMISSION);
         }
 
       } catch (ORM_Validation_Exception $e) {
         $validation = $e->validation;
         //print_r($validation->errors()); exit;
-        $reply->set('status_text', t('Failed to validate item %item.', array('item' => $name)).str_replace("\n", ' ', print_r($validation->errors(),true)) );
+        $reply->set('status_text', t('Failed to validate item %item.', ['item' => $name]).str_replace("\n", ' ', print_r($validation->errors(),true)) );
         $reply->send(gallery_remote::NO_WRITE_PERMISSION);
       }
 
     }
     else {
-      $reply->set('status_text', t('Failed to load album with name %name.', array('name' => $name)));
+      $reply->set('status_text', t('Failed to load album with name %name.', ['name' => $name]));
       $reply->send(gallery_remote::NO_WRITE_PERMISSION);
     }
   }
@@ -495,7 +495,7 @@ class Gallery_Remote_Controller extends Controller {
       $reply->send();
     }
     else {
-      $reply->set('status_text', t('Failed to load album with name %name.', array('name' => $name)));
+      $reply->set('status_text', t('Failed to load album with name %name.', ['name' => $name]));
       $reply->send(gallery_remote::NO_VIEW_PERMISSION);
     }
   }
@@ -588,7 +588,7 @@ class Gallery_Remote_Controller extends Controller {
       
     }
     else {
-      $reply->set('status_text', t('Failed to load album with name %name.', array('name' => $name)));
+      $reply->set('status_text', t('Failed to load album with name %name.', ['name' => $name]));
       $reply->send(gallery_remote::NO_VIEW_PERMISSION);
     }
   }

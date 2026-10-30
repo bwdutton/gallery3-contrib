@@ -3,7 +3,7 @@
 <div>
   <p><?= t("This will display information about users when they Login, Logout, Failed Login Attempts, Admin Re-Authenticate, and User Created.
    It can be configured <a href=\"%user_info_configure\">here</a>.<br><br> User Created - Logs users that the Admin creates and can log the users that are created by visitors when using the Registration Module and the Registration Module is set to 'Visitors can create accounts and no administrator approval is required'.",
-          array("user_info_configure" => html::mark_clean(url::site("admin/user_info")))) ?></p>
+          ["user_info_configure" => html::mark_clean(url::site("admin/user_info"))]) ?></p>
 </div>
 
 <div>
@@ -12,7 +12,7 @@
 <!-- First Row - Displays Number of Records -->
 <tr>
 <?php if ($number_of_records > 0) { ?>
-	<td align="center" colspan="6"><?= t("Number of Records: %number_of_records",array("number_of_records" => $number_of_records)) ?></td>
+	<td align="center" colspan="6"><?= t("Number of Records: %number_of_records",["number_of_records" => $number_of_records]) ?></td>
 	<?php } else { ?>
 	<td align="center" colspan="6"><?= t("Number of Records: 0") ?></td>
 	<?php } ?> 

@@ -173,7 +173,7 @@ class tagfaces_Controller extends Controller {
 
     // Make a new Form.
     $form = new Forge("tagfaces/saveface", "", "post",
-                      array("id" => "g-tag-faces-form"));
+                      ["id" => "g-tag-faces-form"]);
 
     // Create an array of all the tags for the current item.
     $all_tags = ORM::factory("tag")
@@ -235,7 +235,7 @@ class tagfaces_Controller extends Controller {
     //   from a photo.
     // Make a new Form.
     $form = new Forge("tagfaces/delface", "", "post",
-                      array("id" => "g-tag-del-faces-form"));
+                      ["id" => "g-tag-del-faces-form"]);
 
     // Create an array of all the tags that already have faces.
     $existing_faces = ORM::factory("items_face")
@@ -246,8 +246,8 @@ class tagfaces_Controller extends Controller {
     //   for a checklist.
     $array_faces = "";
     foreach ($existing_faces as $oneFace) {
-      $array_faces[$oneFace->id] = array(ORM::factory("tag",
-                                     $oneFace->tag_id)->name, false);
+      $array_faces[$oneFace->id] = [ORM::factory("tag",
+                                     $oneFace->tag_id)->name, false];
     }
 
     if ($array_faces) {
@@ -271,7 +271,7 @@ class tagfaces_Controller extends Controller {
     //   for a checklist.
     $array_notes = "";
     foreach ($existing_notes as $oneNote) {
-      $array_notes[$oneNote->id] = array($oneNote->title, false);
+      $array_notes[$oneNote->id] = [$oneNote->title, false];
     }
 
     if ($array_notes) {

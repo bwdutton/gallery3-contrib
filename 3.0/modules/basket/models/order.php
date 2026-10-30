@@ -29,28 +29,19 @@ class Order_Model extends ORM {
   }
 
   public function status(){
-    switch ($this->status){
-      case 1:
-        return "Waiting Payment";
-      case 2:
-        return "Payment Confirmed";
-      case 20:
-        return "Complete";
-
-      default:
-        return "Unknown";
-    }
+    return match ($this->status) {
+        1 => "Waiting Payment",
+        2 => "Payment Confirmed",
+        20 => "Complete",
+        default => "Unknown",
+    };
   }
 
   public function payment_method(){
-    switch ($this->method){
-      case 1:
-        return "through Paypal";
-      case 2:
-        return "offline";
-
-      default:
-        return "Unknown";
-    }
+    return match ($this->method) {
+        1 => "through Paypal",
+        2 => "offline",
+        default => "Unknown",
+    };
   }
 }

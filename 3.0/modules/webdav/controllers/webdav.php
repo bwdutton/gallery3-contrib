@@ -45,7 +45,7 @@ class WebDAV_Controller extends Controller {
     $auth = new Sabre_HTTP_BasicAuth();
     $auth->setRealm(item::root()->title);
     $authResult = $auth->getUserPass();
-    list($username, $password) = $authResult;
+    [$username, $password] = $authResult;
 
     if (!$username || !$password) {
       $auth->requireLogin();

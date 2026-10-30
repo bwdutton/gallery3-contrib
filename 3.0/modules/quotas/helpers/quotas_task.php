@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class quotas_task_Core {
-  static function available_tasks() {
+  public static function available_tasks() {
     // Total up all non-guest users in the users table that don't have a corresponding record
     //   in the users_space_usages table.
     //   If the result is greater then 0, display a warning for this task so the admin knows
@@ -28,7 +28,7 @@ class quotas_task_Core {
       ->join("users_space_usages", "users.id", "users_space_usages.owner_id", "LEFT OUTER")
       ->and_where("users_space_usages.owner_id", "IS", NULL)->count_all();
 
-    $tasks = array();
+    $tasks = [];
     $tasks[] = Task_Definition::factory()
                ->callback("quotas_task::update_quotasdb")
                ->name(t("Rebuild user quotas table"))
@@ -38,7 +38,7 @@ class quotas_task_Core {
     return $tasks;
   }
 
-  static function update_quotasdb($task) {
+  public static function update_quotasdb($task) {
     // Re-create the users_space_usages table and recalculate all values.
 
     // Retrieve the total variable.  If this is the first time this function has been run,

@@ -18,14 +18,14 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class keeporiginal_event_Core {
-  static function graphics_rotate($input_file, $output_file, $options) {
+  public static function graphics_rotate($input_file, $output_file, $options) {
     // Make a copy of the original fullsized image before rotating it.
     keeporiginal_event_Core::_preserve($input_file);
   }
 
-  static function _preserve($input_file) {
+  public static function _preserve($input_file) {
     //   If $input_file is located in VARPATH/albums/ then assume its a fullsize photo.
-    if (strncmp($input_file, VARPATH . "albums/", strlen(VARPATH . "albums/")) == 0) {
+    if (str_starts_with($input_file, VARPATH . "albums/")) {
       // Figure out where the original copy should be stashed at.
       $temp_path = str_replace(VARPATH . "albums/", "", $input_file);
       $original_image = VARPATH . "original/" . $temp_path;
@@ -49,7 +49,7 @@ class keeporiginal_event_Core {
     }
   }
 
-  static function item_before_delete($item) {
+  public static function item_before_delete($item) {
     // If deleting a photo, make sure the original is deleted as well, if it exists.
     if ($item->is_photo()) {
       $original_file = VARPATH . "original/" . str_replace(VARPATH . "albums/", "", $item->file_path());
@@ -68,7 +68,7 @@ class keeporiginal_event_Core {
     }
   }
 
-  static function item_updated($old, $new) {
+  public static function item_updated($old, $new) {
     // When updating an item, check and see if the file name is being changed.
     //  If so, check for and modify any corresponding file/folder in
     //  VARPATH/original/ as well.
@@ -88,7 +88,7 @@ class keeporiginal_event_Core {
     }
   }
 
-  static function item_moved($item, $old_parent) {
+  public static function item_moved($item, $old_parent) {
     // When moving an item, check and see if a corresponding file exists
     //   in VARPATH/original/.  If so, move that item to a similar directory
     //   in original as well.
@@ -119,7 +119,7 @@ class keeporiginal_event_Core {
     }
   }
 
-  static function site_menu($menu, $theme) {
+  public static function site_menu($menu, $theme) {
     // Create a menu option to restore the original photo.
     if ($item = $theme->item()) {
       if ((access::can("view", $item)) && (access::can("edit", $item))) {

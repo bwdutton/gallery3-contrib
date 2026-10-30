@@ -19,11 +19,11 @@
  */
 class about_this_photo_block_Core {
 
-  static function get_site_list() {
-    return array("simple" => t("About This Photo"));
+  public static function get_site_list() {
+    return ["simple" => t("About This Photo")];
   }
 
-  static function get($block_id, $theme) {
+  public static function get($block_id, $theme) {
     $block = new Block();
     switch ($block_id) {
     case "simple":

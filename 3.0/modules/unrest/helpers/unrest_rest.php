@@ -8,30 +8,30 @@ class unrest_rest_Core {
 		return $items;
 	}
 	
-	private static function getFreetextLimiters($request, $limit = array())
+	private static function getFreetextLimiters($request, $limit = [])
 	{
-		$likeMapping = array(
+		$likeMapping = [
 			'name' => 'name', 
 			'description' => 'description'
-		);
+		];
 		foreach ($likeMapping as $key => $col)
 		{
-			if (isset($request->params->$key)) { $limit[$col] = array('op' => 'LIKE', 'value' => '%' . $request->params->$key . '%'); }
+			if (isset($request->params->$key)) { $limit[$col] = ['op' => 'LIKE', 'value' => '%' . $request->params->$key . '%']; }
 		}
 		
 		return $limit;
 	}
 	
-	private static function getBasicLimiters($request, $limit = array())
+	private static function getBasicLimiters($request, $limit = [])
 	{
-		$directMapping = array(
+		$directMapping = [
 			'type' => 'type', 
 			'id' => 'items.id',
 			'parent' => 'parent_id',
-			'mime' => 'mime_type');
+			'mime' => 'mime_type'];
 		foreach ($directMapping as $key => $col)
 		{
-			if (isset($request->params->$key)) { $limit[$col] = array('op' => '=', 'value' => unrest_rest::resolveLimitOption($request->params->$key)); }
+			if (isset($request->params->$key)) { $limit[$col] = ['op' => '=', 'value' => unrest_rest::resolveLimitOption($request->params->$key)]; }
 		}
 		
 		return $limit;
@@ -45,29 +45,29 @@ class unrest_rest_Core {
       	foreach ($gids as $gid) { $q->or_where('view_' . $gid, '=', 1); }
 		
       	$q->where('type', '=', 'album');      	
-      	$permitted = array();
+      	$permitted = [];
       	foreach($q->execute() as $row) { $permitted[] = $row->id; }
       	
       	return $permitted;
 	}
 	
-	static function queryLimitByPermission(&$query, $permitted)
+	public static function queryLimitByPermission(&$query, $permitted)
 	{
 		$query->and_open()->and_open()->where('type', '=', 'album')->and_where('items.id', 'IN', $permitted)->close();
       	$query->or_open()->where('type', '!=', 'album')->and_where('parent_id', 'IN', $permitted)->close()->close();
 	}
 	
-	static function baseItemQuery($db)
+	public static function baseItemQuery($db)
 	{
-		$fields = array(
+		$fields = [
       		'items.id', 'title', 'album_cover_item_id', 'description', 'height', 'width', 'left_ptr', 'right_ptr', 
       		'level', 'mime_type', 'name', 'owner_id', 'parent_id', 'relative_path_cache', 'relative_url_cache', 
       		'resize_dirty', 'slug', 'sort_column', 'sort_order', 'thumb_dirty','thumb_height', 'view_1', 'type',
       		'resize_height', 'resize_width', 'thumb_height', 'thumb_width', 'slug', 'name', 'relative_path_cache'
-      	);
-      	
-      	$permfields = array('view_', 'view_full_', 'edit_', 'add_');
-      	
+      	];
+
+      	$permfields = ['view_', 'view_full_', 'edit_', 'add_'];
+
       	foreach (identity::group_ids_for_active_user() as $album)
       	{
       		foreach ($permfields as $field)
@@ -75,7 +75,7 @@ class unrest_rest_Core {
 	      		$fields[] = $field . $album;  		
       		}
       	}
-      	
+
       	return($db->select($fields)->from('items')->join('access_caches', 'access_caches.item_id', 'items.id'));
 /*
       	return($db->select(array(
@@ -87,7 +87,7 @@ class unrest_rest_Core {
       	*/
 	}
 	
-	static function queryLimitByLimiter(&$query, $limit)
+	public static function queryLimitByLimiter(&$query, $limit)
 	{
       	foreach ($limit as $key => $block)
       	{
@@ -96,16 +96,16 @@ class unrest_rest_Core {
       	}
 	}
 	
-	static function getDisplayOptions($request)
+	public static function getDisplayOptions($request)
 	{
 		if (isset($request->params->display)) {
 			return(explode(',', $request->params->display));
 		} else {
-			return(array('uiimage','uitext','ownership','members'));
+			return(['uiimage','uitext','ownership','members']);
 		};
 	}
 	
-	static function queryOrder(&$query, $request)
+	public static function queryOrder(&$query, $request)
 	{
 		if (isset($request->params->order)) {
 			$order = $request->params->order;
@@ -118,25 +118,25 @@ class unrest_rest_Core {
 			switch ($order)
 			{
 				case 'tree':
-					$query->order_by(array('level' => 'ASC', 'left_ptr' => 'ASC'));
+					$query->order_by(['level' => 'ASC', 'left_ptr' => 'ASC']);
 					break;
 				case 'created':
-					$query->order_by(array('created' => $direction));
+					$query->order_by(['created' => $direction]);
 					break;
 				case 'updated':
-					$query->order_by(array('updated' => $direction));
+					$query->order_by(['updated' => $direction]);
 					break;
 				case 'views':
-					$query->order_by(array('view_count' => $direction));
+					$query->order_by(['view_count' => $direction]);
 					break;
 				case 'type':
-					$query->order_by(array('type' => $direction));
+					$query->order_by(['type' => $direction]);
 					break;
 			}
 		}
 	}
 	
-	static function addChildren($request, $db, $filler, $permitted, $display, &$return, $rest_base)
+	public static function addChildren($request, $db, $filler, $permitted, $display, &$return, $rest_base)
 	{
 		$children = $db->select('parent_id', 'id')->from('items')->where('parent_id', 'IN', $filler['children_of']);
 		if (isset($request->params->childtypes)) 
@@ -149,7 +149,7 @@ class unrest_rest_Core {
 		unrest_rest::queryLimitByPermission($children, $permitted);
 		
 		
-		$childBlock = array();
+		$childBlock = [];
 		foreach($children->execute() as $item)
 		{
 			$childBlock[$item->parent_id][] = intval($item->id);
@@ -163,7 +163,7 @@ class unrest_rest_Core {
 					$data['members'] = $childBlock[ $data['id'] ];
 				}
 				else {
-					$members = array();
+					$members = [];
 					foreach ($childBlock[ $data['entity']['id'] ] as $child) {
 						$members[] = unrest_rest::makeRestURL('item', $child, $rest_base);
 					}
@@ -172,7 +172,7 @@ class unrest_rest_Core {
 			}
 			else
 			{
-					$data['members'] = array();			
+					$data['members'] = [];			
 			}
 		}	
 	}
@@ -195,7 +195,7 @@ class unrest_rest_Core {
 	}
 	
 	
-	static function get($request) {
+	public static function get($request) {
 		$db = db::build();
 		
 		$start = microtime(true);
@@ -222,41 +222,41 @@ class unrest_rest_Core {
       	unrest_rest::queryLimitByLimiter($items, $limit);
       	unrest_rest::queryOrder($items, $request);
 		
-		$return = array();
-		$filler = array();
-		$relationshipCandidates = array();
+		$return = [];
+		$filler = [];
+		$relationshipCandidates = [];
 		
 		foreach($items->execute() as $item)
 		{
-			$data = array(
+			$data = [
 				'id' => intval($item->id), 
 				'parent' => intval($item->parent_id),
 				'owner_id' => intval($item->{'owner_id'}),
 				'public' => ($item->view_1)?true:false,
 				'type' => $item->type // Grmbl
-			);
+			];
 			
 			if (in_array('uitext', $display)) {
-				$ui = array(
+				$ui = [
 					'title' => $item->title,
 					'description' => $item->description,
 					'name' => $item->name,
 					'slug' => $item->slug
-				);
+				];
 				
 				$data = array_merge($data, $ui);
 			}
 			
 			
 			if (in_array('uiimage', $display)) {
-				$ui = array(
+				$ui = [
 					'height' => $item->height,
 					'width' => $item->width,
 					'resize_height' => $item->resize_height,
 					'resize_width' => $item->resize_width,
 					'thumb_height' => $item->resize_height,
 					'thumb_width' => $item->resize_width
-				);
+				];
 				
 				$ui['thumb_url_public'] = unrest_rest::size_url('thumbs', $item->relative_path_cache, $item->type, $file_base);
 				$public = $item->view_1?true:false;
@@ -284,10 +284,10 @@ class unrest_rest_Core {
 				$filler['children_of'][] = $item->id;
 			}
 			
-			$return[] = array(
+			$return[] = [
 				'url' => unrest_rest::makeRestURL('item', $item->id, $rest_base ),
 				'entity' => $data
-			);
+			];
 		}
 		
 		

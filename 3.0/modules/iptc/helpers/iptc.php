@@ -27,8 +27,8 @@ class iptc_Core {
 
   protected static $iptc_keys;
 
-  static function extract($item) {
-    $keys = array();
+  public static function extract($item) {
+    $keys = [];
     // Only try to extract IPTC from photos
     if ($item->is_photo() && $item->mime_type == "image/jpeg") {
       $info = getJpegHeader($item->file_path());
@@ -37,7 +37,7 @@ class iptc_Core {
 	if ($iptcBlock !== FALSE) {
 	  $iptc = iptcparse($iptcBlock);
 	} else {
-          $iptc = array();
+          $iptc = [];
         }
       	$xmp = getXmpDom($info);
         
@@ -52,7 +52,7 @@ class iptc_Core {
             if (!empty($iptc[$iptc_key])) {
               $value = implode(";", $iptc[$iptc_key]);
               if (function_exists("mb_detect_encoding") && mb_detect_encoding($value) != "UTF-8") {
-                $value = utf8_encode($value);
+                $value = mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1');
               }
             }
           }
@@ -86,20 +86,20 @@ class iptc_Core {
     }
   }
 
-  static function get($item) {
-    $iptc = array();
+  public static function get($item) {
+    $iptc = [];
     $record = ORM::factory("iptc_record")
       ->where("item_id", "=", $item->id)
       ->find();
     if (!$record->loaded()) {
-      return array();
+      return [];
     }
 
     $definitions = self::keys();
     $keys = unserialize($record->data);
     foreach ($keys as $key => $value) {
       if (module::get_var("iptc", "show_".$key) == 1)
-        $iptc[] = array("caption" => $definitions[$key][1], "value" => $value);
+        $iptc[] = ["caption" => $definitions[$key][1], "value" => $value];
     }
 
     return $iptc;
@@ -107,87 +107,85 @@ class iptc_Core {
 
 
   public static function keys() {
-    if (!isset(self::$iptc_keys)) {
-      self::$iptc_keys = array(
-        "ObjectName"             => array("2#005",
-                                          t("IPTC Object Name"),
-                                          "/x:xmpmeta/rdf:RDF/rdf:Description/dc:title/rdf:Alt/rdf:li"                                                        ),
-        "EditStatus"             => array("2#007",
-                                          t("IPTC Edit Status"),
-                                          "/x:xmpmeta/rdf:RDF/rdf:Description/@mediapro:Status"                                                               ),
-        "Category"               => array("2#015",
-                                          t("IPTC Category"),
-                                          "/x:xmpmeta/rdf:RDF/rdf:Description/@photoshop:Category"                                                            ),
-        "SupplementalCategories" => array("2#020",
-                                          t("IPTC Categories"),
-                                          "/x:xmpmeta/rdf:RDF/rdf:Description/photoshop:SupplementalCategories/rdf:Bag/rdf:li"                                ),
-        "FixtureIdentifier"      => array("2#022",
-                                          t("IPTC Identifier"),
-                                          "/x:xmpmeta/rdf:RDF/rdf:Description/@mediapro:Event"                                                                ),
-        "Keywords"               => array("2#025",
-                                          t("IPTC Keywords"),
-                                          "/x:xmpmeta/rdf:RDF/rdf:Description/dc:subject/rdf:Bag/rdf:li"                                                      ),
-        "LocationCode"           => array("2#026",
-                                          t("IPTC Location Code"),
-                                          null                                                                                                                ),
-        "SpecialInstructions"    => array("2#040",
-                                          t("IPTC Instructions"),
-                                          "/x:xmpmeta/rdf:RDF/rdf:Description/@photoshop:Instructions"                                                        ),
-        "DateCreated"            => array("2#055",
-                                          t("IPTC Created Date"),
-                                          "/x:xmpmeta/rdf:RDF/rdf:Description/@photoshop:DateCreated"                                                         ),
-        "ByLine"                 => array("2#080",
-                                          t("IPTC Author"),
-                                          "/x:xmpmeta/rdf:RDF/rdf:Description/dc:creator/rdf:Seq/rdf:li"                                                      ),
-        "ByLineTitle"            => array("2#085",
-                                          t("IPTC Author Title"),
-                                          "/x:xmpmeta/rdf:RDF/rdf:Description/@photoshop:AuthorsPosition"                                                     ),
-        "City"                   => array("2#090",
-                                          t("IPTC City"),
-                                          "/x:xmpmeta/rdf:RDF/rdf:Description/@photoshop:City"                                                                ),
-        "SubLocation"            => array("2#092",
-                                          t("IPTC SubLocation"),
-                                          "/x:xmpmeta/rdf:RDF/rdf:Description/@Iptc4xmpCore:Location | /x:xmpmeta/rdf:RDF/rdf:Description/@mediapro:Location" ),
-        "ProvinceState"          => array("2#095",
-                                          t("IPTC Province State"),
-                                          "/x:xmpmeta/rdf:RDF/rdf:Description/@photoshop:State"                                                               ),
-        "CountryCode"            => array("2#100",
-                                          t("IPTC Country Code"),
-                                          "/x:xmpmeta/rdf:RDF/rdf:Description/@Iptc4xmpCore:CountryCode"                                                      ),
-        "CountryName"            => array("2#101",
-                                          t("IPTC Country Name"),
-                                          "/x:xmpmeta/rdf:RDF/rdf:Description/@photoshop:Country"                                                             ),
-        "Transmission"           => array("2#103",
-                                          t("IPTC Transmission,"),
-                                          "/x:xmpmeta/rdf:RDF/rdf:Description/@photoshop:TransmissionReference"                                               ),
-        "HeadLine"               => array("2#105",
-                                          t("IPTC HeadLine"),
-                                          "/x:xmpmeta/rdf:RDF/rdf:Description/@photoshop:Headline"                                                            ),
-        "Credit"                 => array("2#110",
-                                          t("IPTC Credit"),
-                                          "/x:xmpmeta/rdf:RDF/rdf:Description/@photoshop:Credit | /x:xmpmeta/rdf:RDF/rdf:Description/photoshop:Credit"        ),
-        "Source"                 => array("2#115",
-                                          t("IPTC Source"),
-                                          "/x:xmpmeta/rdf:RDF/rdf:Description/@photoshop:Source"                                                              ),
-        "Copyright"              => array("2#116",
-                                          t("IPTC Copyright"),
-                                          "/x:xmpmeta/rdf:RDF/rdf:Description/dc:rights/rdf:Alt/rdf:li"                                                       ),
-        "Contacts"               => array("2#118",
-                                          t("IPTC Contacts"),
-                                          "/x:xmpmeta/rdf:RDF/rdf:Description/mediapro:People/rdf:Bag/rdf:li"                                                 ),        
-        "Caption"                => array("2#120",
-                                          t("IPTC Caption"),
-                                          "/x:xmpmeta/rdf:RDF/rdf:Description/dc:description/rdf:Alt/rdf:li"                                                  ),
-        "Redactor"               => array("2#122",
-                                          t("IPTC Redactor"),
-                                          "/x:xmpmeta/rdf:RDF/rdf:Description/@photoshop:CaptionWriter"                                                       )
-      );
-    }
+    self::$iptc_keys ??= [
+      "ObjectName"             => ["2#005",
+                                        t("IPTC Object Name"),
+                                        "/x:xmpmeta/rdf:RDF/rdf:Description/dc:title/rdf:Alt/rdf:li"                                                        ],
+      "EditStatus"             => ["2#007",
+                                        t("IPTC Edit Status"),
+                                        "/x:xmpmeta/rdf:RDF/rdf:Description/@mediapro:Status"                                                               ],
+      "Category"               => ["2#015",
+                                        t("IPTC Category"),
+                                        "/x:xmpmeta/rdf:RDF/rdf:Description/@photoshop:Category"                                                            ],
+      "SupplementalCategories" => ["2#020",
+                                        t("IPTC Categories"),
+                                        "/x:xmpmeta/rdf:RDF/rdf:Description/photoshop:SupplementalCategories/rdf:Bag/rdf:li"                                ],
+      "FixtureIdentifier"      => ["2#022",
+                                        t("IPTC Identifier"),
+                                        "/x:xmpmeta/rdf:RDF/rdf:Description/@mediapro:Event"                                                                ],
+      "Keywords"               => ["2#025",
+                                        t("IPTC Keywords"),
+                                        "/x:xmpmeta/rdf:RDF/rdf:Description/dc:subject/rdf:Bag/rdf:li"                                                      ],
+      "LocationCode"           => ["2#026",
+                                        t("IPTC Location Code"),
+                                        null                                                                                                                ],
+      "SpecialInstructions"    => ["2#040",
+                                        t("IPTC Instructions"),
+                                        "/x:xmpmeta/rdf:RDF/rdf:Description/@photoshop:Instructions"                                                        ],
+      "DateCreated"            => ["2#055",
+                                        t("IPTC Created Date"),
+                                        "/x:xmpmeta/rdf:RDF/rdf:Description/@photoshop:DateCreated"                                                         ],
+      "ByLine"                 => ["2#080",
+                                        t("IPTC Author"),
+                                        "/x:xmpmeta/rdf:RDF/rdf:Description/dc:creator/rdf:Seq/rdf:li"                                                      ],
+      "ByLineTitle"            => ["2#085",
+                                        t("IPTC Author Title"),
+                                        "/x:xmpmeta/rdf:RDF/rdf:Description/@photoshop:AuthorsPosition"                                                     ],
+      "City"                   => ["2#090",
+                                        t("IPTC City"),
+                                        "/x:xmpmeta/rdf:RDF/rdf:Description/@photoshop:City"                                                                ],
+      "SubLocation"            => ["2#092",
+                                        t("IPTC SubLocation"),
+                                        "/x:xmpmeta/rdf:RDF/rdf:Description/@Iptc4xmpCore:Location | /x:xmpmeta/rdf:RDF/rdf:Description/@mediapro:Location" ],
+      "ProvinceState"          => ["2#095",
+                                        t("IPTC Province State"),
+                                        "/x:xmpmeta/rdf:RDF/rdf:Description/@photoshop:State"                                                               ],
+      "CountryCode"            => ["2#100",
+                                        t("IPTC Country Code"),
+                                        "/x:xmpmeta/rdf:RDF/rdf:Description/@Iptc4xmpCore:CountryCode"                                                      ],
+      "CountryName"            => ["2#101",
+                                        t("IPTC Country Name"),
+                                        "/x:xmpmeta/rdf:RDF/rdf:Description/@photoshop:Country"                                                             ],
+      "Transmission"           => ["2#103",
+                                        t("IPTC Transmission,"),
+                                        "/x:xmpmeta/rdf:RDF/rdf:Description/@photoshop:TransmissionReference"                                               ],
+      "HeadLine"               => ["2#105",
+                                        t("IPTC HeadLine"),
+                                        "/x:xmpmeta/rdf:RDF/rdf:Description/@photoshop:Headline"                                                            ],
+      "Credit"                 => ["2#110",
+                                        t("IPTC Credit"),
+                                        "/x:xmpmeta/rdf:RDF/rdf:Description/@photoshop:Credit | /x:xmpmeta/rdf:RDF/rdf:Description/photoshop:Credit"        ],
+      "Source"                 => ["2#115",
+                                        t("IPTC Source"),
+                                        "/x:xmpmeta/rdf:RDF/rdf:Description/@photoshop:Source"                                                              ],
+      "Copyright"              => ["2#116",
+                                        t("IPTC Copyright"),
+                                        "/x:xmpmeta/rdf:RDF/rdf:Description/dc:rights/rdf:Alt/rdf:li"                                                       ],
+      "Contacts"               => ["2#118",
+                                        t("IPTC Contacts"),
+                                        "/x:xmpmeta/rdf:RDF/rdf:Description/mediapro:People/rdf:Bag/rdf:li"                                                 ],        
+      "Caption"                => ["2#120",
+                                        t("IPTC Caption"),
+                                        "/x:xmpmeta/rdf:RDF/rdf:Description/dc:description/rdf:Alt/rdf:li"                                                  ],
+      "Redactor"               => ["2#122",
+                                        t("IPTC Redactor"),
+                                        "/x:xmpmeta/rdf:RDF/rdf:Description/@photoshop:CaptionWriter"                                                       ]
+    ];
     return self::$iptc_keys;
   }
 
 
-  static function stats() {
+  public static function stats() {
     $missing_iptc = db::build()
       ->select("items.id")
       ->from("items")
@@ -202,18 +200,18 @@ class iptc_Core {
 
     $total_items = ORM::factory("item")->where("type", "=", "photo")->count_all();
     if (!$total_items) {
-      return array(0, 0, 0);
+      return [0, 0, 0];
     }
-    return array($missing_iptc, $total_items,
-                 round(100 * (($total_items - $missing_iptc) / $total_items)));
+    return [$missing_iptc, $total_items,
+                 round(100 * (($total_items - $missing_iptc) / $total_items))];
   }
 
-  static function check_index() {
-    list ($remaining) = iptc::stats();
+  public static function check_index() {
+    [$remaining] = iptc::stats();
     if ($remaining) {
       site_status::warning(
         t('Your Iptc index needs to be updated.  <a href="%url" class="g-dialog-link">Fix this now</a>',
-          array("url" => html::mark_clean(url::site("admin/maintenance/start/iptc_task::update_index?csrf=__CSRF__")))),
+          ["url" => html::mark_clean(url::site("admin/maintenance/start/iptc_task::update_index?csrf=__CSRF__"))]),
         "iptc_index_out_of_date");
     }
   }

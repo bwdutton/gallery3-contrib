@@ -121,7 +121,7 @@ class EXIF_GPS_Controller extends Controller {
     }
 
     // Set up breadcrumbs.
-    $breadcrumbs = array();
+    $breadcrumbs = [];
     if ($map_type == "album") {
       $counter = 0;
       $breadcrumbs[] = Breadcrumb::instance(t("Map"), url::site("exif_gps/map/album/{$type_id}"))->set_last();
@@ -144,7 +144,7 @@ class EXIF_GPS_Controller extends Controller {
     // Set up and display the actual page.
     $template = new Theme_View("page.html", "other", "EXIF_GPS_MAP");
     $template->page_title = t("Gallery :: Map");
-    $template->set_global(array("breadcrumbs" => $breadcrumbs));
+    $template->set_global(["breadcrumbs" => $breadcrumbs]);
     $map_provider_id = module::get_var("exif_gps", "provider");
     $template->content = new View("$map_provider_id/exif_gps_map.html");
     if ($map_title == "") {

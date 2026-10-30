@@ -18,11 +18,11 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class database_info_block_Core {
-  static function get_admin_list() {
-    return array("database_info" => t("Database info"));
+  public static function get_admin_list() {
+    return ["database_info" => t("Database info")];
   }
 
-  static function get($block_id) {
+  public static function get($block_id) {
     $block = new Block();
     switch ($block_id) {
     case "database_info":

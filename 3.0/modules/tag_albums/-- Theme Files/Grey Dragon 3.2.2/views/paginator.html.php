@@ -44,7 +44,7 @@
 ?>
 
 <?php
-  $_pagelist = array();
+  $_pagelist = [];
 
   // rWatcher Mod
   if (isset($theme->dynamic_siblings)):
@@ -70,7 +70,7 @@
       $total_pages = $max_pages;
       // Prepare page url list
       for ($i = 1; $i <= $total_pages; $i++):
-        $_pagelist[$i] = url::site(url::merge(array("page" => $i)));
+        $_pagelist[$i] = url::site(url::merge(["page" => $i]));
       endfor;
       break;
     case "item":

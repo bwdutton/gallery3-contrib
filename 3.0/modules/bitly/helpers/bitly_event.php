@@ -19,7 +19,7 @@
  */
 class bitly_event_Core {
 
-  static function admin_menu($menu, $theme) {
+  public static function admin_menu($menu, $theme) {
     $menu->get("settings_menu")
       ->append(Menu::factory("link")
         ->id("bitly_menu")
@@ -27,7 +27,7 @@ class bitly_event_Core {
         ->url(url::site("admin/bitly")));
   }
 
-  static function site_menu($menu, $theme) {
+  public static function site_menu($menu, $theme) {
     $link = ORM::factory("bitly_link")->where("item_id", "=", $theme->item->id)->find();
     if (!$link->loaded() && $theme->item->owner->id == identity::active_user()->id) {
       $menu->get("options_menu")
@@ -40,7 +40,7 @@ class bitly_event_Core {
     }
   }
 
-  static function context_menu($menu, $theme, $item) {
+  public static function context_menu($menu, $theme, $item) {
     $link = ORM::factory("bitly_link")->where("item_id", "=", $item->id)->find();
     if (!$link->loaded() && $theme->item->owner->id == identity::active_user()->id) {
       $menu->get("options_menu")
@@ -52,14 +52,14 @@ class bitly_event_Core {
     }
   }
 
-  static function info_block_get_metadata($block, $item) {
+  public static function info_block_get_metadata($block, $item) {
     $link = ORM::factory("bitly_link")->where("item_id", "=", $item->id)->find();
     if ($link->loaded()) {
       $info = $block->content->metadata;
-      $info["bitly_url"] = array(
+      $info["bitly_url"] = [
          "label" => t("bit.ly url:"),
          "value" => bitly::url($link->hash)
-      );
+      ];
       $block->content->metadata = $info;
     }
   }

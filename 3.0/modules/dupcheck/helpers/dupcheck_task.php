@@ -19,7 +19,7 @@
  */
 
 class Dupcheck_task_Core {
-  static function available_tasks() {
+  public static function available_tasks() {
     // Automatically delete extra md5sums whenever the maintance screen is loaded.
     db::build()
       ->delete("fullsize_md5sums")
@@ -36,21 +36,21 @@ class Dupcheck_task_Core {
 
     // Display an option on the maintenance screen for scanning existing photos
     // for MD5SUMs (in case photos were uploaded before the module was active).
-    list ($remaining, $total, $percent) = dupcheck::stats();
+    [$remaining, $total, $percent] = dupcheck::stats();
     $percent = 100 - $percent;
     if($percent < 1){ $percent = "less than 1"; }
-    return array(Task_Definition::factory()
+    return [Task_Definition::factory()
                  ->callback("dupcheck_task::update_md5s")
                  ->name(t("Extract missing MD5SUMs"))
                  ->description($remaining
 			       ? t2("1 photo needs to be scanned",
 				    "%count (%percent%) of your photos need to be scanned",
-				    $remaining, array("percent" => $percent))
+				    $remaining, ["percent" => $percent])
 				      : t("All photo MD5sums are up-to-date"))
-                 ->severity($remaining ? log::WARNING : log::SUCCESS));
+                 ->severity($remaining ? log::WARNING : log::SUCCESS)];
   }
 
-  static function update_md5s($task) {
+  public static function update_md5s($task) {
     $completed = $task->get("completed", 0);
     $start = microtime(true);
     foreach (ORM::factory("item")
@@ -60,9 +60,7 @@ class Dupcheck_task_Core {
 	     ->where("fullsize_md5sums.item_id", "IS", null)
 	     ->close()
 	     ->find_all(100) as $item) {
-      if(!isset($start)) {
-	$start = microtime(true);
-      }
+      $start ??= microtime(true);
 
       dupcheck::grabmd5($item);
       $completed++;
@@ -72,7 +70,7 @@ class Dupcheck_task_Core {
       }
     }
 
-    list($remaining, $total, $percent) = dupcheck::stats();
+    [$remaining, $total, $percent] = dupcheck::stats();
     $task->set("completed", $completed);
     if ($remaining == 0 || !($remaining + $completed)) {
       $task->done = true;
@@ -84,6 +82,6 @@ class Dupcheck_task_Core {
     }
     $task->status = t2("1 record updated, index is %percent% up-to-date",
 		       "%count records updated, index is %percent% up-to-date",
-			$completed, array("percent" => $percent));
+			$completed, ["percent" => $percent]);
   }
 }

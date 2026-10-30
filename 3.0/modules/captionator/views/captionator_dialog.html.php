@@ -21,14 +21,14 @@
     <?= access::csrf_form_field() ?>
     <fieldset>
       <legend>
-        <?= t("Add captions for photos in <b>%album_title</b>", array("album_title" => $album->title)) ?>
+        <?= t("Add captions for photos in <b>%album_title</b>", ["album_title" => $album->title]) ?>
       </legend>
 
       <?php foreach ($album->viewable()->children() as $child): ?>
       <table>
         <tr>
           <td style="width: 140px">
-            <?= $child->thumb_img(array(), 140, true) ?>
+            <?= $child->thumb_img([], 140, true) ?>
           </td>
           <td>
             <ul>

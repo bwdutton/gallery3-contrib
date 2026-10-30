@@ -19,23 +19,13 @@
  */
 class basket_item
 {
-  public $product;
-
-  public $item;
-
-  public $quantity;
-
   public $cost = 0;
 
   public $cost_per = 0;
 
   public $items;
 
-  public function __construct($aProduct, $aItem, $aQuantity){
-    // TODO check individual product.
-    $this->product = $aProduct;
-    $this->item = $aItem;
-    $this->quantity = $aQuantity;
+  public function __construct(public $product, public $item, public $quantity){
     $this->calculate_cost();
   }
 
@@ -112,7 +102,7 @@ class basket_item
 
 class Session_Basket_Core {
 
-  public $contents = array();
+  public $contents = [];
 
   public $name = "";
   public $house = "";
@@ -156,7 +146,7 @@ class Session_Basket_Core {
   public function size(){
     $size = 0;
     if (isset($this->contents)){
-      foreach ($this->contents as $product => $basket_item){
+      foreach ($this->contents as $basket_item){
         $size += $basket_item->size();
       }
     }
@@ -180,11 +170,11 @@ class Session_Basket_Core {
 
   public function postage_cost(){
     $postage_cost = 0;
-    $postage_bands = array();
-    $postage_quantities = array();
+    $postage_bands = [];
+    $postage_quantities = [];
     if (isset($this->contents)){
       // create array of postage bands
-      foreach ($this->contents as $product => $basket_item){
+      foreach ($this->contents as $basket_item){
         $postage_band = $basket_item->getProduct()->postage_band;
         if (isset($postage_bands[$postage_band->id]))
         {
@@ -207,7 +197,7 @@ class Session_Basket_Core {
   public function cost(){
     $cost = 0;
     if (isset($this->contents)){
-      foreach ($this->contents as $product => $basket_item){
+      foreach ($this->contents as $basket_item){
         $cost += $basket_item->cost;
       }
     }

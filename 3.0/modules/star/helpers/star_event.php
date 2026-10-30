@@ -20,14 +20,14 @@
 
 class star_event_Core {
 
-  static function admin_menu($menu, $theme) {
+  public static function admin_menu($menu, $theme) {
     $menu->get("settings_menu")
       ->append(Menu::factory("link")
                ->label(t("Star"))
                ->url(url::site("admin/star")));
   }
 
-  static function site_menu($menu, $theme, $item_css_selector) {
+  public static function site_menu($menu, $theme, $item_css_selector) {
     $item = $theme->item();
 
     if (!empty($item) && star::can_be_starred($item) && star::can_star($item)) {
@@ -42,7 +42,7 @@ class star_event_Core {
     }
   }
 
-  static function context_menu($menu, $theme, $item, $thumb_css_selector) {
+  public static function context_menu($menu, $theme, $item, $thumb_css_selector) {
     if (star::can_be_starred($item) && star::can_star($item)) {
       $csrf = access::csrf_token();
       $link = self::_get_star_link_data($item);
@@ -72,20 +72,14 @@ class star_event_Core {
       $action_label = "Star";
     }
 
-    switch ($item->type) {
-    case "movie":
-      $item_type_label = "movie";
-      break;
-    case "album":
-      $item_type_label = "album";
-      break;
-    default:
-      $item_type_label = "photo";
-      break;
-    }
+    $item_type_label = match ($item->type) {
+        "movie" => "movie",
+        "album" => "album",
+        default => "photo",
+    };
 
     $label = t("$action_label this $item_type_label");
 
-    return array("text" => $label, "action" => $action);
+    return ["text" => $label, "action" => $action];
   }
 }

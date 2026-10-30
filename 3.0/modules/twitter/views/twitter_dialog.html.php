@@ -5,7 +5,7 @@
   });
 </script>
 <div id="g-twitter-tweet" class="g-block">
-  <h1> <?= t("Share this %type on Twitter", array("type" => $type, "title"=> $title)) ?> </h1>
+  <h1> <?= t("Share this %type on Twitter", ["type" => $type, "title"=> $title]) ?> </h1>
   <?php if (!$is_registered): ?>
   <p><?= t("The Twitter module is not configured yet.") ?></p>
   <?php elseif (!$user_token_set): ?>

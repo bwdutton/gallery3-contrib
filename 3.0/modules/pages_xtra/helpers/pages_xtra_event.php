@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class pages_xtra_event_Core {
-  static function admin_menu($menu, $theme) {
+  public static function admin_menu($menu, $theme) {
     // Add a settings link to the admin menu.
     $menu->get("content_menu")
       ->append(Menu::factory("link")
@@ -27,7 +27,7 @@ class pages_xtra_event_Core {
                ->url(url::site("admin/pages_xtra")));
   }
 
-  static function site_menu($menu, $theme) {
+  public static function site_menu($menu, $theme) {
     $menu_pages = ORM::factory("px_static_page")
                   ->where("display_menu", "=", true)
                   ->order_by("title", "DESC")

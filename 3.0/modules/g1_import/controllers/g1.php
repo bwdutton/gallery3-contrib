@@ -98,7 +98,7 @@ class G1_Controller extends Controller {
     else {
       $url = $item->abs_url();
       if($page!='') {
-        $url .= (strpos($url,'?')!==false ? '&':'?').'page='.$page;
+        $url .= (str_contains($url,'?') ? '&':'?').'page='.$page;
       }
       url::redirect($url, '301');
     }

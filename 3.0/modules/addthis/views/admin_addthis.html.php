@@ -14,8 +14,8 @@ AddThis uses services to provide an intelligent, optimized sharing menu that is 
     </ul>
     <p>
       <?= t("You don't need an account with Add This, but if you <a href=\"%signup_url\">register with Add This</a> and enter your addthis username in the <a href=\"%advanced_settings_url\">Advanced Settings</a> page you can get Analytics.  Example data below.",
-          array("signup_url" => "http://www.addthis.com/register",
-                "advanced_settings_url" => html::mark_clean(url::site("admin/advanced_settings")))) ?>
+          ["signup_url" => "http://www.addthis.com/register",
+                "advanced_settings_url" => html::mark_clean(url::site("admin/advanced_settings"))]) ?>
     </p>
     <center><img src="http://cache.addthiscdn.com/www/q0039/style/images/dashboard/bkg-myaccount-sample.jpg"></center>
   </div>

@@ -19,7 +19,7 @@
  */
 class twitter_event_Core {
 
-  static function admin_menu($menu, $theme) {
+  public static function admin_menu($menu, $theme) {
     $menu->get("settings_menu")
       ->append(Menu::factory("link")
         ->id("twitter_menu")
@@ -27,7 +27,7 @@ class twitter_event_Core {
         ->url(url::site("admin/twitter")));
   }
 
-  static function site_menu($menu, $theme) {
+  public static function site_menu($menu, $theme) {
     $item = $theme->item();
     if ($item && twitter::is_registered() && (identity::active_user()->id > 1)) {
       $menu->get("options_menu")
@@ -39,7 +39,7 @@ class twitter_event_Core {
     }
   }
 
-  static function context_menu($menu, $theme, $item) {
+  public static function context_menu($menu, $theme, $item) {
     if ((identity::active_user()->id > 1) && twitter::is_registered()) {
       $menu->get("options_menu")
         ->append(Menu::factory("dialog")
@@ -54,14 +54,14 @@ class twitter_event_Core {
    * Add Twitter account info to user profiles
    * @param object $data 
    */
-  static function show_user_profile($data) {
+  public static function show_user_profile($data) {
     $twitter_account = ORM::factory("twitter_user")->where("user_id", "=", $data->user->id)->find();
     if ($twitter_account->loaded()) {
       $v = new View("user_profile_info.html");
-      $v->user_profile_data = array();              
-      $fields = array(
+      $v->user_profile_data = [];              
+      $fields = [
           "screen_name" => t("Screen name")
-        );
+        ];
       foreach ($fields as $field => $label) {
         if (!empty($twitter_account->$field)) {
           $value = $twitter_account->$field;
@@ -78,7 +78,7 @@ class twitter_event_Core {
                 . $data->user->id), t("Switch to another Twitter screen name")));
         $v->user_profile_data[""] = $button;
       }
-      $data->content[] = (object) array("title" => t("Twitter account"), "view" => $v);
+      $data->content[] = (object) ["title" => t("Twitter account"), "view" => $v];
     }
   }
 

@@ -18,12 +18,12 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class exif_gps_block_Core {
-  static function get_site_list() {
-    return array("exif_gps_location" => t("EXIF GPS Location"),
-                 "exif_gps_maps" => t("EXIF GPS Maps"));
+  public static function get_site_list() {
+    return ["exif_gps_location" => t("EXIF GPS Location"),
+                 "exif_gps_maps" => t("EXIF GPS Maps")];
   }
 
-  static function get($block_id, $theme) {
+  public static function get($block_id, $theme) {
     $block = "";
 
     // Make sure the user can view maps before displaying any sidebars.

@@ -19,7 +19,7 @@
  */
 class session_explorer_event_Core {
 
-  static function admin_menu($menu, $theme) {
+  public static function admin_menu($menu, $theme) {
     $menu->get("statistics_menu")
       ->append(Menu::factory("link")
                ->id("session_explorer")

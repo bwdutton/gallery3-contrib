@@ -55,7 +55,7 @@ class Admin_Theme_Options_Controller extends Admin_Controller {
   protected function get_edit_form_admin() {
     $this->upgrade_settings();
 
-    $form = new Forge("admin/theme_options/save/", "", null, array("id" =>"g-theme-options-form"));
+    $form = new Forge("admin/theme_options/save/", "", null, ["id" =>"g-theme-options-form"]);
 
 // Just commenting out, we might want rssmodule in future versions.
 //    $rssmodulecheck = (module::is_active("rss") && module::info("rss"));
@@ -100,21 +100,21 @@ class Admin_Theme_Options_Controller extends Admin_Controller {
       ->checked(module::get_var("th_pear4gallery3", "hide_logo"));
     $group->dropdown("mainmenu_view")
       ->label(t("Main page View"))
-      ->options(array("grid" => t("Grid (Default)"), "mosaic" => t("Mosaic"), "carousel" => t("Carousel")))
+      ->options(["grid" => t("Grid (Default)"), "mosaic" => t("Mosaic"), "carousel" => t("Carousel")])
       ->selected(module::get_var("th_pear4gallery3", "mainmenu_view"));
     $group->checkbox("show_guest_menu")
       ->label(t("Show Main Menu for Guest Users"))
       ->checked(module::get_var("th_pear4gallery3", "show_guest_menu"));
     $group->dropdown("background")
       ->label(t("Background color"))
-      ->options(array("black" => t("Black (Default)"), "dkgrey" => t("Dark-Grey"), "ltgrey" => t("Light-Grey"), "white" => t("White")))
+      ->options(["black" => t("Black (Default)"), "dkgrey" => t("Dark-Grey"), "ltgrey" => t("Light-Grey"), "white" => t("White")])
       ->selected(module::get_var("th_pear4gallery3", "background"));
     $group->checkbox("show_breadcrumbs")
       ->label(t("Show breadcrumbs for navigation."))
       ->checked(module::get_var("th_pear4gallery3", "show_breadcrumbs"));
     $group->dropdown("sidebar_view")
       ->label(t("Show Sidebar mode"))
-      ->options(array("hidden" => t("Hidden (Default)"), "static" => t("Always visible"), "toggle" => t("Hover"), "button" => t("Togglable via button")))
+      ->options(["hidden" => t("Hidden (Default)"), "static" => t("Always visible"), "toggle" => t("Hover"), "button" => t("Togglable via button")])
       ->selected(module::get_var("th_pear4gallery3", "sidebar_view"));
     $group->input("ga_code")
       ->label(t("<a href=\"http://www.google.com/analytics/\">Google analytics</a> code."))
@@ -128,7 +128,7 @@ class Admin_Theme_Options_Controller extends Admin_Controller {
     $group = $form->group("edit_theme_adv_mosaic")->label(t("Advanced Options - Mosaic Page"));
     $group->dropdown("mosaic_effect")
       ->label(t("Effect of image transition"))
-      ->options(array(
+      ->options([
           "blind" => t("Blinds the element away and shows it by blinding it in. (default)"),
           "clip" => t("Clips the element on and off, vertically"),
           "drop" => t("Drops the element away and shows it by dropping it in"),
@@ -138,7 +138,7 @@ class Admin_Theme_Options_Controller extends Admin_Controller {
           "puff" => t("Scale and fade out animations create the puff effect"),
           "slide" => t("Slides the element out of the viewport"),
           "scale" => t("Shrink and grow an element"),
-          "none" => t("Disable effects (faster switching)")))
+          "none" => t("Disable effects (faster switching)")])
       ->selected(module::get_var("th_pear4gallery3", "mosaic_effect", "blind"));
 
     /* Advanced Options - Photo settings ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
@@ -266,7 +266,7 @@ class Admin_Theme_Options_Controller extends Admin_Controller {
       else:
         // * General Settings ****************************************************
         $old_resize_size  = module::get_var("gallery", "resize_size", 800);
-        module::set_var("gallery", "resize_size", filter_var($form->edit_theme_adv_photo->resize_size->value, FILTER_VALIDATE_INT, array('options' => array('default' => 800, 'min_range' => 640))));
+        module::set_var("gallery", "resize_size", filter_var($form->edit_theme_adv_photo->resize_size->value, FILTER_VALIDATE_INT, ['options' => ['default' => 800, 'min_range' => 640]]));
 
         $resize_size  = module::get_var("gallery", "resize_size", 800);
 
@@ -283,7 +283,7 @@ class Admin_Theme_Options_Controller extends Admin_Controller {
         if ($build_resize || $old_resize_size != $resize_size):
           graphics::remove_rule("gallery", "resize", "gallery_graphics::resize");
           graphics::add_rule("gallery", "resize", "gallery_graphics::resize",
-            array("width" => $resize_size, "height" => $resize_size, "master" => Image::AUTO), 100);
+            ["width" => $resize_size, "height" => $resize_size, "master" => Image::AUTO], 100);
         endif;
 
         if (module::get_var("gallery", "resize_size") != $resize_size):
@@ -296,7 +296,7 @@ class Admin_Theme_Options_Controller extends Admin_Controller {
         if ($build_thumbs):
           graphics::remove_rule("gallery", "thumb", "gallery_graphics::resize");
           graphics::add_rule("gallery", "thumb", "gallery_graphics::resize",
-            array("width" => $thumb_size, "height" => $thumb_size, "master" => $rule), 100);
+            ["width" => $thumb_size, "height" => $thumb_size, "master" => $rule], 100);
         endif;
 
         if (module::get_var("gallery", "thumb_size") != $thumb_size):
@@ -308,7 +308,7 @@ class Admin_Theme_Options_Controller extends Admin_Controller {
         module::set_var("gallery", "appletouchicon_url", $form->edit_theme->appletouchicon->value);
         $this->save_item_state("logo_path", $form->edit_theme->logo_path->value, $form->edit_theme->logo_path->value);
 
-        $this->save_item_state("slideshow_time", $form->edit_theme->slideshow_time->value != 5000, filter_var($form->edit_theme->slideshow_time->value, FILTER_VALIDATE_INT, array('options' => array('default' => 5000, 'min_range' => 1000))));
+        $this->save_item_state("slideshow_time", $form->edit_theme->slideshow_time->value != 5000, filter_var($form->edit_theme->slideshow_time->value, FILTER_VALIDATE_INT, ['options' => ['default' => 5000, 'min_range' => 1000]]));
 
         // * Advanced Options - General ******************************************
 
@@ -337,13 +337,13 @@ class Admin_Theme_Options_Controller extends Admin_Controller {
 
         if ($build_exif):
           db::update('exif_records')
-            ->set(array('dirty'=>'1'))
+            ->set(['dirty'=>'1'])
             ->execute();
         endif;
 
         if ($build_iptc):
           db::update('iptc_records')
-            ->set(array('dirty'=>'1'))
+            ->set(['dirty'=>'1'])
             ->execute();
         endif;
 

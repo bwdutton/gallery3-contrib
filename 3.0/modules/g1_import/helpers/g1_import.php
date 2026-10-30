@@ -20,7 +20,7 @@
 
 class g1_import_Core {
   public static $init = false;
-  public static $map = array();
+  public static $map = [];
 
   public static $gallery_dir = null;
   public static $album_dir = null;
@@ -28,27 +28,27 @@ class g1_import_Core {
   public static $album_url = null;
   public static $resize_size = null;
   public static $thumb_size = null;
-  public static $tree = array();
+  public static $tree = [];
   public static $version = null;
-  public static $warn_utf8 = array();
+  public static $warn_utf8 = [];
 
-  public static $queued_items = array();
-  public static $queued_comments = array();
-  public static $queued_highlights = array();
-  public static $albums_flat = array();
-  public static $albums_hidden = array();
+  public static $queued_items = [];
+  public static $queued_comments = [];
+  public static $queued_highlights = [];
+  public static $albums_flat = [];
+  public static $albums_hidden = [];
 
   private static $current_g1_item = null;
 
-  static function is_configured() {
+  public static function is_configured() {
     return module::get_var('g1_import', 'albums_path');
   }
 
-  static function is_initialized() {
+  public static function is_initialized() {
     return g1_import::$init == 'ok';
   }
 
-  static function init() {
+  public static function init() {
     if (g1_import::$init) {
       return;
     }
@@ -61,7 +61,7 @@ class g1_import_Core {
     g1_import::$init = g1_import::check_config($albums_path);
   }
 
-  static function is_valid_albums_path($albums_path) {
+  public static function is_valid_albums_path($albums_path) {
     return g1_import::check_config($albums_path);
   }
 
@@ -74,7 +74,7 @@ class g1_import_Core {
    *  "invalid" - the albums path is not a valid Gallery 1 code base
    *  "broken"  - the albums path is correct, but the Gallery 1 install is broken
    */
-  static function check_config($albums_path) {
+  public static function check_config($albums_path) {
     self::$album_dir = '';
 
     if (!is_file($albums_path)) {
@@ -141,17 +141,17 @@ class g1_import_Core {
   /**
    * Return the version of Gallery 1 (eg "1.5.10")
    */
-  static function version() {
+  public static function version() {
     if(!self::is_initialized())
       return '1';
     return self::$version;
   }
 
-  static function recursiveCountGallery($albumDir, &$array, $level) {
+  public static function recursiveCountGallery($albumDir, &$array, $level) {
     $countAlbum = 0;
     
     foreach($array as $key => &$valdummy) {
-      $converted = utf8_encode($key);
+      $converted = mb_convert_encoding($key, 'UTF-8', 'ISO-8859-1');
       if( $converted != $key )
         self::$warn_utf8[] = $converted;
     }
@@ -162,7 +162,7 @@ class g1_import_Core {
         self::$albums_flat[] = $level.':'.$key;
 
         require_once('Gallery1DataParser.php');
-        list($result, $items) = Gallery1DataParser::getPhotos($albumDir.$key.DIRECTORY_SEPARATOR);
+        [$result, $items] = Gallery1DataParser::getPhotos($albumDir.$key.DIRECTORY_SEPARATOR);
 
         if($result==null)
         foreach($items as $object) {
@@ -173,18 +173,18 @@ class g1_import_Core {
             self::$queued_items[] = $item;
             if(isset($object->comments) && is_array($object->comments) && count($object->comments)) {
 
-              $comments = array();
+              $comments = [];
               foreach ($object->comments as $comment) {
                  if (is_a($comment, 'Comment')) {
-                   $comments[] = array( 'commentText' => $comment->commentText
+                   $comments[] = [ 'commentText' => $comment->commentText
                                        ,'name' => $comment->name
                                        ,'UID' => $comment->UID
                                        ,'datePosted' => $comment->datePosted
                                        ,'IPNumber' => $comment->IPNumber
-                                      );
+                                      ];
                 }
               }
-              self::$queued_comments[] = array( $item => $comments );
+              self::$queued_comments[] = [ $item => $comments ];
             }
             
             if(isset($object->highlight) && $object->highlight==1 && isset($object->highlightImage) && is_a($object->highlightImage, 'G1Img')) {
@@ -217,7 +217,7 @@ class g1_import_Core {
    * Return a set of statistics about the number of users, groups, albums, photos, movies and
    * comments available for import from the Gallery 1 instance.
    */
-  static function g1_stats() {
+  public static function g1_stats() {
     $stats['users'] = 0;
     $stats['groups'] = 0;
     $stats['albums'] = 0;
@@ -232,24 +232,24 @@ class g1_import_Core {
     require_once('Gallery1DataParser.php');
     if(Gallery1DataParser::isValidAlbumsPath($albumDir)) {
       if(count(self::$tree)==0) {
-        list($result, $tree) = Gallery1DataParser::getAlbumHierarchy($albumDir);
+        [$result, $tree] = Gallery1DataParser::getAlbumHierarchy($albumDir);
         if($result==null) self::$tree = $tree;
       }
 
-      list($result, $uids) = Gallery1DataParser::getUserUids($albumDir);
+      [$result, $uids] = Gallery1DataParser::getUserUids($albumDir);
       if($result==null) $stats['users'] = count($uids);
       
-      self::$queued_items = array();
-      self::$queued_comments = array();
-      self::$queued_highlights = array();
-      self::$albums_flat = array();
-      self::$albums_hidden = array();
-      self::$warn_utf8 = array();
+      self::$queued_items = [];
+      self::$queued_comments = [];
+      self::$queued_highlights = [];
+      self::$albums_flat = [];
+      self::$albums_hidden = [];
+      self::$warn_utf8 = [];
       if(count(self::$tree)) $stats['albums'] = 1 /* <= THE ROOT ALBUM!!!*/ + g1_import::recursiveCountGallery($albumDir, self::$tree, 0);
       
       $stats['photos'] = count(self::$queued_items);
       foreach(self::$queued_comments as $element) {
-        foreach($element as $item => $comments) {
+        foreach($element as $comments) {
           $stats['comments'] += count($comments);
         }
       }
@@ -270,14 +270,14 @@ class g1_import_Core {
    * Return a set of statistics about the number of users, groups, albums, photos, movies and
    * comments already imported into the Gallery 3 instance.
    */
-  static function g3_stats() {
-    $g3_stats = array(
-      'album' => 0, 'comment' => 0, 'item' => 0, 'user' => 0, 'group' => 0, 'tag' => 0);
+  public static function g3_stats() {
+    $g3_stats = [
+      'album' => 0, 'comment' => 0, 'item' => 0, 'user' => 0, 'group' => 0, 'tag' => 0];
     foreach (db::build()
              ->select('resource_type')
-             ->select(array('C' => 'COUNT("*")'))
+             ->select(['C' => 'COUNT("*")'])
              ->from('g1_maps')
-             ->where('resource_type', 'IN', array('album', 'comment', 'item', 'user', 'group'))
+             ->where('resource_type', 'IN', ['album', 'comment', 'item', 'user', 'group'])
              ->group_by('resource_type')
              ->execute() as $row) {
       $g3_stats[$row->resource_type] = $row->C;
@@ -288,8 +288,8 @@ class g1_import_Core {
   /**
    * Import a single album.
    */
-  static function import_album(&$queue) {
-    $messages = array();
+  public static function import_album(&$queue) {
+    $messages = [];
 
     // The queue is a set of nested associative arrays where the key is the album id and the
     // value is an array of similar arrays.  We'll do a breadth first tree traversal using the
@@ -297,13 +297,13 @@ class g1_import_Core {
     // the time we get to the child.
 
     // Dequeue the current album and enqueue its children
-    list($album, $tree) = current($queue);
+    [$album, $tree] = current($queue);
     unset($queue[$album]);
-    g1_import::debug( t('Dequeued album %album.', array('album' => $album)) );
+    g1_import::debug( t('Dequeued album %album.', ['album' => $album]) );
 
     foreach($tree as $key => $value) {
       $queue[$album.'/'.$key] = $value;
-      g1_import::debug( t('Enqueued album %album.', array('album' => $album.'/'.$key)) );
+      g1_import::debug( t('Enqueued album %album.', ['album' => $album.'/'.$key]) );
     }
 
     // Special handling for the root album
@@ -333,17 +333,17 @@ class g1_import_Core {
 
     // Skip already-existing albums
     if (self::map($g1_album, '', 'album')) {
-      $messages[] = t('Skipping already existing album %album.', array('album' => $parent.'/'.$g1_album));
+      $messages[] = t('Skipping already existing album %album.', ['album' => $parent.'/'.$g1_album]);
       return $messages;
     }
 
     $album_id = self::map($parent, '', 'album');
     if (!$album_id) {
-      $messages[] = t('Album %name not found', array('name' => $parent));
+      $messages[] = t('Album %name not found', ['name' => $parent]);
       return $messages;
     }
 
-    g1_import::debug( t('Now importing album %album.', array('album' => $parent.'/'.$g1_album)) );
+    g1_import::debug( t('Now importing album %album.', ['album' => $parent.'/'.$g1_album]) );
 
 
     $albumDir = self::$album_dir;
@@ -363,7 +363,7 @@ class g1_import_Core {
     } catch (ORM_Validation_Exception $e) {
       throw new G1_Import_Exception(
           t('Failed to validate Gallery 1 album with name %name.',
-            array('name' => $g1_album)),
+            ['name' => $g1_album]),
           $e);
     }
 
@@ -373,13 +373,13 @@ class g1_import_Core {
     } catch (Exception $e) {
       throw new G1_Import_Exception(
           t('Failed to import Gallery 1 album with name %name.',
-            array('name' => $g1_album)),
+            ['name' => $g1_album]),
           $e);
     }
 
     try {
       require_once('Gallery1DataParser.php');
-      list($result, $items) = Gallery1DataParser::getPhotos($importDir);
+      [$result, $items] = Gallery1DataParser::getPhotos($importDir);
       if($result==null)
       foreach($items as $object) {
         if(isset($object->highlight) && $object->highlight==1 && isset($object->highlightImage) && is_a($object->highlightImage, 'G1Img')) {
@@ -395,7 +395,7 @@ class g1_import_Core {
     } catch (Exception $e) {
       throw new G1_Import_Exception(
           t('Failed to copy thumb for album %name.',
-            array('name' => $g1_album)),
+            ['name' => $g1_album]),
           $e);
     }
 
@@ -406,7 +406,7 @@ class g1_import_Core {
     } catch (Exception $e) {
       throw new G1_Import_Exception(
           t('Failed to set access permission for hidden album %name.',
-            array('name' => $g1_album)),
+            ['name' => $g1_album]),
           $e);
     }
 
@@ -416,20 +416,20 @@ class g1_import_Core {
   /**
    * Transfer over all the values from a G1 album to a G3 album.
    */
-  static function set_album_values($album, $g1_album) {
+  public static function set_album_values($album, $g1_album) {
     $albumDir = self::$album_dir;
     if(substr($albumDir,-1)!=DIRECTORY_SEPARATOR) $albumDir.=DIRECTORY_SEPARATOR;
     $albumDir .= $g1_album;
     if(substr($albumDir,-1)!=DIRECTORY_SEPARATOR) $albumDir.=DIRECTORY_SEPARATOR;
 
     require_once('Gallery1DataParser.php');
-    list($result, $fields) = Gallery1DataParser::loadAlbumFields($albumDir);
+    [$result, $fields] = Gallery1DataParser::loadAlbumFields($albumDir);
 
     $album->name = $fields['name'];
     $album->slug = item::convert_filename_to_slug($fields['name']); // <= verification fails if this property has not been set!!!
-    $album->title = utf8_encode(self::_decode_html_special_chars(trim($fields['title'])));
+    $album->title = mb_convert_encoding(self::_decode_html_special_chars(trim($fields['title'])), 'UTF-8', 'ISO-8859-1');
     $album->title or $album->title = $album->name;
-    $album->description = utf8_encode(self::_decode_html_special_chars(trim($fields['description'])));
+    $album->description = mb_convert_encoding(self::_decode_html_special_chars(trim($fields['description'])), 'UTF-8', 'ISO-8859-1');
     //$album->owner_id = self::map($g1_album->getOwnerId());
 
     if(strlen($album->title)>255) {
@@ -441,7 +441,7 @@ class g1_import_Core {
 
     try {
       $album->view_count = (int) $fields['clicks'];
-    } catch (Exception $e) {
+    } catch (Exception) {
       // @todo log
       $album->view_count = 0;
     }
@@ -453,23 +453,23 @@ class g1_import_Core {
   /**
    * Set the highlight properly for a single album
    */
-  static function set_album_highlight(&$queue) {
-    $messages = array();
+  public static function set_album_highlight(&$queue) {
+    $messages = [];
     if(count($queue)==0) {
       $messages[] = t('Empty highlights queue');
       return $messages;
     }
 
     $item = array_shift($queue);
-    if (substr($item, -10) == '.highlight') {
+    if (str_ends_with($item, '.highlight')) {
       $item = substr($item, 0, strlen($item)-10);
     }
-    g1_import::debug( t('Now importing highlight %item', array('item' => $item)) );
+    g1_import::debug( t('Now importing highlight %item', ['item' => $item]) );
 
     // Item names come in as Level:FolderX/ItemX
     $pos = strpos($item, ':');
     if($pos===false) {
-      $messages[] = t('Invalid item %item', array('item' => $item));
+      $messages[] = t('Invalid item %item', ['item' => $item]);
       return $messages;
     }
     $item = substr($item, $pos+1);
@@ -478,7 +478,7 @@ class g1_import_Core {
     // Item names come in as FolderX/ItemX
     $pos = strrpos($item, '/');
     if($pos===false) {
-      $messages[] = t('Invalid item %item', array('item' => $item));
+      $messages[] = t('Invalid item %item', ['item' => $item]);
       return $messages;
     }
 
@@ -494,7 +494,7 @@ class g1_import_Core {
 
     $album_id = self::map($g1_album, '', 'album');
     if (!$album_id) {
-      $messages[] = t('Album %name not found', array('name' => $g1_album));
+      $messages[] = t('Album %name not found', ['name' => $g1_album]);
       return $messages;
     }
 
@@ -503,7 +503,7 @@ class g1_import_Core {
       $item_id = self::map($g1_item, '', 'album');
     }
     if (!$item_id) {
-      $messages[] = t('Item/Album %name not found', array('name' => $item));
+      $messages[] = t('Item/Album %name not found', ['name' => $item]);
       return $messages;
     }
 
@@ -513,11 +513,11 @@ class g1_import_Core {
     try {
       $album->save();
       graphics::generate($album);
-      g1_import::debug( t('Added highlight %item to %album', array('item' => $item, 'album' => $album->name)) );
+      g1_import::debug( t('Added highlight %item to %album', ['item' => $item, 'album' => $album->name]) );
     } catch (Exception $e) {
       $messages[] = (string) new G1_Import_Exception(
           t("Failed to generate an album highlight for album '%name'.",
-            array('name' => $album->name)),
+            ['name' => $album->name]),
           $e);
       return $messages;
     }
@@ -525,12 +525,12 @@ class g1_import_Core {
     $album_id = self::map($g1_album, '', 'album');
     self::set_map($album_id, $g1_album, '', 'highlight');
 
-    g1_import::debug( t('Added highlight %item to %album', array('item' => $item, 'album' => $album->name)) );
+    g1_import::debug( t('Added highlight %item to %album', ['item' => $item, 'album' => $album->name]) );
     return $messages;
   }
 
-  static function hotfix_all() {
-    $messages = array();
+  public static function hotfix_all() {
+    $messages = [];
     $messages[] = t('Running Hotfix');
     
     /* ON THE LAST RUN WE NEED TO RE-FIX ALL DAMAGED ALBUM THUMBS! */
@@ -541,7 +541,7 @@ class g1_import_Core {
     foreach(self::$albums_flat as $g1_album) {
       $album_id = self::map($g1_album, '', 'album');
       if (!$album_id) {
-        $messages[] = t('Album %name not found', array('name' => $g1_album));
+        $messages[] = t('Album %name not found', ['name' => $g1_album]);
         continue;
       }
 
@@ -550,7 +550,7 @@ class g1_import_Core {
 
       try {
         require_once('Gallery1DataParser.php');
-        list($result, $items) = Gallery1DataParser::getPhotos($importDir);
+        [$result, $items] = Gallery1DataParser::getPhotos($importDir);
         if($result==null)
         foreach($items as $object) {
           if(isset($object->highlight) && $object->highlight==1 && isset($object->highlightImage) && is_a($object->highlightImage, 'G1Img')) {
@@ -566,7 +566,7 @@ class g1_import_Core {
       } catch (Exception $e) {
         $messages[] = (string) new G1_Import_Exception(
             t('Failed to copy thumb for album %name.',
-              array('name' => $g1_album)),
+              ['name' => $g1_album]),
             $e);
       }
     }
@@ -578,11 +578,11 @@ class g1_import_Core {
         $album_id = self::map($g1_album, '', 'album');
         $album = ORM::factory('item', $album_id);
         access::deny(identity::everybody(), 'view', $album);
-        $messages[] = t('Denying access to %album', array('album' => $g1_album));
+        $messages[] = t('Denying access to %album', ['album' => $g1_album]);
       } catch (Exception $e) {
         $messages[] = (string) new G1_Import_Exception(
             t('Failed to set access permission for hidden album %name.',
-              array('name' => $g1_album)),
+              ['name' => $g1_album]),
             $e);
       }
     }
@@ -593,15 +593,15 @@ class g1_import_Core {
   /**
    * Import a single photo or movie.
    */
-  static function import_item(&$queue) {
-    $messages = array();
+  public static function import_item(&$queue) {
+    $messages = [];
     if(count($queue)==0) {
       $messages[] = t('Empty item queue');
       return $messages;
     }
 
     $item_id = array_shift($queue);
-    g1_import::debug( t('Now importing item %item', array('item' => $item_id)) );
+    g1_import::debug( t('Now importing item %item', ['item' => $item_id]) );
 
     // Item names come in as FolderX/ItemX
     $pos = strrpos($item_id, '/');
@@ -621,7 +621,7 @@ class g1_import_Core {
 
     $album_id = self::map($g1_album, '', 'album');
     if (!$album_id) {
-      $messages[] = t('Album %name not found', array('name' => $g1_album));
+      $messages[] = t('Album %name not found', ['name' => $g1_album]);
       return $messages;
     }
 
@@ -632,7 +632,7 @@ class g1_import_Core {
     if(substr($albumDir,-1)!=DIRECTORY_SEPARATOR) $albumDir.=DIRECTORY_SEPARATOR;
 
     require_once('Gallery1DataParser.php');
-    list($result, $items) = Gallery1DataParser::getPhotos($albumDir.$g1_album.DIRECTORY_SEPARATOR);
+    [$result, $items] = Gallery1DataParser::getPhotos($albumDir.$g1_album.DIRECTORY_SEPARATOR);
     if($result==null)
     foreach($items as $object) {
       if(isset($object->image) && is_a($object->image, 'G1Img') && isset($object->image->name) && ($object->image->name==$g1_item)) {
@@ -641,32 +641,21 @@ class g1_import_Core {
     }
 
     if ($album_item==null) {
-      $messages[] = t('Failed to import Gallery 1 item: %item', array('item' => $item_id));
+      $messages[] = t('Failed to import Gallery 1 item: %item', ['item' => $item_id]);
       return $messages;
     }
 
     $corrupt = 0;
-    self::$current_g1_item = array( $item_id => $album_item );
+    self::$current_g1_item = [ $item_id => $album_item ];
     $g1_path = $albumDir.$g1_album.DIRECTORY_SEPARATOR.$album_item->image->name.'.'.$album_item->image->type;
 
     $parent = ORM::factory('item', $album_id);
 
-    switch($album_item->image->type) {
-      case 'jpg':
-      case 'jpeg':
-      case 'gif':
-      case 'png':
-        $g1_type = 'GalleryPhotoItem'; break;
-      case 'wmv':
-      case '3gp':
-      case 'avi':
-      case 'mp4':
-      case 'mov':
-      case 'flv':
-        $g1_type = 'GalleryMovieItem'; break;
-      default:
-        $g1_type = 'GalleryPhotoItem'; break;
-    }
+    $g1_type = match ($album_item->image->type) {
+        'jpg', 'jpeg', 'gif', 'png' => 'GalleryPhotoItem',
+        'wmv', '3gp', 'avi', 'mp4', 'mov', 'flv' => 'GalleryMovieItem',
+        default => 'GalleryPhotoItem',
+    };
 
     if (!file_exists($g1_path)) {
       // If the Gallery 1 source image isn't available, this operation is going to fail.  That can
@@ -677,7 +666,7 @@ class g1_import_Core {
       // Note that this will change movies to be photos, if there's a broken movie.  Hopefully
       // this case is rare enough that we don't need to take any heroic action here.
       g1_import::log(
-        t('%path missing in import; replacing it with a placeholder', array('path' => $g1_path)));
+        t('%path missing in import; replacing it with a placeholder', ['path' => $g1_path]));
       $g1_path = MODPATH . 'g1_import/data/broken-image.gif';
       $g1_type = 'GalleryPhotoItem';
       $corrupt = 1;
@@ -693,10 +682,10 @@ class g1_import_Core {
       else
         $type = self::get_mime_type($g1_path);
       
-      if ($type!='' && !in_array($type, array('image/jpeg', 'image/gif', 'image/png'))) {
+      if ($type!='' && !in_array($type, ['image/jpeg', 'image/gif', 'image/png'])) {
         Kohana_Log::add('alert', "$g1_path is an unsupported image type $type; using a placeholder gif");
         $messages[] = t("'%path' is an unsupported image type '%type', using a placeholder",
-                        array('path' => $g1_path, 'type' => $type));
+                        ['path' => $g1_path, 'type' => $type]);
         $g1_path = MODPATH . 'g1_import/data/broken-image.gif';
         $corrupt = 1;
       }
@@ -709,10 +698,10 @@ class g1_import_Core {
         $item->name = $g1_item.'.'.$album_item->image->type;
         $item->slug = item::convert_filename_to_slug($g1_item);
         $item->mime_type = $type;
-        $item->title = utf8_encode(self::_decode_html_special_chars(trim($album_item->caption)));
+        $item->title = mb_convert_encoding(self::_decode_html_special_chars(trim($album_item->caption)), 'UTF-8', 'ISO-8859-1');
         $item->title or $item->title = ' '; //don't use $item->name as this clutters up the UI
         if(isset($album_item->description) && $album_item->description!='')
-          $item->description = utf8_encode(self::_decode_html_special_chars(trim($album_item->description)));
+          $item->description = mb_convert_encoding(self::_decode_html_special_chars(trim($album_item->description)), 'UTF-8', 'ISO-8859-1');
         //$item->owner_id = self::map($g1_item->getOwnerId());
 
         try {
@@ -730,7 +719,7 @@ class g1_import_Core {
 
       } catch (Exception $e) {
         $exception_info = (string) new G1_Import_Exception(
-            t("Corrupt image '%path'", array('path' => $g1_path)),
+            t("Corrupt image '%path'", ['path' => $g1_path]),
             $e, $messages);
         Kohana_Log::add('alert', "Corrupt image $g1_path\n" . $exception_info);
         $messages[] = $exception_info;
@@ -744,7 +733,7 @@ class g1_import_Core {
       } catch (ORM_Validation_Exception $e) {
         $exception_info = (string) new G1_Import_Exception(
             t('Failed to validate Gallery 1 item %item.',
-              array('item' => $item_id)),
+              ['item' => $item_id]),
             $e, $messages);
         Kohana_Log::add('alert', "Failed to validate Gallery 1 item $item_id.\n" . $exception_info);
         $messages[] = $exception_info;
@@ -758,7 +747,7 @@ class g1_import_Core {
       } catch (Exception $e) {
         $exception_info = (string) new G1_Import_Exception(
             t('Failed to import Gallery 1 item %item.',
-              array('item' => $item_id)),
+              ['item' => $item_id]),
             $e, $messages);
         Kohana_Log::add('alert', "Failed to import Gallery 1 item $item_id.\n" . $exception_info);
         $messages[] = $exception_info;
@@ -776,7 +765,7 @@ class g1_import_Core {
       else
         $type = self::get_mime_type($g1_path);
         
-      if ($type=='' || in_array($type, array('video/mp4', 'video/x-flv'))) {
+      if ($type=='' || in_array($type, ['video/mp4', 'video/x-flv'])) {
         try {
           $item = ORM::factory('item');
           $item->type = 'movie';
@@ -785,10 +774,10 @@ class g1_import_Core {
           $item->name = $g1_item.'.'.$album_item->image->type;
           $item->slug = item::convert_filename_to_slug($g1_item);
           $item->mime_type = $type;
-          $item->title = utf8_encode(self::_decode_html_special_chars(trim($album_item->caption)));
+          $item->title = mb_convert_encoding(self::_decode_html_special_chars(trim($album_item->caption)), 'UTF-8', 'ISO-8859-1');
           $item->title or $item->title = ' '; //$item->name;
           if(isset($album_item->description) && $album_item->description!='')
-            $item->description = utf8_encode(self::_decode_html_special_chars(trim($album_item->description)));
+            $item->description = mb_convert_encoding(self::_decode_html_special_chars(trim($album_item->description)), 'UTF-8', 'ISO-8859-1');
           //$item->owner_id = self::map($g1_item->getOwnerId());
           try {
             $item->view_count = (int) $album_item->clicks;
@@ -797,7 +786,7 @@ class g1_import_Core {
           }
         } catch (Exception $e) {
           $exception_info = (string) new G1_Import_Exception(
-              t("Corrupt movie '%path'", array("path" => $g1_path)),
+              t("Corrupt movie '%path'", ["path" => $g1_path]),
               $e, $messages);
           Kohana_Log::add('alert', "Corrupt movie $g1_path\n" . $exception_info);
           $messages[] = $exception_info;
@@ -811,7 +800,7 @@ class g1_import_Core {
         } catch (ORM_Validation_Exception $e) {
           $exception_info = (string) new G1_Import_Exception(
               t('Failed to validate Gallery 1 item %item.',
-                array('item' => $item_id)),
+                ['item' => $item_id]),
               $e, $messages);
           Kohana_Log::add('alert', "Failed to validate Gallery 1 item $item_id.\n" . $exception_info);
           $messages[] = $exception_info;
@@ -825,7 +814,7 @@ class g1_import_Core {
         } catch (Exception $e) {
           $exception_info = (string) new G1_Import_Exception(
               t('Failed to import Gallery 1 item %item.',
-                array('item' => $item_id)),
+                ['item' => $item_id]),
               $e, $messages);
           Kohana_Log::add('alert', "Failed to import Gallery 1 item $item_id.\n" . $exception_info);
           $messages[] = $exception_info;
@@ -834,7 +823,7 @@ class g1_import_Core {
         }
       } else {
         Kohana_Log::add('alert', "$g1_path is an unsupported movie type $type");
-        $messages[] = t("'%path' is an unsupported movie type '%type'", array('path' => $g1_path, 'type' => $type));
+        $messages[] = t("'%path' is an unsupported movie type '%type'", ['path' => $g1_path, 'type' => $type]);
         $corrupt = 1;
       }
 
@@ -849,7 +838,7 @@ class g1_import_Core {
       self::set_map($item->id, $g1_album, $g1_item, 'item');
 
       if(isset($album_item->keywords) && $album_item->keywords!='') {
-        $keywords = utf8_encode(self::_decode_html_special_chars(trim($album_item->keywords)));
+        $keywords = mb_convert_encoding(self::_decode_html_special_chars(trim($album_item->keywords)), 'UTF-8', 'ISO-8859-1');
         if($keywords!='') {
           self::import_keywords_as_tags($keywords, $item);
         }
@@ -857,18 +846,18 @@ class g1_import_Core {
     }
 
     if ($corrupt) {
-      $title = utf8_encode(self::_decode_html_special_chars(trim($album_item->caption)));
+      $title = mb_convert_encoding(self::_decode_html_special_chars(trim($album_item->caption)), 'UTF-8', 'ISO-8859-1');
       $title or $title = $g1_item;
       if (!empty($item)) {
         $messages[] =
           t('<a href="%g1_url">%title</a> from Gallery 1 could not be processed; (imported as <a href="%g3_url">%title</a>)',
-            array('g1_url' => $gallery_url.'/'.$item_id,
+            ['g1_url' => $gallery_url.'/'.$item_id,
                   'g3_url' => $item->url(),
-                  'title' => $title));
+                  'title' => $title]);
       } else {
         $messages[] =
           t('<a href="%g1_url">%title</a> from Gallery 1 could not be processed',
-            array('g1_url' => $gallery_url.'/'.$item_id, 'title' => $title));
+            ['g1_url' => $gallery_url.'/'.$item_id, 'title' => $title]);
       }
     }
 
@@ -876,13 +865,13 @@ class g1_import_Core {
     return $messages;
   }
 
-  function get_mime_type($filename, $mimePath = '/etc') {
+  public function get_mime_type($filename, $mimePath = '/etc') {
     $fileext = substr(strrchr($filename, '.'), 1);
     if (empty($fileext)) return (false);
     $regex = "/^([\w\+\-\.\/]+)\s+(\w+\s)*($fileext\s)/i";
     $lines = file("$mimePath/mime.types");
     foreach($lines as $line) {
-      if (substr($line, 0, 1) == '#') continue; // skip comments
+      if (str_starts_with($line, '#')) continue; // skip comments
       $line = rtrim($line) . ' ';
       if (!preg_match($regex, $line, $matches)) continue; // no match to the extension
       return ($matches[1]);
@@ -893,8 +882,8 @@ class g1_import_Core {
   /**
    * Import a single comment.
    */
-  static function import_comment(&$queue) {
-    $messages = array();
+  public static function import_comment(&$queue) {
+    $messages = [];
     if(count($queue)==0) {
       //this case happens if more than one comment is found on one or more items
       $messages[] = t('Empty comments queue');
@@ -903,13 +892,13 @@ class g1_import_Core {
 
     $element = array_shift($queue);
 
-    list($item, $comments) = current($element);
-    g1_import::debug( t('Now importing %$comments comment(s) for item %$item', array('album' => $item, 'comments' => count($comments))) );
+    [$item, $comments] = current($element);
+    g1_import::debug( t('Now importing %$comments comment(s) for item %$item', ['album' => $item, 'comments' => count($comments)]) );
 
     // Item names come in as FolderX/ItemX
     $pos = strrpos($item, '/');
     if($pos===false) {
-      $messages[] = t('Invalid item %item', array('item' => $item));
+      $messages[] = t('Invalid item %item', ['item' => $item]);
       return $messages;
     }
 
@@ -925,7 +914,7 @@ class g1_import_Core {
 
     $item_id = self::map($g1_album, $g1_item, 'item');
     if (empty($item_id)) {
-      $messages[] = t('Could not find item %item', array('item' => $item));
+      $messages[] = t('Could not find item %item', ['item' => $item]);
       return;
     }
 
@@ -935,20 +924,20 @@ class g1_import_Core {
       // we don't trigger spam filtering events
       $comment = ORM::factory('comment');
       $comment->author_id = identity::guest()->id;
-      $comment->guest_name = utf8_encode(self::_decode_html_special_chars(trim($g1comment['name'])));
+      $comment->guest_name = mb_convert_encoding(self::_decode_html_special_chars(trim($g1comment['name'])), 'UTF-8', 'ISO-8859-1');
       $comment->guest_name or $comment->guest_name = (string) t('Anonymous coward');
       $comment->guest_email = 'unknown@nobody.com';
       $comment->item_id = $item_id;
-      $comment->text = utf8_encode(self::_decode_html_special_chars(trim($g1comment['commentText'])));
+      $comment->text = mb_convert_encoding(self::_decode_html_special_chars(trim($g1comment['commentText'])), 'UTF-8', 'ISO-8859-1');
       $comment->state = 'published';
-      $comment->server_http_host = utf8_encode(self::_decode_html_special_chars(trim($g1comment['IPNumber'])));
+      $comment->server_http_host = mb_convert_encoding(self::_decode_html_special_chars(trim($g1comment['IPNumber'])), 'UTF-8', 'ISO-8859-1');
 
       try {
         $comment->save();
       } catch (Exception $e) {
         $messages[] = (string) new G1_Import_Exception(
             t('Failed to import comment for item: %item.',
-              array('item' => $item)),
+              ['item' => $item]),
             $e);
         return $messages;
       }
@@ -956,8 +945,8 @@ class g1_import_Core {
       // Backdate the creation date.  We can't do this at creation time because
       // Comment_Model::save() will override it.
       db::update('comments')
-        ->set('created', utf8_encode(self::_decode_html_special_chars(trim($g1comment['datePosted']))))
-        ->set('updated', utf8_encode(self::_decode_html_special_chars(trim($g1comment['datePosted']))))
+        ->set('created', mb_convert_encoding(self::_decode_html_special_chars(trim($g1comment['datePosted'])), 'UTF-8', 'ISO-8859-1'))
+        ->set('updated', mb_convert_encoding(self::_decode_html_special_chars(trim($g1comment['datePosted'])), 'UTF-8', 'ISO-8859-1'))
         ->where('id', '=', $comment->id)
         ->execute();
     }
@@ -971,11 +960,11 @@ class g1_import_Core {
    * This function undoes that encoding.
    */
   private static function _decode_html_special_chars($value) {
-    return str_replace(array('&amp;', '&quot;', '&lt;', '&gt;', '&auml;', '&ouml;', '&uuml;', '&Auml;', '&Ouml;', '&Uuml;', '&szlig;'),
-                       array('&', '"', '<', '>', 'ä', 'ö', 'ü', 'Ä', 'Ö', 'Ü', 'ß'), $value);
+    return str_replace(['&amp;', '&quot;', '&lt;', '&gt;', '&auml;', '&ouml;', '&uuml;', '&Auml;', '&Ouml;', '&Uuml;', '&szlig;'],
+                       ['&', '"', '<', '>', 'ä', 'ö', 'ü', 'Ä', 'Ö', 'Ü', 'ß'], $value);
   }
 
-  static function import_keywords_as_tags($keywords, $item) {
+  public static function import_keywords_as_tags($keywords, $item) {
     // FIXME check if this is true for G1 (copied from G2 import module):
     // Keywords in G1 are free form.  So we don't know what our user used as a separator.  Try to
     // be smart about it.  If we see a comma or a semicolon, expect the keywords to be separated
@@ -1000,7 +989,7 @@ class g1_import_Core {
    * If the thumbnails and resizes created for the Gallery 1 photo match the dimensions of the
    * ones we expect to create for Gallery 3, then copy the files over instead of recreating them.
    */
-  static function copy_matching_thumbnails_and_resizes($item) {
+  public static function copy_matching_thumbnails_and_resizes($item) {
 
     // We only operate on items that are being imported
     if (empty(self::$current_g1_item)) {
@@ -1022,7 +1011,7 @@ class g1_import_Core {
       return;
     }
 
-    list( $item_id, $album_item ) = current(self::$current_g1_item);
+    [$item_id, $album_item] = current(self::$current_g1_item);
     
     // Item names come in as FolderX/ItemX
     $pos = strrpos($item_id, '/');
@@ -1061,7 +1050,7 @@ class g1_import_Core {
     } catch (Exception $e) {
       return (string) new G1_Import_Exception(
           t("Failed to copy thumbnails and resizes for item '%name' (Gallery 1 id: %id)",
-            array('name' => $item->name, 'id' => $item_id)),
+            ['name' => $item->name, 'id' => $item_id]),
           $e);
     }
   }
@@ -1071,17 +1060,17 @@ class g1_import_Core {
    * what theme settings to set to make the import go faster.  If we match up the sizes then we
    * can just copy over derivatives instead of running graphics toolkit operations.
    */
-  static function common_sizes() {
-    return array(  'resize' => array( 'size' => self::$resize_size, 'count' => 1 )
-                  ,'thumb' => array( 'size' => self::$thumb_size, 'count' => 1 )
+  public static function common_sizes() {
+    return [  'resize' => [ 'size' => self::$resize_size, 'count' => 1 ]
+                  ,'thumb' => [ 'size' => self::$thumb_size, 'count' => 1 ]
                   ,'total' => 1
-                );
+                ];
   }
 
   /**
    * Look in our map to find the corresponding Gallery 3 id for the given Gallery 1 id.
    */
-  static function map($album, $item, $resource_type) {
+  public static function map($album, $item, $resource_type) {
     if (!array_key_exists($resource_type.':'.$album.'/'.$item, self::$map)) {
       $mapping = ORM::factory('g1_map')->where('album', '=', $album)->where('item', '=', $item)->where('resource_type', '=', $resource_type)->find();
       self::$map[$resource_type.':'.$album.'/'.$item] = $mapping->loaded() ? $mapping->id : null;
@@ -1093,7 +1082,7 @@ class g1_import_Core {
   /**
    * Associate a Gallery 1 id with a Gallery 3 item id.
    */
-  static function set_map($id, $album, $item, $resource_type) {
+  public static function set_map($id, $album, $item, $resource_type) {
     $mapping = ORM::factory('g1_map');
     $mapping->id = $id;
     $mapping->album = $album;
@@ -1103,12 +1092,12 @@ class g1_import_Core {
     self::$map[$resource_type.':'.$album.'/'.$item] = $id;
   }
 
-  static function log($msg) {
+  public static function log($msg) {
     message::warning($msg);
     Kohana_Log::add('alert', $msg);
   }
 
-  static function debug($msg) {
+  public static function debug($msg) {
     Kohana_Log::add('debug', $msg);
   }
 }

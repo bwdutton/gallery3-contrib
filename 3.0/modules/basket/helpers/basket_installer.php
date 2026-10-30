@@ -20,7 +20,7 @@
 
 class basket_installer
 {
-  static function install(){
+  public static function install(){
 
    $db = Database::instance();
 
@@ -123,7 +123,7 @@ Thanks");
 
   }
 
-  static function upgrade($version) {
+  public static function upgrade($version) {
     $db = Database::instance();
     if ($version == 1) {
 
@@ -213,7 +213,7 @@ Thanks");
     }
   }
 
-  static function uninstall(){
+  public static function uninstall(){
     $db = Database::instance();
     $db->query("DROP TABLE IF EXISTS {products}");
     $db->query("DROP TABLE IF EXISTS {product_overrides}");

@@ -40,7 +40,7 @@ class Basket_Plus_Controller extends Controller {
 			$form->add_to_basket->quantity->value);
       $item = ORM::factory("item", $form->add_to_basket->id->value);
       Session::instance()->set("redirect_home", $item->parent_id);
-      print json::reply(array("result" => "success"));
+      print json::reply(["result" => "success"]);
     }
     else {
       log_error("invalid form!");
@@ -65,7 +65,7 @@ class Basket_Plus_Controller extends Controller {
   }
 
   private function getAddToBasketForm($id){
-    $form = new Forge("basket_plus/add_to_basket", "", "post", array("id" => "gAddToBasketForm"));
+    $form = new Forge("basket_plus/add_to_basket", "", "post", ["id" => "gAddToBasketForm"]);
     $group = $form->group("add_to_basket")->label(t("Add To Basket"));
     $group->hidden("id");
     $group->dropdown("product")
@@ -209,7 +209,7 @@ class Basket_Plus_Controller extends Controller {
 		}
 		//create the form and add fields
 		//NOTE: the order below determines the order on the form
-    $form = new Forge("basket_plus/confirm", "", "post", array("id" => "checkout", "name" =>"checkout"));
+    $form = new Forge("basket_plus/confirm", "", "post", ["id" => "checkout", "name" =>"checkout"]);
     $group = $form->group("contact")->label(t("Contact Details"));
     $group->input("title")->label($input1_lbl)->id("title");
     $group->input("initials")->label($input2_lbl)->id("initials");
@@ -301,7 +301,7 @@ class Basket_Plus_Controller extends Controller {
 			$basket->paypal = $form->contact->paypal->value;
 
       $template = new Theme_View("page.html", "basket", "confirm");
-			$form = new Forge("basket_plus/complete", "", "post", array("id" => "confirm", "name" =>"confirm"));
+			$form = new Forge("basket_plus/complete", "", "post", ["id" => "confirm", "name" =>"confirm"]);
 			$view = new View("confirm_order.html");
 			$view->basket = $basket;
 			$view->page_type = "basket";
@@ -447,7 +447,7 @@ class Basket_Plus_Controller extends Controller {
     $view = new View("print_order.html");
 
     if ($order->loaded()){
-      $view->order = str_replace(array("\r\n", "\n", "\r"),"<br/>",$order->text);
+      $view->order = str_replace(["\r\n", "\n", "\r"],"<br/>",$order->text);
     }
 		else {
       $view->order = "Order ".$id." not found.";
@@ -621,7 +621,7 @@ class Basket_Plus_Controller extends Controller {
 //============================================================
 
 	// UNUSED FUNCTION; retained from original basket module
-  function paypal_ipn($id){
+  public function paypal_ipn($id){
       $order = ORM::factory("bp_order")->where("id","=",$id)->find();
       if ($order->loaded()){
         $paypal = new Paypal();

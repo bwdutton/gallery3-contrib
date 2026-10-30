@@ -25,7 +25,7 @@ class Sabre_DAV_ObjectTree extends Sabre_DAV_Tree {
      * 
      * @var array 
      */
-    protected $cache = array();
+    protected $cache = [];
 
     /**
      * Creates the object
@@ -83,11 +83,11 @@ class Sabre_DAV_ObjectTree extends Sabre_DAV_Tree {
 
         try {
 
-            list($parent, $base) = Sabre_DAV_URLUtil::splitPath($path);
+            [$parent, $base] = Sabre_DAV_URLUtil::splitPath($path);
             $parentNode = $this->getNodeForPath($parent);
             return $parentNode->childExists($base);
 
-        } catch (Sabre_DAV_Exception_FileNotFound $e) {
+        } catch (Sabre_DAV_Exception_FileNotFound) {
 
             return false;
 
@@ -138,7 +138,7 @@ class Sabre_DAV_ObjectTree extends Sabre_DAV_Tree {
         // flushing the entire cache
         $path = trim($path,'/');
         foreach($this->cache as $nodePath=>$node) {
-            if ($nodePath == $path || strpos($nodePath,$path.'/')===0)
+            if ($nodePath == $path || str_starts_with($nodePath, $path.'/'))
                 unset($this->cache[$nodePath]);
             
         }

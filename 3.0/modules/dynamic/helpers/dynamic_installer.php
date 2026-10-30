@@ -17,23 +17,23 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class dynamic_installer {
-  static function install() {
+  public static function install() {
     $version = module::get_version("dynamic");
     if ($version == 0) {
       module::set_var(
         "dynamic", "popular",
-        serialize((object)array("enabled" => false,
+        serialize((object)["enabled" => false,
                                 "limit" => null,
                                 "description" => "",
                                 "key_field" => "view_count",
-                                "title" => t("Most viewed"))));
+                                "title" => t("Most viewed")]));
       module::set_var(
         "dynamic", "updates",
-        serialize((object)array("enabled" => false,
+        serialize((object)["enabled" => false,
                                 "limit" => null,
                                 "description" => "",
                                 "key_field" => "created",
-                                "title" => t("Recent changes"))));
+                                "title" => t("Recent changes")]));
       module::set_version("dynamic", 1);
     }
   }

@@ -19,13 +19,6 @@
 class Sabre_DAV_Locks_Plugin extends Sabre_DAV_ServerPlugin {
 
     /**
-     * locksBackend 
-     * 
-     * @var Sabre_DAV_Locks_Backend_Abstract 
-     */
-    private $locksBackend;
-
-    /**
      * server
      * 
      * @var Sabre_DAV_Server 
@@ -38,10 +31,13 @@ class Sabre_DAV_Locks_Plugin extends Sabre_DAV_ServerPlugin {
      * @param Sabre_DAV_Locks_Backend_Abstract $locksBackend 
      * @return void
      */
-    public function __construct(Sabre_DAV_Locks_Backend_Abstract $locksBackend = null) {
-
-        $this->locksBackend = $locksBackend;        
-
+    public function __construct(
+        /**
+         * locksBackend
+         */
+        private readonly ?\Sabre_DAV_Locks_Backend_Abstract $locksBackend = null
+    )
+    {
     }
 
     /**
@@ -55,9 +51,9 @@ class Sabre_DAV_Locks_Plugin extends Sabre_DAV_ServerPlugin {
     public function initialize(Sabre_DAV_Server $server) {
 
         $this->server = $server;
-        $server->subscribeEvent('unknownMethod',array($this,'unknownMethod'));
-        $server->subscribeEvent('beforeMethod',array($this,'beforeMethod'),50);
-        $server->subscribeEvent('afterGetProperties',array($this,'afterGetProperties'));
+        $server->subscribeEvent('unknownMethod',[$this,'unknownMethod']);
+        $server->subscribeEvent('beforeMethod',[$this,'beforeMethod'],50);
+        $server->subscribeEvent('afterGetProperties',[$this,'afterGetProperties']);
 
     }
 
@@ -146,10 +142,10 @@ class Sabre_DAV_Locks_Plugin extends Sabre_DAV_ServerPlugin {
                 break;
             case 'MOVE' :
                 $lastLock = null;
-                if (!$this->validateLock(array(
+                if (!$this->validateLock([
                       $uri,
                       $this->server->calculateUri($this->server->httpRequest->getHeader('Destination')),
-                    ),$lastLock))
+                    ],$lastLock))
                         throw new Sabre_DAV_Exception_Locked($lastLock);
                 break;
             case 'COPY' :
@@ -180,9 +176,9 @@ class Sabre_DAV_Locks_Plugin extends Sabre_DAV_ServerPlugin {
 
         if ($this->locksBackend ||
             $this->server->tree->getNodeForPath($uri) instanceof Sabre_DAV_ILocks) {
-            return array('LOCK','UNLOCK');
+            return ['LOCK','UNLOCK'];
         }
-        return array();
+        return [];
 
     }
 
@@ -196,7 +192,7 @@ class Sabre_DAV_Locks_Plugin extends Sabre_DAV_ServerPlugin {
      */
     public function getFeatures() {
 
-        return array(2);
+        return [2];
 
     }
 
@@ -212,11 +208,11 @@ class Sabre_DAV_Locks_Plugin extends Sabre_DAV_ServerPlugin {
      */
     public function getLocks($uri) {
 
-        $lockList = array();
+        $lockList = [];
         $currentPath = '';
         foreach(explode('/',$uri) as $uriPart) {
 
-            $uriLocks = array();
+            $uriLocks = [];
             if ($currentPath) $currentPath.='/'; 
             $currentPath.=$uriPart;
 
@@ -225,7 +221,7 @@ class Sabre_DAV_Locks_Plugin extends Sabre_DAV_ServerPlugin {
                 $node = $this->server->tree->getNodeForPath($currentPath);
                 if ($node instanceof Sabre_DAV_ILockable) $uriLocks = $node->getLocks();
 
-            } catch (Sabre_DAV_Exception_FileNotFound $e){
+            } catch (Sabre_DAV_Exception_FileNotFound){
                 // In case the node didn't exist, this could be a lock-null request
             }
 
@@ -303,9 +299,9 @@ class Sabre_DAV_Locks_Plugin extends Sabre_DAV_ServerPlugin {
             $node = $this->server->tree->getNodeForPath($uri);
             
             // We need to call the beforeWriteContent event for RFC3744
-            $this->server->broadcastEvent('beforeWriteContent',array($uri));
+            $this->server->broadcastEvent('beforeWriteContent',[$uri]);
 
-        } catch (Sabre_DAV_Exception_FileNotFound $e) {
+        } catch (Sabre_DAV_Exception_FileNotFound) {
             
             // It didn't, lets create it
             $this->server->createFile($uri,fopen('php://memory','r')); 
@@ -373,12 +369,12 @@ class Sabre_DAV_Locks_Plugin extends Sabre_DAV_ServerPlugin {
      */
     public function lockNode($uri,Sabre_DAV_Locks_LockInfo $lockInfo) {
 
-        if (!$this->server->broadcastEvent('beforeLock',array($uri,$lockInfo))) return;
+        if (!$this->server->broadcastEvent('beforeLock',[$uri,$lockInfo])) return;
 
         try {
             $node = $this->server->tree->getNodeForPath($uri);
             if ($node instanceof Sabre_DAV_ILockable) return $node->lock($lockInfo);
-        } catch (Sabre_DAV_Exception_FileNotFound $e) {
+        } catch (Sabre_DAV_Exception_FileNotFound) {
             // In case the node didn't exist, this could be a lock-null request
         }
         if ($this->locksBackend) return $this->locksBackend->lock($uri,$lockInfo);
@@ -397,11 +393,11 @@ class Sabre_DAV_Locks_Plugin extends Sabre_DAV_ServerPlugin {
      */
     public function unlockNode($uri,Sabre_DAV_Locks_LockInfo $lockInfo) {
 
-        if (!$this->server->broadcastEvent('beforeUnlock',array($uri,$lockInfo))) return;
+        if (!$this->server->broadcastEvent('beforeUnlock',[$uri,$lockInfo])) return;
         try {
             $node = $this->server->tree->getNodeForPath($uri);
             if ($node instanceof Sabre_DAV_ILockable) return $node->unlock($lockInfo);
-        } catch (Sabre_DAV_Exception_FileNotFound $e) {
+        } catch (Sabre_DAV_Exception_FileNotFound) {
             // In case the node didn't exist, this could be a lock-null request
         }
 
@@ -454,7 +450,7 @@ class Sabre_DAV_Locks_Plugin extends Sabre_DAV_ServerPlugin {
         $lockDiscovery = $dom->createElementNS('DAV:','d:lockdiscovery');
         $prop->appendChild($lockDiscovery);
 
-        $lockObj = new Sabre_DAV_Property_LockDiscovery(array($lockInfo),true);
+        $lockObj = new Sabre_DAV_Property_LockDiscovery([$lockInfo],true);
         $lockObj->serialize($this->server,$lockDiscovery);
 
         return $dom->saveXML();
@@ -472,9 +468,9 @@ class Sabre_DAV_Locks_Plugin extends Sabre_DAV_ServerPlugin {
     protected function validateLock($urls = null,&$lastLock = null) {
 
         if (is_null($urls)) {
-            $urls = array($this->server->getRequestUri());
+            $urls = [$this->server->getRequestUri()];
         } elseif (is_string($urls)) {
-            $urls = array($urls);
+            $urls = [$urls];
         } elseif (!is_array($urls)) {
             throw new Sabre_DAV_Exception('The urls parameter should either be null, a string or an array');
         }
@@ -501,7 +497,7 @@ class Sabre_DAV_Locks_Plugin extends Sabre_DAV_ServerPlugin {
                 $conditionUri = $condition['uri']?$this->server->calculateUri($condition['uri']):'';
 
                 // If the condition has a url, and it isn't part of the affected url at all, check the next condition
-                if ($conditionUri && strpos($url,$conditionUri)!==0) continue;
+                if ($conditionUri && !str_starts_with($url, $conditionUri)) continue;
 
                 // The tokens array contians arrays with 2 elements. 0=true/false for normal/not condition, 1=locktoken
                 // At least 1 condition has to be satisfied
@@ -513,7 +509,7 @@ class Sabre_DAV_Locks_Plugin extends Sabre_DAV_ServerPlugin {
                     // key 2 can contain an etag
                     if ($conditionToken[2]) {
 
-                        $uri = $conditionUri?$conditionUri:$this->server->getRequestUri(); 
+                        $uri = $conditionUri ?: $this->server->getRequestUri(); 
                         $node = $this->server->tree->getNodeForPath($uri);
                         $etagValid = $node->getETag()==$conditionToken[2];
 
@@ -591,29 +587,29 @@ class Sabre_DAV_Locks_Plugin extends Sabre_DAV_ServerPlugin {
     public function getIfConditions() {
 
         $header = $this->server->httpRequest->getHeader('If'); 
-        if (!$header) return array();
+        if (!$header) return [];
 
-        $matches = array();
+        $matches = [];
 
         $regex = '/(?:\<(?P<uri>.*?)\>\s)?\((?P<not>Not\s)?(?:\<(?P<token>[^\>]*)\>)?(?:\s?)(?:\[(?P<etag>[^\]]*)\])?\)/im'; 
         preg_match_all($regex,$header,$matches,PREG_SET_ORDER);
 
-        $conditions = array();
+        $conditions = [];
 
         foreach($matches as $match) {
 
-            $condition = array(
+            $condition = [
                 'uri'   => $match['uri'],
-                'tokens' => array(
-                    array($match['not']?0:1,$match['token'],isset($match['etag'])?$match['etag']:'')
-                ),    
-            );
+                'tokens' => [
+                    [$match['not']?0:1,$match['token'],$match['etag'] ?? '']
+                ],    
+            ];
 
-            if (!$condition['uri'] && count($conditions)) $conditions[count($conditions)-1]['tokens'][] = array(
+            if (!$condition['uri'] && count($conditions)) $conditions[count($conditions)-1]['tokens'][] = [
                 $match['not']?0:1,
                 $match['token'],
-                isset($match['etag'])?$match['etag']:''
-            );
+                $match['etag'] ?? ''
+            ];
             else {
                 $conditions[] = $condition;
             }

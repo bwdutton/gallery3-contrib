@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class themeroller_event {
-  static function admin_menu($admin_menu, $theme) {
+  public static function admin_menu($admin_menu, $theme) {
     $admin_menu->get("appearance_menu")
       ->append(Menu::factory("dialog")
                ->id("themeroller")

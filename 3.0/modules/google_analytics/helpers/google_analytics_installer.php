@@ -18,25 +18,25 @@
  */
 class google_analytics_installer
 {
-  static function install()
+  public static function install()
   {
 	module::set_var("google_analytics", "code", "");
 	module::set_var("google_analytics", "owneradmin_hidden", "");
     module::set_version("google_analytics", 4);
   }
 
-  static function upgrade($version)
+  public static function upgrade($version)
   {
   	module::set_version("google_analytics", 4);
   }
 
-  static function deactivate()
+  public static function deactivate()
   {
   	module::clear_var("google_analytics", "code");
   	module::clear_var("google_analytics", "owneradmin_hidden");
   }
 
-  static function uninstall()
+  public static function uninstall()
   {
   	module::clear_var("google_analytics", "code");
   	module::clear_var("google_analytics", "owneradmin_hidden");

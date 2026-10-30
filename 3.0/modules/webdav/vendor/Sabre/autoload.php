@@ -15,13 +15,13 @@
 
 function Sabre_autoload($className) {
 
-    if(strpos($className,'Sabre_')===0) {
+    if(str_starts_with($className, 'Sabre_')) {
 
-        include dirname(__FILE__) . '/' . str_replace('_','/',substr($className,6)) . '.php';
+        include __DIR__ . '/' . str_replace('_','/',substr($className,6)) . '.php';
 
     }
 
 }
 
-spl_autoload_register('Sabre_autoload');
+spl_autoload_register(Sabre_autoload(...));
 

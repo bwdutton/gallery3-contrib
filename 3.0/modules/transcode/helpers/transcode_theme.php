@@ -2,7 +2,7 @@
 
 class transcode_theme_Core {
 	
-	static function resize_bottom($theme) {
+	public static function resize_bottom($theme) {
 		$block = new Block();
 		
 		$block->css_id = "g-resolutions";

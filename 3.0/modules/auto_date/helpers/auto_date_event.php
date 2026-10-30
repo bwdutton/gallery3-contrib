@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class auto_date_event_Core {
-  static function admin_menu($menu, $theme) {
+  public static function admin_menu($menu, $theme) {
     $menu
       ->get("settings_menu")
       ->append(Menu::factory("link")
@@ -27,7 +27,7 @@ class auto_date_event_Core {
       ->url(url::site("admin/auto_date")));
   }
 
-  static function item_created($item) {
+  public static function item_created($item) {
 	auto_date::set_auto_date($item);
   }
 

@@ -16,11 +16,11 @@ class Admin_fittoscreen_Controller extends Admin_Controller {
   }
 
   private function _get_form() {
-    $form = new Forge("admin/fittoscreen/save", "", "post", array("id" => "g-admin-form"));
+    $form = new Forge("admin/fittoscreen/save", "", "post", ["id" => "g-admin-form"]);
 
-    $form->dropdown("width_unit")->label(t("Image width unit"))->options(array("px"=>"pixel margin","pr"=>"max pourcentage"))->selected(module::get_var("fittoscreen", "width_unit"));
+    $form->dropdown("width_unit")->label(t("Image width unit"))->options(["px"=>"pixel margin","pr"=>"max pourcentage"])->selected(module::get_var("fittoscreen", "width_unit"));
     $form->input("width")->label(t('width'))->rules("required|valid_numeric|length[1,5]")->value(module::get_var("fittoscreen", "width"));
-    $form->dropdown("height_unit")->label(t("Image height unit"))->options(array("px"=>"pixel margin","pr"=>"max pourcentage"))->selected(module::get_var("fittoscreen", "height_unit"));
+    $form->dropdown("height_unit")->label(t("Image height unit"))->options(["px"=>"pixel margin","pr"=>"max pourcentage"])->selected(module::get_var("fittoscreen", "height_unit"));
     $form->input("height")->label(t('height'))->rules("required|valid_numeric|length[1,5]")->value(module::get_var("fittoscreen", "height"));
 
     $form->submit("submit")->value(t("Save"));

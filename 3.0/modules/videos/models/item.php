@@ -19,7 +19,7 @@
  */
 class Item_Model_Core extends ORM_MPTT {
   protected $children = "items";
-  protected $sorting = array();
+  protected $sorting = [];
   public $data_file = null;
 
   public function __construct($id=null) {
@@ -77,7 +77,7 @@ class Item_Model_Core extends ORM_MPTT {
     }
 
     if ($this->id == 1) {
-      $v = new Validation(array("id"));
+      $v = new Validation(["id"]);
       $v->add_error("id", "cant_delete_root_album");
       ORM_Validation_Exception::handle_validation($this->table_name, $v);
     }
@@ -242,10 +242,10 @@ class Item_Model_Core extends ORM_MPTT {
    * Rebuild the relative_path_cache and relative_url_cache.
    */
   private function _build_relative_caches() {
-    $names = array();
-    $slugs = array();
+    $names = [];
+    $slugs = [];
     foreach (db::build()
-             ->select(array("name", "slug"))
+             ->select(["name", "slug"])
              ->from("items")
              ->where("left_ptr", "<=", $this->left_ptr)
              ->where("right_ptr", ">=", $this->right_ptr)
@@ -257,7 +257,7 @@ class Item_Model_Core extends ORM_MPTT {
       $slugs[] = rawurlencode($row->slug);
     }
     $this->relative_path_cache = implode('/', $names);
-    $this->relative_url_cache = implode('/', $slugs, "/");
+    $this->relative_url_cache = implode('/', $slugs);
     return $this;
   }
 
@@ -302,7 +302,7 @@ class Item_Model_Core extends ORM_MPTT {
       // failures gracefully.
       try {
         return identity::lookup_user($this->owner_id);
-      } catch (Exception $e) {
+      } catch (Exception) {
         return null;
       }
     } else {
@@ -343,17 +343,17 @@ class Item_Model_Core extends ORM_MPTT {
           // If the filename is all invalid characters, then the slug may be empty here.  Pick a
           // random value.
           if (empty($this->slug)) {
-            $this->slug = (string)rand(1000, 9999);
+            $this->slug = (string)random_int(1000, 9999);
           }
         }
 
         // Get the width, height and mime type from our data file for photos and movies.
         if ($this->is_photo() || $this->is_movie()) {
           if ($this->is_photo()) {
-            list ($this->width, $this->height, $this->mime_type, $extension) =
+            [$this->width, $this->height, $this->mime_type, $extension] =
               photo::get_file_metadata($this->data_file);
           } else if ($this->is_movie()) {
-            list ($this->width, $this->height, $this->mime_type, $extension) =
+            [$this->width, $this->height, $this->mime_type, $extension] =
               movie::get_file_metadata($this->data_file);
           }
 
@@ -410,7 +410,7 @@ class Item_Model_Core extends ORM_MPTT {
         // If any significant fields have changed, load up a copy of the original item and
         // keep it around.
         $original = ORM::factory("item", $this->id);
-        if (array_intersect($this->changed, array("parent_id", "name", "slug"))) {
+        if (array_intersect($this->changed, ["parent_id", "name", "slug"])) {
           $original->_build_relative_caches();
           $this->relative_path_cache = null;
           $this->relative_url_cache = null;
@@ -469,9 +469,9 @@ class Item_Model_Core extends ORM_MPTT {
 
           // Get the width, height and mime type from our data file for photos and movies.
           if ($this->is_photo()) {
-            list ($this->width, $this->height) = photo::get_file_metadata($this->file_path());
+            [$this->width, $this->height] = photo::get_file_metadata($this->file_path());
           } else if ($this->is_movie()) {
-            list ($this->width, $this->height) = movie::get_file_metadata($this->file_path());
+            [$this->width, $this->height] = movie::get_file_metadata($this->file_path());
           }
           $this->thumb_dirty = 1;
           $this->resize_dirty = 1;
@@ -537,7 +537,7 @@ class Item_Model_Core extends ORM_MPTT {
 
     try {
       return model_cache::get("item", $this->album_cover_item_id);
-    } catch (Exception $e) {
+    } catch (Exception) {
       // It's possible (unlikely) that the item was deleted, if so keep going.
       return null;
     }
@@ -550,7 +550,7 @@ class Item_Model_Core extends ORM_MPTT {
    * This method stands as a backward compatibility for gallery 3.0, and will
    * be deprecated in version 3.1.
    */
-  public function get_position($child, $where=array()) {
+  public function get_position($child, $where=[]) {
     return item::get_position($child, $where);
   }
 
@@ -561,8 +561,8 @@ class Item_Model_Core extends ORM_MPTT {
    * @param boolean (optional) $center_vertically Center vertically (default: false)
    * @return string
    */
-  public function thumb_img($extra_attrs=array(), $max=null, $center_vertically=false) {
-    list ($height, $width) = $this->scale_dimensions($max);
+  public function thumb_img($extra_attrs=[], $max=null, $center_vertically=false) {
+    [$height, $width] = $this->scale_dimensions($max);
     if ($center_vertically && $max) {
       // The constant is divide by 2 to calculate the file and 10 to convert to em
       $margin_top = (int)(($max - $height) / 20);
@@ -570,11 +570,11 @@ class Item_Model_Core extends ORM_MPTT {
       $extra_attrs["title"] = $this->title;
     }
     $attrs = array_merge($extra_attrs,
-            array(
+            [
               "src" => $this->thumb_url(),
               "alt" => $this->title,
               "width" => $width,
-              "height" => $height)
+              "height" => $height]
             );
     // html::image forces an absolute url which we don't want
     return "<img" . html::attributes($attrs) . "/>";
@@ -591,7 +591,7 @@ class Item_Model_Core extends ORM_MPTT {
     $height = $this->thumb_height;
 
     if ($width <= $max && $height <= $max) {
-        return array($height, $width);
+        return [$height, $width];
     }
 
     if ($height) {
@@ -610,7 +610,7 @@ class Item_Model_Core extends ORM_MPTT {
       $width = 0;
       $height = 0;
     }
-    return array($height, $width);
+    return [$height, $width];
   }
 
   /**
@@ -620,10 +620,10 @@ class Item_Model_Core extends ORM_MPTT {
    */
   public function resize_img($extra_attrs) {
     $attrs = array_merge($extra_attrs,
-            array("src" => $this->resize_url(),
+            ["src" => $this->resize_url(),
                   "alt" => $this->title,
                   "width" => $this->resize_width,
-                  "height" => $this->resize_height)
+                  "height" => $this->resize_height]
             );
     // html::image forces an absolute url which we don't want
     return "<img" . html::attributes($attrs) . "/>";
@@ -649,8 +649,8 @@ class Item_Model_Core extends ORM_MPTT {
       }
     }
 
-    $v->attrs = array_merge($extra_attrs, array("style" => "width:{$width}px;height:{$height}px",
-                                                "class" => "g-movie"));
+    $v->attrs = array_merge($extra_attrs, ["style" => "width:{$width}px;height:{$height}px",
+                                                "class" => "g-movie"]);
     if (empty($v->attrs["id"])) {
        $v->attrs["id"] = "g-item-id-{$this->id}";
     }
@@ -668,9 +668,9 @@ class Item_Model_Core extends ORM_MPTT {
    * @param   array    order_by
    * @return array ORM
    */
-  function children($limit=null, $offset=null, $where=array(), $order_by=null) {
+  public function children($limit=null, $offset=null, $where=[], $order_by=null) {
     if (empty($order_by)) {
-      $order_by = array($this->sort_column => $this->sort_order);
+      $order_by = [$this->sort_column => $this->sort_order];
       // Use id as a tie breaker
       if ($this->sort_column != "id") {
         $order_by["id"] = "ASC";
@@ -690,9 +690,9 @@ class Item_Model_Core extends ORM_MPTT {
    * @param   array    additional where clauses
    * @return object ORM_Iterator
    */
-  function descendants($limit=null, $offset=null, $where=array(), $order_by=null) {
+  public function descendants($limit=null, $offset=null, $where=[], $order_by=null) {
     if (empty($order_by)) {
-      $order_by = array($this->sort_column => $this->sort_order);
+      $order_by = [$this->sort_column => $this->sort_order];
       // Use id as a tie breaker
       if ($this->sort_column != "id") {
         $order_by["id"] = "ASC";
@@ -706,34 +706,34 @@ class Item_Model_Core extends ORM_MPTT {
    */
   public function validate(Validation $array=null) {
     if (!$array) {
-      $this->rules = array(
-        "album_cover_item_id" => array("callbacks" => array(array($this, "valid_album_cover"))),
-        "description"         => array("rules"     => array("length[0,65535]")),
-        "mime_type"           => array("callbacks" => array(array($this, "valid_field"))),
-        "name"                => array("rules"     => array("length[0,255]", "required"),
-                                       "callbacks" => array(array($this, "valid_name"))),
-        "parent_id"           => array("callbacks" => array(array($this, "valid_parent"))),
-        "rand_key"            => array("rule"      => array("decimal")),
-        "slug"                => array("rules"     => array("length[0,255]", "required"),
-                                       "callbacks" => array(array($this, "valid_slug"))),
-        "sort_column"         => array("callbacks" => array(array($this, "valid_field"))),
-        "sort_order"          => array("callbacks" => array(array($this, "valid_field"))),
-        "title"               => array("rules"     => array("length[0,255]", "required")),
-        "type"                => array("callbacks" => array(array($this, "read_only"),
-                                                            array($this, "valid_field"))),
-      );
+      $this->rules = [
+        "album_cover_item_id" => ["callbacks" => [$this->valid_album_cover(...)]],
+        "description"         => ["rules"     => ["length[0,65535]"]],
+        "mime_type"           => ["callbacks" => [$this->valid_field(...)]],
+        "name"                => ["rules"     => ["length[0,255]", "required"],
+                                       "callbacks" => [$this->valid_name(...)]],
+        "parent_id"           => ["callbacks" => [$this->valid_parent(...)]],
+        "rand_key"            => ["rule"      => ["decimal"]],
+        "slug"                => ["rules"     => ["length[0,255]", "required"],
+                                       "callbacks" => [$this->valid_slug(...)]],
+        "sort_column"         => ["callbacks" => [$this->valid_field(...)]],
+        "sort_order"          => ["callbacks" => [$this->valid_field(...)]],
+        "title"               => ["rules"     => ["length[0,255]", "required"]],
+        "type"                => ["callbacks" => [$this->read_only(...),
+                                                            $this->valid_field(...)]],
+      ];
 
       // Conditional rules
       if ($this->id == 1) {
         // We don't care about the name and slug for the root album.
-        $this->rules["name"] = array();
-        $this->rules["slug"] = array();
+        $this->rules["name"] = [];
+        $this->rules["slug"] = [];
       }
 
       // Movies and photos must have data files.  Verify the data file on new items, or if it has
       // been replaced.
       if (($this->is_photo() || $this->is_movie()) && $this->data_file) {
-        $this->rules["name"]["callbacks"][] = array($this, "valid_data_file");
+        $this->rules["name"]["callbacks"][] = $this->valid_data_file(...);
       }
     }
 
@@ -761,7 +761,7 @@ class Item_Model_Core extends ORM_MPTT {
    * trailing periods.
    */
   public function valid_name(Validation $v, $field) {
-    if (strpos($this->name, "/") !== false) {
+    if (str_contains($this->name, "/")) {
       $v->add_error("name", "no_slashes");
       return;
     } else if (rtrim($this->name, ".") !== $this->name) {
@@ -800,7 +800,7 @@ class Item_Model_Core extends ORM_MPTT {
         ->from("items")
         ->where("parent_id", "=", $this->parent_id)
         ->where("name", "=", $this->name)
-        ->merge_where($this->id ? array(array("id", "<>", $this->id)) : null)
+        ->merge_where($this->id ? [["id", "<>", $this->id]] : null)
         ->count_records()) {
       $v->add_error("name", "conflict");
       return;
@@ -819,9 +819,9 @@ class Item_Model_Core extends ORM_MPTT {
 
     if ($this->loaded()) {
       if ($this->is_photo()) {
-        list ($a, $b, $mime_type) = photo::get_file_metadata($this->data_file);
+        [$a, $b, $mime_type] = photo::get_file_metadata($this->data_file);
       } else if ($this->is_movie()) {
-        list ($a, $b, $mime_type) = movie::get_file_metadata($this->data_file);
+        [$a, $b, $mime_type] = movie::get_file_metadata($this->data_file);
       }
       if ($mime_type != $this->mime_type) {
         $v->add_error("name", "cant_change_mime_type");
@@ -882,9 +882,9 @@ class Item_Model_Core extends ORM_MPTT {
       if ($this->is_movie()) {
         // rWatcher EDIT.
         //$legal_values = array("video/flv", "video/x-flv", "video/mp4");
-        $legal_values = array("video/flv", "video/x-flv", "video/mp4", "video/avi", "video/msvideo", "video/x-msvideo", "video/mpeg", "video/quicktime", "video/x-ms-wmv", "application/octet-stream", "video/x-ms-asf" );
+        $legal_values = ["video/flv", "video/x-flv", "video/mp4", "video/avi", "video/msvideo", "video/x-msvideo", "video/mpeg", "video/quicktime", "video/x-ms-wmv", "application/octet-stream", "video/x-ms-asf" ];
       } if ($this->is_photo()) {
-        $legal_values = array("image/jpeg", "image/gif", "image/png");
+        $legal_values = ["image/jpeg", "image/gif", "image/png"];
       }
       break;
 
@@ -895,11 +895,11 @@ class Item_Model_Core extends ORM_MPTT {
       break;
 
     case "sort_order":
-      $legal_values = array("ASC", "DESC", "asc", "desc");
+      $legal_values = ["ASC", "DESC", "asc", "desc"];
       break;
 
     case "type":
-      $legal_values = array("album", "photo", "movie");
+      $legal_values = ["album", "photo", "movie"];
       break;
 
     default:
@@ -926,9 +926,9 @@ class Item_Model_Core extends ORM_MPTT {
    *
    * @param array if specified, only return the named fields
    */
-  public function as_restful_array($fields=array()) {
+  public function as_restful_array($fields=[]) {
     if ($fields) {
-      $data = array();
+      $data = [];
       foreach ($fields as $field) {
         if (isset($this->object[$field])) {
           $data[$field] = $this->__get($field);
@@ -1007,8 +1007,8 @@ class Item_Model_Core extends ORM_MPTT {
     }
 
     // Elide some internal-only data that is going to cause confusion in the client.
-    foreach (array("relative_path_cache", "relative_url_cache", "left_ptr", "right_ptr",
-                   "thumb_dirty", "resize_dirty", "weight") as $key) {
+    foreach (["relative_path_cache", "relative_url_cache", "left_ptr", "right_ptr",
+                   "thumb_dirty", "resize_dirty", "weight"] as $key) {
       unset($data[$key]);
     }
     return $data;

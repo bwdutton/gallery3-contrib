@@ -19,16 +19,16 @@
  */
 class about_this_album_block_Core {
 
-  static function get_site_list() {
-    return array("aboutthisalbum" => t("About This Album"));
+  public static function get_site_list() {
+    return ["aboutthisalbum" => t("About This Album")];
   }
 
-  static function get($block_id, $theme) {
+  public static function get($block_id, $theme) {
     switch ($block_id) {
     case "aboutthisalbum":
       $item = $theme->item;
  	  if ((!$item) or (!$theme->item->is_album())) {
-        return ""; 
+        return "";
 	  }
       if ($theme->item->is_album()) {
         $block = new Block();
@@ -42,9 +42,9 @@ class about_this_album_block_Core {
           $block->content->vcount = Database::instance()->query("SELECT SUM({items}.view_count) as c FROM {items} WHERE type=\"photo\"")->current()->c;
 		} Else {
            $block->title = t("About this Album");
-           $block->content->album_count = $item->descendants_count(array(array("type", "=", "album"))); 
-           $block->content->photo_count = $item->descendants_count(array(array("type", "=", "photo"))); 
-  	       // $block->content->vcount= $theme->item()->view_count; 
+           $block->content->album_count = $item->descendants_count([["type", "=", "album"]]);
+           $block->content->photo_count = $item->descendants_count([["type", "=", "photo"]]);
+  	       // $block->content->vcount= $theme->item()->view_count;
   	       $descds = $item->descendants();
 		   $descds_view = 0;
 		   foreach ($descds as $descd) {

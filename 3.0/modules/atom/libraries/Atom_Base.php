@@ -21,10 +21,10 @@
 class Atom_Base_Core {
   protected $dom;
   protected $element;
-  protected $children = array();
+  protected $children = [];
   protected $element_name;
 
-  function __construct($element_name, $dom=null) {
+  public function __construct($element_name, $dom=null) {
     if ($dom) {
       $this->dom = $dom;
       $this->element = $dom->createElement($element_name);
@@ -66,9 +66,9 @@ class Atom_Base_Core {
   }
 
   protected function add_children_to_base_element() {
-    foreach ($this->children as $element_type => $elements) {
+    foreach ($this->children as $elements) {
       $base_element = $this->element;
-      foreach ($elements as $id => $element) {
+      foreach ($elements as $element) {
         $base_element->appendChild($element->get_element());
       }
     }

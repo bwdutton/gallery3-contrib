@@ -20,7 +20,7 @@
 
 class gwtorganise_event_Core{
 
-  static function admin_menu($menu, $theme) {
+  public static function admin_menu($menu, $theme) {
     $menu->add_after("dashboard",
     Menu::factory("link")
         ->id("gwtorganise")

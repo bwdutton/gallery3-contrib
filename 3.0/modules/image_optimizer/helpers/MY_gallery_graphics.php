@@ -28,7 +28,7 @@ class gallery_graphics extends gallery_graphics_Core {
    * @param string     $output_file
    * @param array      $options
    */
-  static function rotate($input_file, $output_file, $options) {
+  public static function rotate($input_file, $output_file, $options) {
     graphics::init_toolkit();
 
     module::event("graphics_rotate", $input_file, $output_file, $options);
@@ -57,7 +57,7 @@ class gallery_graphics extends gallery_graphics_Core {
     if (!$status) {
       // we got here if we weren't supposed to use jpegtran or if jpegtran failed
     // END mod to original function
-    
+
       Image::factory($input_file)
         ->quality(module::get_var("gallery", "image_quality"))
         ->rotate($options["degrees"])

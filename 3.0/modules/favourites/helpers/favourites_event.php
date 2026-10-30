@@ -22,7 +22,7 @@ class favourites_event_Core{
   /**
    * adds the shopping basket administration controls to the admin menu
    */
-  static function admin_menu($menu, $theme){
+  public static function admin_menu($menu, $theme){
 
     $menu->add_after("users_groups",
       Menu::factory("link")

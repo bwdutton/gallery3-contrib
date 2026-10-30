@@ -20,7 +20,7 @@
 
 class item extends item_Core {
 
-    static function make_album_cover($item, $sync = false) {
+    public static function make_album_cover($item, $sync = false) {
         if (!$sync)
             parent::make_album_cover($item);
 
@@ -30,7 +30,7 @@ class item extends item_Core {
         }
     }
 
-    static function remove_album_cover($album) {
+    public static function remove_album_cover($album) {
         parent::remove_album_cover($album);
 
         if ($album->id > 1) {

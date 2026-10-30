@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class tag_albums_installer {
-  static function install() {
+  public static function install() {
     $db = Database::instance();
     $db->query("CREATE TABLE IF NOT EXISTS {tags_album_ids} (
                `id` int(9) NOT NULL auto_increment,
@@ -51,7 +51,7 @@ class tag_albums_installer {
     module::set_version("tag_albums", 4);
   }
 
-  static function upgrade($version) {
+  public static function upgrade($version) {
     $db = Database::instance();
     if ($version == 1) {
       module::set_var("tag_albums", "tag_index", "default");
@@ -79,19 +79,19 @@ class tag_albums_installer {
     }
   }
   
-  static function deactivate() {
+  public static function deactivate() {
     site_status::clear("tag_albums_needs_tag");
   }
 
-  static function can_activate() {
-    $messages = array();
+  public static function can_activate() {
+    $messages = [];
     if (!module::is_active("tag")) {
       $messages["warn"][] = t("The Tag Albums module requires the Tags module.");
     }
     return $messages;
   }
 
-  static function uninstall() {
+  public static function uninstall() {
     module::delete("tag_albums");
   }
 }

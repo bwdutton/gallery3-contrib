@@ -107,7 +107,7 @@ class Admin_TagsMap_Controller extends Admin_Controller {
   private function _get_tagsgpsedit_form($tag_id) {
     // Make a new form for editing GPS data associated with a tag ($tag_id).
     $form = new Forge("admin/tagsmap/savegps", "", "post",
-                      array("id" => "g-tags-map-admin-form"));
+                      ["id" => "g-tags-map-admin-form"]);
 
     // Add a few input boxes for GPS and Description
     $tagsgps_group = $form->group("TagsMapGPS");
@@ -179,7 +179,7 @@ class Admin_TagsMap_Controller extends Admin_Controller {
   private function _get_googlemaps_form() {
     // Make a new form for inputing information associated with google maps.
     $form = new Forge("admin/tagsmap/savemapprefs", "", "post",
-                      array("id" => "g-tags-map-admin-form"));
+                      ["id" => "g-tags-map-admin-form"]);
 
     // Input box for the Maps API Key
     $googlemap_group = $form->group("GoogleMapsKey");
@@ -204,11 +204,11 @@ class Admin_TagsMap_Controller extends Admin_Controller {
     $startingmap_group->dropdown("google_default_type")
       ->label(t("Default Map Type"))
       ->options(
-        array("G_NORMAL_MAP" => "Normal", 
+        ["G_NORMAL_MAP" => "Normal", 
               "G_SATELLITE_MAP" => "Satellite", 
               "G_HYBRID_MAP" => "Hybrid",
               "G_PHYSICAL_MAP" => "Physical", 
-              "G_SATELLITE_3D_MAP" => "Google Earth"))
+              "G_SATELLITE_3D_MAP" => "Google Earth"])
       ->selected(module::get_var("tagsmap", "googlemap_type"));
     $startingmap_group->checkbox("restrict_maps")->label(t("Restrict maps to registered users?"))
       ->checked(module::get_var("tagsmap", "restrict_maps", false));

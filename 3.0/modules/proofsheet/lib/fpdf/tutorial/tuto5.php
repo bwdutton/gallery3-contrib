@@ -4,18 +4,18 @@ require('../fpdf.php');
 class PDF extends FPDF
 {
 // Load data
-function LoadData($file)
+public function LoadData($file)
 {
 	// Read file lines
 	$lines = file($file);
-	$data = array();
+	$data = [];
 	foreach($lines as $line)
 		$data[] = explode(';',trim($line));
 	return $data;
 }
 
 // Simple table
-function BasicTable($header, $data)
+public function BasicTable($header, $data)
 {
 	// Header
 	foreach($header as $col)
@@ -31,10 +31,10 @@ function BasicTable($header, $data)
 }
 
 // Better table
-function ImprovedTable($header, $data)
+public function ImprovedTable($header, $data)
 {
 	// Column widths
-	$w = array(40, 35, 40, 45);
+	$w = [40, 35, 40, 45];
 	// Header
 	for($i=0;$i<count($header);$i++)
 		$this->Cell($w[$i],7,$header[$i],1,0,'C');
@@ -53,7 +53,7 @@ function ImprovedTable($header, $data)
 }
 
 // Colored table
-function FancyTable($header, $data)
+public function FancyTable($header, $data)
 {
 	// Colors, line width and bold font
 	$this->SetFillColor(255,0,0);
@@ -62,7 +62,7 @@ function FancyTable($header, $data)
 	$this->SetLineWidth(.3);
 	$this->SetFont('','B');
 	// Header
-	$w = array(40, 35, 40, 45);
+	$w = [40, 35, 40, 45];
 	for($i=0;$i<count($header);$i++)
 		$this->Cell($w[$i],7,$header[$i],1,0,'C',true);
 	$this->Ln();
@@ -88,7 +88,7 @@ function FancyTable($header, $data)
 
 $pdf = new PDF();
 // Column headings
-$header = array('Country', 'Capital', 'Area (sq km)', 'Pop. (thousands)');
+$header = ['Country', 'Capital', 'Area (sq km)', 'Pop. (thousands)'];
 // Data loading
 $data = $pdf->LoadData('countries.txt');
 $pdf->SetFont('Arial','',14);

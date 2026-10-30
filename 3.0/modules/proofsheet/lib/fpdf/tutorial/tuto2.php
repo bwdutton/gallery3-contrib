@@ -4,7 +4,7 @@ require('../fpdf.php');
 class PDF extends FPDF
 {
 // Page header
-function Header()
+public function Header()
 {
 	// Logo
 	$this->Image('logo.png',10,6,30);
@@ -19,7 +19,7 @@ function Header()
 }
 
 // Page footer
-function Footer()
+public function Footer()
 {
 	// Position at 1.5 cm from bottom
 	$this->SetY(-15);

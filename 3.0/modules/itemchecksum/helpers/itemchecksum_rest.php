@@ -18,16 +18,16 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class itemchecksum_rest_Core {
-  static function relationships($resource_type, $resource) {
+  public static function relationships($resource_type, $resource) {
     switch ($resource_type) {
     case "item":
-      return array(
-        "itemchecksums" => array(
-          "url" => rest::url("item_itemchecksums", $resource)));
+      return [
+        "itemchecksums" => [
+          "url" => rest::url("item_itemchecksums", $resource)]];
     }
   }
 
-  static function resolve($id) {
+  public static function resolve($id) {
     $item = ORM::factory("item", $id);
     if (!access::can("view", $item)) {
       throw new Kohana_404_Exception();
@@ -35,7 +35,7 @@ class itemchecksum_rest_Core {
     return $item;
   }
 
-  static function url($item) {
+  public static function url($item) {
     return url::abs_site("rest/itemchecksum/{$item->id}");
   }
 }

@@ -157,13 +157,13 @@ class downloadalbum_Controller extends Controller {
    * Return the files that must be included in the archive.
    */
   private function getFilesList($container) {
-    $files = array();
+    $files = [];
 
     if( $container instanceof Item_Model && $container->is_album() ) {
       $container_realpath = realpath($container->file_path().'/../');
 
       $items = $container->viewable()
-          ->descendants(null, null, array(array("type", "<>", "album")));
+          ->descendants(null, null, [["type", "<>", "album"]]);
       foreach($items as $i) {
         if (!access::can('downloadalbum', $i)) {
           continue;
@@ -220,7 +220,7 @@ class downloadalbum_Controller extends Controller {
       ob_end_clean();
     }
     // Clear any output
-    Event::add('system.display', function() { Kohana::$output = ""; });
+    Event::add('system.display', function(): void { Kohana::$output = ""; });
   }
 
   /**

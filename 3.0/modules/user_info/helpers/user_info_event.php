@@ -19,7 +19,7 @@
  */
 class user_info_event_Core {
 
-  static function admin_menu($menu, $theme) {
+  public static function admin_menu($menu, $theme) {
     $menu->get("settings_menu")
       ->append(Menu::factory("link")
                ->id("user_info")
@@ -27,7 +27,7 @@ class user_info_event_Core {
                ->url(url::site("admin/user_info")));
   }
 
-  static function user_login() {
+  public static function user_login() {
 	  $log_logins = module::get_var("user_info", "log_logins");
 	  if ($log_logins == "Yes") {
 	      $user_info = ORM::factory("user_info");
@@ -40,7 +40,7 @@ class user_info_event_Core {
 	  }
   }
 
-  static function user_logout($user) {
+  public static function user_logout($user) {
 	  $log_logouts = module::get_var("user_info", "log_logouts");
 	  if ($log_logouts == "Yes") {
 	      $user_info = ORM::factory("user_info");
@@ -53,7 +53,7 @@ class user_info_event_Core {
 	  }
   }
 
-  static function user_auth_failed($user_name) {
+  public static function user_auth_failed($user_name) {
 	  $log_failed_logins = module::get_var("user_info", "log_failed_logins");
 	  if ($log_failed_logins == "Yes") {
  	      $user_info = ORM::factory("user_info");
@@ -70,7 +70,7 @@ class user_info_event_Core {
 	  }
   }
 
-  static function user_auth($user) {
+  public static function user_auth($user) {
 	  $log_re_authenticate_logins = module::get_var("user_info", "log_re_authenticate_logins");
 	  if ($log_re_authenticate_logins == "Yes") {
 	      $user_info = ORM::factory("user_info");
@@ -83,7 +83,7 @@ class user_info_event_Core {
 	  }
   }
 
-  static function user_created($pending_user) {
+  public static function user_created($pending_user) {
 	  $log_user_created = module::get_var("user_info", "log_user_created");
 	  if ($log_user_created == "Yes") {
 	      $user_info = ORM::factory("user_info");

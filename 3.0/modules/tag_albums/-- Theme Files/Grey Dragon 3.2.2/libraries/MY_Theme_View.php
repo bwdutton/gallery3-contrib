@@ -70,7 +70,7 @@ class Theme_View extends Theme_View_Core {
   protected $root_cyclemode = "fade";
   protected $root_delay = 15;
   protected $root_description;
-  protected $permalinks = array("enter" => "?root=no", "root" => "?root=yes");
+  protected $permalinks = ["enter" => "?root=no", "root" => "?root=yes"];
 
   protected $last_update = 0;
 
@@ -78,7 +78,7 @@ class Theme_View extends Theme_View_Core {
   protected $framepack = "greydragon";
   protected $themename = "";
   protected $themeversion = "";
-  protected $themecss = array();
+  protected $themecss = [];
 
   protected $is_rtl = FALSE;
 
@@ -97,7 +97,7 @@ class Theme_View extends Theme_View_Core {
   public function read_session_cmdparam($cmd, $cookie, $issession, $default) {
     try {
       $_cmd = $_GET[$cmd]; 
-    } catch (Exception $e) {
+    } catch (Exception) {
     };
 
     if (isset($_cmd)):
@@ -111,21 +111,19 @@ class Theme_View extends Theme_View_Core {
       if ($cookie):
         try { 
           $_var = $_COOKIE[$cookie];
-        } catch (Exception $e) {
+        } catch (Exception) {
         };
       endif;
     endif;
 
-    if (!isset($_var)):
-      $_var = $default;
-    endif;
+    $_var ??= $default;
 
     if ($issession):
       if ($_from_cmd):
-        setcookie($cookie, $_var, 0);
+        setcookie($cookie, $_var, ['expires' => 0]);
       endif;
     else:
-      setcookie($cookie, $_var, time() + 31536000);
+      setcookie($cookie, $_var, ['expires' => time() + 31536000]);
     endif;
 
     return $_var;
@@ -162,7 +160,7 @@ class Theme_View extends Theme_View_Core {
           endif;
         else:
           $this->show_root_page = FALSE;
-          setcookie("gd_rootpage", "no", 0);
+          setcookie("gd_rootpage", "no", ['expires' => 0]);
         endif;
 
         if ($this->ensureoptionsvalue("hide_root_sidebar", FALSE)):
@@ -258,7 +256,7 @@ class Theme_View extends Theme_View_Core {
     $this->root_delay = $this->ensureoptionsvalue("root_delay", "15");
     $this->root_description = module::get_var("th_greydragon", "root_description");
     if ($this->ensureoptionsvalue("use_permalinks", FALSE)):
-      $this->permalinks = array("enter" => "enter", "root" => "root");
+      $this->permalinks = ["enter" => "enter", "root" => "root"];
     endif;
     if (((module::is_active("shadowbox")) and (module::info("shadowbox"))) 
         or ((module::is_active("fancybox")) and (module::info("fancybox")))
@@ -273,7 +271,7 @@ class Theme_View extends Theme_View_Core {
       $theme_info = new ArrayObject(parse_ini_file(THEMEPATH . "greydragon/theme.info"), ArrayObject::ARRAY_AS_PROPS);
       $this->themename = $theme_info->name;
       $this->themeversion = $theme_info->version;
-    } catch (Exception $e) {
+    } catch (Exception) {
       $this->themename = "Grey Dragon Theme";
       $this->themeversion = "2.7.+";
     }
@@ -510,24 +508,13 @@ class Theme_View extends Theme_View_Core {
     endif;
 		$body_class .= " g-sidebar-" . $this->sidebarvisible;
 
-    switch ($this->column_count):
-      case 5:    
-        $body_class .= " g-column-5";
-        break;
-      case 4:    
-        $body_class .= " g-column-4";
-        break;
-      case 2:
-        $body_class .= " g-column-2";
-        break;
-      case -1:
-        $body_class .= " g-column-flex";
-        break;
-      case 3:
-      default:
-        $body_class .= " g-column-3";
-        break;
-    endswitch;
+    match ($this->column_count) {
+        5 => $body_class .= " g-column-5",
+        4 => $body_class .= " g-column-4",
+        2 => $body_class .= " g-column-2",
+        -1 => $body_class .= " g-column-flex",
+        default => $body_class .= " g-column-3",
+    };
 
 
     switch ($this->thumb_ratio):
@@ -644,7 +631,7 @@ class Theme_View extends Theme_View_Core {
 	        $_max = $this->_thumb_size_x;
         endif;
       	$_max = min($thumb_item->thumb_width, $_max);
-        $thumb_content .= $thumb_item->thumb_img(array(), $_max);
+        $thumb_content .= $thumb_item->thumb_img([], $_max);
       else:
         $thumb_content .= $thumb_item->thumb_img();
       endif;
@@ -696,7 +683,7 @@ class Theme_View extends Theme_View_Core {
 	    $view = new View("frame.html");
 	    $view->thumb_content = $thumb_content;
 	    $content .= $view;
-    } catch (Exception $e) {
+    } catch (Exception) {
 			$content .= $thumb_content;
     }
 
@@ -712,7 +699,7 @@ class Theme_View extends Theme_View_Core {
     $result = "";
     foreach ($active as $id => $desc) {
       if (($desc[0] == $module) and (method_exists("$desc[0]_block", "get"))) {
-        $block = call_user_func(array("$desc[0]_block", "get"), $desc[1], $this);
+        $block = call_user_func(["$desc[0]_block", "get"], $desc[1], $this);
         if (!empty($block)) {
           $block->id = $id;
           $block->css_id = $block->css_id . "-inline";
@@ -794,8 +781,8 @@ class Theme_View extends Theme_View_Core {
     // [list][*]item[*]item[*]item[/list]
     // [code]value="123";[/code]
     // [quote]John said yadda yadda yadda[/quote]
-  
-    static $bbcode_mappings = array(
+
+    static $bbcode_mappings = [
       "#\\[b\\](.*?)\\[/b\\]#" => "<strong>$1</strong>",
       "#\\[i\\](.*?)\\[/i\\]#" => "<em>$1</em>",
       "#\\[u\\](.*?)\\[/u\\]#" => "<u>$1</u>",
@@ -815,8 +802,8 @@ class Theme_View extends Theme_View_Core {
       "#\\[list\\](.*?)\\[/list\\]#" => "<ul>$1</ul>",
       "#\\[ul\\](.*?)\\[/ul\\]#" => "<ul>$1</ul>",
       "#\\[li\\](.*?)\\[/li\\]#" => "<li>$1</li>",
-    );
-  
+    ];
+
     static $bbcode_strip = '|[[\/\!]*?[^\[\]]*?]|si'; 
 
     if (($mode == 1) or ($mode == 3)):
@@ -833,7 +820,7 @@ class Theme_View extends Theme_View_Core {
     // Convert new line chars to html <br /> tags 
     $newtext = nl2br($newtext);  
 
-    if (strpos($text, "[") !== false):
+    if (str_contains($text, "[")):
       if (($mode == 2) or ($mode == 3)):
         $newtext = preg_replace($bbcode_strip, '', $newtext);
       else:
@@ -844,13 +831,13 @@ class Theme_View extends Theme_View_Core {
     return stripslashes($newtext);  //stops slashing, useful when pulling from db
   }
 
-  function curl_get_file_contents($url) {
+  public function curl_get_file_contents($url) {
     $curl = curl_init();
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($curl, CURLOPT_URL, $url);
     $contents = curl_exec($curl);
     curl_close($curl);
- 
+
     if ($contents):
     	return $contents;
     else:
@@ -858,15 +845,15 @@ class Theme_View extends Theme_View_Core {
     endif;
   }
 
-  function valid_url($str) {
+  public function valid_url($str) {
   	return ( ! preg_match('/^(http|https|ftp):\/\/([A-Z0-9][A-Z0-9_-]*(?:\.[A-Z0-9][A-Z0-9_-]*)+):?(\d+)?\/?/i', $str)) ? FALSE : TRUE;
   }
 
-  function get_slideshow_list($limit = 10) {
+  public function get_slideshow_list($limit = 10) {
 		if( ! function_exists('simplexml_load_string'))
 			throw new Kohana_User_Exception('Feed Error', 'SimpleXML must be installed!');
 
-		$items = array();
+		$items = [];
 		$host = 'http://' . $_SERVER['SERVER_NAME'] . '/';
 
 		$feed_url = $this->root_feed;
@@ -885,9 +872,9 @@ class Theme_View extends Theme_View_Core {
 	      else:
 	    		$feed = simplexml_load_string($feed_url, 'SimpleXMLElement', LIBXML_NOCDATA);
 	      endif;
-	    } catch (Exception $e) {
+	    } catch (Exception) {
 			}
-	  } catch (Exception $e) {
+	  } catch (Exception) {
 	  };
 
 		if (isset($feed) && ($feed)):
@@ -899,13 +886,13 @@ class Theme_View extends Theme_View_Core {
       	if ($file):
         	$feed = simplexml_load_string($file, 'SimpleXMLElement', LIBXML_NOCDATA | LIBXML_NOBLANKS);
       	endif;
-    	} catch (Exception $e) {
+    	} catch (Exception) {
     	};
 		endif;
   	error_reporting($er);
 
   	if (isset($feed) && ($feed)):
-			$feed = isset($feed->channel) ? $feed->channel->xpath("//media:content[contains(@url, 'var/resizes')]") : array();
+			$feed = isset($feed->channel) ? $feed->channel->xpath("//media:content[contains(@url, 'var/resizes')]") : [];
 			$i = 0;
 			foreach ($feed as $item):
 				if ($limit > 0 AND $i++ === $limit)

@@ -6,7 +6,7 @@ class pam_event {
   /**
   * remove the default login link and use our own
   */
-  static function user_menu($menu, $theme) {
+  public static function user_menu($menu, $theme) {
     $user = identity::active_user();
     if ($user->guest) {
       // disable the default login

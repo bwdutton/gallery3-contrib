@@ -18,7 +18,7 @@ abstract class Sabre_DAV_FSExt_Node extends Sabre_DAV_FS_Node implements Sabre_D
      * 
      * @return array 
      */
-    function getLocks() {
+    public function getLocks() {
 
         $resourceData = $this->getResourceData();
         $locks = $resourceData['locks'];
@@ -35,14 +35,14 @@ abstract class Sabre_DAV_FSExt_Node extends Sabre_DAV_FS_Node implements Sabre_D
      * @param Sabre_DAV_Locks_LockInfo $lockInfo 
      * @return void
      */
-    function lock(Sabre_DAV_Locks_LockInfo $lockInfo) {
+    public function lock(Sabre_DAV_Locks_LockInfo $lockInfo) {
 
         // We're making the lock timeout 30 minutes
         $lockInfo->timeout = 1800;
         $lockInfo->created = time();
 
         $resourceData = $this->getResourceData();
-        if (!isset($resourceData['locks'])) $resourceData['locks'] = array();
+        $resourceData['locks'] ??= [];
         $current = null;
         foreach($resourceData['locks'] as $k=>$lock) {
             if ($lock->token === $lockInfo->token) $current = $k;
@@ -60,7 +60,7 @@ abstract class Sabre_DAV_FSExt_Node extends Sabre_DAV_FS_Node implements Sabre_D
      * @param Sabre_DAV_Locks_LockInfo $lockInfo 
      * @return bool 
      */
-    function unlock(Sabre_DAV_Locks_LockInfo $lockInfo) {
+    public function unlock(Sabre_DAV_Locks_LockInfo $lockInfo) {
 
         //throw new Sabre_DAV_Exception('bla');
         $resourceData = $this->getResourceData();
@@ -89,7 +89,7 @@ abstract class Sabre_DAV_FSExt_Node extends Sabre_DAV_FS_Node implements Sabre_D
 
         $resourceData = $this->getResourceData();
         
-        $result = array();
+        $result = [];
 
         foreach($properties as $propertyName=>$propertyValue) {
 
@@ -117,14 +117,14 @@ abstract class Sabre_DAV_FSExt_Node extends Sabre_DAV_FS_Node implements Sabre_D
      * @param array $properties 
      * @return void
      */
-    function getProperties($properties) {
+    public function getProperties($properties) {
 
         $resourceData = $this->getResourceData();
 
         // if the array was empty, we need to return everything
         if (!$properties) return $resourceData['properties'];
 
-        $props = array();
+        $props = [];
         foreach($properties as $property) {
             if (isset($resourceData['properties'][$property])) $props[$property] = $resourceData['properties'][$property];
         }
@@ -140,7 +140,7 @@ abstract class Sabre_DAV_FSExt_Node extends Sabre_DAV_FS_Node implements Sabre_D
      */
     protected function getResourceInfoPath() {
 
-        list($parentDir) = Sabre_DAV_URLUtil::splitPath($this->path);
+        [$parentDir] = Sabre_DAV_URLUtil::splitPath($this->path);
         return $parentDir . '/.sabredav';
 
     }
@@ -153,7 +153,7 @@ abstract class Sabre_DAV_FSExt_Node extends Sabre_DAV_FS_Node implements Sabre_D
     protected function getResourceData() {
 
         $path = $this->getResourceInfoPath();
-        if (!file_exists($path)) return array('locks'=>array(), 'properties' => array());
+        if (!file_exists($path)) return ['locks'=>[], 'properties' => []];
 
         // opening up the file, and creating a shared lock
         $handle = fopen($path,'r');
@@ -171,12 +171,12 @@ abstract class Sabre_DAV_FSExt_Node extends Sabre_DAV_FS_Node implements Sabre_D
         // Unserializing and checking if the resource file contains data for this file
         $data = unserialize($data);
         if (!isset($data[$this->getName()])) {
-            return array('locks'=>array(), 'properties' => array());
+            return ['locks'=>[], 'properties' => []];
         }
 
         $data = $data[$this->getName()];
-        if (!isset($data['locks'])) $data['locks'] = array();
-        if (!isset($data['properties'])) $data['properties'] = array();
+        $data['locks'] ??= [];
+        $data['properties'] ??= [];
         return $data;
 
     }

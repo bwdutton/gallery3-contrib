@@ -39,7 +39,7 @@
         <th style="text-align:right;"><?= t("Quantity") ?></th>
         <th style="text-align:right;"><?= t("Cost") ?></th>
       </tr>
-      <?php foreach ($basket->contents as $key => $prod_details): ?>
+      <?php foreach ($basket->contents as $prod_details): ?>
         <tr id="" class="<?= text::alternate("gOddRow", "gEvenRow") ?>">
 			<td id="item-<?= $prod_details->item ?>" class="core-info ">
 			  <?php $item = $prod_details->getItem(); ?>

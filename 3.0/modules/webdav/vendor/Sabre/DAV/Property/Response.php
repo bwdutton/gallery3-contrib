@@ -16,20 +16,6 @@
 class Sabre_DAV_Property_Response extends Sabre_DAV_Property implements Sabre_DAV_Property_IHref {
 
     /**
-     * Url for the response 
-     * 
-     * @var string 
-     */
-    private $href;
-
-    /**
-     * Propertylist, ordered by HTTP status code 
-     * 
-     * @var array 
-     */
-    private $responseProperties;
-
-    /**
      * The responseProperties argument is a list of properties
      * within an array with keys representing HTTP status codes
      * 
@@ -37,11 +23,17 @@ class Sabre_DAV_Property_Response extends Sabre_DAV_Property implements Sabre_DA
      * @param array $responseProperties 
      * @return void
      */
-    public function __construct($href,array $responseProperties) {
-
-        $this->href = $href;
-        $this->responseProperties = $responseProperties; 
-
+    public function __construct(
+        /**
+         * Url for the response
+         */
+        private $href,
+        /**
+         * Propertylist, ordered by HTTP status code
+         */
+        private readonly array $responseProperties
+    )
+    {
     }
 
     /**
@@ -121,9 +113,7 @@ class Sabre_DAV_Property_Response extends Sabre_DAV_Property implements Sabre_DA
 
                 } else {
 
-                    if (!isset($nsList[$propName[1]])) {
-                        $nsList[$propName[1]] = 'x' . count($nsList);
-                    }
+                    $nsList[$propName[1]] ??= 'x' . count($nsList);
 
                     // If the namespace was defined in the top-level xml namespaces, it means 
                     // there was already a namespace declaration, and we don't have to worry about it.

@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class moduleorder_event_Core {
-  static function module_change($changes) {
+  public static function module_change($changes) {
     // Gallery version must be >= 32
     if (module::get_version("gallery") < 32) {
       site_status::warning(
@@ -29,7 +29,7 @@ class moduleorder_event_Core {
     }
   }
   
-  static function admin_menu($menu, $theme) {
+  public static function admin_menu($menu, $theme) {
     $menu->get("settings_menu")
       ->append(Menu::factory("link")
                ->id("moduleorder_menu")

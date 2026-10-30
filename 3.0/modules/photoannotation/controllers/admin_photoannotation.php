@@ -63,7 +63,7 @@ class Admin_Photoannotation_Controller extends Admin_Controller {
         $this->_remove_tag($sourcetag, false);
       }
       module::set_var("photoannotation", "nonotifications", $old_notification_setting, true);
-      message::success(t("%count tag annotations (%tagname) have been converted to user annotations (%username)", array("count" => count($tag_annotations), "tagname" => $sourcetag->name, "username" => $targetuser->display_name())));
+      message::success(t("%count tag annotations (%tagname) have been converted to user annotations (%username)", ["count" => count($tag_annotations), "tagname" => $sourcetag->name, "username" => $targetuser->display_name()]));
       url::redirect("admin/photoannotation/converter");
     }
     print $this->_get_converter_view($form);
@@ -235,7 +235,7 @@ class Admin_Photoannotation_Controller extends Admin_Controller {
     foreach ($users as $user) {
       $user_array[$user->id] = $user->display_name();
     }
-    $form = new Forge("admin/photoannotation/converthandler", "", "post", array("id" => "g-admin-form"));
+    $form = new Forge("admin/photoannotation/converthandler", "", "post", ["id" => "g-admin-form"]);
     $form->dropdown("sourcetag")->label(t("Select tag"))
       ->options($tag_array);	
     $form->dropdown("targetuser")->label(t("Select user"))
@@ -252,7 +252,7 @@ class Admin_Photoannotation_Controller extends Admin_Controller {
     } else {
       $comment_required = " (comment module required)";
     }
-    $form = new Forge("admin/photoannotation/handler", "", "post", array("id" => "g-admin-form"));
+    $form = new Forge("admin/photoannotation/handler", "", "post", ["id" => "g-admin-form"]);
     $group = $form->group("hoverphoto")->label(t("Hovering over the photo"));
     $group->checkbox("noborder")->label(t("Don't show borders."))
       ->checked(module::get_var("photoannotation", "noborder", false));	
@@ -304,7 +304,7 @@ class Admin_Photoannotation_Controller extends Admin_Controller {
       ->value(module::get_var("photoannotation", "updatedcommentbody", "Hello %name, please visit %url to read the comment."));	
     $group = $form->group("onuserdelete")->label(t("Auto conversion settings"));
     $group->dropdown("onuserdelete")->label(t("When deleting a user do the following with all annotations associated with this user"))
-      ->options(array("0" => t("Delete annotation"), "1" => t("Convert to tag annotation"), "2" =>  t("Convert to note annotation")))
+      ->options(["0" => t("Delete annotation"), "1" => t("Convert to tag annotation"), "2" =>  t("Convert to note annotation")])
       ->selected(module::get_var("photoannotation", "onuserdelete", "0"));	
     $form->submit("submit")->value(t("Save"));
     return $form;

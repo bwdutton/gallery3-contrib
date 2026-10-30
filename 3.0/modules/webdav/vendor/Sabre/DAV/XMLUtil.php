@@ -29,7 +29,7 @@ class Sabre_DAV_XMLUtil {
      * @param DOMElement $dom 
      * @return string 
      */
-    static function toClarkNotation(DOMNode $dom) {
+    public static function toClarkNotation(DOMNode $dom) {
 
         if ($dom->nodeType !== XML_ELEMENT_NODE) return null;
 
@@ -48,7 +48,7 @@ class Sabre_DAV_XMLUtil {
      * This is unfortunately needed, because the DAV: namespace violates the xml namespaces
      * spec, and causes the DOM to throw errors
      */
-    static function convertDAVNamespace($xmlDocument) {
+    public static function convertDAVNamespace($xmlDocument) {
 
         // This is used to map the DAV: namespace to urn:DAV. This is needed, because the DAV:
         // namespace is actually a violation of the XML namespaces specification, and will cause errors
@@ -66,14 +66,14 @@ class Sabre_DAV_XMLUtil {
      * @throws Sabre_DAV_Exception_BadRequest 
      * @return DOMDocument 
      */
-    static function loadDOMDocument($xml) {
+    public static function loadDOMDocument($xml) {
 
         if (empty($xml))
             throw new Sabre_DAV_Exception_BadRequest('Empty XML document sent');
        
         // The BitKinex client sends xml documents as UTF-16. PHP 5.3.1 (and presumably lower)
         // does not support this, so we must intercept this and convert to UTF-8.
-        if (substr($xml,0,12) === "\x3c\x00\x3f\x00\x78\x00\x6d\x00\x6c\x00\x20\x00") {
+        if (str_starts_with($xml, "\x3c\x00\x3f\x00\x78\x00\x6d\x00\x6c\x00\x20\x00")) {
 
             // Note: the preceeding byte sequence is "<?phpxml" encoded as UTF_16, without the BOM.
             $xml = iconv('UTF-16LE','UTF-8',$xml);
@@ -131,9 +131,9 @@ class Sabre_DAV_XMLUtil {
      * @param array $propertyMap
      * @return array
      */
-    static function parseProperties(DOMElement $parentNode, array $propertyMap = array()) {
+    public static function parseProperties(DOMElement $parentNode, array $propertyMap = []) {
 
-        $propList = array();
+        $propList = [];
         foreach($parentNode->childNodes as $propNode) {
 
             if (Sabre_DAV_XMLUtil::toClarkNotation($propNode)!=='{DAV:}prop') continue;
@@ -145,7 +145,7 @@ class Sabre_DAV_XMLUtil {
 
                 $propertyName = Sabre_DAV_XMLUtil::toClarkNotation($propNodeData);
                 if (isset($propertyMap[$propertyName])) {
-                    $propList[$propertyName] = call_user_func(array($propertyMap[$propertyName],'unserialize'),$propNodeData); 
+                    $propList[$propertyName] = call_user_func([$propertyMap[$propertyName],'unserialize'],$propNodeData); 
                 } else {
                     $propList[$propertyName] = $propNodeData->textContent;
                 }

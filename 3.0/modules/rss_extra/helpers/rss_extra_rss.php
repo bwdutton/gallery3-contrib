@@ -20,27 +20,27 @@
 
 class rss_extra_rss_Core {
 
-  static function get_feed_states() {
+  public static function get_feed_states() {
     $hash = module::get_var("rss_extra", "settings");
     if (isset($hash)):
       return unserialize($hash);
     else:
-      return Array();
+      return [];
     endif;
 	}
 
-  static function feed_enabled($feed_key, $states) {
+  public static function feed_enabled($feed_key, $states) {
   	return (array_key_exists($feed_key, $states));
 	}
 
-  static function check_feed($feed_key, $states) {
+  public static function check_feed($feed_key, $states) {
   	if (!array_key_exists($feed_key, $states)):
 			throw new Exception('Feed not available.');
 		endif;
 	}
 
-  static function supported_feeds($item, $tag) {
-  	$feeds = array();
+  public static function supported_feeds($item, $tag) {
+  	$feeds = [];
   	$feeds["rss_extra/random"] = t("Random photos and movies");
   	$feeds["rss_extra/random/photo"] = t("Random photos");
 		$feeds["rss_extra/random/landscape"] = t("Random photos - Landscape"); 
@@ -56,9 +56,9 @@ class rss_extra_rss_Core {
     return $feeds;
   }
 
-  static function available_feeds($item, $tag) {
+  public static function available_feeds($item, $tag) {
   	$state = self::get_feed_states();
-  	$feeds = array();
+  	$feeds = [];
 
 		if (self::feed_enabled("rss_extra/random", $state))
 			$feeds["rss_extra/random"] = t("Random photos and movies");
@@ -91,9 +91,9 @@ class rss_extra_rss_Core {
     return $feeds;
   }
 
-  static function feed($feed_id, $offset, $limit, $id) {
+  public static function feed($feed_id, $offset, $limit, $id) {
     $feed = new stdClass();
-    $idlist = array();
+    $idlist = [];
     $resize_size = module::get_var("gallery", "resize_size");
 	 	$state = self::get_feed_states();
 
@@ -124,31 +124,25 @@ class rss_extra_rss_Core {
 
         do {
           if ($photoonly):
-          	switch ($id):
-          	  case "landscape":
-                $item = ORM::factory("item")->viewable()
-                  ->where("rand_key", "<", random::percent())
-                  ->where("type", "=", "photo")
-                  ->where("resize_width", ">=", DB::expr('resize_height'))
-                  ->order_by("rand_key", "DESC")
-                  ->find_all(1)->current();
-          	    break;
-          	  case "portrait":
-                $item = ORM::factory("item")->viewable()
-                  ->where("rand_key", "<", random::percent())
-                  ->where("type", "=", "photo")
-                  ->where("resize_height", ">=", DB::expr('resize_width'))
-                  ->order_by("rand_key", "DESC")
-                  ->find_all(1)->current();
-          	    break;
-          	  default:
-                $item = ORM::factory("item")->viewable()
-                  ->where("rand_key", "<", random::percent())
-                  ->where("type", "=", "photo")
-                  ->order_by("rand_key", "DESC")
-                  ->find_all(1)->current();
-          	    break;
-          	endswitch;
+          	$item = match ($id) {
+                  "landscape" => ORM::factory("item")->viewable()
+                    ->where("rand_key", "<", random::percent())
+                    ->where("type", "=", "photo")
+                    ->where("resize_width", ">=", DB::expr('resize_height'))
+                    ->order_by("rand_key", "DESC")
+                    ->find_all(1)->current(),
+                  "portrait" => ORM::factory("item")->viewable()
+                    ->where("rand_key", "<", random::percent())
+                    ->where("type", "=", "photo")
+                    ->where("resize_height", ">=", DB::expr('resize_width'))
+                    ->order_by("rand_key", "DESC")
+                    ->find_all(1)->current(),
+                  default => ORM::factory("item")->viewable()
+                    ->where("rand_key", "<", random::percent())
+                    ->where("type", "=", "photo")
+                    ->order_by("rand_key", "DESC")
+                    ->find_all(1)->current(),
+              };
           else:
             $item = ORM::factory("item")->viewable()
               ->where("rand_key", "<", random::percent())
@@ -222,9 +216,7 @@ class rss_extra_rss_Core {
 
       case "album_portrait":
       case "album_landscape":
-        if (!isset($id)):
-        	$id = 1;
-        endif;
+        $id ??= 1;
         $item = ORM::factory("item", $id);
         access::required("view", $item);
 
@@ -270,8 +262,8 @@ class rss_extra_rss_Core {
           $feed->title = html::purify($item->title);
         else:
           $feed->title = t("%site_title - %item_title",
-                           array("site_title" => item::root()->title,
-                                 "item_title" => $item->title));
+                           ["site_title" => item::root()->title,
+                                 "item_title" => $item->title]);
         endif;
         $feed->title .= " " . $title_ex;
         $feed->description = $feed->title;

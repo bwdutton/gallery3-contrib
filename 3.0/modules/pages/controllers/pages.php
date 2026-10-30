@@ -32,14 +32,14 @@ class Pages_Controller extends Controller {
     }
 
     // Set up breadcrumbs.
-    $breadcrumbs = array();
+    $breadcrumbs = [];
     $root = item::root();
     $breadcrumbs[] = Breadcrumb::instance($root->title, $root->url())->set_first();
     $breadcrumbs[] = Breadcrumb::instance(t($existing_page[0]->title), url::site("pages/show/{$page_name}"))->set_last();
 
     // Display the page.
     $template = new Theme_View("page.html", "other", "Pages");
-    $template->set_global(array("breadcrumbs" => $breadcrumbs));
+    $template->set_global(["breadcrumbs" => $breadcrumbs]);
     $template->page_title = t("Gallery :: ") . t($existing_page[0]->title);
     $template->content = new View("pages_display.html");
     $template->content->title = $existing_page[0]->title;

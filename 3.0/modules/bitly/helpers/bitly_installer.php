@@ -19,7 +19,7 @@
  */
 class bitly_installer {
 
-  static function install() {
+  public static function install() {
     Database::instance()
       ->query("CREATE TABLE {bitly_links} (
                 `id` int(9) NOT NULL AUTO_INCREMENT,
@@ -32,7 +32,7 @@ class bitly_installer {
     bitly::check_config();
   }
 
-  static function deactivate() {
+  public static function deactivate() {
     site_status::clear("bitly_config");
   }
 }

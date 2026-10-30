@@ -19,7 +19,7 @@
  */
 class basket_Core {
 
-  static $currencies = array(
+  static $currencies = [
     "AUD" => "Australian Dollars",
     "CAD" => "Canadian Dollars",
     "EUR" => "Euros",
@@ -37,9 +37,9 @@ class basket_Core {
     "HUF" => "Hungarian Forint",
     "CZK" => "Czech Koruna",
     "ILS" => "Israeli Shekel",
-    "MXN" => "Mexican Peso");
+    "MXN" => "Mexican Peso"];
 
-  static $format= array(
+  static $format= [
     "AUD" => "$",
     "CAD" => "$",
     "EUR" => "€",
@@ -57,9 +57,9 @@ class basket_Core {
     "HUF" => "",
     "CZK" => "",
     "ILS" => "",
-    "MXN" => "");
+    "MXN" => ""];
 
-  static $formatweb= array(
+  static $formatweb= [
     "AUD" => "$",
     "CAD" => "$",
     "EUR" => "&euro;",
@@ -77,7 +77,7 @@ class basket_Core {
     "HUF" => "",
     "CZK" => "",
     "ILS" => "",
-    "MXN" => "");
+    "MXN" => ""];
 
 
   static public function can_view_orders()
@@ -97,8 +97,8 @@ class basket_Core {
   }
 
 
-  static function get_configure_form() {
-    $form = new Forge("admin/configure", "", "post", array("id" => "g-configure-form"));
+  public static function get_configure_form() {
+    $form = new Forge("admin/configure", "", "post", ["id" => "g-configure-form"]);
     $group = $form->group("configure")->label(t("Configure Basket"));
     $group->input("email")->label(t("Offline Paying Email Address"))->id("g-order-email-address");
     $group->dropdown("currency")
@@ -115,8 +115,8 @@ class basket_Core {
     return $form;
   }
 
-  static function get_template_form() {
-    $form = new Forge("admin/configure/templates", "", "post", array("id" => "g-configure-form"));
+  public static function get_template_form() {
+    $form = new Forge("admin/configure/templates", "", "post", ["id" => "g-configure-form"]);
     $group = $form->group("configure")->label(t("Configure Basket"));
     $group->textarea("payment_details")->label(t("Payment Details Description"))->id("g-payment-details");
     $group->textarea("order_complete_page")->label(t("Order Complete Page"))->id("g-order-complete_page");
@@ -126,7 +126,7 @@ class basket_Core {
     return $form;
   }
 
-  static function populateForm($form){
+  public static function populateForm($form){
     $form->configure->email->value(basket::getEmailAddress());
     $form->configure->side_bar->checked(basket::is_side_bar_only());
     $form->configure->paypal->checked(basket::isPaypal());
@@ -136,14 +136,14 @@ class basket_Core {
     $form->configure->order_prefix->value(basket::getOrderPrefix());
   }
 
-  static function populateTemplateForm($form){
+  public static function populateTemplateForm($form){
     $form->configure->payment_details->value(basket::getPaymentDetails());
     $form->configure->order_complete_page->value(basket::getOrderCompletePage());
     $form->configure->order_complete_email_subject->value(basket::getOrderCompleteEmailSubject());
     $form->configure->order_complete_email->value(basket::getOrderCompleteEmail());
   }
 
-  static function extractForm($form){
+  public static function extractForm($form){
     $email = $form->configure->email->value;
     $is_side_bar = $form->configure->side_bar->value;
     $isPaypal = $form->configure->paypal->value;
@@ -159,7 +159,7 @@ class basket_Core {
     basket::setAllowPickup($allow_pickup);
     basket::setOrderPrefix($order_prefix);
   }
-  static function extractTemplateForm($form){
+  public static function extractTemplateForm($form){
     $payment_details = $form->configure->payment_details->value;
     $order_complete_page = $form->configure->order_complete_page->value;
     $order_complete_email_subject = $form->configure->order_complete_email_subject->value;
@@ -183,65 +183,62 @@ class basket_Core {
   }
 
 
-  static function getEmailAddress(){
+  public static function getEmailAddress(){
     return module::get_var("basket","email");
   }
 
-  static function isPaypal(){
+  public static function isPaypal(){
     return module::get_var("basket","paypal");
   }
 
-  static function getPaypalAccount(){
+  public static function getPaypalAccount(){
     return module::get_var("basket","paypal_account");
   }
 
-  static function getCurrency(){
+  public static function getCurrency(){
     $cur = module::get_var("basket","currency");
-    if (!isset($cur))
-    {
-      $cur = "USD";
-    }
+    $cur ??= "USD";
     return $cur;
   }
 
-  static function getPaymentDetails(){
+  public static function getPaymentDetails(){
     return module::get_var("basket","payment_details");
   }
 
-  static function getOrderPrefix(){
+  public static function getOrderPrefix(){
     return module::get_var("basket","order_prefix");
   }
 
-  static function isAllowPickup(){
+  public static function isAllowPickup(){
     return module::get_var("basket","allow_pickup");
   }
 
-  static function getOrderCompletePage(){
+  public static function getOrderCompletePage(){
     return module::get_var("basket","order_complete_page");
   }
 
-  static function getOrderCompleteEmail(){
+  public static function getOrderCompleteEmail(){
     return module::get_var("basket","order_complete_email");
   }
 
-  static function getOrderCompleteEmailSubject(){
+  public static function getOrderCompleteEmailSubject(){
     return module::get_var("basket","order_complete_email_subject");
   }
 
-  static function formatMoney($money){
+  public static function formatMoney($money){
     return self::$format[self::getCurrency()].number_format($money,2);
   }
 
-  static function formatMoneyForWeb($money){
+  public static function formatMoneyForWeb($money){
     return self::$formatweb[self::getCurrency()].number_format($money,2);
   }
 
-  static function replaceStrings($string, $key_values) {
+  public static function replaceStrings($string, $key_values) {
     // Replace x_y before replacing x.
     krsort($key_values, SORT_STRING);
 
-    $keys = array();
-    $values = array();
+    $keys = [];
+    $values = [];
     foreach ($key_values as $key => $value) {
       $keys[] = "%$key";
       $values[] = $value;
@@ -249,47 +246,47 @@ class basket_Core {
     return str_replace($keys, $values, $string);
   }
 
-  static function setEmailAddress($email){
+  public static function setEmailAddress($email){
     module::set_var("basket","email",$email);
   }
 
-  static function setPaypal($paypal){
+  public static function setPaypal($paypal){
     module::set_var("basket","paypal",$paypal);
   }
 
-  static function setPaypalAccount($paypal_account){
+  public static function setPaypalAccount($paypal_account){
     module::set_var("basket","paypal_account",$paypal_account);
   }
 
-  static function setCurrency($currency){
+  public static function setCurrency($currency){
     module::set_var("basket","currency",$currency);
   }
 
-  static function setPaymentDetails($details){
+  public static function setPaymentDetails($details){
     module::set_var("basket","payment_details",$details);
   }
 
-  static function setAllowPickup($allow_pickup){
+  public static function setAllowPickup($allow_pickup){
     module::set_var("basket","allow_pickup",$allow_pickup);
   }
 
-  static function setOrderPrefix($order_prefix){
+  public static function setOrderPrefix($order_prefix){
     module::set_var("basket","order_prefix",strtolower($order_prefix));
   }
 
-  static function setOrderCompletePage($details){
+  public static function setOrderCompletePage($details){
     module::set_var("basket","order_complete_page",$details);
   }
 
-  static function setOrderCompleteEmail($details){
+  public static function setOrderCompleteEmail($details){
     module::set_var("basket","order_complete_email",$details);
   }
 
-  static function setOrderCompleteEmailSubject($details){
+  public static function setOrderCompleteEmailSubject($details){
     module::set_var("basket","order_complete_email_subject",$details);
   }
 
-  static function createOrder($basket, $method){
+  public static function createOrder($basket, $method){
 
     $order = ORM::factory("order");
     $order->text = "processing";
@@ -378,14 +375,14 @@ Items Ordered:
 
     $from = "From: ".basket::getEmailAddress();
     $ordernumber = basket::getOrderPrefix().$order->id;
-    $invoice_email = basket::replaceStrings(basket::getOrderCompleteEmail(),Array(
+    $invoice_email = basket::replaceStrings(basket::getOrderCompleteEmail(),[
             "name"=>$order->name,
             "order_number"=> $ordernumber,
             "total_cost" =>basket::formatMoney($order->cost),
-            "order_details"=>$order->text));
+            "order_details"=>$order->text]);
 
     mail($order->email,
-        basket::replaceStrings(basket::getOrderCompleteEmailSubject(),Array("order_number"=>$ordernumber)),
+        basket::replaceStrings(basket::getOrderCompleteEmailSubject(),["order_number"=>$ordernumber]),
         $invoice_email, $from);
 
   }

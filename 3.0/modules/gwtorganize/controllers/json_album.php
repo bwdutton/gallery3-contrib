@@ -21,21 +21,21 @@ class Json_Album_Controller extends Controller {
 
 
   private function child_json_encode($child){
-    return array(
+    return [
       'id' => $child->id,
       'title' => $child->title,
       'type' => $child->type,
       'thumb' => $child->thumb_url(),
       'resize' => $child->resize_url(),
-      'sort' => $child->sort_column);
+      'sort' => $child->sort_column];
   }
 
-  private function child_elements($item_id, $where = array()) {
+  private function child_elements($item_id, $where = []) {
     $item = ORM::factory("item", $item_id);
     access::required("view", $item);
 
     $children = $item->children(null, null, $where);
-    $encoded = array();
+    $encoded = [];
     foreach ($children as $id => $child){
       $encoded[$id] = self::child_json_encode($child);
     }
@@ -43,25 +43,25 @@ class Json_Album_Controller extends Controller {
     return json_encode($encoded);
   }
 
-  function is_admin() {
+  public function is_admin() {
     if (identity::active_user()->admin) {
-      json::reply(array("result" => "success", "csrf" => access::csrf_token()));
+      json::reply(["result" => "success", "csrf" => access::csrf_token()]);
       return;
     }
-    json::reply(array("result" => "failure"));
+    json::reply(["result" => "failure"]);
 
   }
 
-  function albums($item_id) {
-    print $this->child_elements($item_id, array(array("type", "=", "album")));
+  public function albums($item_id) {
+    print $this->child_elements($item_id, [["type", "=", "album"]]);
   }
 
-  function children($item_id){
+  public function children($item_id){
 
     print $this->child_elements($item_id);
   }
 
-  function item($item_id){
+  public function item($item_id){
 
     $item = ORM::factory("item", $item_id);
     access::required("view", $item);
@@ -69,7 +69,7 @@ class Json_Album_Controller extends Controller {
   }
 
 
-  function move_to($target_album_id) {
+  public function move_to($target_album_id) {
     access::verify_csrf();
 
     $target_album = ORM::factory("item", $target_album_id);
@@ -93,10 +93,10 @@ class Json_Album_Controller extends Controller {
       $i++;
     }
 
-    json::reply(array("result" => "success"));
+    json::reply(["result" => "success"]);
   }
 
- function rearrange($target_id, $before_or_after) {
+ public function rearrange($target_id, $before_or_after) {
     access::verify_csrf();
     $target = ORM::factory("item", $target_id);
     $album = $target->parent();
@@ -146,7 +146,7 @@ class Json_Album_Controller extends Controller {
 
     module::event("album_rearrange", $album);
 
-    json::reply(array("result" => "success"));
+    json::reply(["result" => "success"]);
 
   }
 
@@ -197,7 +197,7 @@ class Json_Album_Controller extends Controller {
 
         $path_info = @pathinfo($temp_filename);
         if (array_key_exists("extension", $path_info) &&
-            in_array(strtolower($path_info["extension"]), array("flv", "mp4"))) {
+            in_array(strtolower($path_info["extension"]), ["flv", "mp4"])) {
           $item->type = "movie";
           $item->save();
           log::success("content", t("Added a movie"),
@@ -231,7 +231,7 @@ class Json_Album_Controller extends Controller {
 
     item::make_album_cover($item);
 
-    json::reply(array("result" => "success"));
+    json::reply(["result" => "success"]);
   }
 
   public function p_rotate($item, $dir){
@@ -247,9 +247,9 @@ class Json_Album_Controller extends Controller {
     }
 
     if ($degrees) {
-      gallery_graphics::rotate($item->file_path(), $item->file_path(), array("degrees" => $degrees));
+      gallery_graphics::rotate($item->file_path(), $item->file_path(), ["degrees" => $degrees]);
 
-      list($item->width, $item->height) = getimagesize($item->file_path());
+      [$item->width, $item->height] = getimagesize($item->file_path());
       $item->resize_dirty= 1;
       $item->thumb_dirty= 1;
       $item->save();
@@ -275,22 +275,22 @@ class Json_Album_Controller extends Controller {
     $js = json_decode($_REQUEST["sourceids"]);
 
     $i = 0;
-    $toreturn = array();
+    $toreturn = [];
     foreach ($js as $item_id) {
       $item = ORM::factory("item", $item_id);
       access::required("view", $item);
       access::required("edit", $item);
       if ($item->is_album()) {
-        $msg = t("Deleted album <b>%title</b>", array("title" => html::purify($item->title)));
+        $msg = t("Deleted album <b>%title</b>", ["title" => html::purify($item->title)]);
       } else {
-        $msg = t("Deleted photo <b>%title</b>", array("title" => html::purify($item->title)));
+        $msg = t("Deleted photo <b>%title</b>", ["title" => html::purify($item->title)]);
       }
       $parent = $item->parent();
       $item->delete();
       message::success($msg);
     }
 
-    json::reply(array("result" => "success"));
+    json::reply(["result" => "success"]);
 
   }
 
@@ -300,7 +300,7 @@ class Json_Album_Controller extends Controller {
     $js = json_decode($_REQUEST["sourceids"]);
 
     $i = 0;
-    $toreturn = array();
+    $toreturn = [];
     foreach ($js as $item_id) {
       $item = ORM::factory("item", $item_id);
       access::required("view", $item);
@@ -328,14 +328,14 @@ class Json_Album_Controller extends Controller {
   public function resize_config(){
     if (upload_configuration::isResize())
     {
-      json::reply(array(
+      json::reply([
         "resize" => true,
         "max_width" => upload_configuration::getMaxWidth(),
-        "max_height" => upload_configuration::getMaxHeight()));
+        "max_height" => upload_configuration::getMaxHeight()]);
     }
     else
     {
-      json::reply(array("resize" => false));
+      json::reply(["resize" => false]);
     }
   }
 }

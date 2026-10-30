@@ -22,7 +22,7 @@ class basket_plus_event_Core{
   /**
    * adds the shopping basket administration controls to the admin menu
    */
-  static function admin_menu($menu, $theme){
+  public static function admin_menu($menu, $theme){
 
     $menu->add_after("users_groups",
       $basket_menu = Menu::factory("submenu")
@@ -70,7 +70,7 @@ class basket_plus_event_Core{
         ->url(url::site("basket_plus/view_all_orders")));
   }
 
-  static function item_edit_form($item, $form){
+  public static function item_edit_form($item, $form){
    $group = $form->group("products")->label(t("Available Products"));
 
    $product_override = ORM::factory("bp_product_override")->where('item_id', "=", $item->id)->find();
@@ -105,7 +105,7 @@ class basket_plus_event_Core{
    }
   }
 
-  static function item_edit_form_completed($item, $form){
+  public static function item_edit_form_completed($item, $form){
     $product_override = ORM::factory("bp_product_override")->where('item_id', "=", $item->id)->find();
 
     if ($form->products->all->checked)
@@ -138,7 +138,7 @@ class basket_plus_event_Core{
 // User basket functions
 //========================================================================
 	// Add fields to the user form
-  static function user_add_form_admin($user, $form) {
+  public static function user_add_form_admin($user, $form) {
     $form->add_user->input("pickup_location")
       ->label(t("Pickup Location"));
     $form->add_user->checkbox("is_group")
@@ -154,7 +154,7 @@ class basket_plus_event_Core{
   }
 
   // Called after a new user has been added
-  static function user_add_form_admin_completed($user, $form) {
+  public static function user_add_form_admin_completed($user, $form) {
 		$user_basket = ORM::factory("bp_user_basket");
     $user_basket->id = $user->id;
     $user_basket->pickup_location = $form->add_user->pickup_location->value;
@@ -167,7 +167,7 @@ class basket_plus_event_Core{
   }
 
   //Called when admin is editing a user 
-  static function user_edit_form_admin($user, $form) {
+  public static function user_edit_form_admin($user, $form) {
 		$is_group="";
 		$extra_order_info_lbl="";
 		$extra_order_info="";
@@ -207,7 +207,7 @@ class basket_plus_event_Core{
   }
 
   //Called after a user had been edited by the admin
-  static function user_edit_form_admin_completed($user, $form) {
+  public static function user_edit_form_admin_completed($user, $form) {
     $user_basket = ORM::factory("bp_user_basket")->where("id", "=", $user->id)->find();
     //check if the user_basket record exists
 		if (!$user_basket->loaded()) { //if not, create a new record for the user

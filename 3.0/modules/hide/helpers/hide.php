@@ -30,9 +30,9 @@ class hide_Core {
    *
    * @return array  the group list
    */
-  static function get_groups_as_dropdown_options() {
+  public static function get_groups_as_dropdown_options() {
     $options = ORM::factory("group")->select_list("id", "name");
-    return array_merge(array(self::NONE => t("Nobody")), $options);
+    return array_merge([self::NONE => t("Nobody")], $options);
   }
 
   /**
@@ -44,11 +44,11 @@ class hide_Core {
    * @param Item_Model $item    the item
    * @return Hidden_Item_Model  the related hidden_item model
    */
-  static function get_hidden_item_model(Item_Model $item) {
+  public static function get_hidden_item_model(Item_Model $item) {
     try {
       $model = model_cache::get("item", $id);
     }
-    catch (Exception $e) {
+    catch (Exception) {
       $model = ORM::factory("hidden_item");
       $model->item_id = $item->id;
       $model->validate();
@@ -63,7 +63,7 @@ class hide_Core {
    * @param Item_Model $item  the item
    * @return bool
    */
-  static function can_be_hidden(Item_Model $item) {
+  public static function can_be_hidden(Item_Model $item) {
     if (empty($item)) {
       return false;
     }
@@ -81,7 +81,7 @@ class hide_Core {
    * @param Item_Model $item  the item
    * @return bool
    */
-  static function is_hidden(Item_Model $item) {
+  public static function is_hidden(Item_Model $item) {
     $model = self::get_hidden_item_model($item);
     return $model->loaded();
   }
@@ -91,7 +91,7 @@ class hide_Core {
    *
    * @param Item_Model $item  the item to hide
    */
-  static function hide(Item_Model $item) {
+  public static function hide(Item_Model $item) {
     if (self::is_hidden($item)) {
       return;
     }
@@ -105,7 +105,7 @@ class hide_Core {
    *
    * @param Item_Model $item  the item to display
    */
-  static function show(Item_Model $item) {
+  public static function show(Item_Model $item) {
     if (!self::is_hidden($item)) {
       return;
     }
@@ -119,7 +119,7 @@ class hide_Core {
    *
    * @return bool
    */
-  static function can_view_hidden_items() {
+  public static function can_view_hidden_items() {
     if (identity::active_user()->admin) {
       return true;
     }
@@ -137,7 +137,7 @@ class hide_Core {
    *
    * @return bool
    */
-  static function can_hide() {
+  public static function can_hide() {
     if (identity::active_user()->admin) {
       return true;
     }

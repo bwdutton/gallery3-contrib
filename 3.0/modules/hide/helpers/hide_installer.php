@@ -20,7 +20,7 @@
 
 class hide_installer {
 
-  static function install() {
+  public static function install() {
     $db = Database::instance();
     $db->query("CREATE TABLE IF NOT EXISTS {hidden_items} (
                  `item_id` int(9) NOT NULL,
@@ -31,7 +31,7 @@ class hide_installer {
     module::set_version("hide", 1);
   }
 
-  static function uninstall() {
+  public static function uninstall() {
     $db = Database::instance();
     $db->query("DROP TABLE IF EXISTS {hidden_items};");
   }

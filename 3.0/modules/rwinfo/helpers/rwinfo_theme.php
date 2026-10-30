@@ -18,11 +18,11 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class rwinfo_theme_Core {
-  static function thumb_info($theme, $item) {
+  public static function thumb_info($theme, $item) {
     $results = "";
     if ($item->view_count) {
       $results .= "<li>";
-      $results .= t("Views: %view_count", array("view_count" => $item->view_count));
+      $results .= t("Views: %view_count", ["view_count" => $item->view_count]);
       $results .= "</li>";
     }
 
@@ -35,11 +35,11 @@ class rwinfo_theme_Core {
       if (count($tags) > 0) {
         $results .= "<li>";
         $results .= t("Tags:") . " ";
-        $anchors = array();
+        $anchors = [];
         foreach ($tags as $tag) {
           $anchors[] = "<a href=" . $tag->url() . ">" . html::clean($tag->name) . "</a>";
         }
-        $results .= join(", ", $anchors) . "</li>";
+        $results .= implode(", ", $anchors) . "</li>";
       }
     }
     // rWatcher End Edit
@@ -55,10 +55,10 @@ class rwinfo_theme_Core {
       $results .= "<li>";
       if ($str_owner_url) {  //rW Edit str_owner_url
         $results .= t("By: <a href=\"%owner_url\">%owner_name</a>",
-                      array("owner_name" => $item->owner->display_name(),
-                            "owner_url" => $str_owner_url));  // rW Edit str_owner_url
+                      ["owner_name" => $item->owner->display_name(),
+                            "owner_url" => $str_owner_url]);  // rW Edit str_owner_url
       } else {
-        $results .= t("By: %owner_name", array("owner_name" => $item->owner->display_name()));
+        $results .= t("By: %owner_name", ["owner_name" => $item->owner->display_name()]);
       }
       $results .= "</li>";
     }
@@ -76,19 +76,12 @@ class rwinfo_theme_Core {
       return true;
     }
 
-    switch (module::get_var("gallery", "show_user_profiles_to")) {
-    case "admin_users":
-      return identity::active_user()->admin;
-
-    case "registered_users":
-      return !identity::active_user()->guest;
-
-    case "everybody":
-      return true;
-
-    default:
-      // Fail in private mode on an invalid setting
-      return false;
-    }
+    return match (module::get_var("gallery", "show_user_profiles_to")) {
+        "admin_users" => identity::active_user()->admin,
+        "registered_users" => !identity::active_user()->guest,
+        "everybody" => true,
+        // Fail in private mode on an invalid setting
+        default => false,
+    };
   }
 }

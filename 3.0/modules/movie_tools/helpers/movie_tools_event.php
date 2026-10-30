@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class movie_tools_event_Core {
-  static function admin_menu($menu, $theme) {
+  public static function admin_menu($menu, $theme) {
     $menu->get("settings_menu")
       ->append(Menu::factory("link")
                ->id("movie_tools")
@@ -26,7 +26,7 @@ class movie_tools_event_Core {
                ->url(url::site("admin/movie_tools")));
   }
 
-  static function movie_types_by_extension($types_by_extension_wrapper) {
+  public static function movie_types_by_extension($types_by_extension_wrapper) {
     $formats = movie_tools::get_formats();
     foreach ($formats as $id => $data) {
       if (module::get_var("movie_tools", "allow_$id", false)) {

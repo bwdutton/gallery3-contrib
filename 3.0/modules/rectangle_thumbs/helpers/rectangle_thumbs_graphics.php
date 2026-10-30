@@ -27,14 +27,14 @@ class rectangle_thumbs_graphics_Core {
    * @param string     $output_file
    * @param array      $options
    */
-  static function crop_to_aspect_ratio($input_file, $output_file, $options) {
+  public static function crop_to_aspect_ratio($input_file, $output_file, $options) {
     graphics::init_toolkit();
 
     if (@filesize($input_file) == 0) {
       throw new Exception("@todo EMPTY_INPUT_FILE");
     }
 
-    list ($desired_width, $desired_height) =
+    [$desired_width, $desired_height] =
       explode(":", module::get_var("rectangle_thumbs", "aspect_ratio"));
     $desired_ratio = $desired_width / $desired_height;
 
@@ -46,14 +46,14 @@ class rectangle_thumbs_graphics_Core {
     if ($desired_ratio == 1) {
       $new_width = $new_height = min($dims[0], $dims[1]);
     } else if ($desired_ratio < 1) {
-      list ($new_width, $new_height) = array($dims[0], $dims[0] / $desired_ratio);
+      [$new_width, $new_height] = [$dims[0], $dims[0] / $desired_ratio];
     } else {
-      list ($new_width, $new_height) = array($dims[1] * $desired_ratio, $dims[1]);
+      [$new_width, $new_height] = [$dims[1] * $desired_ratio, $dims[1]];
     }
 
     if ($new_width > $dims[0]) {
       // Too wide, scale it down
-      list ($new_width, $new_height) = array($dims[0], $dims[0] / $desired_ratio);
+      [$new_width, $new_height] = [$dims[0], $dims[0] / $desired_ratio];
     }
 
     if ($new_height > $dims[1]) {

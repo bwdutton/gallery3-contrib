@@ -10,14 +10,14 @@
       <?php else: ?>
         <?php if ($theme->item()): ?>
           <?php if ($theme->item()->is_album()): ?>
-          <?= t("Browse Album :: %album_title", array("album_title" => $theme->item()->title)) ?>
+          <?= t("Browse Album :: %album_title", ["album_title" => $theme->item()->title]) ?>
           <?php elseif ($theme->item()->is_photo()): ?>
-          <?= t("Photo :: %photo_title", array("photo_title" => $theme->item()->title)) ?>
+          <?= t("Photo :: %photo_title", ["photo_title" => $theme->item()->title]) ?>
           <?php else: ?>
-          <?= t("Movie :: %movie_title", array("movie_title" => $theme->item()->title)) ?>
+          <?= t("Movie :: %movie_title", ["movie_title" => $theme->item()->title]) ?>
           <?php endif ?>
         <?php elseif ($theme->tag()): ?>
-          <?= t("Browse Tag :: %tag_title", array("tag_title" => $theme->tag()->name)) ?>
+          <?= t("Browse Tag :: %tag_title", ["tag_title" => $theme->tag()->name]) ?>
         <?php else: /* Not an item, not a tag, no page_title specified.  Help! */ ?>
           <?= t("Gallery") ?>
         <?php endif ?>

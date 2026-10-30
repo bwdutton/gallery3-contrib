@@ -61,4 +61,4 @@
 	}*/ ?>
 </div>
 <?= t("Payment and Delivery method")?>:&nbsp;<?= $order->payment_method()?>&nbsp;-&nbsp;<?= $order->delivery_method()?> </br>
-<?= str_replace(array("\r\n", "\n", "\r"),"<br/>",$order->internal_text);?>
+<?= str_replace(["\r\n", "\n", "\r"],"<br/>",$order->internal_text);?>

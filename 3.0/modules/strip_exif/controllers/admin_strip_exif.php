@@ -5,7 +5,7 @@ class Admin_Strip_Exif_Controller extends Admin_Controller {
     public static $defIptcTags = "Application2.LocationName";
 
     public function verify() {
-        $data = array();
+        $data = [];
         $data['success'] = false;
 
         if (($val = strip_exif::verify_path($_REQUEST['exiv_path'])) > 0) {
@@ -13,12 +13,12 @@ class Admin_Strip_Exif_Controller extends Admin_Controller {
             $data['success'] = true;
         } else {
             $error = "";
-            switch ($val) {
-                case 0: $error = "Empty file path provided"; break;
-                case -1: $error = "File does not exist"; break;
-                case -2: $error = "Path is a directory"; break;
-                default: $error = "Unspecified error";
-            }
+            $error = match ($val) {
+                0 => "Empty file path provided",
+                -1 => "File does not exist",
+                -2 => "Path is a directory",
+                default => "Unspecified error",
+            };
             $data['error'] = $error;
         }
 
@@ -35,7 +35,7 @@ class Admin_Strip_Exif_Controller extends Admin_Controller {
                 module::set_var("strip_exif", "exiv_path", $_POST['exiv_path']);
 
 		if ($_POST['exif_tags'] != "") {
-		    module::set_var("strip_exif", "exif_remove", (isset($_POST['exif_remove']) ? $_POST['exif_remove'] : false));
+		    module::set_var("strip_exif", "exif_remove", ($_POST['exif_remove'] ?? false));
 		    module::set_var("strip_exif", "exif_tags", $_POST['exif_tags']);
 		} else {
 		    module::set_var("strip_exif", "exif_remove", false);
@@ -43,7 +43,7 @@ class Admin_Strip_Exif_Controller extends Admin_Controller {
 		}
 
 		if ($_POST['iptc_tags'] != "") {
-		    module::set_var("strip_exif", "iptc_remove", (isset($_POST['iptc_remove']) ? $_POST['iptc_remove'] : false));
+		    module::set_var("strip_exif", "iptc_remove", ($_POST['iptc_remove'] ?? false));
 		    module::set_var("strip_exif", "iptc_tags", $_POST['iptc_tags']);
 		} else {
 		    module::set_var("strip_exif", "iptc_remove", false);
@@ -74,7 +74,7 @@ class Admin_Strip_Exif_Controller extends Admin_Controller {
     }
 
     private function _get_form() {
-        $form = new Forge("admin/strip_exif", "", "post", array("id" => "g-admin-strip_exif-form"));
+        $form = new Forge("admin/strip_exif", "", "post", ["id" => "g-admin-strip_exif-form"]);
 
         $group = $form->group("system")->label(t("System"));
 

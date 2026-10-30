@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class custom_menus_installer {
-  static function install() {
+  public static function install() {
     // Create a table to store menu info in.
     $db = Database::instance();
     $db->query("CREATE TABLE IF NOT EXISTS {custom_menus} (

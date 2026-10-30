@@ -19,11 +19,11 @@
  */
  
 class basket_plus_block_Core {
-  static function get_site_list() {
-    return array("shopping" => t("Basket"));
+  public static function get_site_list() {
+    return ["shopping" => t("Basket")];
   }
 
-  static function get($block_id, $theme) {
+  public static function get($block_id, $theme) {
     $block = "";
     switch ($block_id) {
       case "shopping":

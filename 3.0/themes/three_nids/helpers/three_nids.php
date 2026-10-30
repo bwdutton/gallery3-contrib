@@ -19,7 +19,7 @@
  */
 
 class three_nids_Core {
-  static function fancylink($item, $view_type="album", $group_img = true,
+  public static function fancylink($item, $view_type="album", $group_img = true,
                             $display_comment = true, $parent_title_class = "h2") {
     // view_type = album || dynamic || header
     $link = "";
@@ -88,7 +88,7 @@ class three_nids_Core {
     }
 
     if ($view_type != "header") {
-      $link .= $item->thumb_img(array("class" => "g-thumbnail")) . "</a>";
+      $link .= $item->thumb_img(["class" => "g-thumbnail"]) . "</a>";
       if ($item->is_album() && $view_type == "album") {
         $link .= "<a href=\"" . $item->url() . "?show=" . $item->id .
           "\"><$parent_title_class><span></span>" . html::clean($item->title) .
@@ -112,7 +112,7 @@ class three_nids_Core {
     return $link;
   }
 
-  static function comment_count($item) {
+  public static function comment_count($item) {
     access::required("view", $item);
 
     return ORM::factory("comment")

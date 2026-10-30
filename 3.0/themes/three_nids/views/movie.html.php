@@ -32,8 +32,8 @@
     <center>
       <div id="g-item-box" width="<?=20+($item->width)?>" height="<?=50+($item->height)?>">
         <?= $item->movie_img(
-              array("class" => "g-movie", "id" => "g-movie-id-{$item->id}",
-                    "style" => "display:block;width:{$item->width}px;height:{$item->height}px")) ?>
+              ["class" => "g-movie", "id" => "g-movie-id-{$item->id}",
+                    "style" => "display:block;width:{$item->width}px;height:{$item->height}px"]) ?>
         <?= $theme->context_menu($item, "#g-movie-id-{$item->id}") ?>
         <div id="g-info">
           <h1><?= html::purify($item->title) ?></h1>

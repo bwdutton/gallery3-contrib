@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301!
  */
 class dupcheck_installer {
-  static function install() {
+  public static function install() {
     // Create table if it doesn't exist for md5sum storage
     $db = Database::instance();
     $db->query("CREATE TABLE IF NOT EXISTS {fullsize_md5sums} (
@@ -33,11 +33,11 @@ class dupcheck_installer {
     module::set_version("dupcheck", 1);
   }
  
-  static function activate() {
+  public static function activate() {
     dupcheck::check_index();
   }
 
-  static function deactivate() {
+  public static function deactivate() {
     site_status::clear("md5_index_out_of_date");
   }
 }

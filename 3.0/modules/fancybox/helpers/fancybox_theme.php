@@ -19,7 +19,7 @@
  */
 class fancybox_theme_Core {
 
-  static function head($theme) {
+  public static function head($theme) {
     return 
         $theme->css("jquery.fancybox-1.3.4.css")
       . $theme->script("jquery.mousewheel-3.0.4.pack.js")

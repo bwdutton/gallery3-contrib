@@ -14,22 +14,18 @@
 abstract class Sabre_DAV_FS_Node implements Sabre_DAV_INode {
 
     /**
-     * The path to the current node
-     * 
-     * @var string 
-     */
-    protected $path; 
-
-    /**
      * Sets up the node, expects a full path name 
      * 
      * @param string $path 
      * @return void
      */
-    public function __construct($path) {
-
-        $this->path = $path;
-
+    public function __construct(
+        /**
+         * The path to the current node
+         */
+        protected $path
+    )
+    {
     }
 
 

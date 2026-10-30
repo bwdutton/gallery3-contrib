@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class jhead_event_Core {
-  static function item_created($item) {
+  public static function item_created($item) {
     // Only works on photos
     if ( ! $item->is_photo()) {
       return;

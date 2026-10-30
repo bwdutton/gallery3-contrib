@@ -19,7 +19,7 @@
  */
 
 class GalleryRemoteReply_Core {
-  private $values = array();
+  private $values = [];
   private $nl = "\n";
   /**
    * Constructor.
@@ -33,7 +33,7 @@ class GalleryRemoteReply_Core {
   }
 
   public function clear() {
-    $this->values = array();
+    $this->values = [];
   }
 
   /**

@@ -18,12 +18,12 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class content_warning_theme {
-  static function head($theme) {
+  public static function head($theme) {
     $theme->css("jqModal.css");
     $theme->script("jqModal.js");
   }
 
-  static function page_top($theme) {
+  public static function page_top($theme) {
     if(!isset($_COOKIE['cw_agree'])) {
       return new View("content_warning_page_top.html");
     }

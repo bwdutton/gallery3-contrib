@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class register_theme_Core {
-  static function page_bottom($theme) {
+  public static function page_bottom($theme) {
     $session = Session::instance();
     if ($session->get("registration_first_usage")) {
       $session->delete("registration_first_usage");
@@ -26,7 +26,7 @@ class register_theme_Core {
     }
   }
   // added Shad Laws, v2
-  static function head($theme) {
+  public static function head($theme) {
     return $theme->css("register.css");
   }
 

@@ -23,7 +23,7 @@ class basket_plus_installer_local{
  * USED IN: basket_plus_installer
  * DESCRIPTION: Set initial basket product settings 
  */
-  static function initBasketProducts($language,$isReset){
+  public static function initBasketProducts($language,$isReset){
 		$db = Database::instance();
 		//if it's a reset request, empty the tables
 		if ($isReset) {
@@ -86,7 +86,7 @@ class basket_plus_installer_local{
  * USED IN: basket_plus_installer
  * DESCRIPTION: Set initial basket mail templates settings 
  */
-  static function initBasketMailTemplates($language,$isReset){
+  public static function initBasketMailTemplates($language,$isReset){
 		$db = Database::instance();
 		//if it's a reset request, empty the table
 		if ($isReset) {
@@ -175,7 +175,7 @@ Bestemd voor:
  * USED IN: basket_plus_installer
  * DESCRIPTION: Set initial basket settings (configuration and templates)
  */
-  static function initBasketVars($language,$isReset){
+  public static function initBasketVars($language,$isReset){
 		$db = Database::instance();
 	     /* basket config settings */
 		if ($isReset) {

@@ -19,7 +19,7 @@
  */
 
 class Dupcheck_Core {
-  static function stats() {
+  public static function stats() {
     $missing_md5s = db::build()
       ->select("items.id")
       ->from("items")
@@ -33,13 +33,13 @@ class Dupcheck_Core {
 
     $total_items = ORM::factory("item")->where("type", "=", "photo")->count_all();
     if (!$total_items) {
-      return array(0, 0, 0);
+      return [0, 0, 0];
     }
     $percent = round(100 * (($total_items - $missing_md5s) / $total_items));
-    return array($missing_md5s, $total_items, $percent);
+    return [$missing_md5s, $total_items, $percent];
   }
 
-  static function grabmd5($item) {
+  public static function grabmd5($item) {
     if($item->is_photo()){
       $file_md5 = md5_file($item->file_path());
       $dupcheck = ORM::factory("fullsize_md5sum")
@@ -63,7 +63,7 @@ class Dupcheck_Core {
     }
   }
 
-  static function updatemd5($item) {
+  public static function updatemd5($item) {
     if($item->is_photo()){
       $file_md5 = md5_file($item->file_path());
 // Error check for bad md5sum?
@@ -76,12 +76,12 @@ class Dupcheck_Core {
     }
   }
 
-  static function check_index() {
-    list ($remaining) = dupcheck::stats();
+  public static function check_index() {
+    [$remaining] = dupcheck::stats();
     if ($remaining) {
       site_status::warning(
         t('Your MD5 index needs to be updated.  <a href="%url" class="g-dialog-link">Fix this now</a>',
-          array("url" => html::mark_clean(url::site("admin/maintenance/start/dupcheck_task::update_md5s?csrf=__CSRF__")))),
+          ["url" => html::mark_clean(url::site("admin/maintenance/start/dupcheck_task::update_md5s?csrf=__CSRF__"))]),
           "md5_index_out_of_date");
     }
   }

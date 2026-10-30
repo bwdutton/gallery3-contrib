@@ -17,15 +17,15 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class dynamic_block_Core {
-  static function get_site_list() {
-    return array("dynamic" => t("Dynamic Albums"));
+  public static function get_site_list() {
+    return ["dynamic" => t("Dynamic Albums")];
   }
 
-  static function get($block_id) {
+  public static function get($block_id) {
     switch ($block_id) {
     case "dynamic":
-      $albums = array();
-      foreach (array("updates", "popular") as $album) {
+      $albums = [];
+      foreach (["updates", "popular"] as $album) {
         $album_defn = unserialize(module::get_var("dynamic", $album));
         if ($album_defn->enabled) {
           $albums[$album] = $album_defn->title;

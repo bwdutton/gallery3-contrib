@@ -45,7 +45,7 @@ class Admin_Hover_navigation_Controller extends Admin_Controller {
   }
 
   private function _get_form() {
-    $form = new Forge("admin/hover_navigation/handler", "", "post", array("id" => "g-admin-form"));
+    $form = new Forge("admin/hover_navigation/handler", "", "post", ["id" => "g-admin-form"]);
     $group = $form->group("hover_navigation");
     $group->checkbox("navigation")->label(t("Move navigation links to under image."))
     	->checked(module::get_var("hover_navigation", "navigation", false) == 1);

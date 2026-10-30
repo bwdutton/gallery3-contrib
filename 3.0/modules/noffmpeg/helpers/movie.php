@@ -24,8 +24,8 @@
  * Note: by design, this class does not do any permission checking.
  */
 class movie_Core {
-  static function get_edit_form($movie) {
-    $form = new Forge("movies/update/$movie->id", "", "post", array("id" => "g-edit-movie-form"));
+  public static function get_edit_form($movie) {
+    $form = new Forge("movies/update/$movie->id", "", "post", ["id" => "g-edit-movie-form"]);
     $form->hidden("from_id")->value($movie->id);
     $group = $form->group("edit_item")->label(t("Edit Movie"));
     $group->input("title")->label(t("Title"))->value($movie->title)
@@ -57,7 +57,7 @@ class movie_Core {
     return $form;
   }
 
-  static function extract_frame($input_file, $output_file) {
+  public static function extract_frame($input_file, $output_file) {
     // rWatcher Edit:  Just copy the generic thumb instead of extracting a frame.
     copy(MODPATH . "noffmpeg/images/missing_movie.png", $output_file);
   }
@@ -65,7 +65,7 @@ class movie_Core {
   /**
    * Return the path to the ffmpeg binary if one exists and is executable, or null.
    */
-  static function find_ffmpeg() {
+  public static function find_ffmpeg() {
     // rWatcher Edit:  Return true to trick the system into thinking ffmpeg is present.
     return true;
   }
@@ -73,12 +73,12 @@ class movie_Core {
   /**
    * Return the width, height, mime_type and extension of the given movie file.
    */
-  static function get_file_metadata($file_path) {
+  public static function get_file_metadata($file_path) {
     // rWatcher Edit:  Use FLVMetaData lib instead of ffmpeg for .flv files.
     //  For other files, just set a 320x240 default video resolution.
     $pi = pathinfo($file_path);
-    $extension = isset($pi["extension"]) ? $pi["extension"] : "flv"; // No extension?  Assume FLV.
-    $mime_type = in_array(strtolower($extension), array("mp4", "m4v")) ?
+    $extension = $pi["extension"] ?? "flv"; // No extension?  Assume FLV.
+    $mime_type = in_array(strtolower($extension), ["mp4", "m4v"]) ?
       "video/mp4" : "video/x-flv";
     $vid_width = 320;
     $vid_height = 240;
@@ -90,6 +90,6 @@ class movie_Core {
         $vid_height = $info["height"];
       }
     }
-    return array($vid_width, $vid_height, $mime_type, $extension);
+    return [$vid_width, $vid_height, $mime_type, $extension];
   }
 }

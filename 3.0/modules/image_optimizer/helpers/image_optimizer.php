@@ -24,26 +24,19 @@ class image_optimizer_Core {
    */
    
   // define the tool names
-  static function tool_name($type) {
+  public static function tool_name($type) {
     $type = strtolower($type);
-    switch($type) {
-      case "jpg":
-        $tool = "jpegtran";
-        break;
-      case "png":
-        $tool = "optipng";
-        break;
-      case "gif":
-        $tool = "gifsicle";
-        break;
-      default:
-        $tool = "";
-    }
+    $tool = match ($type) {
+        "jpg" => "jpegtran",
+        "png" => "optipng",
+        "gif" => "gifsicle",
+        default => "",
+    };
     return $tool;
   }
 
   // find server-installed versions of the tools
-  static function tool_installed_path($type) {
+  public static function tool_installed_path($type) {
     $type = strtolower($type);
     $path = exec('which '.image_optimizer::tool_name($type));
     $path = is_file($path) ? $path : "(not found)";
@@ -51,7 +44,7 @@ class image_optimizer_Core {
   }
 
   // return status of tool path and attempt to fix permissions if not executable
-  static function tool_status($type) {
+  public static function tool_status($type) {
     $type = strtolower($type);
     $path = module::get_var("image_optimizer","path_".$type);
     if (is_file($path) && !is_link($path)) {
@@ -70,7 +63,7 @@ class image_optimizer_Core {
   }
 
   // return tool version as string
-  static function tool_version($type) {
+  public static function tool_version($type) {
     $type = strtolower($type);
     if (image_optimizer::tool_status($type)) {
       switch($type) {
@@ -103,7 +96,7 @@ class image_optimizer_Core {
    */
 
   // add image_optimizer rules without marking for dirty (based on add_rule)
-  static function add_image_optimizer_rule($target) {
+  public static function add_image_optimizer_rule($target) {
     // to prevent duplicates, remove any existing instances first
     image_optimizer::remove_image_optimizer_rule($target);
     // then add the new one
@@ -118,7 +111,7 @@ class image_optimizer_Core {
   }
 
   // remove image_optimizer rules without marking for dirty (based on remove_rule)
-  static function remove_image_optimizer_rule($target) {
+  public static function remove_image_optimizer_rule($target) {
     db::build()
       ->delete("graphics_rules")
       ->where("target", "=", $target)
@@ -128,7 +121,7 @@ class image_optimizer_Core {
 
   // activate update mode - disactivates all currently-active rules except those of image_optimizer without marking for dirty
   // sets update_mode_thumb/resize variable with serialized list of deactivated rule ids
-  static function activate_update_mode($target) {
+  public static function activate_update_mode($target) {
     // find all currently active non-image-optimizer rules
     $rules = db::build()
         ->from("graphics_rules")
@@ -138,7 +131,7 @@ class image_optimizer_Core {
         ->where("module_name", "!=", "image_optimizer")
         ->execute();
     // use found rules to build ids array and deactivate rules
-    $ids = array();
+    $ids = [];
     foreach ($rules as $rule) {
       $ids[] = $rule->id;
       db::build()
@@ -152,12 +145,12 @@ class image_optimizer_Core {
     // display a warning that we're in update mode
     site_status::warning(
       t("Image optimizer is in thumb/resize update mode - remember to exit <a href=\"%url\">here</a> after rebuild!",
-        array("url" => html::mark_clean(url::site("admin/image_optimizer")))),
+        ["url" => html::mark_clean(url::site("admin/image_optimizer"))]),
       "image_optimizer_update_mode");
   }
 
   // deactivate update mode - re-activates rules marked in the update_mode_thumb/resize variable as previously deactivated
-  static function deactivate_update_mode($target) {
+  public static function deactivate_update_mode($target) {
     // get deactivated rule ids
     $ids = unserialize(module::get_var("image_optimizer", "update_mode_".$target));
     // activate them
@@ -177,7 +170,7 @@ class image_optimizer_Core {
   }
 
   // mark all as dirty (in similar syntax to above)
-  static function dirty($target) {
+  public static function dirty($target) {
     graphics::mark_dirty($target == "thumb", $target == "resize");
   }
 
@@ -189,7 +182,7 @@ class image_optimizer_Core {
    * NOTE: unlike other graphics transformations, this only uses the output file!  if it isn't already there, we don't do anything.
    * among other things, this means that the original, full-size images are never touched.
    */
-  static function optimize($input_file, $output_file, $target, $item=null) {
+  public static function optimize($input_file, $output_file, $target, $item=null) {
     
 		// see if output file exists and is writable
     if (is_writable($output_file)) {
@@ -217,7 +210,7 @@ class image_optimizer_Core {
       return;
     }
     // set new file type
-    $type = $convert ? $convert : $type_old;
+    $type = $convert ?: $type_old;
 
     // convert image type (if applicable).  this isn't necessarily lossless.
     if ($convert) {
@@ -306,7 +299,7 @@ class image_optimizer_Core {
    * make a unique temporary filename.  this bit is inspired/copied from
    * the system/libraries/Image.php save function and the system/libraries/drivers/Image/ImageMagick.php process function
    */
-  static function make_temp_name($file) {
+  public static function make_temp_name($file) {
     // Separate the directory and filename
 		$dir  = pathinfo($file, PATHINFO_DIRNAME);
 		$file = pathinfo($file, PATHINFO_BASENAME);
@@ -326,12 +319,12 @@ class image_optimizer_Core {
    * 
    * see http://stackoverflow.com/questions/2320608/php-stderr-after-exec
    */
-  static function get_pipe($cmd, $pipe) {
-    $descriptorspec = array(
-      0 => array("pipe", "r"),  // stdin
-      1 => array("pipe", "w"),  // stdout
-      2 => array("pipe", "w"),  // stderr
-    );
+  public static function get_pipe($cmd, $pipe) {
+    $descriptorspec = [
+      0 => ["pipe", "r"],  // stdin
+      1 => ["pipe", "w"],  // stdout
+      2 => ["pipe", "w"],  // stderr
+    ];
     $process = proc_open($cmd, $descriptorspec, $pipes);
     $output = stream_get_contents($pipes[$pipe]);
     fclose($pipes[0]);

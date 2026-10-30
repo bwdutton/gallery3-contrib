@@ -2,7 +2,7 @@
 
 class transcode_event_Core {
 
-    static function admin_menu($menu, $theme) {
+    public static function admin_menu($menu, $theme) {
         $menu
             ->get("settings_menu")
             ->append(Menu::factory("link")
@@ -11,7 +11,7 @@ class transcode_event_Core {
             ->url(url::site("admin/transcode")));
     }
 
-    static function item_deleted($item) {
+    public static function item_deleted($item) {
         if ($item->is_movie()) {
             transcode::log("Deleting transcoded files for item " . $item->id);
             if (is_dir(VARPATH . "modules/transcode/flv/" . $item->id)) {
@@ -21,7 +21,7 @@ class transcode_event_Core {
         }
     }
 
-    static function rrmdir($dir) {
+    public static function rrmdir($dir) {
         if (is_dir($dir)) {
             $objects = scandir($dir);
             foreach ($objects as $object) {
@@ -40,7 +40,7 @@ class transcode_event_Core {
     private static function _getVideoInfo($file) {
         $ffmpegPath = module::get_var("transcode", "ffmpeg_path");
 
-        $op = array();
+        $op = [];
         @exec($ffmpegPath . ' -i "' . $file . '" 2>&1', $op);
 
         $file = new stdclass();
@@ -65,7 +65,7 @@ class transcode_event_Core {
                 }
 
                 $file->video->codec = $bits[4];
-                list($file->video->width, $file->video->height) = explode('x', $bits[6]);
+                [$file->video->width, $file->video->height] = explode('x', $bits[6]);
             }
             else if (preg_match('/Stream #0\.\d(\(\w*\))?+\: Audio\: (\w*)\,/', $line, $matches)) {
                 $file->audio->has = true;
@@ -83,7 +83,7 @@ class transcode_event_Core {
         return $file;
     }
 
-    static function item_created($item) {
+    public static function item_created($item) {
         if ($item->is_movie()) {
             transcode::log("Item created - is a movie. Let's create a transcode task or 2..");
             $ffmpegPath = module::get_var("transcode", "ffmpeg_path");
@@ -102,7 +102,7 @@ class transcode_event_Core {
             $srcAR = $fileObj->audio->samplerate;
             if ($srcAR > 44100) $srcAR = 44100;
 
-            $accepted_sample_rates = array(11025, 22050, 44100);
+            $accepted_sample_rates = [11025, 22050, 44100];
 
             if (!in_array($srcAR, $accepted_sample_rates)) {
                 // if the input sample rate isn't an accepted rate, find the next lowest rate that is
@@ -123,7 +123,7 @@ class transcode_event_Core {
 
             $srcACodec = module::get_var("transcode", "audio_codec");
 
-            $heights = array();
+            $heights = [];
             if (module::get_var("transcode", "resolution_240p"))  array_push($heights, 240);
             if (module::get_var("transcode", "resolution_360p"))  array_push($heights, 360);
             if (module::get_var("transcode", "resolution_480p"))  array_push($heights, 480);
@@ -152,12 +152,12 @@ class transcode_event_Core {
                 $destFile = VARPATH . "modules/transcode/flv/" . $item->id . "/" . $destWidth . "x" . $destHeight . ".flv";
 
 		switch ($destHeight) {
-			case 240: $destVB = 128; $srcAB = 16 * ($fileObj->audio->channels ? $fileObj->audio->channels : 2); break;
-			case 360: $destVB = 384; $srcAB = 16 * ($fileObj->audio->channels ? $fileObj->audio->channels : 2); break;
-			case 480: $destVB = 1024; $srcAB = 32 * ($fileObj->audio->channels ? $fileObj->audio->channels : 2); break;
-			case 576: $destVB = 2048; $srcAB = 32 * ($fileObj->audio->channels ? $fileObj->audio->channels : 2); break;
-			case 720: $destVB = 4096; $srcAB = 64 * ($fileObj->audio->channels ? $fileObj->audio->channels : 2); break;
-			case 1080; $destVB = 8192; $srcAB = 64 * ($fileObj->audio->channels ? $fileObj->audio->channels : 2); break;
+			case 240: $destVB = 128; $srcAB = 16 * ($fileObj->audio->channels ?: 2); break;
+			case 360: $destVB = 384; $srcAB = 16 * ($fileObj->audio->channels ?: 2); break;
+			case 480: $destVB = 1024; $srcAB = 32 * ($fileObj->audio->channels ?: 2); break;
+			case 576: $destVB = 2048; $srcAB = 32 * ($fileObj->audio->channels ?: 2); break;
+			case 720: $destVB = 4096; $srcAB = 64 * ($fileObj->audio->channels ?: 2); break;
+			case 1080; $destVB = 8192; $srcAB = 64 * ($fileObj->audio->channels ?: 2); break;
 		}
                 $destVB *= 1024;
 		$srcAB *= 1024;
@@ -191,10 +191,10 @@ class transcode_event_Core {
 
                 $task =
                     task::create($task_def,
-                                 array("ffmpeg_cmd" => $cmd,
+                                 ["ffmpeg_cmd" => $cmd,
                                        "width" => $destWidth,
                                        "height" => $destHeight,
-                                       "item_id" => $item->id)
+                                       "item_id" => $item->id]
                 );
 
                 task::run($task->id);

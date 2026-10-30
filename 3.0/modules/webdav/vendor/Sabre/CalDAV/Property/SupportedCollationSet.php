@@ -14,7 +14,7 @@
  */
 class Sabre_CalDAV_Property_SupportedCollationSet extends Sabre_DAV_Property {
 
-    function serialize(Sabre_DAV_Server $server,DOMElement $node) {
+    public function serialize(Sabre_DAV_Server $server,DOMElement $node) {
 
         $doc = $node->ownerDocument;
         

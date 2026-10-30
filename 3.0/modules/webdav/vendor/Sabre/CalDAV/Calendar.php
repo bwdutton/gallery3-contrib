@@ -15,40 +15,27 @@
 class Sabre_CalDAV_Calendar implements Sabre_DAV_ICollection, Sabre_DAV_IProperties {
 
     /**
-     * This is an array with calendar information 
-     * 
-     * @var array 
-     */
-    private $calendarInfo;
-
-    /**
-     * CalDAV backend 
-     * 
-     * @var Sabre_CalDAV_Backend_Abstract 
-     */
-    private $caldavBackend;
-
-    /**
-     * Authentication backend
-     * 
-     * @var Sabre_DAV_Auth_Backend_Abstract 
-     */
-    private $authBackend;
-
-    /**
      * Constructor 
      * 
      * @param Sabre_CalDAV_Backend_Abstract $caldavBackend 
      * @param array $calendarInfo 
      * @return void
      */
-    public function __construct(Sabre_DAV_Auth_Backend_Abstract $authBackend, Sabre_CalDAV_Backend_Abstract $caldavBackend,$calendarInfo) {
-
-        $this->caldavBackend = $caldavBackend;
-        $this->authBackend = $authBackend;
-        $this->calendarInfo = $calendarInfo;
-
-
+    public function __construct(
+        /**
+         * Authentication backend
+         */
+        private readonly Sabre_DAV_Auth_Backend_Abstract $authBackend,
+        /**
+         * CalDAV backend
+         */
+        private readonly Sabre_CalDAV_Backend_Abstract $caldavBackend,
+        /**
+         * This is an array with calendar information
+         */
+        private $calendarInfo
+    )
+    {
     }
 
     /**
@@ -83,14 +70,14 @@ class Sabre_CalDAV_Calendar implements Sabre_DAV_ICollection, Sabre_DAV_IPropert
      */
     public function getProperties($requestedProperties) {
 
-        $response = array();
+        $response = [];
 
-        if (!$this->hasPrivilege()) return array(); 
+        if (!$this->hasPrivilege()) return []; 
 
         foreach($requestedProperties as $prop) switch($prop) {
 
             case '{DAV:}resourcetype' : 
-                $response[$prop] =  new Sabre_DAV_Property_ResourceType(array('{urn:ietf:params:xml:ns:caldav}calendar','{DAV:}collection')); 
+                $response[$prop] =  new Sabre_DAV_Property_ResourceType(['{urn:ietf:params:xml:ns:caldav}calendar','{DAV:}collection']); 
                 break;
             case '{urn:ietf:params:xml:ns:caldav}supported-calendar-data' : 
                 $response[$prop] = new Sabre_CalDAV_Property_SupportedCalendarData(); 
@@ -136,7 +123,7 @@ class Sabre_CalDAV_Calendar implements Sabre_DAV_ICollection, Sabre_DAV_IPropert
 
         if (!$this->hasPrivilege()) throw new Sabre_DAV_Exception_Forbidden('Permission denied to access this calendar');
         $objs = $this->caldavBackend->getCalendarObjects($this->calendarInfo['id']);
-        $children = array();
+        $children = [];
         foreach($objs as $obj) {
             $children[] = new Sabre_CalDAV_CalendarObject($this->caldavBackend,$this->calendarInfo,$obj);
         }

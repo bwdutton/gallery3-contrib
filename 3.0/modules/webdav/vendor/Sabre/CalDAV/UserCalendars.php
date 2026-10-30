@@ -19,13 +19,6 @@ class Sabre_CalDAV_UserCalendars implements Sabre_DAV_IExtendedCollection {
     protected $authBackend;
 
     /**
-     * Array with user information 
-     * 
-     * @var array 
-     */
-    protected $userUri;
-
-    /**
      * CalDAV backend
      * 
      * @var Sabre_CalDAV_Backend_Abstract
@@ -39,11 +32,13 @@ class Sabre_CalDAV_UserCalendars implements Sabre_DAV_IExtendedCollection {
      * @param Sabre_CalDAV_Backend_Abstract $caldavBackend 
      * @param mixed $userUri 
      */
-    public function __construct(Sabre_DAV_Auth_Backend_Abstract $authBackend, Sabre_CalDAV_Backend_Abstract $caldavBackend, $userUri) {
+    public function __construct(Sabre_DAV_Auth_Backend_Abstract $authBackend, Sabre_CalDAV_Backend_Abstract $caldavBackend, /**
+     * Array with user information
+     */
+    protected $userUri) {
 
         $this->authBackend = $authBackend;
         $this->caldavBackend = $caldavBackend;
-        $this->userUri = $userUri;
        
     }
 
@@ -65,7 +60,7 @@ class Sabre_CalDAV_UserCalendars implements Sabre_DAV_IExtendedCollection {
      * @param string $name 
      * @return void
      */
-    public function setName($name) {
+    public function setName($name): never {
 
         throw new Sabre_DAV_Exception_Forbidden();
 
@@ -76,7 +71,7 @@ class Sabre_CalDAV_UserCalendars implements Sabre_DAV_IExtendedCollection {
      * 
      * @return void
      */
-    public function delete() {
+    public function delete(): never {
 
         throw new Sabre_DAV_Exception_Forbidden();
 
@@ -102,7 +97,7 @@ class Sabre_CalDAV_UserCalendars implements Sabre_DAV_IExtendedCollection {
      * @param resource $data 
      * @return void
      */
-    public function createFile($filename, $data=null) {
+    public function createFile($filename, $data=null): never {
 
         throw new Sabre_DAV_Exception_MethodNotAllowed('Creating new files in this collection is not supported');
 
@@ -116,7 +111,7 @@ class Sabre_CalDAV_UserCalendars implements Sabre_DAV_IExtendedCollection {
      * @param string $filename 
      * @return void
      */
-    public function createDirectory($filename) {
+    public function createDirectory($filename): never {
 
         throw new Sabre_DAV_Exception_MethodNotAllowed('Creating new collections in this collection is not supported');
 
@@ -166,7 +161,7 @@ class Sabre_CalDAV_UserCalendars implements Sabre_DAV_IExtendedCollection {
     public function getChildren() {
 
         $calendars = $this->caldavBackend->getCalendarsForUser($this->userUri);
-        $objs = array();
+        $objs = [];
         foreach($calendars as $calendar) {
             $objs[] = new Sabre_CalDAV_Calendar($this->authBackend, $this->caldavBackend, $calendar);
         }

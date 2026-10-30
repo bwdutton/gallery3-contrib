@@ -29,8 +29,8 @@ class twitter_Core {
    * Get module configure form
    * @return  Forge
    */
-  static function get_configure_form() {
-    $form = new Forge("admin/twitter", "", "post", array("id" => "g-configure-twitter-form"));
+  public static function get_configure_form() {
+    $form = new Forge("admin/twitter", "", "post", ["id" => "g-configure-twitter-form"]);
 
     $group_oauth = $form->group("twitter_oauth")->label(t("OAuth Settings"));
     $group_oauth->input("consumer_key")
@@ -63,7 +63,7 @@ class twitter_Core {
    * @param  object   $item
    * @return Forge
    */
-  static function get_tweet_form($item) {
+  public static function get_tweet_form($item) {
     $long_url = url::abs_site($item->relative_url_cache);
     // Check for saved tweets for this user and item
     $saved = self::get_failed($item->id);
@@ -95,7 +95,7 @@ class twitter_Core {
     }
     $tweet = $tweet . ' ' . $url;
     
-    $form = new Forge("twitter/tweet/$item->id", "", "post", array("id" => "g-twitter-tweet-form"));
+    $form = new Forge("twitter/tweet/$item->id", "", "post", ["id" => "g-twitter-tweet-form"]);
     $group = $form->group("twitter_message")->label(t("Compose Tweet"));
     $group->textarea("tweet")
           ->value($tweet)
@@ -116,7 +116,7 @@ class twitter_Core {
    * @param  integer  $item_id
    * @return mixed object|false
    */
-  function get_failed($item_id) {
+  public function get_failed($item_id) {
     $user_id = identity::active_user()->id;
     $t = ORM::factory("twitter_tweet")
             ->where("item_id", "=", $item_id)
@@ -134,13 +134,13 @@ class twitter_Core {
    * Has this Gallery been registered at dev.twitter.com/app?
    * @return boolean
    */
-  static function is_registered() {
+  public static function is_registered() {
     $consumer_key = module::get_var("twitter", "consumer_key");
     $consumer_secret = module::get_var("twitter", "consumer_secret");
     if (empty($consumer_key) || empty($consumer_secret)) {
       site_status::warning(
         t("Twitter module requires attention! Set the <a href=\"%url\">consumer key and secret</a>.",
-          array("url" => html::mark_clean(url::site("admin/twitter")))),
+          ["url" => html::mark_clean(url::site("admin/twitter"))]),
         "twitter_config");
       return false;
     } else {
@@ -149,7 +149,7 @@ class twitter_Core {
     }
   }
 
-  static function reset_default_tweet() {
+  public static function reset_default_tweet() {
     return t("Check out this %type, '%title': %description");
   }
 

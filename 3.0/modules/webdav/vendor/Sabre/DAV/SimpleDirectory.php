@@ -19,14 +19,7 @@ class Sabre_DAV_SimpleDirectory extends Sabre_DAV_Directory {
      *
      * @var array
      */
-    protected $children = array();
-
-    /**
-     * Name of this resource 
-     * 
-     * @var string 
-     */
-    protected $name;
+    protected $children = [];
 
     /**
      * Creates this node
@@ -38,9 +31,11 @@ class Sabre_DAV_SimpleDirectory extends Sabre_DAV_Directory {
      * @param array $children 
      * @return void
      */
-    public function __construct($name,array $children = array()) {
+    public function __construct(/**
+     * Name of this resource
+     */
+    protected $name,array $children = []) {
 
-        $this->name = $name;
         foreach($children as $child) {
 
             if (!($child instanceof Sabre_DAV_INode)) throw new Sabre_DAV_Exception('Only instances of Sabre_DAV_INode are allowed to be passed in the children argument');

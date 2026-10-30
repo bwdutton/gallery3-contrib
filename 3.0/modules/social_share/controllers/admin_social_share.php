@@ -63,7 +63,7 @@ class Admin_Social_Share_Controller extends Admin_Controller {
   }
 
   private function _get_form() {
-    $form = new Forge("admin/social_share/handler", "", "post", array("id" => "g-admin-form"));
+    $form = new Forge("admin/social_share/handler", "", "post", ["id" => "g-admin-form"]);
     
 /// General Settings
     $group_general = $form->group("general_settings")->label(t("General Settings"));
@@ -76,9 +76,9 @@ class Admin_Social_Share_Controller extends Admin_Controller {
       ->checked(module::get_var("social_share", "facebook_share_enabled", false) == 1);
     $group_facebook_share->dropdown("facebook_share_layout")
       ->label(t("The button layout to use"))
-      ->options(array( "button" => t("Button"),
+      ->options([ "button" => t("Button"),
 					   "icon_link" => t("Icon and Link"),
-					   "icon" => t("Icon")))
+					   "icon" => t("Icon")])
       ->selected(module::get_var("social_share", "facebook_share_layout"));
 	$group_facebook_share->input("facebook_share_link_text")->label(t('Enter the text to place next to the Facebook icon.'))
 		->value(module::get_var("social_share", "facebook_share_link_text", "Share"));
@@ -98,9 +98,9 @@ class Admin_Social_Share_Controller extends Admin_Controller {
 		->value(module::get_var("social_share", "facebook_like_site_name", "Gallery"));
 	$group_facebook_like->dropdown("facebook_like_code_type")
       ->label(t("The type of Ccde to display for the button"))
-      ->options(array( "html5" => t("HTML5 (allows the Send button and better dialogs)"),
+      ->options([ "html5" => t("HTML5 (allows the Send button and better dialogs)"),
 					   "xfbml" => t("XFBML (allows the Send button and better dialogs)"),
-					   "iframe" => t("iFrame")))
+					   "iframe" => t("iFrame")])
       ->selected(module::get_var("social_share", "facebook_like_code_type"));
 	$group_facebook_like->checkbox("facebook_like_show_faces")->label(t("Display profile photos of the Facebook friends who 'Like' below the Like button (standard layout only)."))
 		->checked(module::get_var("social_share", "facebook_like_show_faces"));
@@ -108,14 +108,14 @@ class Admin_Social_Share_Controller extends Admin_Controller {
 		->checked(module::get_var("social_share", "facebook_like_send"));
     $group_facebook_like->dropdown("facebook_like_action")
       ->label(t("Verb to display"))
-      ->options(array("like" => t("Like"),
-                      "recommend" => t("Recommend")))
+      ->options(["like" => t("Like"),
+                      "recommend" => t("Recommend")])
       ->selected(module::get_var("social_share", "facebook_like_action"));
 	$group_facebook_like->dropdown("facebook_like_layout")
       ->label(t("Layout style. Determines the size and amount of social context next to the button"))
-      ->options(array("standard" => t("Standard."),
+      ->options(["standard" => t("Standard."),
                       "button_count" => t("Button count"),
-					  "box_count" => t("Box count")))
+					  "box_count" => t("Box count")])
 	  ->selected(module::get_var("social_share", "facebook_like_layout"));
 
 /// Google settings
@@ -124,16 +124,16 @@ class Admin_Social_Share_Controller extends Admin_Controller {
       ->checked(module::get_var("social_share", "google_enabled", false) == 1);
     $group_google->dropdown("google_size")
       ->label(t("Size of the button"))
-      ->options(array("standard" => t("Standard (24px)"),
+      ->options(["standard" => t("Standard (24px)"),
                       "small" => t("Small (15px)"),
 					  "medium" => t("Medium (20px)"),
-                      "tall" => t("Tall (60px)")))
+                      "tall" => t("Tall (60px)")])
 	  ->selected(module::get_var("social_share", "google_size"));
     $group_google->dropdown("google_annotation")
       ->label(t("Annotation location"))
-      ->options(array("inline" => t("Inline"),
+      ->options(["inline" => t("Inline"),
                       "bubble" => t("Bubble"),
-					  "none" => t("None")))
+					  "none" => t("None")])
 	  ->selected(module::get_var("social_share", "google_annotation"));
 	
 /// Pinterest settings
@@ -142,9 +142,9 @@ class Admin_Social_Share_Controller extends Admin_Controller {
       ->checked(module::get_var("social_share", "pinterest_enabled", false) == 1);
     $group_pinterest->dropdown("pinterest_count_location")
       ->label(t("Tweet count location"))
-      ->options(array("horizontal" => t("Horizontal"),
+      ->options(["horizontal" => t("Horizontal"),
                       "vertical" => t("Vertical"),
-					  "none" => t("None")))
+					  "none" => t("None")])
 	  ->selected(module::get_var("social_share", "pinterest_count_location"));
     
 /// Twitter settings
@@ -153,14 +153,14 @@ class Admin_Social_Share_Controller extends Admin_Controller {
       ->checked(module::get_var("social_share", "twitter_enabled", false) == 1);
     $group_twitter->dropdown("twitter_count_location")
       ->label(t("Tweet count location"))
-      ->options(array("horizontal" => t("Horizontal"),
+      ->options(["horizontal" => t("Horizontal"),
                       "vertical" => t("Vertical"),
-					  "none" => t("None")))
+					  "none" => t("None")])
 	  ->selected(module::get_var("social_share", "twitter_count_location"));
     $group_twitter->dropdown("twitter_size")
       ->label(t("Size of the button. Large does not work with a vertical count location"))
-      ->options(array("medium" => t("Medium"),
-                      "large" => t("Large")))
+      ->options(["medium" => t("Medium"),
+                      "large" => t("Large")])
 	  ->selected(module::get_var("social_share", "twitter_size"));
     
     $form->submit("submit")->value(t("Save"));

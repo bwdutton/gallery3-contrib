@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class three_nids_theme {
-  static function credits($theme) {
+  public static function credits($theme) {
     return "<a href=\"http://codex.gallery2.org/Gallery3:Themes:three_nids\">three_nids theme</a>";
   }
 }

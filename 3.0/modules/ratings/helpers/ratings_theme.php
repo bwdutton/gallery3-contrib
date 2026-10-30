@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class ratings_theme_Core {
-  static function photo_bottom($theme) {
+  public static function photo_bottom($theme) {
     $ratingsunderphoto = module::get_var("ratings", "showunderphoto");
     if($ratingsunderphoto == 1){
       $block = new Block;

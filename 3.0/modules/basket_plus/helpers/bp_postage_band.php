@@ -19,8 +19,8 @@
  */
 class bp_postage_band_Core {
 
- static function get_add_form_admin() {
-    $form = new Forge("admin/postage_bands/add_postage_band", "", "post", array("id" => "gAddPostageForm"));
+ public static function get_add_form_admin() {
+    $form = new Forge("admin/postage_bands/add_postage_band", "", "post", ["id" => "gAddPostageForm"]);
     $group = $form->group("add_postage")->label(t("Add Postage Band"));
     $group->input("name")->label(t("Name"))->id("gPostageName")
       ->error_messages("in_use", t("There is already a postage band with that name"));
@@ -32,9 +32,9 @@ class bp_postage_band_Core {
     return $form;
   }
 
-  static function get_edit_form_admin($postage) {
+  public static function get_edit_form_admin($postage) {
    $form = new Forge("admin/postage_bands/edit_postage_band/$postage->id", "", "post",
-        array("id" => "gEditPostageForm"));
+        ["id" => "gEditPostageForm"]);
     $group = $form->group("edit_postage")->label(t("Edit Postage Band"));
     $group->input("name")->label(t("Name"))->id("gPostageName")->value($postage->name);
     $group->inputs["name"]->error_messages("in_use", t("There is already a postage band with that name"));
@@ -47,12 +47,12 @@ class bp_postage_band_Core {
   }
 
 
-  static function get_delete_form_admin($postage) {
+  public static function get_delete_form_admin($postage) {
     $form = new Forge("admin/postage_bands/delete_postage_band/$postage->id", "", "post",
-                      array("id" => "gDeletePostageForm"));
+                      ["id" => "gDeletePostageForm"]);
     $group = $form->group("delete_postage")->label(
-      t("Are you sure you want to delete postage band %name?", array("name" => $postage->name)));
-    $group->submit("")->value(t("Delete postage band %name", array("name" => $postage->name)));
+      t("Are you sure you want to delete postage band %name?", ["name" => $postage->name]));
+    $group->submit("")->value(t("Delete postage band %name", ["name" => $postage->name]));
     return $form;
   }
 
@@ -64,7 +64,7 @@ class bp_postage_band_Core {
    * @param string  $password
    * @return User_Model
    */
-  static function create($name, $flatrate, $peritemcost, $via_download) {
+  public static function create($name, $flatrate, $peritemcost, $via_download) {
     $postage = ORM::factory("bp_postage_band")->where("name", "=", $name)->find();
     if ($postage->loaded()) {
       throw new Exception("@todo postage already EXISTS $name");
@@ -83,8 +83,8 @@ class bp_postage_band_Core {
    * returns the array of postage bands
    * @return an array of postage bands
    */
-  static function getPostageArray(){
-    $postagea = array();
+  public static function getPostageArray(){
+    $postagea = [];
 
     $postages = ORM::factory("bp_postage_band")->find_all();
     foreach ($postages as $postage){

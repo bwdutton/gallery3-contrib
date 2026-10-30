@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class panorama_event_Core {
-  static function item_edit_form($item, $form) {
+  public static function item_edit_form($item, $form) {
     if ($item->is_photo()) {
       $panorama = ORM::factory("panorama")->where("item_id", "=", $item->id)->find();
       $form->edit_item->checkbox("panorama_panorama")
@@ -36,7 +36,7 @@ class panorama_event_Core {
     }
   }
 
-  static function item_edit_form_completed($item, $form) {
+  public static function item_edit_form_completed($item, $form) {
     $panorama = ORM::factory("panorama")->where("item_id", "=", $item->id)->find();
     if (!($panorama->loaded())) {
       $panorama->item_id = $item->id;

@@ -27,13 +27,13 @@ class Display_Controller extends Controller {
    */
   public function star($id) {
     $item = model_cache::get("item", $id);
-    $msg = t("Starred <b>%title</b> item", array("title" => html::purify($item->title)));
+    $msg = t("Starred <b>%title</b> item", ["title" => html::purify($item->title)]);
 
     $this->_check_star_permissions($item);
     star::star($item);
     message::success($msg);
 
-    json::reply(array("result" => "success", "reload" => 1));
+    json::reply(["result" => "success", "reload" => 1]);
   }
 
   /**
@@ -43,13 +43,13 @@ class Display_Controller extends Controller {
    */
   public function unstar($id) {
     $item = model_cache::get("item", $id);
-    $msg = t("Un-starred <b>%title</b> item", array("title" => html::purify($item->title)));
+    $msg = t("Un-starred <b>%title</b> item", ["title" => html::purify($item->title)]);
 
     $this->_check_star_permissions($item);
     star::unstar($item);
     message::success($msg);
 
-    json::reply(array("result" => "success", "reload" => 1));
+    json::reply(["result" => "success", "reload" => 1]);
   }
 
   public function star_only_on() {
@@ -61,7 +61,7 @@ class Display_Controller extends Controller {
     star::star_only_on();
     message::success($msg);
 
-    json::reply(array("result" => "success", "reload" => 1));
+    json::reply(["result" => "success", "reload" => 1]);
   }
 
 public function star_only_off() {
@@ -73,7 +73,7 @@ public function star_only_off() {
     star::star_only_off();
     message::success($msg);
 
-    json::reply(array("result" => "success", "reload" => 1));
+    json::reply(["result" => "success", "reload" => 1]);
   }
 
   /**

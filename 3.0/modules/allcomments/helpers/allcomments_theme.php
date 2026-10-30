@@ -2,7 +2,7 @@
 
 class allcomments_theme
 {
-  static function head($theme) {
+  public static function head($theme) {
     return $theme->css("allcomments.css");
   }
 }

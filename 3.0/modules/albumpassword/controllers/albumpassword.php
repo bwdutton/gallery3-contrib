@@ -109,7 +109,7 @@ class albumpassword_Controller extends Controller {
 
     // Display a success message and close the dialog.
     message::success(t("Password saved."));
-    json::reply(array("result" => "success"));
+    json::reply(["result" => "success"]);
   }
 
   public function logout() {
@@ -139,17 +139,17 @@ class albumpassword_Controller extends Controller {
       cookie::delete("g3_albumpassword_id");
       cookie::set("g3_albumpassword", $album_password);
       message::success(t("Password Accepted."));
-      json::reply(array("result" => "success"));
+      json::reply(["result" => "success"]);
     } else {
       message::error(t("Password Rejected."));
-      json::reply(array("result" => "success"));
+      json::reply(["result" => "success"]);
     }
   }
 
   private function _get_password_form($id) {
     // Generate a form for assigning a new password.
     $form = new Forge("albumpassword/savepassword", "", "post",
-                      array("id" => "g-assign-password-form"));
+                      ["id" => "g-assign-password-form"]);
     $assignpassword_group = $form->group("Enter Password")
                                  ->label(t("Enter Password:"));
     $assignpassword_group->hidden("item_id")->value($id);
@@ -165,7 +165,7 @@ class albumpassword_Controller extends Controller {
   private function _get_login_form() {
     // Generate a form for allowing visitors to enter in their passwords.
     $form = new Forge("albumpassword/checkpassword", "", "post",
-                      array("id" => "g-login-password-form"));
+                      ["id" => "g-login-password-form"]);
 
     $assignpassword_group = $form->group("Enter Password")
                                  ->label(t("Enter Password:"));

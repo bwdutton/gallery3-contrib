@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class pages_theme_Core {
-  static function admin_head($theme) {
+  public static function admin_head($theme) {
     // Load jHtmlArea js and css.
     if (module::get_var("pages", "disable_rte", false) == false) {
       return $theme->script("jHtmlArea-0.7.0.js") . 

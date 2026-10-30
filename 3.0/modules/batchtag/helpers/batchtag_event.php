@@ -18,20 +18,20 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class batchtag_event_Core {
-  static function pre_deactivate($data) {
+  public static function pre_deactivate($data) {
     if ($data->module == "tag") {
       $data->messages["warn"][] = t("The BatchTag module requires the Tags module.");
     }
   }
 
-  static function module_change($changes) {
+  public static function module_change($changes) {
     // See if the Tags module is installed,
     //   tell the user to install it if it isn't.
     if (!module::is_active("tag") || in_array("tag", $changes->deactivate)) {
       site_status::warning(
         t("The BatchTag module requires the Tags module.  " .
           "<a href=\"%url\">Activate the Tags module now</a>",
-          array("url" => url::site("admin/modules"))),
+          ["url" => url::site("admin/modules")]),
         "batchtag_needs_tag");
     } else {
       site_status::clear("batchtag_needs_tag");

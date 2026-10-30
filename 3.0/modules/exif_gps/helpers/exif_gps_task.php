@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class exif_gps_task_Core {
-  static function available_tasks() {
+  public static function available_tasks() {
     // Automatically delete extra exif_coordinates whenever the maintance screen is loaded.
     db::build()
       ->delete("exif_coordinates")
@@ -28,14 +28,14 @@ class exif_gps_task_Core {
 
     // Display an option on the maintance screen for scanning existing photos
     // for GPS data (in case photos were uploaded before the module was active).
-    return array(Task_Definition::factory()
+    return [Task_Definition::factory()
                  ->callback("exif_gps_task::update_gps_index")
                  ->name(t("Extract Exif GPS data"))
                  ->description(t("Scan all photos for missing GPS data"))
-                 ->severity(log::SUCCESS));
+                 ->severity(log::SUCCESS)];
   }
 
-  static function update_gps_index($task) {
+  public static function update_gps_index($task) {
     $start = microtime(true);
 
     // Figure out the total number of photos in the database.
@@ -82,6 +82,6 @@ class exif_gps_task_Core {
       $task->percent_complete = round(100 * $completed / $total);
     }
     $task->status = t2("One photo scanned", "%count / %total photos scanned", $completed,
-                       array("total" => $total));
+                       ["total" => $total]);
   }
 }

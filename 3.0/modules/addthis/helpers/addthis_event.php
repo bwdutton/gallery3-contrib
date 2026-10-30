@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class addthis_event_Core {
-  static function admin_menu($menu, $theme) {
+  public static function admin_menu($menu, $theme) {
     $menu->get("settings_menu")
       ->append(Menu::factory("link")
         ->id("addthis_menu")
@@ -26,7 +26,7 @@ class addthis_event_Core {
         ->url(url::site("admin/addthis")));
   }
 
-  static function photo_menu($menu, $theme) {
+  public static function photo_menu($menu, $theme) {
     $item = $theme->item();
     $menu->append(Menu::factory("link")
                   ->id("addthis")
@@ -36,7 +36,7 @@ class addthis_event_Core {
                   ->css_class("addthis_button"));
   }
   
-  static function album_menu($menu, $theme) {
+  public static function album_menu($menu, $theme) {
     $item = $theme->item();
     $menu->append(Menu::factory("link")
                   ->id("addthis")

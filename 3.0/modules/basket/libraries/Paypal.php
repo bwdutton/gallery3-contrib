@@ -92,12 +92,12 @@
 
 class Paypal_Core {
 
-  var $last_error;                 // holds the last error encountered
+  public $last_error;                 // holds the last error encountered
 
-  var $ipn_response;               // holds the IPN response from paypal
-  public $ipn_data = array();         // array contains the POST values for IPN
+  public $ipn_response;               // holds the IPN response from paypal
+  public $ipn_data = [];         // array contains the POST values for IPN
 
-  var $fields = array();           // array holds the fields to submit to paypal
+  public $fields = [];           // array holds the fields to submit to paypal
 
 
   public function __construct()
@@ -126,7 +126,7 @@ class Paypal_Core {
 
   }
 
-  function add_field($field, $value) {
+  public function add_field($field, $value) {
 
     // adds a key=>value pair to the fields array, which is what will be
     // sent to paypal as POST variables.  If the value is already in the
@@ -159,7 +159,7 @@ class Paypal_Core {
 
     // basket contents
     $id = 1;
-    foreach ($session_basket->contents as $key => $basket_item){
+    foreach ($session_basket->contents as $basket_item){
       $this->add_field("item_name_$id", $basket_item->getCode());
       $this->add_field("amount_$id", $basket_item->cost_per);
       $this->add_field("quantity_$id",$basket_item->quantity);
@@ -185,7 +185,7 @@ class Paypal_Core {
     return $string;
   }
 
-  function validate_ipn($key) {
+  public function validate_ipn($key) {
 
     // parse the paypal URL
     $url_parsed=parse_url($this->paypal_url);
@@ -215,13 +215,13 @@ class Paypal_Core {
     } else {
 
       // Post the data back to paypal
-      fputs($fp, "POST ".$url_parsed['path']." HTTP/1.1\r\n");
-      fputs($fp, "Host: ".$url_parsed['host']."\r\n");
-      fputs($fp, "Content-type: application/x-www-form-urlencoded\r\n");
+      fwrite($fp, "POST ".$url_parsed['path']." HTTP/1.1\r\n");
+      fwrite($fp, "Host: ".$url_parsed['host']."\r\n");
+      fwrite($fp, "Content-type: application/x-www-form-urlencoded\r\n");
 
-      fputs($fp, "Content-length: ".strlen($post_string)."\r\n\r\n");
+      fwrite($fp, "Content-length: ".strlen($post_string)."\r\n\r\n");
       //fputs($fp, "Connection: close\r\n\r\n");
-      fputs($fp, $post_string . "\r\n\r\n");
+      fwrite($fp, $post_string . "\r\n\r\n");
 
       // loop through the response from the server and append to variable
       while(!feof($fp)) {
@@ -275,7 +275,7 @@ class Paypal_Core {
 
   }
 
-  function log_ipn_results($key, $success) {
+  public function log_ipn_results($key, $success) {
 
     // Timestamp
     $text = '['.date('m/d/Y g:i A').'] - ';
@@ -304,7 +304,7 @@ class Paypal_Core {
     $message->save();
   }
 
-  function dump_fields() {
+  public function dump_fields() {
 
     // Used for debugging, this function will output all the field/value pairs
     // that are currently defined in the instance of the class using the

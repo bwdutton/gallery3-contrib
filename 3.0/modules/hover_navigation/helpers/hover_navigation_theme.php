@@ -18,17 +18,17 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class hover_navigation_theme_Core {
-  static function head($theme) {
+  public static function head($theme) {
     if ($theme->page_type == "item") {
       return $theme->css("hover_navigation.css");
 	}
   }
-  static function resize_top($theme) {
+  public static function resize_top($theme) {
     if ($theme->page_type == "item") {
       return new View("hover_navigation_top.html");
     }
   }
-  static function resize_bottom($theme) {
+  public static function resize_bottom($theme) {
     if ($theme->page_type == "item") {
       return new View("hover_navigation_bottom.html");
     }

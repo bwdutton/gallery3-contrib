@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class dynamic_Core {
-  static function get_display_count($dynamic_type_definition) {
+  public static function get_display_count($dynamic_type_definition) {
     $display_limit = $dynamic_type_definition->limit;
     $children_count = ORM::factory("item")
       ->viewable()
@@ -29,7 +29,7 @@ class dynamic_Core {
     return $children_count;
   }
 
-  static function items($key_field, $limit=null, $offset=null) {
+  public static function items($key_field, $limit=null, $offset=null) {
     return ORM::factory("item")
       ->viewable()
       ->where("type", "!=", "album")
@@ -45,7 +45,7 @@ class dynamic_Core {
    * @param Item_Model $item
    * @param array      $where an array of arrays, each compatible with ORM::where()
    */
-  static function get_position($dynamic_type_definition, $item) {
+  public static function get_position($dynamic_type_definition, $item) {
 
     $sort_column = $dynamic_type_definition->key_field;
     $display_limit = self::get_display_count($dynamic_type_definition);
@@ -65,7 +65,7 @@ class dynamic_Core {
       $position = $query_model->viewable()
         ->where($sort_column, ">", $item->$sort_column)
         ->where("type", "!=", "album")
-        ->order_by(array($dynamic_type_definition->key_field => "DESC", "id" => "ASC"))
+        ->order_by([$dynamic_type_definition->key_field => "DESC", "id" => "ASC"])
         ->count_all();
 
       // We stopped short of our target value in the sort (notice that we're
@@ -81,7 +81,7 @@ class dynamic_Core {
                ->select("id")
                ->where($sort_column, "=", $item->$sort_column)
                ->where("type", "!=", "album")
-               ->order_by(array("id" => "ASC"))
+               ->order_by(["id" => "ASC"])
                ->find_all($display_limit) as $row) {
         $position++;
         if ($row->id == $item->id) {
@@ -97,7 +97,7 @@ class dynamic_Core {
       //
       // Reproduce the children() functionality here using Database directly to
       // avoid loading the whole ORM for each row.
-      $order_by = array($sort_column => "DESC", $order_by["id"] => "ASC");
+      $order_by = [$sort_column => "DESC", $order_by["id"] => "ASC"];
 
       $position = 0;
       foreach ($query_model->viewable()

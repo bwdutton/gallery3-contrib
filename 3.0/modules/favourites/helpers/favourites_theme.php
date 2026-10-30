@@ -18,12 +18,12 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class favourites_theme_Core {
-  static function head($theme) {
+  public static function head($theme) {
     return $theme->css("favourites.css")
       . $theme->script("favourites.js");
   }
 
-  static function header_top($theme) {
+  public static function header_top($theme) {
 
     if (favourites_configuration::isUsersOnly() && identity::active_user()->name =="guest"){
       return;
@@ -41,7 +41,7 @@ class favourites_theme_Core {
     }
   }
 
-  static function photo_top($theme){
+  public static function photo_top($theme){
     if (!favourites_configuration::canSelectItems() ||
         (favourites_configuration::isUsersOnly() && identity::active_user()->name =="guest")){
       return;
@@ -53,7 +53,7 @@ class favourites_theme_Core {
     return $view->render();
   }
 
-  static function thumb_top($theme, $item){
+  public static function thumb_top($theme, $item){
     if (favourites_configuration::isUsersOnly() && identity::active_user()->name =="guest"){
       return;
     }

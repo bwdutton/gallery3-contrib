@@ -22,7 +22,7 @@ interface Sabre_DAV_IExtendedCollection extends Sabre_DAV_ICollection {
      * @param array $properties
      * @return void
      */
-    function createExtendedCollection($name, array $resourceType, array $properties);
+    public function createExtendedCollection($name, array $resourceType, array $properties);
 
 }
 

@@ -22,7 +22,7 @@ class Admin_RawPhoto_Controller extends Admin_Controller {
     print $this->_get_view();
   }
 
-  private function _get_view($errors = array(), $icc_path = null) {
+  private function _get_view($errors = [], $icc_path = null) {
     $dcraw = rawphoto_graphics::detect_dcraw();
     rawphoto_graphics::report_dcraw_support($dcraw);
 
@@ -30,14 +30,13 @@ class Admin_RawPhoto_Controller extends Admin_Controller {
     $view->content = new View("admin_rawphoto.html");
     $view->content->is_keeporiginal_active = module::is_active("keeporiginal");
     $view->content->dcraw = $dcraw;
-    $toolkit_names = array("imagemagick" => "ImageMagick",
-                           "graphicsmagick" => "GraphicsMagick");
+    $toolkit_names = ["imagemagick" => "ImageMagick",
+                           "graphicsmagick" => "GraphicsMagick"];
     $toolkit_id = module::get_var("gallery", "graphics_toolkit");
     $toolkit_names = rawphoto_graphics::get_supported_toolkits();
     $view->content->toolkit_name = array_key_exists($toolkit_id, $toolkit_names) ?
                                    $toolkit_names[$toolkit_id] : "none";
-    $view->content->icc_path = isset($icc_path) ?
-                               $icc_path : module::get_var("rawphoto", "icc_path");
+    $view->content->icc_path = $icc_path ?? module::get_var("rawphoto", "icc_path");
     $view->content->errors = $errors;
     return $view;
   }
@@ -47,7 +46,7 @@ class Admin_RawPhoto_Controller extends Admin_Controller {
     access::verify_csrf();
 
     $post = new Validation($_POST);
-    $post->add_callbacks("IccPath", array($this, "_validate_icc_path"));
+    $post->add_callbacks("IccPath", $this->_validate_icc_path(...));
     $icc_path = Input::instance()->post("IccPath");
     if ($post->validate()) {
       module::set_var("rawphoto", "icc_path", $icc_path);
@@ -63,7 +62,7 @@ class Admin_RawPhoto_Controller extends Admin_Controller {
     if (!empty($post->$field)) {
       if (!@is_file($post->$field)) {
         $post->add_error($field, t("No ICC profile exists at the location <code>%icc_path</code>",
-                                   array("icc_path" => $post->$field)));
+                                   ["icc_path" => $post->$field]));
       }
       $dcraw = rawphoto_graphics::detect_dcraw();
       if (version_compare($dcraw->version, "8.00", "<")) {

@@ -53,23 +53,15 @@ class Bp_Order_Model extends ORM {
  */
   public function status(){
 //@TODO add completed+delivery method
-    switch ($this->status){
-      case self::WAITING_PAYMENT:
-        return "Waiting Payment";
-      case self::PAYMENT_CONFIRMED:
-        return "Payment confirmed";
-			case self::DELIVERED_NOTPAID:
-        return "Delivered without payment";
-			case self::DELIVERED:
-        return "Delivered";
-			case self::EXPIRED:
-        return "Expired";
-			case self::CANCELLED:
-        return "Cancelled";
-
-      default:
-        return "Unknown";
-    }
+    return match ($this->status) {
+        self::WAITING_PAYMENT => "Waiting Payment",
+        self::PAYMENT_CONFIRMED => "Payment confirmed",
+        self::DELIVERED_NOTPAID => "Delivered without payment",
+        self::DELIVERED => "Delivered",
+        self::EXPIRED => "Expired",
+        self::CANCELLED => "Cancelled",
+        default => "Unknown",
+    };
   }
 
 /*
@@ -77,14 +69,11 @@ class Bp_Order_Model extends ORM {
  * DESCRIPTION: shows order payment method
  */
   public function payment_method(){
-    switch ($this->payment_method){
-      case Bp_Order_Model::PAYMENT_OFFLINE:
-        return t("Offline Payment");
-      case Bp_Order_Model::PAYMENT_PAYPAL:
-        return t("Paypal Payment");
-      default:
-        return t("Unknown Payment method");
-    }
+    return match ($this->payment_method) {
+        Bp_Order_Model::PAYMENT_OFFLINE => t("Offline Payment"),
+        Bp_Order_Model::PAYMENT_PAYPAL => t("Paypal Payment"),
+        default => t("Unknown Payment method"),
+    };
   }
 
 /*
@@ -92,15 +81,11 @@ class Bp_Order_Model extends ORM {
  * DESCRIPTION: shows order delivery method
  */
   public function delivery_method(){
-    switch ($this->delivery_method){
-      case Bp_Order_Model::DELIVERY_MAIL:
-        return t("Mail");
-      case Bp_Order_Model::DELIVERY_EMAIL:
-        return t("Email");
-      case Bp_Order_Model::DELIVERY_PICKUP:
-        return t("Pickup");
-      default:
-        return t("Unknown Delivery method");
-    }
+    return match ($this->delivery_method) {
+        Bp_Order_Model::DELIVERY_MAIL => t("Mail"),
+        Bp_Order_Model::DELIVERY_EMAIL => t("Email"),
+        Bp_Order_Model::DELIVERY_PICKUP => t("Pickup"),
+        default => t("Unknown Delivery method"),
+    };
   }
 }

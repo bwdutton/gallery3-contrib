@@ -137,7 +137,7 @@
   <?php 
 	$payment_details = basket_plus::getBasketVar(PAYMENT_OPTIONS); 
   $webshop = basket_plus::getBasketVar(WEBSHOP);
-  $payment_details = basket_plus::replaceStrings($payment_details,Array("webshop"=> $webshop));
+  $payment_details = basket_plus::replaceStrings($payment_details,["webshop"=> $webshop]);
 	/* here the payment options text is loaded */
 	if ($payment_details):?>
     <div class="basket-right" id="payment">

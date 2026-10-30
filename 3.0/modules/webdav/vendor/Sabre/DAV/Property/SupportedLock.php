@@ -15,22 +15,18 @@
 class Sabre_DAV_Property_SupportedLock extends Sabre_DAV_Property {
 
     /**
-     * supportsLocks 
-     * 
-     * @var mixed
-     */
-    public $supportsLocks = false;
-
-    /**
      * __construct 
      * 
      * @param mixed $supportsLocks 
      * @return void
      */
-    public function __construct($supportsLocks) {
-
-        $this->supportsLocks = $supportsLocks;
-
+    public function __construct(
+        /**
+         * supportsLocks
+         */
+        public $supportsLocks
+    )
+    {
     }
 
     /**

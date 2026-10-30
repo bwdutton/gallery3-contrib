@@ -18,14 +18,14 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class carousel_block_Core {
-  static function get_site_list() {
-    return array(
+  public static function get_site_list() {
+    return [
 		"carousel_recent" => t("Recent items carousel"),
 		"carousel_popular" => t("Popular items carousel"),
-		"carousel_random" => t("Random items carousel"));
+		"carousel_random" => t("Random items carousel")];
 	}
 
-  static function get($block_id, $theme) {
+  public static function get($block_id, $theme) {
     $block = "";
     switch ($block_id) {
     case "carousel_recent":

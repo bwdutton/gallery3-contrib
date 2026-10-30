@@ -38,7 +38,7 @@ class dupcheck_Controller extends Controller {
     // for page numbering purposes.
     $count = db::build()
       ->select("itemmd5")
-      ->select(array("C" => "count(\"*\")"))
+      ->select(["C" => "count(\"*\")"])
       ->from("fullsize_md5sums")
       ->group_by("itemmd5")
       ->having("C", ">", 1)
@@ -55,7 +55,7 @@ class dupcheck_Controller extends Controller {
     // Figure out which items to display on this page.
       foreach( db::build()
       ->select("item_id")
-      ->select(array("C" => "count(\"*\")"))
+      ->select(["C" => "count(\"*\")"])
       ->from("fullsize_md5sums")
       ->group_by("itemmd5")
       ->having("C", ">", 1)

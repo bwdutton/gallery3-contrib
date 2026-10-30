@@ -18,10 +18,10 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class search_help_theme_Core {
-  static function head($theme) {
+  public static function head($theme) {
     return $theme->css("search_help.css");
   }
-  static function page_bottom($theme) {
+  public static function page_bottom($theme) {
 	return new View("search_help.html");
   }
 }

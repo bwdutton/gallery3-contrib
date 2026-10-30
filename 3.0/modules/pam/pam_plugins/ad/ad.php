@@ -8,8 +8,6 @@
 class pam_ad
 {
   private $adldap;
-  private $name;
-  private $pass;
   private $auth;
 
 
@@ -18,14 +16,11 @@ class pam_ad
    * @param string $name
    * @param string $pass
    */
-  public function __construct($name, $pass)
+  public function __construct(private $name, private $pass)
   {
     require("adLDAP/adLDAP.php");
     // this will load $options
     require('config.php');
-
-    $this->name = $name;
-    $this->pass = $pass;
     $this->adldap = new adLDAP($options);
     $this->_auth();
 
@@ -72,11 +67,11 @@ class pam_ad
       $result = $this->adldap->user_info($this->name);
       $user_info = $result[0];
       if (isset($user_info)){
-        $account = array(
+        $account = [
           'name' => $this->name,
           'full_name' => $user_info['displayname'][0],
           'email' => $user_info['mail'][0],
-        );
+        ];
       return (object) $account;
       }
 

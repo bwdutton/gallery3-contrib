@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class no_home_link_event_Core {
-  static function site_menu($menu, $theme, $item_css_selector) {
+  public static function site_menu($menu, $theme, $item_css_selector) {
     $menu->remove("home");
   }
 }

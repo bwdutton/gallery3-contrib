@@ -22,7 +22,7 @@
 // All occurences of server_add have been replaced with videos.
 // Additionally, several new functions have been added.
 class videos_event_Core {
-  static function admin_menu($menu, $theme) {
+  public static function admin_menu($menu, $theme) {
     $menu->get("settings_menu")
       ->append(Menu::factory("link")
                ->id("videos")
@@ -30,7 +30,7 @@ class videos_event_Core {
                ->url(url::site("admin/videos")));
   }
 
-  static function site_menu($menu, $theme) {
+  public static function site_menu($menu, $theme) {
     $item = $theme->item();
     $paths = unserialize(module::get_var("videos", "authorized_paths"));
 
@@ -44,7 +44,7 @@ class videos_event_Core {
     }
   }
 
-  static function item_before_delete($item) {
+  public static function item_before_delete($item) {
     // If deleting a video, make sure the resize is deleted as well, if it exists.
     if ($item->is_movie()) {
       $items_video = ORM::factory("items_video")
@@ -56,7 +56,7 @@ class videos_event_Core {
     }
   }
 
-  static function item_updated($old, $new) {
+  public static function item_updated($old, $new) {
     // When updating a video, check and see if the file name is being changed.
     //  If so, check for and modify any corresponding resized video
 
@@ -72,7 +72,7 @@ class videos_event_Core {
     }
   }
 
-  static function item_moved($item, $old_parent) {
+  public static function item_moved($item, $old_parent) {
     // When moving an video, also move the flash resize, if it exists.
 
     if ($item->is_movie()) {

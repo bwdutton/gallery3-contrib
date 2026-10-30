@@ -27,7 +27,7 @@ class Schedule_Model extends ORM {
 
   public function add_task($task) {
     db::build()
-      ->insert("schedules_tasks", array("schedule_id" => $this->id,"task_id" => $task->id))
+      ->insert("schedules_tasks", ["schedule_id" => $this->id,"task_id" => $task->id])
       ->execute();
   }
 }

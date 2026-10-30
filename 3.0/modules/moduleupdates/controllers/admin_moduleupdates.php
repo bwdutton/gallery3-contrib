@@ -66,13 +66,13 @@ class Admin_Moduleupdates_Controller extends Admin_Controller {
     //if someone pressed the button to refresh now
     if (request::method() == "post") {
       access::verify_csrf();
-      $cache = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
-      $cache_updates = array("date" => "", "updates" => 0);
+      $cache = new ArrayObject([], ArrayObject::ARRAY_AS_PROPS);
+      $cache_updates = ["date" => "", "updates" => 0];
       $refreshCache = true;
     }else if(count($cache) < 1 or $cache_updates['date'] == ""){
       //if there are no items in the cache array or the update date is "" refresh the data
-      $cache = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
-      $cache_updates = array("date" => "", "updates" => 0);
+      $cache = new ArrayObject([], ArrayObject::ARRAY_AS_PROPS);
+      $cache_updates = ["date" => "", "updates" => 0];
       $refreshCache = true;
     }
      
@@ -86,7 +86,7 @@ class Admin_Moduleupdates_Controller extends Admin_Controller {
         $GitHub = '<font color=red>Offline</font>';
       }
     }
-    catch (Exception $e) {
+    catch (Exception) {
     }
     //Check the ability to access the Google
     $Google = null;
@@ -98,7 +98,7 @@ class Admin_Moduleupdates_Controller extends Admin_Controller {
         $Google = '<font color=red>Offline</font>';
       }
     }
-    catch (Exception $e) {
+    catch (Exception) {
     }
 		
     $update_count = 0;
@@ -146,10 +146,10 @@ class Admin_Moduleupdates_Controller extends Admin_Controller {
         
         
         $font_color_local = $this->get_local_module_version_color ($module_info->version, $module_info->code_version);
-        list ($core_version, $core_server) = $this->get_remote_module_version($this_module_name, "CORE");
+        [$core_version, $core_server] = $this->get_remote_module_version($this_module_name, "CORE");
         $font_color_core = $this->get_module_version_color ($module_info->version, $module_info->code_version, $core_version);
         if(!is_numeric($core_version)) {
-          list ($gh_version, $gh_server) = $this->get_remote_module_version($this_module_name, "GH");
+          [$gh_version, $gh_server] = $this->get_remote_module_version($this_module_name, "GH");
           $font_color_gh = $this->get_module_version_color ($module_info->version, $module_info->code_version, $gh_version);
         }
         
@@ -178,22 +178,22 @@ class Admin_Moduleupdates_Controller extends Admin_Controller {
         }
         
         //populate the list fo modules and their data
-        $cache->$this_module_name = array ("name" => $module_info->name, "locked" => $module_info->locked,
+        $cache->$this_module_name =  ["name" => $module_info->name, "locked" => $module_info->locked,
           "code_version" => $module_info->code_version, "active" => $module_info->active, 
           "version" => $module_info->version,"description" => $module_info->description, 
           "core_version" => $core_version, "core_server" => $core_server, "font_color_core" => $font_color_core,
           "contrib_version" => $contrib_version, "contrib_server" => $contrib_server, "font_color_contrib" => $font_color_contrib,
           "gh_version" => $gh_version, "gh_server" => $gh_server, "font_color_gh" => $font_color_gh,
           "font_color_local" => $font_color_local, "core_dlink" => $core_dlink, "contrib_dlink" => $contrib_dlink, 
-          "gh_dlink" => $gh_dlink);
+          "gh_dlink" => $gh_dlink];
       }
       
       //Define right now as YYYY.MM.DD HH:MM with the # of updates that are out of date
-      $cache_updates = array("date" => date("Y.m.d - H:i"), "updates" => $update_count);
+      $cache_updates = ["date" => date("Y.m.d - H:i"), "updates" => $update_count];
 
       //Write out the new data to cache with a 30 day expiration & 0 for update data so it's always present
-      Cache::instance()->set("moduleupdates_cache", serialize($cache), array("ModuleUpdates"), 30*86400);
-      Cache::instance()->set("moduleupdates_cache_updates", serialize($cache_updates), array("ModuleUpdates"), null);
+      Cache::instance()->set("moduleupdates_cache", serialize($cache), ["ModuleUpdates"], 30*86400);
+      Cache::instance()->set("moduleupdates_cache_updates", serialize($cache_updates), ["ModuleUpdates"], null);
       log::success("moduleupdates", t("Completed checking remote GitHub for modules updates."));
 		}
 		
@@ -307,7 +307,7 @@ class Admin_Moduleupdates_Controller extends Admin_Controller {
                 $server = '(G)';
               }
             }
-              catch (Exception $e) {
+              catch (Exception) {
             }
           }
           break;
@@ -359,6 +359,6 @@ class Admin_Moduleupdates_Controller extends Admin_Controller {
 		}
 	}
     
-      return array ($version, $server);
+      return  [$version, $server];
   }
 }

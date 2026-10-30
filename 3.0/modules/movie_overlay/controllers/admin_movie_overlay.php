@@ -55,7 +55,7 @@ class Admin_Movie_overlay_Controller extends Admin_Controller {
 	for ($i = 5; $i <= 95; $i+=5) {
       $range2[$i] = "$i";
 	}
-    $form = new Forge("admin/movie_overlay/handler", "", "post", array("id" => "g-admin-form"));
+    $form = new Forge("admin/movie_overlay/handler", "", "post", ["id" => "g-admin-form"]);
     $group = $form->group("movie_overlay");
     $group->dropdown("icon")->label(t("Choose the icon of the movie play button"))
       	->options($range)

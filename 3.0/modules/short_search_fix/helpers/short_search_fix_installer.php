@@ -18,23 +18,23 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class short_search_fix_installer {
-  static function install() {
+  public static function install() {
     $db = Database::instance();
     module::set_var("short_search_fix", "search_prefix", "1Z");
     module::set_version("short_search_fix", 1);
   }
 
-  static function activate() {
+  public static function activate() {
     $db = Database::instance();
     $db->query("UPDATE {search_records} SET dirty=1;");
   }
 
-  static function deactivate() {
+  public static function deactivate() {
     $db = Database::instance();
     $db->query("UPDATE {search_records} SET dirty=1;");
   }
 
-  static function uninstall() {
+  public static function uninstall() {
     $db = Database::instance();
     module::clear_var("short_search_fix", "search_prefix");
   }

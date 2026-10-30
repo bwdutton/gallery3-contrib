@@ -20,7 +20,7 @@ class Sabre_HTTP_Util {
      * @param string $dateHeader 
      * @return bool|DateTime 
      */
-    static function parseHTTPDate($dateHeader) {
+    public static function parseHTTPDate($dateHeader) {
 
         //RFC 2616 section 3.3.1 Full Date
         //Only the format is checked, valid ranges are checked by strtotime below

@@ -41,10 +41,10 @@ class Admin_Star_Controller extends Admin_Controller {
 
   private function _get_admin_form() {
     $form = new Forge("admin/star/save", "", "post",
-                      array("id" => "g-star-admin-form"));
+                      ["id" => "g-star-admin-form"]);
     $form->dropdown("show")
       ->label(t("Default to showing..."))
-      ->options(array(0 => "All",1 => "Starred"))
+      ->options([0 => "All",1 => "Starred"])
       ->selected(module::get_var("star", "show"));
     $form->submit("save")->value(t("Save"));
     return $form;

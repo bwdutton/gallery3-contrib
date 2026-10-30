@@ -45,7 +45,7 @@ class Admin_Theme_Options_Controller extends Admin_Controller {
         graphics::remove_rule("gallery", "thumb", "gallery_graphics::resize");
         graphics::add_rule(
           "gallery", "thumb", "gallery_graphics::resize",
-          array("width" => $thumb_size, "height" => $thumb_size, "master" => Image::AUTO),
+          ["width" => $thumb_size, "height" => $thumb_size, "master" => Image::AUTO],
           100);
         module::set_var("gallery", "thumb_size", $thumb_size);
       }
@@ -56,7 +56,7 @@ class Admin_Theme_Options_Controller extends Admin_Controller {
         graphics::remove_rule("gallery", "resize", "gallery_graphics::resize");
         graphics::add_rule(
           "gallery", "resize", "gallery_graphics::resize",
-          array("width" => $resize_size, "height" => $resize_size, "master" => Image::AUTO),
+          ["width" => $resize_size, "height" => $resize_size, "master" => Image::AUTO],
           100);
         module::set_var("gallery", "resize_size", $resize_size);
       }
@@ -79,13 +79,13 @@ class Admin_Theme_Options_Controller extends Admin_Controller {
   }
 
   private function _get_edit_form_admin() {
-    $form = new Forge("admin/theme_options/save/", "", null, array("id" =>"g-theme-options-form"));
+    $form = new Forge("admin/theme_options/save/", "", null, ["id" =>"g-theme-options-form"]);
 	
     $group = $form->group("theme_appearance")->label("Theme appearance");
     $group->checkbox("wide")->label(t("Use wide layout instead of fixed width"))
       ->checked((module::get_var("theme_clean_canvas", "wide")));
     $group->dropdown("color_variant")->label(t("Color variant"))
-      ->options(array("clean" => t("Clean Canvas"), "dark" => t("Dark Canvas")))
+      ->options(["clean" => t("Clean Canvas"), "dark" => t("Dark Canvas")])
       ->selected(module::get_var("theme_clean_canvas", "color_variant"));
 
     $group = $form->group("additional_modules")->label("Additional supported modules");

@@ -18,12 +18,12 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class tag_cloud_page_block_Core {
-  static function get_site_list() {
+  public static function get_site_list() {
     // Create a sidebar block to link to the cloud page.
-    return array("tag_cloud_page" => t("Tag Cloud Page Link"));
+    return ["tag_cloud_page" => t("Tag Cloud Page Link")];
   }
 
-  static function get($block_id, $theme) {
+  public static function get($block_id, $theme) {
     // Generate the sidebar block for linking to the tag cloud page.
     $block = "";
     switch ($block_id) {

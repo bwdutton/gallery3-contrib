@@ -55,7 +55,7 @@ class Sabre_DAV_Exception extends Exception {
      */
     public function getHTTPHeaders(Sabre_DAV_Server $server) {
 
-        return array();
+        return [];
 
     } 
 

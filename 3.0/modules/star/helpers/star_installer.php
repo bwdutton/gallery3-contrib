@@ -20,7 +20,7 @@
 
 class star_installer {
 
-  static function install() {
+  public static function install() {
     $db = Database::instance();
     $db->query("CREATE TABLE IF NOT EXISTS {starred_items} (
                  `item_id` int(9) NOT NULL,
@@ -35,7 +35,7 @@ class star_installer {
     module::set_version("star", 1);
   }
 
-  static function uninstall() {
+  public static function uninstall() {
     $db = Database::instance();
     $db->query("DROP TABLE IF EXISTS {starred_items};");
     $db->query("DROP TABLE IF EXISTS {starred_only_users};");

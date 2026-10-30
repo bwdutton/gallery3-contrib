@@ -23,7 +23,7 @@
  *
  */
 class Gallery_Atom_Entry_Core extends Atom_Entry {
-  function __construct() {
+  public function __construct() {
     parent::__construct("entry");
 
     /* Set feed ID and self link. */

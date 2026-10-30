@@ -19,7 +19,7 @@
  */
 class short_search_fix_event_Core {
 
-  static function admin_menu($menu, $theme) {
+  public static function admin_menu($menu, $theme) {
     $menu->get("settings_menu")
       ->append(Menu::factory("link")
                ->id("short_search_fix")
@@ -28,7 +28,7 @@ class short_search_fix_event_Core {
   }
 
   // This is the function that changes what's written to the search_records database
-  static function item_index_data($item, $data) {
+  public static function item_index_data($item, $data) {
     $prefix = module::get_var("short_search_fix","search_prefix");
     foreach ($data as &$terms) {
       // strip leading, trailing, and extra whitespaces

@@ -24,7 +24,7 @@
 <?php if ($order->method == Order_Model::PAYMENT_PAYPAL){
 ?>Your order will be confirmed when Paypal has finished processing your order.<?php
 }else {
-?><?= basket::replaceStrings(basket::getOrderCompletePage(),Array("order_number"=>$ordernumber, "total_cost"=>basket::formatMoneyForWeb($total_cost)));?><?php
+?><?= basket::replaceStrings(basket::getOrderCompletePage(),["order_number"=>$ordernumber, "total_cost"=>basket::formatMoneyForWeb($total_cost)]);?><?php
 
 }?></div>
 </div>

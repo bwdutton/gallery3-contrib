@@ -21,11 +21,11 @@
 
 class ratings_block_Core {
 
-  static function get_site_list() {
-    return array("ratings" => t("Ratings Block"));
+  public static function get_site_list() {
+    return ["ratings" => t("Ratings Block")];
   }
 
-  static function get($block_id, $theme) {
+  public static function get($block_id, $theme) {
     if(module::get_var("ratings","showinsidebar") == 1){
       $block = "";
       if($theme->item()) {

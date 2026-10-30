@@ -27,16 +27,16 @@ class Admin_FotomotorW_Controller extends Admin_Controller {
 
     // Generate a form to allow the user to choose which links to display under photos.
     $form = new Forge("admin/fotomotorw/savedisplay", "", "post",
-                      array("id" => "g-fotomotorw-admin-display-prefs"));
+                      ["id" => "g-fotomotorw-admin-display-prefs"]);
 
     $display_links_group = $form->group("fotomoto_display_links_group");
-    $link_options["fotomoto_buy_prints"] = array(t("Buy Prints"), module::get_var("fotomotorw", "fotomoto_buy_prints"));
-    $link_options["fotomoto_buy_cards"] = array(t("Buy Cards"), module::get_var("fotomotorw", "fotomoto_buy_cards"));
-    $link_options["fotomoto_buy_download"] = array(t("Download"), module::get_var("fotomotorw", "fotomoto_buy_download"));
-    $link_options["fotomoto_share_ecard"] = array(t("Send eCard"), module::get_var("fotomotorw", "fotomoto_share_ecard"));
-    $link_options["fotomoto_share_facebook"] = array(t("Share on Facebook"), module::get_var("fotomotorw", "fotomoto_share_facebook"));
-    $link_options["fotomoto_share_twitter"] = array(t("Share on Twitter"), module::get_var("fotomotorw", "fotomoto_share_twitter"));
-    $link_options["fotomoto_share_digg"] = array(t("Share on Digg"), module::get_var("fotomotorw", "fotomoto_share_digg"));
+    $link_options["fotomoto_buy_prints"] = [t("Buy Prints"), module::get_var("fotomotorw", "fotomoto_buy_prints")];
+    $link_options["fotomoto_buy_cards"] = [t("Buy Cards"), module::get_var("fotomotorw", "fotomoto_buy_cards")];
+    $link_options["fotomoto_buy_download"] = [t("Download"), module::get_var("fotomotorw", "fotomoto_buy_download")];
+    $link_options["fotomoto_share_ecard"] = [t("Send eCard"), module::get_var("fotomotorw", "fotomoto_share_ecard")];
+    $link_options["fotomoto_share_facebook"] = [t("Share on Facebook"), module::get_var("fotomotorw", "fotomoto_share_facebook")];
+    $link_options["fotomoto_share_twitter"] = [t("Share on Twitter"), module::get_var("fotomotorw", "fotomoto_share_twitter")];
+    $link_options["fotomoto_share_digg"] = [t("Share on Digg"), module::get_var("fotomotorw", "fotomoto_share_digg")];
 
     // Turn the array into a series of checkboxes.
     $display_links_group->checklist("fotomoto_display_links")

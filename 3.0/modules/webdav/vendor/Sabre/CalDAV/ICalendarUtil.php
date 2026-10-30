@@ -21,7 +21,7 @@ class Sabre_CalDAV_ICalendarUtil {
      * @param array $allowedComponents 
      * @return bool 
      */
-    static function validateICalendarObject($icalData, array $allowedComponents) {
+    public static function validateICalendarObject($icalData, array $allowedComponents) {
 
         $xcal = simplexml_load_string(self::toXCal($icalData));
         if (!$xcal) throw new Sabre_CalDAV_Exception_InvalidICalendarObject('Invalid calendarobject format');
@@ -29,8 +29,8 @@ class Sabre_CalDAV_ICalendarUtil {
         $xcal->registerXPathNameSpace('cal','urn:ietf:params:xml:ns:xcal');
         
         // Check if there's only 1 component
-        $components = array('vevent','vtodo','vjournal','vfreebusy');
-        $componentsFound = array();
+        $components = ['vevent','vtodo','vjournal','vfreebusy'];
+        $componentsFound = [];
 
         foreach($components as $component) {
             $test = $xcal->xpath('/cal:iCalendar/cal:vcalendar/cal:' . $component);
@@ -74,19 +74,19 @@ class Sabre_CalDAV_ICalendarUtil {
      * @param string $icalData 
      * @return string. 
      */
-    static function toXCAL($icalData) {
+    public static function toXCAL($icalData) {
 
         // Detecting line endings
         $lb="\r\n";
-        if (strpos($icalData,"\r\n")!==false) $lb = "\r\n";
-        elseif (strpos($icalData,"\n")!==false) $lb = "\n";
+        if (str_contains($icalData,"\r\n")) $lb = "\r\n";
+        elseif (str_contains($icalData,"\n")) $lb = "\n";
 
         // Splitting up items per line
         $lines = explode($lb,$icalData);
 
         // Properties can be folded over 2 lines. In this case the second
         // line will be preceeded by a space or tab.
-        $lines2 = array();
+        $lines2 = [];
         foreach($lines as $line) {
 
             if (!$line) continue;
@@ -105,7 +105,7 @@ class Sabre_CalDAV_ICalendarUtil {
         $spaces = 2;
         foreach($lines2 as $line) {
 
-            $matches = array();
+            $matches = [];
             // This matches PROPERTYNAME;ATTRIBUTES:VALUE
             if (!preg_match('/^([^:^;]*)(?:;([^:]*))?:(.*)$/',$line,$matches))
                 continue;
@@ -134,7 +134,7 @@ class Sabre_CalDAV_ICalendarUtil {
                 $attributes = explode(';',$attributes);
                 foreach($attributes as $att) {
   
-                    list($attName,$attValue) = explode('=',$att,2);
+                    [$attName, $attValue] = explode('=',$att,2);
                     $attName = strtolower($attName);
                     if ($attName === 'language') $attName='xml:lang';
                     $xml.=' ' . $attName . '="' . htmlspecialchars($attValue) . '"';

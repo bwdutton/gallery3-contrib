@@ -18,25 +18,25 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class metadescription_installer {
-  static function install() {
+  public static function install() {
     // Set the module's version number.
     module::set_version("metadescription", 1);
   }
 
-  static function deactivate() {
+  public static function deactivate() {
   // Clear the require tags message when metadescription is deactivated.
     site_status::clear("metadescription_needs_tag");
   }
 
-  static function can_activate() {
-    $messages = array();
+  public static function can_activate() {
+    $messages = [];
     if (!module::is_active("tag")) {
       $messages["warn"][] = t("The MetaDescription module requires the Tags module.");
     }
     return $messages;
   }
 
-  static function uninstall() {
+  public static function uninstall() {
     module::delete("metadescription");
   }
 }

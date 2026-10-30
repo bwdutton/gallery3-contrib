@@ -18,10 +18,10 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-$config["Cache"] = array(
+$config["Cache"] = [
   "SerializerPath" => TMPPATH
-);
+];
 
-$config["Attr"] = array(
+$config["Attr"] = [
   "EnableID" => true
-);
+];

@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class photoannotation_installer {
-  static function install() {
+  public static function install() {
     // Create a table to store face coordinates in.
     $db = Database::instance();
     $db->query("CREATE TABLE IF NOT EXISTS {items_faces} (
@@ -69,7 +69,7 @@ class photoannotation_installer {
     module::set_version("photoannotation", 4);
   }
 
-  static function upgrade($version) {
+  public static function upgrade($version) {
     if ($version == 1) { 
       module::set_version("photoannotation", $version = 2);
     }
@@ -101,13 +101,13 @@ class photoannotation_installer {
     }
   }
 
-  static function deactivate() {
+  public static function deactivate() {
   // Clear the require tags message when photoannotation is deactivated.
     site_status::clear("photoannotation_needs_tag");
     site_status::clear("photoannotation_incompatibility_tagfaces");
    }
 
-  static function uninstall() {
+  public static function uninstall() {
     // Delete the face table before uninstalling.
     $db = Database::instance();
     $db->query("DROP TABLE IF EXISTS {items_faces};");

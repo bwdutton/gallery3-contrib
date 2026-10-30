@@ -17,6 +17,6 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class movie_overlay_Controller extends Controller {
-  static function get_duration_manual() {
+  public static function get_duration_manual() {
   }
 }

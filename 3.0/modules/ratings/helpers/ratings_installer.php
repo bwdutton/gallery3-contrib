@@ -19,7 +19,7 @@
  */
 class ratings_installer {
 
-  static function install() {
+  public static function install() {
 
 /** UNTIL RELEASED LET'S CLEAN UP EVERYTHING **/
 $clearit = "";
@@ -102,7 +102,7 @@ dir::unlink(VARPATH . "modules/ratings");
       ->execute();
   }
 
-  static function upgrade($version) {
+  public static function upgrade($version) {
     if($version < 16) {
       $db = Database::instance();
       $db->query("ALTER TABLE `ratings` ADD `userid` INT( 9 ) NOT NULL AFTER `rating`");

@@ -19,7 +19,7 @@
  */
 
 class minislideshow_theme_Core {
-  static function head($theme) {
+  public static function head($theme) {
     return $theme->css("minislideshow_menu.css");
   }
 }

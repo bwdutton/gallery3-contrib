@@ -30,7 +30,7 @@ class Admin_Date_Tag_Controller extends Admin_Controller {
   }
 
   private function _get_form() {
-    $form = new Forge("admin/date_tag", "", "post", array("id" => "g-admin-date_tag-form"));
+    $form = new Forge("admin/date_tag", "", "post", ["id" => "g-admin-date_tag-form"]);
 
     $group = $form->group("date_tag")->label(t("Default Tag (php's <a href=\"http://php.net/manual/en/function.date.php\">date() format</a>)"));
 

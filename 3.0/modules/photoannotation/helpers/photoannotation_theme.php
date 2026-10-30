@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class photoannotation_theme_Core {
-  static function head($theme) {
+  public static function head($theme) {
     $theme->css("photoannotation.css");
     if ($theme->page_subtype == "photo") {
       $theme->script("jquery.annotate.js");
@@ -65,13 +65,13 @@ class photoannotation_theme_Core {
     }
   }
 
-  static function resize_bottom($theme) {
+  public static function resize_bottom($theme) {
     if ($theme->page_subtype == "photo") {
       return new View("photoannotation_highlight_block.html");
     }
   }
   
-  static function admin_head($theme) {
+  public static function admin_head($theme) {
     if (strpos($theme->content->kohana_filename, "admin_photoannotation.html.php")) {
       $theme->css("colorpicker.css");
       $theme->script("jquery.colorpicker.min.js");

@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class downloadfullsize_event_Core {
-  static function photo_menu($menu, $theme) {
+  public static function photo_menu($menu, $theme) {
     if (access::can("view_full", $theme->item)) {
       if (module::get_var("downloadfullsize", "fButton")) {
         $downloadLink = url::site("downloadfullsize/send/{$theme->item->id}");
@@ -32,7 +32,7 @@ class downloadfullsize_event_Core {
     }
   }
 
-  static function movie_menu($menu, $theme) {
+  public static function movie_menu($menu, $theme) {
     if (access::can("view_full", $theme->item)) {
       if (module::get_var("downloadfullsize", "fButton")) {
         $downloadLink = url::site("downloadfullsize/send/{$theme->item->id}");
@@ -46,7 +46,7 @@ class downloadfullsize_event_Core {
     }
   }
 
-  static function admin_menu($menu, $theme) {
+  public static function admin_menu($menu, $theme) {
     $menu->get("settings_menu")
       ->append(Menu::factory("link")
                ->id("downloadfullsize")

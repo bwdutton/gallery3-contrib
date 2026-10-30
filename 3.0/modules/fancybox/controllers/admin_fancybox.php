@@ -16,7 +16,7 @@ class Admin_fancybox_Controller extends Admin_Controller {
         endif;
       endif;
     else:
-      $settings = array();
+      $settings = [];
     endif;
     module::set_var("fancybox", "settings", serialize($settings));
   }
@@ -137,7 +137,7 @@ class Admin_fancybox_Controller extends Admin_Controller {
       fwrite($Handle, "$(document).ready(function() {\n");
 
       $targets = explode(";", $target);
-      foreach($targets as $key => $value):
+      foreach($targets as $value):
         $this->newline = false;
         fwrite($Handle, "  $(\"$value\").fancybox({\n");
 
@@ -207,7 +207,7 @@ class Admin_fancybox_Controller extends Admin_Controller {
   }
 
   private function _get_setting_form() {
-    $form = new Forge("admin/fancybox/save", "", "post", array("id" => "g-admin-fancybox-form"));
+    $form = new Forge("admin/fancybox/save", "", "post", ["id" => "g-admin-fancybox-form"]);
 
     $group = $form->group("g_fancybox_appearance")->label(t("Appearance Settings"));
     $group->input("target")
@@ -231,22 +231,22 @@ class Admin_fancybox_Controller extends Admin_Controller {
       ->value($this->read_item_state("overlayColor", "#666"));
     $group->dropdown("overlay_opacity")
       ->label(t("Overlay Opacity (default: 0.3)"))
-      ->options(array("0" => t("0 (transparent)"), "0.1" => "0.1", "0.2" => "0.2", "0.3" => t("0.3 (default)"), "0.4" => "0.4", "0.5" => "0.5", "0.6" => "0.6", "0.7" => "0.7", "0.8" => "0.8", "0.9" => "0.9", "1" => t("1 (opaque)")))
+      ->options(["0" => t("0 (transparent)"), "0.1" => "0.1", "0.2" => "0.2", "0.3" => t("0.3 (default)"), "0.4" => "0.4", "0.5" => "0.5", "0.6" => "0.6", "0.7" => "0.7", "0.8" => "0.8", "0.9" => "0.9", "1" => t("1 (opaque)")])
       ->selected($this->read_item_state("overlayOpacity", "0.3"));
     $group->dropdown("title_position")
       ->label(t("Title Position (default: Outside)"))
-      ->options(array("default" => t("Outside (default)"), "inside" => t("Inside"), "over" => t("Overlay"), "over_dynamic" => t("Overlay (Dynamic)"), "hide" => t("Hide")))
+      ->options(["default" => t("Outside (default)"), "inside" => t("Inside"), "over" => t("Overlay"), "over_dynamic" => t("Overlay (Dynamic)"), "hide" => t("Hide")])
       ->selected($this->read_item_state("titlePosition", "default"));
 
     $group = $form->group("g_fancybox_animation")->label(t("Animation Settings"));
 
     $group->dropdown("transitionin")
       ->label(t("Transition In (default: Fade)"))
-      ->options(array("default" => t("Fade (default)"), "elastic" => t("Elastic"), "none" => t("None")))
+      ->options(["default" => t("Fade (default)"), "elastic" => t("Elastic"), "none" => t("None")])
       ->selected($this->read_item_state("transitionIn", "default"));
     $group->dropdown("transitionout")
       ->label(t("Transition Out (default: Fade)"))
-      ->options(array("default" => t("Fade (default)"), "elastic" => t("Elastic"), "none" => t("None")))
+      ->options(["default" => t("Fade (default)"), "elastic" => t("Elastic"), "none" => t("None")])
       ->selected($this->read_item_state("transitionOut", "default"));
     $group->input("speed_in")
       ->label(t("Speed In (default: 300)"))

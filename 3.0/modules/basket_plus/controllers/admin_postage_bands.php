@@ -58,9 +58,9 @@ class Admin_Postage_Bands_Controller extends Controller
         );
 
       $postage->save();
-      message::success(t("Created postage band %postage_name", array(
-        "postage_name" => html::clean($postage->name))));
-      print json::reply(array("result" => "success"));
+      message::success(t("Created postage band %postage_name", [
+        "postage_name" => html::clean($postage->name)]));
+      print json::reply(["result" => "success"]);
     } else {
       print $form;
     }
@@ -90,10 +90,10 @@ class Admin_Postage_Bands_Controller extends Controller
       print $form;
     }
 
-    $message = t("Deleted user %postage_band", array("postage_band" => html::clean($name)));
+    $message = t("Deleted user %postage_band", ["postage_band" => html::clean($name)]);
     log::success("user", $message);
     message::success($message);
-    print json::reply(array("result" => "success"));
+    print json::reply(["result" => "success"]);
   }
 
   public function edit_postage_band($id) {
@@ -124,8 +124,8 @@ class Admin_Postage_Bands_Controller extends Controller
       $postage->via_download = $form->edit_postage->via_download->checked;
       $postage->save();
 
-      message::success(t("Changed postage band %postage_name",array("postage_name" => html::clean($postage->name))));
-      print json::reply(array("result" => "success"));
+      message::success(t("Changed postage band %postage_name",["postage_name" => html::clean($postage->name)]));
+      print json::reply(["result" => "success"]);
     } else {
       print $form;
     }

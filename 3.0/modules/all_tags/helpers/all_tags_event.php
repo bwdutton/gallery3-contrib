@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class all_tags_event_Core {
-	static function site_menu($menu, $theme) {
+	public static function site_menu($menu, $theme) {
 		if (module::get_var("all_tags", "hidden")  != true) {
     		$menu->add_after("home", Menu::factory("link")
                 ->id("all_tags")

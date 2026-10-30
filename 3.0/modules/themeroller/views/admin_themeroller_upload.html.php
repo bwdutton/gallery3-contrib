@@ -36,7 +36,7 @@
 </script>
 <div id="g-admin-themeroller">
   <h1><?= t("Upload themeroller archive") ?></h1>
-  <?= form::open($action, array("method" => "get", "id" => "g-themeroller-form")) ?>
+  <?= form::open($action, ["method" => "get", "id" => "g-themeroller-form"]) ?>
     <fieldset>
       <ul>
         <li><?= access::csrf_form_field() ?></li>
@@ -47,14 +47,14 @@
         <?php endif ?>
         <li><span><?= t("Upload and generate theme") ?></span></li>
         <li>
-          <?= form::checkbox(array("name" => "is_admin",
-                                   "id" => "g-themeroller-is-admin")) ?>
+          <?= form::checkbox(["name" => "is_admin",
+                                   "id" => "g-themeroller-is-admin"]) ?>
           <?= form::label("is_admin", t("Generate an admin theme")) ?>
         </li>
         <li>
-          <?= form::upload(array("name" => "zip_file",
+          <?= form::upload(["name" => "zip_file",
                                  "id" => "g-themeroller-zip",
-                                 "accept" => "application/zip, multipart/x-zip")) ?>
+                                 "accept" => "application/zip, multipart/x-zip"]) ?>
           <span style="z-index: 1">
           <button type="submit"
                id="g-generate-theme"

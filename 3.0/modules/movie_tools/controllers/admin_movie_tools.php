@@ -55,7 +55,7 @@ class Admin_Movie_Tools_Controller extends Admin_Controller {
   }
 
   private function _get_admin_form() {
-    $form = new Forge("admin/movie_tools/save", "", "post", array("id" => "g-movie-tools-admin-form"));
+    $form = new Forge("admin/movie_tools/save", "", "post", ["id" => "g-movie-tools-admin-form"]);
 
     $formats = movie_tools::get_formats();
     $settings_formats = $form->group("formats")->label(t("Movie format supported"));
@@ -66,7 +66,7 @@ class Admin_Movie_Tools_Controller extends Admin_Controller {
     }
     $settings_formats->input("custom_formats")
       ->label(t("Additional movie formats (enter using the same formatting as the table above)"))
-      ->callback(array($this, "_validate_custom_formats"))
+      ->callback($this->_validate_custom_formats(...))
       ->error_messages("valid_custom_formats", t("You must enter valid formats like the examples in the table"))
       ->value(movie_tools::formats_json_to_string(module::get_var("movie_tools", "custom_formats", "")));
 
@@ -74,7 +74,7 @@ class Admin_Movie_Tools_Controller extends Admin_Controller {
     $settings_thumbs->input("extract_frame_time")
       ->label(t("Seconds from start of movie at which thumbnails are extracted (default: 3)"))
       ->rules("required|valid_numeric")
-      ->callback(array($this, "_validate_extract_frame_time"))
+      ->callback($this->_validate_extract_frame_time(...))
       ->error_messages("required", t("You must enter a number"))
       ->error_messages("valid_numeric", t("You must enter a number"))
       ->error_messages("valid_min", t("The value cannot be negative"))
@@ -84,13 +84,13 @@ class Admin_Movie_Tools_Controller extends Admin_Controller {
     return $form;
   }
 
-  function _validate_extract_frame_time($input) {
+  public function _validate_extract_frame_time($input) {
     if ($input->value < 0) {
       $input->add_error("valid_min", true);
     }
   }
 
-  function _validate_custom_formats($input) {
+  public function _validate_custom_formats($input) {
     if ($input->value && !movie_tools::formats_string_to_array($input->value)) {
       // Input isn't empty, but doesn't parse correctly - it's invalid.
       $input->add_error("valid_custom_formats", true);

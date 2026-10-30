@@ -79,19 +79,19 @@ class Admin_EmbedLinks_Controller extends Admin_Controller {
   private function _get_admin_form() {
     // Make a new Form.
     $form = new Forge("admin/embedlinks/saveprefs", "", "post",
-                      array("id" => "g-embed-links-adminForm"));
+                      ["id" => "g-embed-links-adminForm"]);
 
     // Make an array for the different types of link codes.
-    $linkCodes["HTMLCode"] = array(t("Show HTML Links"), module::get_var("embedlinks", "HTMLCode"));
-    $linkCodes["BBCode"] = array(t("Show BBCode Links"), module::get_var("embedlinks", "BBCode"));
-    $linkCodes["FullURL"] = array(t("Show the full URL"), module::get_var("embedlinks", "FullURL"));
+    $linkCodes["HTMLCode"] = [t("Show HTML Links"), module::get_var("embedlinks", "HTMLCode")];
+    $linkCodes["BBCode"] = [t("Show BBCode Links"), module::get_var("embedlinks", "BBCode")];
+    $linkCodes["FullURL"] = [t("Show the full URL"), module::get_var("embedlinks", "FullURL")];
 
     // Make an array for the different methods of displaying the links.
-    $linkDisplays["InPageLinks"] = array(t("Show Links In The Actual Page"), module::get_var("embedlinks", "InPageLinks"));
+    $linkDisplays["InPageLinks"] = [t("Show Links In The Actual Page"), module::get_var("embedlinks", "InPageLinks")];
 
     // Make an array for the different methods of displaying the links.
-    $linkDisplays["InPageLinks"] = array(t("Show Links In The Actual Page"), module::get_var("embedlinks", "InPageLinks"));
-    $linkDisplays["ToolbarLinks"] = array(t("Display toolbar image for HTML/BBCode/URLs links"), module::get_var("embedlinks", "ToolbarLinks"));
+    $linkDisplays["InPageLinks"] = [t("Show Links In The Actual Page"), module::get_var("embedlinks", "InPageLinks")];
+    $linkDisplays["ToolbarLinks"] = [t("Display toolbar image for HTML/BBCode/URLs links"), module::get_var("embedlinks", "ToolbarLinks")];
 
     // Setup a few checkboxes on the form.
     $add_links = $form->group("EmbedLinks");

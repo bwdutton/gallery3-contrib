@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class proofsheet_theme {
-  static function head($theme) {
+  public static function head($theme) {
     return $theme->css("proofsheet_menu.css");
   }
 }

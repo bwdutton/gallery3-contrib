@@ -59,7 +59,7 @@ class Sabre_DAV_Auth_PrincipalCollection extends Sabre_DAV_Directory {
      */
     public function getChildren() {
 
-        $children = array();
+        $children = [];
         foreach($this->authBackend->getUsers() as $principalInfo) {
 
             $principalUri = $principalInfo['uri'] . '/';

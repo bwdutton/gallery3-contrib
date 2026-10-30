@@ -19,7 +19,7 @@ class Sabre_DAV_Property_SupportedReportSet extends Sabre_DAV_Property {
      * 
      * @var array
      */
-    protected $reports = array();
+    protected $reports = [];
 
     /**
      * Creates the property
@@ -50,7 +50,7 @@ class Sabre_DAV_Property_SupportedReportSet extends Sabre_DAV_Property {
      */
     public function addReport($report) {
 
-        if (!is_array($report)) $report = array($report);
+        if (!is_array($report)) $report = [$report];
 
         foreach($report as $r) {
 
@@ -95,7 +95,7 @@ class Sabre_DAV_Property_SupportedReportSet extends Sabre_DAV_Property {
             
             list(, $namespace, $element) = $matches;
        
-            $prefix = isset($server->xmlNamespaces[$namespace])?$server->xmlNamespaces[$namespace]:null;
+            $prefix = $server->xmlNamespaces[$namespace] ?? null;
 
             if ($prefix) {
                 $report->appendChild($prop->ownerDocument->createElement($prefix . ':' . $element));

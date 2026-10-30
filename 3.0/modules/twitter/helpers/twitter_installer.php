@@ -19,7 +19,7 @@
  */
 class twitter_installer {
 
-  static function install() {
+  public static function install() {
     Database::instance()
       ->query("CREATE TABLE {twitter_tweets} (
                 `id` int(9) NOT NULL AUTO_INCREMENT,
@@ -44,7 +44,7 @@ class twitter_installer {
     twitter::reset_default_tweet();
   }
 
-  static function deactivate() {
+  public static function deactivate() {
     site_status::clear("twitter_config");
   }
 }

@@ -46,7 +46,7 @@ class Admin_ecard_Controller extends Admin_Controller {
   }
 
   private function _get_admin_form() {
-    $form = new Forge("admin/ecard/save", "", "post", array("id" => "g-ecard-admin-form"));
+    $form = new Forge("admin/ecard/save", "", "post", ["id" => "g-ecard-admin-form"]);
     $ecard_settings = $form->group("ecard")->label(t("eCard settings"));
     $ecard_settings->input("sender")
       ->label(t("E-mail sender (leave blank for a user-defined address)"))
@@ -69,13 +69,13 @@ class Admin_ecard_Controller extends Admin_Controller {
 	}
 	$ecard_settings->dropdown("access_permissions")
       ->label(t("Who can send eCards?"))
-      ->options(array("everybody" => t("Everybody"),
-                      "registered_users" => t("Only registered users")))
+      ->options(["everybody" => t("Everybody"),
+                      "registered_users" => t("Only registered users")])
       ->selected(module::get_var("ecard", "access_permissions"));
     $ecard_settings->dropdown("location")
       ->label(t("Where should the eCard link be displayed?"))
-      ->options(array("top" => t("At the top of the sidebar as an icon"),
-                      "sidebar" => t("In the sidebar as a button")))
+      ->options(["top" => t("At the top of the sidebar as an icon"),
+                      "sidebar" => t("In the sidebar as a button")])
       ->selected(module::get_var("ecard", "location"));
     $ecard_settings->submit("save")->value(t("Save"));
     return $form;

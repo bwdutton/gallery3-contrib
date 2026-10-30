@@ -24,7 +24,7 @@ class Admin_register_Controller extends Admin_Controller {
     if ($count == 0) {
       site_status::clear("pending_user_registrations");
     }
-    list ($form, $errors) = $this->_get_form();
+    [$form, $errors] = $this->_get_form();
     print $this->_get_admin_view($form, $errors);
   }
 
@@ -33,12 +33,12 @@ class Admin_register_Controller extends Admin_Controller {
 
     $post = new Validation($_POST);
     $post->add_rules("policy", "required");
-    $post->add_rules("group", array($this, "passthru"));
-    $post->add_rules("email_verification", array($this, "passthru"));
+    $post->add_rules("group", $this->passthru(...));
+    $post->add_rules("email_verification", $this->passthru(...));
     // added Shad Laws, v2
-    $post->add_rules("admin_notify", array($this, "passthru"));
-    $post->add_rules("subject_prefix", array($this, "passthru"));
-    $group_list = array();
+    $post->add_rules("admin_notify", $this->passthru(...));
+    $post->add_rules("subject_prefix", $this->passthru(...));
+    $group_list = [];
     if ($post->validate()) {
       module::set_var("registration", "policy", $post->policy);
       module::set_var("registration", "default_group", $post->group);
@@ -51,7 +51,7 @@ class Admin_register_Controller extends Admin_Controller {
 
       url::redirect("admin/register");
     } else {
-      list ($form, $errors) = $this->_get_form();
+      [$form, $errors] = $this->_get_form();
       $form = array_merge($form, $post->as_array());
       $errors = array_merge($errors, $post->errors());
       print $this->_get_admin_view($form, $errors);
@@ -71,14 +71,14 @@ class Admin_register_Controller extends Admin_Controller {
     $post->add_rules("activate_users", "required");
     $post->add_rules("activate", "alpha_numeric");
     if ($post->validate()) {
-      $names = array();
+      $names = [];
       if (!empty($post->activate)) {
         foreach ($post->activate as $id) {
           $user = register::create_new_user($id);
           $names[] = $user->name;
         }
 
-        message::success(t("Activated %users.", array("users" => implode(", ", $names))));
+        message::success(t("Activated %users.", ["users" => implode(", ", $names)]));
       }
 
       $count = ORM::factory("pending_user")
@@ -91,7 +91,7 @@ class Admin_register_Controller extends Admin_Controller {
       url::redirect("admin/register");
     }
 
-    list ($form, $errors) = $this->_get_form();
+    [$form, $errors] = $this->_get_form();
     $form = array_merge($form, $post->as_array());
     $errors = array_merge($errors, $post->errors());
     print $this->_get_admin_view($form, $errors);
@@ -103,11 +103,11 @@ class Admin_register_Controller extends Admin_Controller {
     $v->content = new View("admin_register.html");
     $v->content->action = "admin/register/update";
     $v->content->policy_list =
-      array("admin_only" => t("Only site administrators can create new user accounts."),
+      ["admin_only" => t("Only site administrators can create new user accounts."),
             "visitor" =>
                t("Visitors can create accounts and no administrator approval is required."),
             "admin_approval" =>
-               t("Visitors can create accounts but administrator approval is required."));
+               t("Visitors can create accounts but administrator approval is required.")];
     $admin = identity::admin_user();
     $v->content->disable_email =
       empty($admin->email) || $form["policy"] == "admin_only" ? "disabled" : "";
@@ -121,17 +121,17 @@ class Admin_register_Controller extends Admin_Controller {
       module::set_var("registration", "admin_notify", false);
     }
 
-    $v->content->group_list = array();
+    $v->content->group_list = [];
     foreach (identity::groups() as $group) {
       if ($group->id != identity::everybody()->id &&
           $group->id != identity::registered_users()->id) {
         $v->content->group_list[$group->id] = $group->name;
       }
     }
-    $hidden = array("name" => "csrf", "value" => access::csrf_token());
+    $hidden = ["name" => "csrf", "value" => access::csrf_token()];
     if (count($v->content->group_list)) {
       $v->content->group_list =
-        array("" => t("Choose the default group")) + $v->content->group_list;
+        ["" => t("Choose the default group")] + $v->content->group_list;
     } else {
       $hidden["group"] = "";
     }
@@ -144,14 +144,14 @@ class Admin_register_Controller extends Admin_Controller {
   }
 
   private function _get_form() {
-    $form = array("policy" => module::get_var("registration", "policy"),
+    $form = ["policy" => module::get_var("registration", "policy"),
                   "group" => module::get_var("registration", "default_group"),
                   "email_verification" => module::get_var("registration", "email_verification"),
                   // added Shad Laws, v2
                   "subject_prefix" => module::get_var("registration", "subject_prefix"),
-                  "admin_notify" => module::get_var("registration", "admin_notify"));
+                  "admin_notify" => module::get_var("registration", "admin_notify")];
     $errors = array_fill_keys(array_keys($form), "");
 
-    return array($form, $errors);
+    return [$form, $errors];
   }
 }

@@ -22,24 +22,22 @@ class Gallery3_DAV_Cache {
   private static $instance;
 
   private function __construct() {
-    self::$cache = array();
+    self::$cache = [];
   }
 
   public static function instance() {
-    if (!isset(self::$instance)) {
-      self::$instance = new Gallery3_DAV_Cache();
-    }
+    self::$instance ??= new Gallery3_DAV_Cache();
     return self::$instance;
   }
 
   private function encode_path($path) {
     $path = trim($path, "/");
-    $encoded_array = array();
+    $encoded_array = [];
     foreach (explode("/", $path) as $part) {
       $encoded_array[] = rawurlencode($part);
     }
 
-    return join("/", $encoded_array);
+    return implode("/", $encoded_array);
   }
 
   public function to_album($path) {
@@ -51,12 +49,10 @@ class Gallery3_DAV_Cache {
     $path = trim($path, "/");
     $path = $this->encode_path($path);
 
-    if (!isset(self::$cache[$path])) {
-      self::$cache[$path] = ORM::factory("item")
-        ->viewable()
-        ->where("relative_path_cache", "=", $path)
-        ->find();
-    }
+    self::$cache[$path] ??= ORM::factory("item")
+      ->viewable()
+      ->where("relative_path_cache", "=", $path)
+      ->find();
 
     return self::$cache[$path];
   }

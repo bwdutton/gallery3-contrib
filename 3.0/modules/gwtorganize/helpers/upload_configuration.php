@@ -19,8 +19,8 @@
  */
 class upload_configuration_Core {
 
-  static function get_configure_form() {
-    $form = new Forge("admin/upload_configure", "", "post", array("id" => "gConfigureForm"));
+  public static function get_configure_form() {
+    $form = new Forge("admin/upload_configure", "", "post", ["id" => "gConfigureForm"]);
     $group = $form->group("configure")->label(t("Configure Upload Options"));
     $group->checkbox("resize")->label(t("Resize before upload"))->id("gResize");
     $group->input("max_width")->label(t("Max Width"))->id("gMaxWidth");
@@ -29,13 +29,13 @@ class upload_configuration_Core {
     return $form;
   }
 
-  static function populateForm($form){
+  public static function populateForm($form){
       $form->configure->resize->checked(upload_configuration::isResize());
       $form->configure->max_width->value(upload_configuration::getMaxWidth());
       $form->configure->max_height->value(upload_configuration::getMaxHeight());
   }
 
-  static function extractForm($form){
+  public static function extractForm($form){
       $resize = $form->configure->resize->value;
       $max_width = $form->configure->max_width->value;
       $max_height= $form->configure->max_height->value;
@@ -44,27 +44,27 @@ class upload_configuration_Core {
       upload_configuration::setMaxHeight($max_height);
   }
 
-  static function isResize(){
+  public static function isResize(){
     return module::get_var("gwtorganise","resize");
   }
 
-  static function getMaxWidth(){
+  public static function getMaxWidth(){
     return intval(module::get_var("gwtorganise","max_width"));
   }
 
-  static function getMaxHeight(){
+  public static function getMaxHeight(){
     return intval(module::get_var("gwtorganise","max_height"));
   }
 
-  static function setResize($isResize){
+  public static function setResize($isResize){
     module::set_var("gwtorganise","resize",$isResize);
   }
 
-  static function setMaxWidth($max_width){
+  public static function setMaxWidth($max_width){
     module::set_var("gwtorganise","max_width",$max_width);
   }
 
-  static function setMaxHeight($max_height){
+  public static function setMaxHeight($max_height){
     module::set_var("gwtorganise","max_height",$max_height);
   }
 }

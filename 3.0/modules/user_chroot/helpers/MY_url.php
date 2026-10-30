@@ -33,7 +33,7 @@ class url extends url_G3 {
   /**
    * Add the chroot path at the begining of the requested URI
    */
-  static function parse_url() {
+  public static function parse_url() {
     if( user_chroot::album() ) {
       if( Router::$controller == 'albums' && Router::$current_uri == '' ) {
         // Root album requested
@@ -52,7 +52,7 @@ class url extends url_G3 {
   /**
    * Remove the chroot part of the URI.
    */
-  static function site($uri = '', $protocol = FALSE) {
+  public static function site($uri = '', $protocol = FALSE) {
     if( user_chroot::album() ) {
       $uri = preg_replace('#^'.user_chroot::album()->relative_url().'#', '', $uri);
     }

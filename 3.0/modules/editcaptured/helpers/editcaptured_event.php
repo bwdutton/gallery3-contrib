@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class editcaptured_event_Core {
-  static function item_edit_form($item, $form) {
+  public static function item_edit_form($item, $form) {
     // Add a couple of drop-down boxes to allow the user to edit the date
     // that $item was captured.	  
 
@@ -43,11 +43,11 @@ class editcaptured_event_Core {
 
     // Depending on wheather there are child items or not, we generate the dropdown options
     if ($first_child) {
-      $dateoptions = array("selected" => t("Selected Date"),
+      $dateoptions = ["selected" => t("Selected Date"),
 			   "oldest" => t("Date of oldest Child"),
 			   "youngest" => t("Date of youngest Child"),
 			   "now" => t("Current Date"),
-			   "remove" => t("Remove Date"));
+			   "remove" => t("Remove Date")];
       
       // If there are child items with captured date, we preset the date field with the oldest item
       if (!$item->captured && $first_child) {
@@ -55,9 +55,9 @@ class editcaptured_event_Core {
         $dateoptions_preselect = "oldest";
       }
     } else {
-      $dateoptions = array("selected" => t("Selected Date"),
+      $dateoptions = ["selected" => t("Selected Date"),
 			   "now" => t("Current Date"),
-			   "remove" => t("Remove Date"));
+			   "remove" => t("Remove Date")];
     }
     
     // Add captured date field to the form
@@ -81,7 +81,7 @@ class editcaptured_event_Core {
     }
   }
 
-  static function item_edit_form_completed($item, $form) {
+  public static function item_edit_form_completed($item, $form) {
     // Change the item's captured field to the specified value.
   
     // We don't want to change the root element, so check for that

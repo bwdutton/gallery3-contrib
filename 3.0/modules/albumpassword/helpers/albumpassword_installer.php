@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class albumpassword_installer {
-  static function install() {
+  public static function install() {
     // Create a table to store passwords in.
     $db = Database::instance();
     $db->query("CREATE TABLE IF NOT EXISTS {items_albumpasswords} (
@@ -43,7 +43,7 @@ class albumpassword_installer {
     module::set_version("albumpassword", 3);
   }
 
-  static function upgrade($version) {
+  public static function upgrade($version) {
     $db = Database::instance();
     if ($version == 1) {
       // Set the default value for this module's behavior.
@@ -62,7 +62,7 @@ class albumpassword_installer {
     }
   }
 
-  static function uninstall() {
+  public static function uninstall() {
     // Delete the password table before uninstalling.
     $db = Database::instance();
     $db->query("DROP TABLE IF EXISTS {items_albumpasswords};");

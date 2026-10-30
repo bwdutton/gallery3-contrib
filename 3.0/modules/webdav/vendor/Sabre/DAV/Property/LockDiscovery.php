@@ -14,31 +14,23 @@
 class Sabre_DAV_Property_LockDiscovery extends Sabre_DAV_Property {
 
     /**
-     * locks 
-     * 
-     * @var array 
-     */
-    public $locks;
- 
-    /**
-     * Should we show the locktoken as well? 
-     * 
-     * @var bool 
-     */
-    public $revealLockToken;
-
-    /**
      * __construct 
      * 
      * @param array $locks 
      * @param bool $revealLockToken 
      * @return void
      */
-    public function __construct($locks,$revealLockToken = false) {
-
-        $this->locks = $locks;
-        $this->revealLockToken = $revealLockToken;
-
+    public function __construct(
+        /**
+         * locks
+         */
+        public $locks,
+        /**
+         * Should we show the locktoken as well?
+         */
+        public $revealLockToken = false
+    )
+    {
     }
 
     /**

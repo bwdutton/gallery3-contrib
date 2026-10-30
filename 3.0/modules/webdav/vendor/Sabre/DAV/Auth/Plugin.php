@@ -25,31 +25,23 @@ class Sabre_DAV_Auth_Plugin extends Sabre_DAV_ServerPlugin {
     private $server;
 
     /**
-     * Authentication backend
-     * 
-     * @var Sabre_DAV_Auth_Backend_Abstract 
-     */
-    private $authBackend;
-
-    /**
-     * The authentication realm. 
-     * 
-     * @var string 
-     */
-    private $realm;
-
-    /**
      * __construct 
      * 
      * @param Sabre_DAV_Auth_Backend_Abstract $authBackend 
      * @param string $realm 
      * @return void
      */
-    public function __construct(Sabre_DAV_Auth_Backend_Abstract $authBackend, $realm) {
-
-        $this->authBackend = $authBackend;
-        $this->realm = $realm;
-
+    public function __construct(
+        /**
+         * Authentication backend
+         */
+        private readonly Sabre_DAV_Auth_Backend_Abstract $authBackend,
+        /**
+         * The authentication realm.
+         */
+        private $realm
+    )
+    {
     }
 
     /**
@@ -61,9 +53,9 @@ class Sabre_DAV_Auth_Plugin extends Sabre_DAV_ServerPlugin {
     public function initialize(Sabre_DAV_Server $server) {
 
         $this->server = $server;
-        $this->server->subscribeEvent('beforeMethod',array($this,'beforeMethod'),10);
-        $this->server->subscribeEvent('afterGetProperties',array($this,'afterGetProperties'));
-        $this->server->subscribeEvent('report',array($this,'report'));
+        $this->server->subscribeEvent('beforeMethod',[$this,'beforeMethod'],10);
+        $this->server->subscribeEvent('afterGetProperties',[$this,'afterGetProperties']);
+        $this->server->subscribeEvent('report',[$this,'report']);
 
     }
 
@@ -90,9 +82,9 @@ class Sabre_DAV_Auth_Plugin extends Sabre_DAV_ServerPlugin {
             unset($properties[404]['{DAV:}principal-collection-set']);
         }
         if (array_key_exists('{DAV:}supported-report-set', $properties[200])) {
-            $properties[200]['{DAV:}supported-report-set']->addReport(array(
+            $properties[200]['{DAV:}supported-report-set']->addReport([
                 '{DAV:}expand-property',
-            ));
+            ]);
         }
 
 
@@ -200,7 +192,7 @@ class Sabre_DAV_Auth_Plugin extends Sabre_DAV_ServerPlugin {
      */
     protected function parseExpandPropertyReportRequest($node) {
 
-        $requestedProperties = array();
+        $requestedProperties = [];
         do {
 
             if (Sabre_DAV_XMLUtil::toClarkNotation($node)!=='{DAV:}property') continue;
@@ -211,7 +203,7 @@ class Sabre_DAV_Auth_Plugin extends Sabre_DAV_ServerPlugin {
 
             } else {
 
-                $children = array();
+                $children = [];
 
             }
 
@@ -239,7 +231,7 @@ class Sabre_DAV_Auth_Plugin extends Sabre_DAV_ServerPlugin {
 
         $foundProperties = $this->server->getPropertiesForPath($path,array_keys($requestedProperties),$depth);
 
-        $result = array();
+        $result = [];
 
         foreach($foundProperties as $node) {
 
@@ -254,7 +246,7 @@ class Sabre_DAV_Auth_Plugin extends Sabre_DAV_ServerPlugin {
                 if (!($node[200][$propertyName] instanceof Sabre_DAV_Property_IHref)) continue;
 
                 $href = $node[200][$propertyName]->getHref();
-                list($node[200][$propertyName]) = $this->expandProperties($href,$childRequestedProperties,0);
+                [$node[200][$propertyName]] = $this->expandProperties($href,$childRequestedProperties,0);
 
             }
             $result[] = new Sabre_DAV_Property_Response($path, $node);
@@ -267,10 +259,10 @@ class Sabre_DAV_Auth_Plugin extends Sabre_DAV_ServerPlugin {
 
     protected function principalSearchPropertySetReport(DOMDocument $dom) {
 
-        $searchProperties = array(
+        $searchProperties = [
             '{DAV:}displayname' => 'display name'
 
-        );
+        ];
 
         $httpDepth = $this->server->getHTTPDepth(0);
         if ($httpDepth!==0) {
@@ -333,23 +325,23 @@ class Sabre_DAV_Auth_Plugin extends Sabre_DAV_ServerPlugin {
 
     protected function principalPropertySearchReport($dom) {
 
-        $searchableProperties = array(
+        $searchableProperties = [
             '{DAV:}displayname' => 'display name'
 
-        );
+        ];
 
-        list($searchProperties, $requestedProperties) = $this->parsePrincipalPropertySearchReportRequest($dom);
+        [$searchProperties, $requestedProperties] = $this->parsePrincipalPropertySearchReportRequest($dom);
 
         $uri = $this->server->getRequestUri();
         
-        $result = array();
+        $result = [];
 
         $lookupResults = $this->server->getPropertiesForPath($uri, array_keys($searchProperties), 1);
 
         // The first item in the results is the parent, so we get rid of it.
         array_shift($lookupResults);
 
-        $matches = array();
+        $matches = [];
 
         foreach($lookupResults as $lookupResult) {
 
@@ -367,11 +359,11 @@ class Sabre_DAV_Auth_Plugin extends Sabre_DAV_ServerPlugin {
 
         }
 
-        $matchProperties = array();
+        $matchProperties = [];
 
         foreach($matches as $match) {
             
-           list($result) = $this->server->getPropertiesForPath($match, $requestedProperties, 0);
+           [$result] = $this->server->getPropertiesForPath($match, $requestedProperties, 0);
            $matchProperties[] = $result;
 
         }
@@ -390,7 +382,7 @@ class Sabre_DAV_Auth_Plugin extends Sabre_DAV_ServerPlugin {
             throw new Sabre_DAV_Exception_BadRequest('This report is only defined when Depth: 0');
         }
 
-        $searchProperties = array();
+        $searchProperties = [];
 
         // Parsing the search request
         foreach($dom->firstChild->childNodes as $searchNode) {
@@ -406,9 +398,8 @@ class Sabre_DAV_Auth_Plugin extends Sabre_DAV_ServerPlugin {
                 switch(Sabre_DAV_XMLUtil::toClarkNotation($childNode)) {
 
                     case '{DAV:}prop' :
-                        $property = Sabre_DAV_XMLUtil::parseProperties($searchNode);
-                        reset($property); 
-                        $propertyName = key($property);
+                        $property = Sabre_DAV_XMLUtil::parseProperties($searchNode); 
+                        $propertyName = array_key_first($property);
                         break;
 
                     case '{DAV:}match' :
@@ -427,7 +418,7 @@ class Sabre_DAV_Auth_Plugin extends Sabre_DAV_ServerPlugin {
 
         }
 
-        return array($searchProperties, array_keys(Sabre_DAV_XMLUtil::parseProperties($dom->firstChild)));
+        return [$searchProperties, array_keys(Sabre_DAV_XMLUtil::parseProperties($dom->firstChild))];
 
     }
 

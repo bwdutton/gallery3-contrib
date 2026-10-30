@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class item_links_event_Core {
-  static function item_edit_form($item, $form) {
+  public static function item_edit_form($item, $form) {
     // Create fields on the album edit screen to allow the user to link
     //   the item to another page.
 
@@ -36,12 +36,12 @@ class item_links_event_Core {
          ->value($existing_url);
   }
 
-  static function item_deleted($item) {
+  public static function item_deleted($item) {
     // Whenever an item is deleted, delete any corresponding data.
     db::build()->delete("item_links")->where("item_id", "=", $item->id)->execute();
   }
 
-  static function item_edit_form_completed($item, $form) {
+  public static function item_edit_form_completed($item, $form) {
     // Update the database with any changes to the item_links field.
     $record = ORM::factory("item_link")->where("item_id", "=", $item->id)->find();
 

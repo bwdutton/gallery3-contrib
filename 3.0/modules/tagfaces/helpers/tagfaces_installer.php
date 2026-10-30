@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class tagfaces_installer {
-  static function install() {
+  public static function install() {
     // Create a table to store face coordinates in.
     $db = Database::instance();
     $db->query("CREATE TABLE IF NOT EXISTS {items_faces} (
@@ -49,7 +49,7 @@ class tagfaces_installer {
     module::set_version("tagfaces", 2);
   }
 
-  static function upgrade($version) {
+  public static function upgrade($version) {
     $db = Database::instance();
     if ($version == 1) {
       $db->query("ALTER TABLE {items_faces} ADD `description` varchar(2048) default NULL");
@@ -70,12 +70,12 @@ class tagfaces_installer {
     }
   }
 
-  static function deactivate() {
+  public static function deactivate() {
   // Clear the require tags message when tagfaces is deactivated.
     site_status::clear("tagfaces_needs_tag");
   }
 
-  static function uninstall() {
+  public static function uninstall() {
     // Delete the face table before uninstalling.
     $db = Database::instance();
     $db->query("DROP TABLE IF EXISTS {items_faces};");

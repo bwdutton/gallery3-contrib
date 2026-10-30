@@ -18,14 +18,10 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class Tag_Albums_Item_Core {
-  public $title = "";
   public $id = -1;
-  public $item_id = 0;
-  public $url = "#";
   public $thumb_url = "";
   public $thumb_width = 0;
   public $thumb_height = 0;
-  public $item_type = "";
   public $type = "";
   public $view_count = 0;
   public $owner;
@@ -59,8 +55,8 @@ class Tag_Albums_Item_Core {
     }
   }
 
-  public function thumb_img($extra_attrs=array(), $max=null, $center_vertically=false) {
-    list ($height, $width) = $this->scale_dimensions($max);
+  public function thumb_img($extra_attrs=[], $max=null, $center_vertically=false) {
+    [$height, $width] = $this->scale_dimensions($max);
     if ($center_vertically && $max) {
       // The constant is divide by 2 to calculate the file and 10 to convert to em
       $margin_top = (int)(($max - $height) / 20);
@@ -68,11 +64,11 @@ class Tag_Albums_Item_Core {
       $extra_attrs["title"] = $this->title;
     }
     $attrs = array_merge($extra_attrs,
-            array(
+            [
               "src" => $this->thumb_url(),
               "alt" => $this->title,
               "width" => $width,
-              "height" => $height)
+              "height" => $height]
             );
     // html::image forces an absolute url which we don't want
     return "<img" . html::attributes($attrs) . "/>";
@@ -83,7 +79,7 @@ class Tag_Albums_Item_Core {
     $height = $this->thumb_height;
 
     if ($width <= $max && $height <= $max) {
-        return array($height, $width);
+        return [$height, $width];
     }
 
     if ($height) {
@@ -102,7 +98,7 @@ class Tag_Albums_Item_Core {
       $width = 0;
       $height = 0;
     }
-    return array($height, $width);
+    return [$height, $width];
   }
 
   public function thumb_url() {
@@ -119,11 +115,7 @@ class Tag_Albums_Item_Core {
     $this->thumb_height = $new_height;
   }
 
-  public function __construct($new_title, $new_url, $new_type, $new_id) {
-    $this->title = $new_title;
-    $this->url = $new_url;
-    $this->item_type = $new_type;
-    $this->type = $new_type;
-    $this->item_id = $new_id;
+  public function __construct(public $title, public $url, public $item_type, public $item_id) {
+    $this->type = $this->item_type;
   }
 }

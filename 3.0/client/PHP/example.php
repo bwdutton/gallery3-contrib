@@ -44,7 +44,7 @@ for ($i = 0; $i < 2; $i++) {
   alert("Uploaded photo: <b>{$photo->url}</b>");
 }
 $album->load();
-alert("Album members: <b>" . join(", ", $album->data->members) . "</b>");
+alert("Album members: <b>" . implode(", ", $album->data->members) . "</b>");
 
 
 alert("Replace the data file");
@@ -61,10 +61,10 @@ alert("Comment: <b>{$comment->url}</b>");
 
 alert("Reorder the album");
 $album
-  ->set_members(array($album->data->members[1], $album->data->members[0]))
+  ->set_members([$album->data->members[1], $album->data->members[0]])
   ->set("sort_column", "weight")
   ->save();
-alert("New order: <b>" . join(", ", $album->data->members) . "</b>");
+alert("New order: <b>" . implode(", ", $album->data->members) . "</b>");
 
 alert("Search for the photo");
 $photos = Gallery3::factory($root->url, $auth)

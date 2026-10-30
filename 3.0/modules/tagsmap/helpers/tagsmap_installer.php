@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class tagsmap_installer {
-  static function install() {
+  public static function install() {
     // Create a table to store GPS data in.
     $db = Database::instance();
     $db->query("CREATE TABLE IF NOT EXISTS {tags_gpses} (
@@ -40,26 +40,26 @@ class tagsmap_installer {
     module::set_version("tagsmap", 3);
   }
 
-  static function upgrade($version) {
+  public static function upgrade($version) {
     if ($version == 2) {
       module::set_var("tagsmap", "restrict_maps", "0");
       module::set_version("tagsmap", 3);
     }
   }
 
-  static function deactivate() {
+  public static function deactivate() {
     site_status::clear("tagsmap_needs_tag");
   }
 
-  static function can_activate() {
-    $messages = array();
+  public static function can_activate() {
+    $messages = [];
     if (!module::is_active("tag")) {
       $messages["warn"][] = t("The TagsMap module requires the Tags module.");
     }
     return $messages;
   }
 
-  static function uninstall() {
+  public static function uninstall() {
     // Delete the GPS table before uninstalling.
     $db = Database::instance();
     $db->query("DROP TABLE IF EXISTS {tags_gpses};");

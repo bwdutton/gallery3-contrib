@@ -62,11 +62,11 @@ class Admin_SharePhoto_Controller extends Admin_Controller {
   private function _get_admin_form() {
     // New Form.
     $form = new Forge("admin/sharephoto/saveprefs", "", "post",
-                      array("id" => "g-sharephoto-adminForm"));
+                      ["id" => "g-sharephoto-adminForm"]);
 
     // Select what to show on the Photo page.
-	$shareTypes["Icons"] = array(t("Show Icons &nbsp;&nbsp;"), module::get_var("sharephoto", "Icons"));
-    $shareTypes["HTMLLinks"] = array(t("Show HTML Links"), module::get_var("sharephoto", "HTMLLinks"));
+	$shareTypes["Icons"] = [t("Show Icons &nbsp;&nbsp;"), module::get_var("sharephoto", "Icons")];
+    $shareTypes["HTMLLinks"] = [t("Show HTML Links"), module::get_var("sharephoto", "HTMLLinks")];
 	
     // Checkboxes
     $add_links = $form->group("SharePhoto");

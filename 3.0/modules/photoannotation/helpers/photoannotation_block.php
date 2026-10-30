@@ -18,11 +18,11 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class photoannotation_block_Core {
-  static function get_site_list() {
-    return array("photoannotation" => t("Users"));
+  public static function get_site_list() {
+    return ["photoannotation" => t("Users")];
   }
 
-  static function get($block_id, $theme) {
+  public static function get($block_id, $theme) {
     $block = "";
     if (!identity::active_user()->guest || module::get_var("photoannotation", "allowguestsearch", false)) {
       switch ($block_id) {

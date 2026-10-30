@@ -18,13 +18,13 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class sharephoto_theme_Core {
-  static function head($theme) {
+  public static function head($theme) {
     return $theme->css("sharephoto.css") .
       $theme->script("sharephoto.js");
   }
 
 
-  static function photo_bottom($theme) {
+  public static function photo_bottom($theme) {
     $block = new Block;
     $block->css_id = "g-sharephoto";
     $block->title = t("Share Photo");

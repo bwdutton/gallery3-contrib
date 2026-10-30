@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class keeporiginal_installer {
-  static function install() {
+  public static function install() {
     @mkdir(VARPATH . "original");
     module::set_version("keeporiginal", 1);
   }

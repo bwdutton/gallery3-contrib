@@ -19,7 +19,7 @@
  */
 
 class language_flags_event_Core {
-  static function admin_menu($menu, $theme) {
+  public static function admin_menu($menu, $theme) {
     // Add a menu option to the admin screen for configuring the slideshow.
     $menu->get("settings_menu")
       ->append(Menu::factory("link")

@@ -22,7 +22,7 @@ class pdf_Core {
    * Return the path to the gs binary if one exists and is executable, or null.
    * (ref: movie::find_ffmpeg())
    */
-  static function find_gs() {
+  public static function find_gs() {
     if (!($gs_path = module::get_var("pdf", "gs_path")) || !@is_executable($gs_path)) {
       $gs_path = system::find_binary("gs", module::get_var("gallery", "graphics_toolkit_path"));
       module::set_var("pdf", "gs_path", $gs_path);
@@ -34,7 +34,7 @@ class pdf_Core {
    * Return version number of gs if found, an empty string if not.
    * (ref: movie::get_ffmpeg_version())
    */
-  static function get_gs_version() {
+  public static function get_gs_version() {
     if (pdf::find_gs()) {
       $path = module::get_var("pdf", "gs_path");
       exec(escapeshellcmd($path)." -version", $output);
@@ -50,14 +50,14 @@ class pdf_Core {
    * Mark all PDF thumbs as dirty
    * (ref: graphics::mark_dirty())
    */
-  static function mark_dirty() {
+  public static function mark_dirty() {
     graphics::mark_dirty(true, false, "movie", "application/pdf");
   }
 
   /**
    * Fix mime types of all existing PDFs (could be set incorrectly before this module was installed)
    */
-  static function fix_mime_types() {
+  public static function fix_mime_types() {
     $db = db::build()
       ->update("items")
       ->set("mime_type", "application/pdf")

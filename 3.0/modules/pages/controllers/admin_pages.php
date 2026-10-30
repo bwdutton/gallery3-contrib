@@ -67,8 +67,8 @@ class Admin_Pages_Controller extends Admin_Controller {
       $update_page->html_code = $page_code;
       $update_page->display_menu = $display_menu;
       $update_page->save();
-      message::success(t("Page %page_name updated", array("page_name" => $update_page->name)));
-      log::success("pages", t("Page %page_name updated", array("page_name" => $update_page->name)));
+      message::success(t("Page %page_name updated", ["page_name" => $update_page->name]));
+      log::success("pages", t("Page %page_name updated", ["page_name" => $update_page->name]));
       url::redirect("admin/pages");
     } else {
 
@@ -86,13 +86,13 @@ class Admin_Pages_Controller extends Admin_Controller {
         $new_page->html_code = $page_code;
         $new_page->display_menu = $display_menu;
         $new_page->save();
-        message::success(t("Page %page_name created", array("page_name" => $page_name)));
-        log::success("pages", t("Page %page_name created", array("page_name" => $page_name)));
+        message::success(t("Page %page_name created", ["page_name" => $page_name]));
+        log::success("pages", t("Page %page_name created", ["page_name" => $page_name]));
         url::redirect("admin/pages");
       } else {
 
         // If the page does exist, ask the user if they want to overwrite the old page with the new one.
-        message::error(t("Page %page_name already exists, press Save again to overwrite.", array("page_name" => $page_name)));
+        message::error(t("Page %page_name already exists, press Save again to overwrite.", ["page_name" => $page_name]));
         $view = new Admin_View("admin.html");
         $view->page_title = t("Edit page");
         $view->content = new View("admin_pages_new.html");
@@ -106,7 +106,7 @@ class Admin_Pages_Controller extends Admin_Controller {
     // Display a form asking the user if they want to delete a page.
     $one_page = ORM::factory("static_page", $id);
     if ($one_page->loaded()) {
-      print $this->get_delete_form($one_page);
+      print static::get_delete_form($one_page);
     }
   }
 
@@ -122,13 +122,13 @@ class Admin_Pages_Controller extends Admin_Controller {
     }
 
     // If the form validates, delete the specified page.
-    $form = $this->get_delete_form($one_page);
+    $form = static::get_delete_form($one_page);
     if ($form->validate()) {
       $name = $one_page->name;
       $one_page->delete();
-      message::success(t("Deleted page %page_name", array("page_name" => $name)));
-      log::success("pages", t("Deleted page %page_name", array("page_name" => $name)));
-      json::reply(array("result" => "success", "location" => url::site("admin/pages")));
+      message::success(t("Deleted page %page_name", ["page_name" => $name]));
+      log::success("pages", t("Deleted page %page_name", ["page_name" => $name]));
+      json::reply(["result" => "success", "location" => url::site("admin/pages")]);
     } else {
       print $form;
     }
@@ -156,7 +156,7 @@ class Admin_Pages_Controller extends Admin_Controller {
 
     $in_place_edit = InPlaceEdit::factory($one_page->name)
       ->action("admin/pages/rename/$one_page->id")
-      ->rules(array("required", "length[1,64]"));
+      ->rules(["required", "length[1,64]"]);
 
     // If the form validates, and if the new name doesn't already exist, rename the page.
     if ($in_place_edit->validate()) {
@@ -167,23 +167,23 @@ class Admin_Pages_Controller extends Admin_Controller {
         $one_page->name = $new_name;
         $one_page->save();
         $message = t("Renamed page <i>%old_name</i> to <i>%new_name</i>",
-                     array("old_name" => $old_name, "new_name" => $new_name));
+                     ["old_name" => $old_name, "new_name" => $new_name]);
         message::success($message);
         log::success("pages", $message);
-        json::reply(array("result" => "success", "location" => url::site("admin/pages")));
+        json::reply(["result" => "success", "location" => url::site("admin/pages")]);
       } else {
-        json::reply(array("result" => "error", "form" => (string)$in_place_edit->render()));
+        json::reply(["result" => "error", "form" => (string)$in_place_edit->render()]);
       }
     } else {
-      json::reply(array("result" => "error", "form" => (string)$in_place_edit->render()));
+      json::reply(["result" => "error", "form" => (string)$in_place_edit->render()]);
     }
   }
 
-  static function get_delete_form($one_page) {
+  public static function get_delete_form($one_page) {
     // Generate a new form asking the user if they want to delete a page.
-    $form = new Forge("admin/pages/delete/$one_page->id", "", "post", array("id" => "g-delete-pages-form"));
+    $form = new Forge("admin/pages/delete/$one_page->id", "", "post", ["id" => "g-delete-pages-form"]);
     $group = $form->group("delete_page")
-      ->label(t("Really delete page %page_name?", array("page_name" => $one_page->name)));
+      ->label(t("Really delete page %page_name?", ["page_name" => $one_page->name]));
     $group->submit("")->value(t("Delete Page"));
     return $form;
   }
@@ -191,7 +191,7 @@ class Admin_Pages_Controller extends Admin_Controller {
   private function get_new_page_form() {
     // Generate a form for creating a new page.
     $form = new Forge("admin/pages/savepage", "", "post",
-                      array("id" => "g-pages-admin-form"));
+                      ["id" => "g-pages-admin-form"]);
 
     $pages_group = $form->group("new_page");
     $pages_group->input("page_name")
@@ -212,7 +212,7 @@ class Admin_Pages_Controller extends Admin_Controller {
   private function get_overwrite_page_form($id, $name, $title, $html_code, $display_menu) {
     // Generate a form for overwriting an existing page.
     $form = new Forge("admin/pages/savepage", "", "post",
-                      array("id" => "g-pages-admin-form"));
+                      ["id" => "g-pages-admin-form"]);
 
     $pages_group = $form->group("new_page");
     $pages_group->hidden("page_id")
@@ -244,7 +244,7 @@ class Admin_Pages_Controller extends Admin_Controller {
   private function get_prefs_form() {
     // Generate a form for global preferences.
     $form = new Forge("admin/pages/saveprefs", "", "post",
-                      array("id" => "g-pages-admin-form"));
+                      ["id" => "g-pages-admin-form"]);
 
     $pages_group = $form->group("preferences")->label(t("Settings"));
     $pages_group->checkbox("display_sidebar")

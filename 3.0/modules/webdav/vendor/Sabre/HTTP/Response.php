@@ -19,7 +19,7 @@ class Sabre_HTTP_Response {
      */
     public function getStatusMessage($code) {
 
-        $msg = array(
+        $msg = [
             100 => 'Continue',
             101 => 'Switching Protocols',
             102 => 'Processing',
@@ -74,7 +74,7 @@ class Sabre_HTTP_Response {
             507 => 'Unsufficient Storage', // RFC 4918
             508 => 'Loop Detected', // RFC 5842
             510 => 'Not extended',
-       ); 
+       ]; 
 
        return 'HTTP/1.1 ' . $code . ' ' . $msg[$code];
 
@@ -103,7 +103,7 @@ class Sabre_HTTP_Response {
      */
     public function setHeader($name, $value, $replace = true) {
 
-        $value = str_replace(array("\r","\n"),array('\r','\n'),$value);
+        $value = str_replace(["\r","\n"],['\r','\n'],$value);
         if (!headers_sent()) 
             return header($name . ': ' . $value, $replace);
         else return false;

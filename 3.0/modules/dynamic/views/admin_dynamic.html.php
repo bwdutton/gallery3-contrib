@@ -7,7 +7,7 @@
 <div id="g-dyanmic-block" class="g-block ui-helper-clearfix">
   <h1> <?= t("Dynamic Albums") ?> </h1>
 
-  <?= form::open("admin/dynamic/handler", array("id" => "g-admin-form")) ?>
+  <?= form::open("admin/dynamic/handler", ["id" => "g-admin-form"]) ?>
   <?= access::csrf_form_field() ?>
   <div  id="tabs">
     <ul>
@@ -15,7 +15,7 @@
       <li><a href="#<?= $album ?>"><?= $label ?></a></li>
     <?php endforeach ?>
     </ul>
-    <?php foreach (array("updates", "popular") as $album): ?>
+    <?php foreach (["updates", "popular"] as $album): ?>
     <div id="<?= $album ?>">
       <ul>
         <li>

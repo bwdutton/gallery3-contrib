@@ -19,7 +19,7 @@
  */
 
 class fotomotorw_installer {
-  static function install() {
+  public static function install() {
     // Set up some default values.
     module::set_var("fotomotorw", "fotomoto_site_key", '');
     module::set_var("fotomotorw", "fotomoto_private_key", md5(random::hash() . access::private_key()));

@@ -18,9 +18,9 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class Bp_Postage_Band_Model extends ORM {
-    var $rules = array(
-    "name" => "length[1,32]");
+    public $rules = [
+    "name" => "length[1,32]"];
 
-    protected $has_many=array('bp_products');
+    protected $has_many=['bp_products'];
 
 }

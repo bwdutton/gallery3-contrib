@@ -19,7 +19,7 @@
  */
 class rwinfo_installer {
 
-  static function install() {
+  public static function install() {
     module::set_var("rwinfo", "show_title", 0);
     module::set_var("rwinfo", "show_description", 0);
     module::set_var("rwinfo", "show_owner", 1);
@@ -28,7 +28,7 @@ class rwinfo_installer {
     module::set_var("rwinfo", "show_dimensions", 1);
   }
 
-  static function upgrade($version) {
+  public static function upgrade($version) {
     if ($version == 1) {
       module::set_var("rwinfo", "show_title", 0);
       module::set_var("rwinfo", "show_description", 0);

@@ -18,19 +18,19 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class downloadalbum_installer {
-  static function install() {
+  public static function install() {
     access::register_permission("downloadalbum", "Download album");
     module::set_version("downloadalbum", 3);
   }
 
-  static function upgrade($version) {
+  public static function upgrade($version) {
   	if( $version == 2 ) {
       access::register_permission("downloadalbum", "Download album");
       module::set_version("downloadalbum", 3);
   	}
   }
 
-  static function uninstall() {
+  public static function uninstall() {
     access::delete_permission("downloadalbum");
     module::delete("downloadalbum");
   }

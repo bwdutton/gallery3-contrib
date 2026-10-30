@@ -68,8 +68,8 @@ class Sabre_HTTP_Request {
      */
     public function getHeader($name) {
 
-        $serverName = 'HTTP_' . strtoupper(str_replace(array('-'),array('_'),$name));
-        return isset($this->_SERVER[$serverName])?$this->_SERVER[$serverName]:null;
+        $serverName = 'HTTP_' . strtoupper(str_replace(['-'],['_'],$name));
+        return $this->_SERVER[$serverName] ?? null;
 
     }
 
@@ -83,10 +83,10 @@ class Sabre_HTTP_Request {
      */
     public function getHeaders() {
 
-        $hdrs = array();
+        $hdrs = [];
         foreach($this->_SERVER as $key=>$value) {
 
-            if (strpos($key,'HTTP_')===0) {
+            if (str_starts_with($key, 'HTTP_')) {
                 $hdrs[substr(strtolower(str_replace('_','-',$key)),5)] = $value;
             }
 
@@ -140,7 +140,7 @@ class Sabre_HTTP_Request {
      */
     public function getQueryString() {
 
-        return isset($this->_SERVER['QUERY_STRING'])?$this->_SERVER['QUERY_STRING']:'';
+        return $this->_SERVER['QUERY_STRING'] ?? '';
 
     }
 
@@ -191,7 +191,7 @@ class Sabre_HTTP_Request {
         } else {
 
             $stream = fopen('php://temp','r+');
-            fputs($stream,$body);
+            fwrite($stream,$body);
             rewind($stream);
             // String is assumed
             $this->body = $stream;
@@ -212,7 +212,7 @@ class Sabre_HTTP_Request {
      */
     public function getRawServerValue($field) {
 
-        return isset($this->_SERVER[$field])?$this->_SERVER[$field]:null;
+        return $this->_SERVER[$field] ?? null;
 
     }
 

@@ -30,20 +30,20 @@
  *  allow_updates - Flag to indicate that the back end allows updates.
  *  params        - Driver parameters, specific to each driver.
  */
-$config["ldap"] = array(
+$config["ldap"] = [
   "driver"        => "ldap",
   "allow_updates" => false,
-  "params"        => array(
+  "params"        => [
     "guest_user" => "Guest",
-    "groups" => array("engineering", "everybody", "guest"),
+    "groups" => ["engineering", "everybody", "guest"],
     "everybody_group" => "guest",
     "registered_users_group" => "everybody",
-    "admins" => array("alice", "bob"),
+    "admins" => ["alice", "bob"],
     "admin_mail" => "unknown@unknown.com",
     "url" => "ldaps://ldap.mycompany.com/",
     "group_domain" => "ou=Posix,ou=Groups,dc=ymcompany,dc=com",
     "user_domain" => "ou=People,dc=MyCompany,dc=com",
     "bind_rdn" => null,
     "bind_password" => null,
-  )
-);
+  ]
+];

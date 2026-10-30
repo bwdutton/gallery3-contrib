@@ -29,13 +29,13 @@ class Admin_Image_Optimizer_Controller extends Admin_Controller {
     access::verify_csrf();
     $form = $this->_get_admin_form();
     if ($form->validate()) {
-      foreach (array('jpg', 'png', 'gif') as $type) {
+      foreach (['jpg', 'png', 'gif'] as $type) {
         module::set_var("image_optimizer", "path_".$type, $form->paths->{"path_".$type}->value);
         module::set_var("image_optimizer", "optlevel_thumb_".$type, $form->thumb->{"optlevel_thumb_".$type}->value);
         module::set_var("image_optimizer", "optlevel_resize_".$type, $form->resize->{"optlevel_resize_".$type}->value);
       }
       module::set_var("image_optimizer", "rotate_jpg", ($form->rotate->rotate_jpg->value == 1));
-      foreach (array('thumb', 'resize') as $target) {
+      foreach (['thumb', 'resize'] as $target) {
         module::set_var("image_optimizer", "convert_".$target."_gif", $form->$target->{"convert_".$target."_gif"}->value);
         module::set_var("image_optimizer", "convert_".$target."_png", $form->$target->{"convert_".$target."_png"}->value);
         module::set_var("image_optimizer", "metastrip_".$target, ($form->$target->{"metastrip_".$target}->value == 1));
@@ -83,7 +83,7 @@ class Admin_Image_Optimizer_Controller extends Admin_Controller {
     $view->content = new View("admin_image_optimizer.html");
     $view->content->form = $form;
     // get module parameters
-    foreach (array('jpg', 'png', 'gif') as $type) {
+    foreach (['jpg', 'png', 'gif'] as $type) {
       $view->content->{"installed_path_".$type} = image_optimizer::tool_installed_path($type);
       $view->content->{"version_".$type} = image_optimizer::tool_version($type);
     }
@@ -91,10 +91,10 @@ class Admin_Image_Optimizer_Controller extends Admin_Controller {
   }
   
   private function _get_admin_form() {
-    $form = new Forge("admin/image_optimizer/save", "", "post", array("id" => "g-image-optimizer-admin-form"));
+    $form = new Forge("admin/image_optimizer/save", "", "post", ["id" => "g-image-optimizer-admin-form"]);
     
     $group_paths = $form->group("paths")->label(t("Toolkit paths"))->set_attr("id","g-image-optimizer-admin-form-paths");
-    foreach (array('jpg', 'png', 'gif') as $type) {
+    foreach (['jpg', 'png', 'gif'] as $type) {
       $path = strval(module::get_var("image_optimizer", "path_".$type, null));
       $group_paths->input("path_".$type)
         ->label(t("Path for")." ".image_optimizer::tool_name($type)." (".t("no symlinks, default")." ".MODPATH."image_optimizer/lib/".image_optimizer::tool_name($type).")")
@@ -106,7 +106,7 @@ class Admin_Image_Optimizer_Controller extends Admin_Controller {
       ->label(t("Override default toolkit and use")." ".image_optimizer::tool_name('jpg')." ".t("for rotation"))
       ->checked(module::get_var("image_optimizer", "rotate_jpg", null));
     
-    foreach (array('thumb', 'resize') as $target) {
+    foreach (['thumb', 'resize'] as $target) {
       ${'group_'.$target} = $form->group($target)->label(ucfirst($target)." ".t("images optimization"))->set_attr("id","g-image-optimizer-admin-form-".$target);
       ${'group_'.$target}->checkbox("enable_".$target)
         ->label(t("Enable optimization"))
@@ -119,35 +119,35 @@ class Admin_Image_Optimizer_Controller extends Admin_Controller {
         ->checked(false); // always set as false
       ${'group_'.$target}->dropdown("convert_".$target."_png")
         ->label(t("PNG conversion"))
-        ->options(array(0=>t("none"),
-                    "jpg"=>("JPG ".t("(not lossless)"))))
+        ->options([0=>t("none"),
+                    "jpg"=>("JPG ".t("(not lossless)"))])
         ->selected(module::get_var("image_optimizer", "convert_".$target."_png", null));
       ${'group_'.$target}->dropdown("convert_".$target."_gif")
         ->label(t("GIF conversion"))
-        ->options(array(0=>t("none"),
+        ->options([0=>t("none"),
                     "jpg"=>("JPG ".t("(not lossless)")),
-                    "png"=>("PNG ".t("(lossless)"))))
+                    "png"=>("PNG ".t("(lossless)"))])
         ->selected(module::get_var("image_optimizer", "convert_".$target."_gif", null));
       ${'group_'.$target}->dropdown("optlevel_".$target."_jpg")
         ->label(t("JPG compression optimization (default: enabled)"))
-        ->options(array(0=>t("disabled"),
-                        1=>t("enabled")))
+        ->options([0=>t("disabled"),
+                        1=>t("enabled")])
         ->selected(module::get_var("image_optimizer", "optlevel_".$target."_jpg", null));
       ${'group_'.$target}->dropdown("optlevel_".$target."_png")
         ->label(t("PNG compression optimization (default: level 2)"))
-        ->options(array(0=>t("disabled"),
+        ->options([0=>t("disabled"),
                         1=>t("level 1: 1 trial"),
                         2=>t("level 2: 8 trials"),
                         3=>t("level 3: 16 trials"),
                         4=>t("level 4: 24 trials"),
                         5=>t("level 5: 48 trials"),
                         6=>t("level 6: 120 trials"),
-                        7=>t("level 7: 240 trials")))
+                        7=>t("level 7: 240 trials")])
         ->selected(module::get_var("image_optimizer", "optlevel_".$target."_png", null));
       ${'group_'.$target}->dropdown("optlevel_".$target."_gif")
         ->label(t("GIF compression optimization (default: enabled)"))
-        ->options(array(0=>t("disabled"),
-                        1=>t("enabled")))
+        ->options([0=>t("disabled"),
+                        1=>t("enabled")])
         ->selected(module::get_var("image_optimizer", "optlevel_".$target."_gif", null));
       ${'group_'.$target}->checkbox("metastrip_".$target)
         ->label(t("Remove all meta data"))

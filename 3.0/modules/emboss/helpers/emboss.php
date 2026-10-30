@@ -17,7 +17,7 @@
  *************************************************************************/
 class emboss_Core {
 
-  static function reconcile()
+  public static function reconcile()
   {
     emboss::copy_new(VARPATH . 'albums', VARPATH . 'originals');
     emboss::remove_old(VARPATH . 'albums', VARPATH . 'originals');
@@ -154,7 +154,7 @@ class emboss_Core {
     @rmdir($dir);
   }
   
-  static function mkdir_recursive($dir) {
+  public static function mkdir_recursive($dir) {
     $dirs = explode('/', $dir);
     $newdir = '';
     for($i=1; $i<count($dirs); $i++)
@@ -168,7 +168,7 @@ class emboss_Core {
       }
   }
   
-  static function upload_new_overlay($file)
+  public static function upload_new_overlay($file)
   {
     $tmp  = $file['tmp_name'];
     $name = $file['name'];
@@ -217,9 +217,9 @@ class emboss_Core {
     
     $width = $image_info[0];
     $height = $image_info[1];
-    $where1 = array('width','=',$width);
-    $where2 = array('height','=',$height);
-    $where  = array($where1,$where2);
+    $where1 = ['width','=',$width];
+    $where2 = ['height','=',$height];
+    $where  = [$where1,$where2];
     
     $n = db::build()
       ->select('id')
@@ -248,7 +248,7 @@ class emboss_Core {
     emboss::evaluate_overlays();
   }
   
-  static function _delete_overlay($overlay)
+  public static function _delete_overlay($overlay)
   {
     $query = db::build()
       ->select('id')
@@ -304,9 +304,9 @@ class emboss_Core {
     return ($n>0 ? $n : '');
   }
 
-  static function update_overlay_options($post)
+  public static function update_overlay_options($post)
   {
-    $options = array('method','size','gravity','transparency');
+    $options = ['method','size','gravity','transparency'];
     foreach ($options as $option) {
       module::set_var('emboss',$option,$post["$option"]);
     }
@@ -322,7 +322,7 @@ class emboss_Core {
     }
   }
   
-  static function evaluate_overlays()
+  public static function evaluate_overlays()
   {
     $overlays = ORM::factory('emboss_overlay')->where('active','=',1)->find_all();
     $images = ORM::factory('item')->where('type','=','photo')->find_all();
@@ -378,7 +378,7 @@ class emboss_Core {
     }
   }
 
-  static function determine_best_overlay($image,$overlays=NULL)
+  public static function determine_best_overlay($image,$overlays=NULL)
   {
     if(!$overlays) {
       $overlays = ORM::factory('emboss_overlay')->where('active','=',1)->find_all();
@@ -402,7 +402,7 @@ class emboss_Core {
     return $bestID;
   }
 
-  static function check_for_dirty()
+  public static function check_for_dirty()
   {
     $q = emboss::find_dirty();
     $n = $q->count();
@@ -412,7 +412,7 @@ class emboss_Core {
         t2("One of your photos needs to be (re)embossed. <a %attrs>Click here to fix it</a>",
            "%count of your photos need to be (re)embossed. <a %attrs>Click here to fix them</a>",
            $n,
-           array('attrs' => html::mark_clean(sprintf('href="%s" class="g-dialog-link"',$url)))),
+           ['attrs' => html::mark_clean(sprintf('href="%s" class="g-dialog-link"',$url))]),
         'emboss_dirty');
     } else {
       site_status::clear('emboss_dirty');

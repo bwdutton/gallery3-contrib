@@ -18,11 +18,11 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class latestupdates_block_Core {
-  static function get_site_list() {
-    return array("latestupdates" => t("Latest Updates"));
+  public static function get_site_list() {
+    return ["latestupdates" => t("Latest Updates")];
   }
 
-  static function get($block_id, $theme) {
+  public static function get($block_id, $theme) {
     $block = "";
 
     switch ($block_id) {
@@ -35,15 +35,15 @@ class latestupdates_block_Core {
       $block->content = new View("latestupdates_block.html");
 
       if (!$theme->item()) {
-        $block->content->update_links = array(
-          "Entire Gallery" => url::site("latestupdates/updates"));
+        $block->content->update_links = [
+          "Entire Gallery" => url::site("latestupdates/updates")];
       } else {
         // Determine the ID# of the current album.
         $albumID = $theme->item->is_album() ? $theme->item->id : $theme->item->parent_id;
-        $block->content->update_links = array(
+        $block->content->update_links = [
           "Entire Gallery" => url::site("latestupdates/updates"),
           "This Album" => url::site("latestupdates/albums/$albumID")
-        );
+        ];
       }
       break;
     }

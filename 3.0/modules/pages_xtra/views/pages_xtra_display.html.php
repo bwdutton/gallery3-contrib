@@ -24,7 +24,7 @@
 
 <?php // Disable next line so that H1 is NOT auto-generated and auto-linked with Title. Manually write <h1> tags into body code, for static pages.
 ?>   
-<?php/* <h1><?=  t($title) ?></h1>  */?>
+<?\PHP/* <h1><?=  t($title) ?></h1>  */?>
 
           
 <div class="g-page-block-content">

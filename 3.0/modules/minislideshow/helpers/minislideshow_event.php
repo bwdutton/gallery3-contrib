@@ -19,7 +19,7 @@
  */
 
 class minislideshow_event_Core {
-  static function admin_menu($menu, $theme) {
+  public static function admin_menu($menu, $theme) {
     // Add a menu option to the admin screen for configuring the slideshow.
     $menu->get("settings_menu")
       ->append(Menu::factory("link")
@@ -28,28 +28,28 @@ class minislideshow_event_Core {
                ->url(url::site("admin/minislideshow")));
   }
 
-  static function module_change($changes) {
+  public static function module_change($changes) {
     // Display a warning message if the RSS module is not installed.
     if (!module::is_active("rss") || in_array("rss", $changes->deactivate)) {
       site_status::warning(
         t("The MiniSlide Show module requires the RSS module.  " .
           "<a href=\"%url\">Activate the RSS module now</a>",
-          array("url" => url::site("admin/modules"))),
+          ["url" => url::site("admin/modules")]),
         "minislideshow_needs_rss");
     } else {
       site_status::clear("minislideshow_needs_rss");
     }
   }
 
-  static function pre_deactivate($data) {
+  public static function pre_deactivate($data) {
     if ($data->module == "rss") {
       $data->messages["warn"][] = t("The MiniSlide Show module requires the RSS module.");
     }
   }
 
-  static function album_menu($menu, $theme) {
+  public static function album_menu($menu, $theme) {
     // Add an option to access the slideshow from the album view.
-    if ($theme->item()->children_count(array(array("type", "=", "photo")))) {
+    if ($theme->item()->children_count([["type", "=", "photo"]])) {
       $menu
         ->append(Menu::factory("link")
                  ->id("minislideshow")
@@ -60,7 +60,7 @@ class minislideshow_event_Core {
     }
   }
 
-  static function photo_menu($menu, $theme) {
+  public static function photo_menu($menu, $theme) {
     // Add an option to access the slideshow from the photo view.
     $menu
       ->append(Menu::factory("link")

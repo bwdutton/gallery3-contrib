@@ -36,7 +36,7 @@ abstract class Sabre_DAV_ServerPlugin {
      */
     public function getFeatures() {
 
-        return array();
+        return [];
 
     }
 
@@ -52,7 +52,7 @@ abstract class Sabre_DAV_ServerPlugin {
      */
     public function getHTTPMethods($uri) {
 
-        return array();
+        return [];
 
     }
 

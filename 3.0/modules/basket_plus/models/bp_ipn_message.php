@@ -7,10 +7,10 @@ class Ipn_message_Model extends ORM {
   }
 
   public function json_encode(){
-    $toReturn = array(
+    $toReturn = [
       'id' => $this->id,
       'date' => $this->formatedTime(),
-      'text' => text::convertText($this->text));
+      'text' => text::convertText($this->text)];
     return $toReturn;
   }
 }

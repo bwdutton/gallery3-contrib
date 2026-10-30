@@ -79,7 +79,7 @@ class Tag_Cloud_Controller extends Controller {
     
     // get/check the first argument - must be sidebar or wholecloud
     $optionsbase = $args[0];
-    if (!(in_array($optionsbase, array("sidebar", "wholecloud")))) {
+    if (!(in_array($optionsbase, ["sidebar", "wholecloud"]))) {
       return;
     }
     
@@ -93,7 +93,7 @@ class Tag_Cloud_Controller extends Controller {
       if ($option == "maxtags") {
         // assign to maxtags
         $maxtags = $value;
-      } elseif (substr($option,-6) == 'Colour') {
+      } elseif (str_ends_with($option, 'Colour')) {
         // assign to options with a hash in front
         $options[$option] = '#'.$value;
       } else {

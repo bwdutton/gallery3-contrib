@@ -2,7 +2,7 @@
 
 class aws_s3_event_Core {
 
-    static function admin_menu($menu, $theme) {
+    public static function admin_menu($menu, $theme) {
         $menu
             ->get("settings_menu")
             ->append(
@@ -13,7 +13,7 @@ class aws_s3_event_Core {
                     );
     }
 
-    static function item_created($item) {
+    public static function item_created($item) {
         if ($item->id == 1)
             return true;
 
@@ -21,7 +21,7 @@ class aws_s3_event_Core {
         aws_s3::schedule_item_sync($item);
     }
 
-    static function item_deleted($item) {
+    public static function item_deleted($item) {
         if ($item->id == 1)
             return true;
 
@@ -31,7 +31,7 @@ class aws_s3_event_Core {
         ORM::factory("aws_s3_meta", $item->id)->delete();
     }
 
-    static function item_updated($old_item, $new_item) {
+    public static function item_updated($old_item, $new_item) {
         if ($new_item->id == 1)
             return true;
 

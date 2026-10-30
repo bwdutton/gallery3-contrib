@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class Admin_Developer_Controller extends Admin_Controller {
-  static $event_list = array();
+  static $event_list = [];
 
   public function module() {
     $view = new Admin_View("admin.html");
@@ -29,7 +29,7 @@ class Admin_Developer_Controller extends Admin_Controller {
       message::warning(
         t("The module directory is not writable. Please ensure that it is writable by the web server"));
     }
-    list ($form, $errors) = $this->_get_module_form();
+    [$form, $errors] = $this->_get_module_form();
     $view->content->developer_content = $this->_get_module_create_content($form, $errors);
     print $view;
   }
@@ -39,7 +39,7 @@ class Admin_Developer_Controller extends Admin_Controller {
     $v->content = new View("admin_developer.html");
     $v->content->title = t("Generate Test Data");
 
-    list ($form, $errors) = $this->_get_module_form();
+    [$form, $errors] = $this->_get_module_form();
     $v->content->developer_content = $this->_get_test_data_view($form, $errors);
     print $v;
   }
@@ -47,15 +47,15 @@ class Admin_Developer_Controller extends Admin_Controller {
   public function module_create() {
     access::verify_csrf();
 
-    list ($form, $errors) = $this->_get_module_form();
+    [$form, $errors] = $this->_get_module_form();
 
     $post = new Validation($_POST);
     $post->add_rules("name", "required");
     $post->add_rules("display_name", "required");
     $post->add_rules("description", "required");
-    $post->add_callbacks("theme", array($this, "_noop_validation"));
-    $post->add_callbacks("event", array($this, "_noop_validation"));
-    $post->add_callbacks("name", array($this, "_is_module_defined"));
+    $post->add_callbacks("theme", $this->_noop_validation(...));
+    $post->add_callbacks("event", $this->_noop_validation(...));
+    $post->add_callbacks("name", $this->_is_module_defined(...));
 
     if ($post->validate()) {
       $task_def = Task_Definition::factory()
@@ -63,20 +63,20 @@ class Admin_Developer_Controller extends Admin_Controller {
         ->description(t("Create a new module"))
         ->name(t("Create Module"));
       $success_msg = t("Generation of %module completed successfully",
-                       array("module" => $post->name));
-      $error_msg = t("Generation of %module failed.", array("module" => $post->name));
-      $task_context = array("step" => 0, "success_msg" => $success_msg, "error_msg" => $error_msg);
+                       ["module" => $post->name]);
+      $error_msg = t("Generation of %module failed.", ["module" => $post->name]);
+      $task_context = ["step" => 0, "success_msg" => $success_msg, "error_msg" => $error_msg];
       $task = task::create($task_def, array_merge($task_context, $post->as_array()));
 
-      json::reply(array("result" => "started",
+      json::reply(["result" => "started",
                         "max_iterations" => 15,
                         "url" => url::site("admin/developer/run_task/{$task->id}?csrf=" .
                                            access::csrf_token()),
-                        "task" => $task->as_array()));
+                        "task" => $task->as_array()]);
     } else {
       $v = $this->_get_module_create_content(arr::overwrite($form, $post->as_array()),
         arr::overwrite($errors, $post->errors()));
-      json::reply(array("result" => "error", "html" => (string)$v));
+      json::reply(["result" => "error", "html" => (string)$v]);
     }
   }
 
@@ -91,17 +91,17 @@ class Admin_Developer_Controller extends Admin_Controller {
   }
 
   public function test_data_create() {
-    list ($form, $errors) = $this->_get_test_data_form();
+    [$form, $errors] = $this->_get_test_data_form();
 
     $post = new Validation($_POST);
     $post->add_rules("albums", "numeric");
     $post->add_rules("photos", "numeric");
     $post->add_rules("comments", "numeric");
     $post->add_rules("tags", "numeric");
-    $post->add_callbacks("albums", array($this, "_set_default"));
-    $post->add_callbacks("photos", array($this, "_set_default"));
-    $post->add_callbacks("comments", array($this, "_set_default"));
-    $post->add_callbacks("tags", array($this, "_set_default"));
+    $post->add_callbacks("albums", $this->_set_default(...));
+    $post->add_callbacks("photos", $this->_set_default(...));
+    $post->add_callbacks("comments", $this->_set_default(...));
+    $post->add_callbacks("tags", $this->_set_default(...));
 
     if ($post->validate()) {
       $task_def = Task_Definition::factory()
@@ -111,22 +111,22 @@ class Admin_Developer_Controller extends Admin_Controller {
       $total = $post->albums + $post->photos + $post->comments + $post->tags;
       $success_msg = t("Successfully generated test data");
       $error_msg = t("Problems with test data generation was encountered");
-      $task = task::create($task_def, array("total" => $total, "batch" => (int)ceil($total / 10),
+      $task = task::create($task_def, ["total" => $total, "batch" => (int)ceil($total / 10),
                                             "success_msg" => $success_msg,
                                             "current" => 0, "error_msg" => $error_msg,
                                             "albums" => $post->albums, "photos" => $post->photos,
-                                            "comments" => $post->comments, "tags" => $post->tags));
+                                            "comments" => $post->comments, "tags" => $post->tags]);
       batch::start();
 
-      json::reply(array("result" => "started",
+      json::reply(["result" => "started",
                         "max_iterations" => $total + 5,
                         "url" => url::site("admin/developer/run_task/{$task->id}?csrf=" .
                                            access::csrf_token()),
-                        "task" => $task->as_array()));
+                        "task" => $task->as_array()]);
     } else {
       $v = $this->_get_test_data_view(arr::overwrite($form, $post->as_array()),
                                       arr::overwrite($errors, $post->errors()));
-      json::reply(array("result" => "error", "html" => (string)$v));
+      json::reply(["result" => "error", "html" => (string)$v]);
     }
   }
 
@@ -150,14 +150,14 @@ class Admin_Developer_Controller extends Admin_Controller {
         message::success(empty($error_msg) ? $context["error_msg"] : $error_msg);
         break;
       }
-      json::reply(array("result" => "success", "task" => $task->as_array()));
+      json::reply(["result" => "success", "task" => $task->as_array()]);
 
     } else {
-      json::reply(array("result" => "in_progress", "task" => $task->as_array()));
+      json::reply(["result" => "in_progress", "task" => $task->as_array()]);
     }
   }
 
-  function mptt() {
+  public function mptt() {
     $v = new Admin_View("admin.html");
     $v->content = new View("mptt_tree.html");
 
@@ -172,13 +172,13 @@ class Admin_Developer_Controller extends Admin_Controller {
     print $v;
   }
 
-  function mptt_graph() {
+  public function mptt_graph() {
     $items = ORM::factory("item")->order_by("id")->find_all();
     $data = $this->_build_tree();
 
     $proc = proc_open("/usr/bin/dot -Tsvg",
-                      array(array("pipe", "r"),
-                            array("pipe", "w")),
+                      [["pipe", "r"],
+                            ["pipe", "w"]],
                       $pipes,
                       VARPATH . "tmp");
     fwrite($pipes[0], $data);
@@ -216,11 +216,11 @@ class Admin_Developer_Controller extends Admin_Controller {
   }
 
   private function _get_module_form() {
-    $form = array("name" => "", "display_name" => "", "description" => "", "theme[]" => array(),
-                  "event[]" => array());
+    $form = ["name" => "", "display_name" => "", "description" => "", "theme[]" => [],
+                  "event[]" => []];
     $errors = array_fill_keys(array_keys($form), "");
 
-    return array($form, $errors);
+    return [$form, $errors];
   }
 
   private function _get_module_create_content($form, $errors) {
@@ -232,11 +232,11 @@ class Admin_Developer_Controller extends Admin_Controller {
     $v->event = $this->_get_events();
     $v->form = $form;
     $v->errors = $errors;
-    $submit_attributes = array(
+    $submit_attributes = [
       "id" => "g-generate-module",
       "name" => "generate",
       "class" => "ui-state-default ui-corner-all",
-      "style" => "clear:both!important");
+      "style" => "clear:both!important"];
 
     if (!is_writable(MODPATH)) {
       $submit_attributes["class"] .= " ui-state-disabled";
@@ -257,7 +257,7 @@ class Admin_Developer_Controller extends Admin_Controller {
             $event_name = $match[1];
             $display_name = ucwords(str_replace("_", " ", $event_name));
             if (!in_array($display_name, self::$event_list)) {
-              $parameters = array();
+              $parameters = [];
               if (!empty($match[2]) &&
                   preg_match_all('#\$[a-zA-Z_]*#', $match[2], $param_names)) {
 
@@ -276,11 +276,11 @@ class Admin_Developer_Controller extends Admin_Controller {
   }
 
   private function _get_test_data_form() {
-    $form = array("albums" => "10", "photos" => "10", "comments" => "10", "tags" => "10",
-                  "generate_albums" => "");
+    $form = ["albums" => "10", "photos" => "10", "comments" => "10", "tags" => "10",
+                  "generate_albums" => ""];
     $errors = array_fill_keys(array_keys($form), "");
 
-    return array($form, $errors);
+    return [$form, $errors];
   }
 
   private function _get_test_data_view($form, $errors) {

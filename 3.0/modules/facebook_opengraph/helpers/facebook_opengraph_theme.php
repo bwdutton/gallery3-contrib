@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class facebook_opengraph_theme {
-  static function head($theme) {
+  public static function head($theme) {
     if ($theme->item()) {
       $item = $theme->item();
       $image_url = $item->thumb_url(true);

@@ -34,22 +34,22 @@ class EmbedLinks_Controller extends Controller {
 
     // If the current page is an album, only display two links.
     if ($item->is_album()) {
-      $linkArray[0] = array("Text:", "<a href=&quot;" . url::abs_site("{$item->type}s/{$item->id}") . "&quot;>Click Here</a>");
-      $linkArray[1] = array("Thumbnail:", "<a href=&quot;" . url::abs_site("{$item->type}s/{$item->id}") . "&quot;><img src=&quot;" . $item->thumb_url(true) . "&quot;></a>");
-      $linkTitles[0] = array("Link To This Album:", 2);
+      $linkArray[0] = ["Text:", "<a href=&quot;" . url::abs_site("{$item->type}s/{$item->id}") . "&quot;>Click Here</a>"];
+      $linkArray[1] = ["Thumbnail:", "<a href=&quot;" . url::abs_site("{$item->type}s/{$item->id}") . "&quot;><img src=&quot;" . $item->thumb_url(true) . "&quot;></a>"];
+      $linkTitles[0] = ["Link To This Album:", 2];
 
     // If the item is a movie, don't display resize links, do display an embed link.
     } elseif ($item->is_movie()) {
       // Link to the current page.
-      $linkArray[0] = array("Text:", "<a href=&quot;" . url::abs_site("{$item->type}s/{$item->id}") . "&quot;>Click Here</a>");
-      $linkArray[1] = array("Thumbnail:", "<a href=&quot;" . url::abs_site("{$item->type}s/{$item->id}") . "&quot;><img src=&quot;" . $item->thumb_url(true) . "&quot;></a>");
-      $linkTitles[0] = array("Link To This Page:", 2);  
+      $linkArray[0] = ["Text:", "<a href=&quot;" . url::abs_site("{$item->type}s/{$item->id}") . "&quot;>Click Here</a>"];
+      $linkArray[1] = ["Thumbnail:", "<a href=&quot;" . url::abs_site("{$item->type}s/{$item->id}") . "&quot;><img src=&quot;" . $item->thumb_url(true) . "&quot;></a>"];
+      $linkTitles[0] = ["Link To This Page:", 2];  
 
       // If the visitor has suficient privlidges to see the fullsized
       //    version of the current image, then display links to it.
       if (access::can("view_full", $item)) {
-        $linkArray[2] = array("Text:", "<a href=&quot;" . $item->file_url(true) . "&quot;>Click Here</a>");
-        $linkArray[3] = array("Thumbnail:", "<a href=&quot;" . $item->file_url(true) . "&quot;><img src=&quot;" . $item->thumb_url(true) . "&quot;></a>");
+        $linkArray[2] = ["Text:", "<a href=&quot;" . $item->file_url(true) . "&quot;>Click Here</a>"];
+        $linkArray[3] = ["Thumbnail:", "<a href=&quot;" . $item->file_url(true) . "&quot;><img src=&quot;" . $item->thumb_url(true) . "&quot;></a>"];
 
         // Figure out what the path of the .flv file is.
         $str_movie_path = $item->file_url(true);
@@ -67,34 +67,34 @@ class EmbedLinks_Controller extends Controller {
         }
 
         if ($str_movie_path != "") {
-          $linkArray[4] = array("Embed:", "<video controls><source src=&quot;" .  $str_movie_path . "&quot; type=&quot;" . $item->mime_type . "&quot;>Your browser does not support the video tag.</video>");
-          $linkTitles[1] = array("Link To The Video File:", 3);
+          $linkArray[4] = ["Embed:", "<video controls><source src=&quot;" .  $str_movie_path . "&quot; type=&quot;" . $item->mime_type . "&quot;>Your browser does not support the video tag.</video>"];
+          $linkTitles[1] = ["Link To The Video File:", 3];
         } else {
-          $linkTitles[1] = array("Link To The Video File:", 2);
+          $linkTitles[1] = ["Link To The Video File:", 2];
         }
       }
 
     // Or else assume the item is a photo.
     } else {
       // Link to the current page.
-      $linkArray[0] = array("Text:", "<a href=&quot;" . url::abs_site("{$item->type}s/{$item->id}") . "&quot;>Click Here</a>");
-      $linkArray[1] = array("Thumbnail:", "<a href=&quot;" . url::abs_site("{$item->type}s/{$item->id}") . "&quot;><img src=&quot;" . $item->thumb_url(true) . "&quot;></a>");
-      $linkArray[2] = array("Resized:", "<a href=&quot;" . url::abs_site("{$item->type}s/{$item->id}") . "&quot;><img src=&quot;" . $item->resize_url(true) . "&quot;></a>");
-      $linkTitles[0] = array("Link To This Page:", 3);  
+      $linkArray[0] = ["Text:", "<a href=&quot;" . url::abs_site("{$item->type}s/{$item->id}") . "&quot;>Click Here</a>"];
+      $linkArray[1] = ["Thumbnail:", "<a href=&quot;" . url::abs_site("{$item->type}s/{$item->id}") . "&quot;><img src=&quot;" . $item->thumb_url(true) . "&quot;></a>"];
+      $linkArray[2] = ["Resized:", "<a href=&quot;" . url::abs_site("{$item->type}s/{$item->id}") . "&quot;><img src=&quot;" . $item->resize_url(true) . "&quot;></a>"];
+      $linkTitles[0] = ["Link To This Page:", 3];  
 
       // Link to the "resized" version of the current image.
-      $linkArray[3] = array("Text:", "<a href=&quot;" . $item->resize_url(true) . "&quot;>Click Here</a>");
-      $linkArray[4] = array("Thumbnail:", "<a href=&quot;" . $item->resize_url(true) . "&quot;><img src=&quot;" . $item->thumb_url(true) . "&quot;></a>");
-      $linkArray[5] = array("Image:", "<img src=&quot;" . $item->resize_url(true) . "&quot;>");
-      $linkTitles[1] = array("Link To The Resized Image:", 3);  
+      $linkArray[3] = ["Text:", "<a href=&quot;" . $item->resize_url(true) . "&quot;>Click Here</a>"];
+      $linkArray[4] = ["Thumbnail:", "<a href=&quot;" . $item->resize_url(true) . "&quot;><img src=&quot;" . $item->thumb_url(true) . "&quot;></a>"];
+      $linkArray[5] = ["Image:", "<img src=&quot;" . $item->resize_url(true) . "&quot;>"];
+      $linkTitles[1] = ["Link To The Resized Image:", 3];  
 
       // If the visitor has suficient privlidges to see the fullsized
       //    version of the current image, then display links to it.
       if (access::can("view_full", $item)) {
-        $linkArray[6] = array("Text:", "<a href=&quot;" . $item->file_url(true) . "&quot;>Click Here</a>");
-        $linkArray[7] = array("Thumbnail:", "<a href=&quot;" . $item->file_url(true) . "&quot;><img src=&quot;" . $item->thumb_url(true) . "&quot;></a>");
-        $linkArray[8] = array("Resized:", "<a href=&quot;" . $item->file_url(true) . "&quot;><img src=&quot;" . $item->resize_url(true) . "&quot;></a>");
-        $linkTitles[2] = array("Link To The Full Size Image:", 3);        
+        $linkArray[6] = ["Text:", "<a href=&quot;" . $item->file_url(true) . "&quot;>Click Here</a>"];
+        $linkArray[7] = ["Thumbnail:", "<a href=&quot;" . $item->file_url(true) . "&quot;><img src=&quot;" . $item->thumb_url(true) . "&quot;></a>"];
+        $linkArray[8] = ["Resized:", "<a href=&quot;" . $item->file_url(true) . "&quot;><img src=&quot;" . $item->resize_url(true) . "&quot;></a>"];
+        $linkTitles[2] = ["Link To The Full Size Image:", 3];        
       }
     }
 
@@ -111,46 +111,46 @@ class EmbedLinks_Controller extends Controller {
 
     // If the current page is an album, only display two links.
     if ($item->is_album()) {
-      $linkArray[0] = array("Text:", "[url=" . url::abs_site("{$item->type}s/{$item->id}") . "]Click Here[/url]");
-      $linkArray[1] = array("Thumbnail:", "[url=" . url::abs_site("{$item->type}s/{$item->id}") . "][img]" . $item->thumb_url(true) . "[/img][/url]");
-      $linkTitles[0] = array("Link To This Album:", 2);  
+      $linkArray[0] = ["Text:", "[url=" . url::abs_site("{$item->type}s/{$item->id}") . "]Click Here[/url]"];
+      $linkArray[1] = ["Thumbnail:", "[url=" . url::abs_site("{$item->type}s/{$item->id}") . "][img]" . $item->thumb_url(true) . "[/img][/url]"];
+      $linkTitles[0] = ["Link To This Album:", 2];  
 
     // If the item is a movie, don't display resize links.
     } elseif ($item->is_movie()) {
       // Link to the current page.
-      $linkArray[0] = array("Text:", "[url=" . url::abs_site("{$item->type}s/{$item->id}") . "]Click Here[/url]");
-      $linkArray[1] = array("Thumbnail:", "[url=" . url::abs_site("{$item->type}s/{$item->id}") . "][img]" . $item->thumb_url(true) . "[/img][/url]");
-      $linkTitles[0] = array("Link To This Page:", 2);  
+      $linkArray[0] = ["Text:", "[url=" . url::abs_site("{$item->type}s/{$item->id}") . "]Click Here[/url]"];
+      $linkArray[1] = ["Thumbnail:", "[url=" . url::abs_site("{$item->type}s/{$item->id}") . "][img]" . $item->thumb_url(true) . "[/img][/url]"];
+      $linkTitles[0] = ["Link To This Page:", 2];  
 
       // If the visitor has suficient privlidges to see the fullsized
       //    version of the current image, then display links to it.
       if (access::can("view_full", $item)) {
-        $linkArray[2] = array("Text:", "[url=" . $item->file_url(true) . "]Click Here[/url]");
-        $linkArray[3] = array("Thumbnail:", "[url=" . $item->file_url(true) . "][img]" . $item->thumb_url(true) . "[/img][/url]");
-        $linkTitles[1] = array("Link To The Video File:", 2);        
+        $linkArray[2] = ["Text:", "[url=" . $item->file_url(true) . "]Click Here[/url]"];
+        $linkArray[3] = ["Thumbnail:", "[url=" . $item->file_url(true) . "][img]" . $item->thumb_url(true) . "[/img][/url]"];
+        $linkTitles[1] = ["Link To The Video File:", 2];        
       }
 
     // Or else assume the item is a photo.
     } else {
       // Link to the current page.
-      $linkArray[0] = array("Text:", "[url=" . url::abs_site("{$item->type}s/{$item->id}") . "]Click Here[/url]");
-      $linkArray[1] = array("Thumbnail:", "[url=" . url::abs_site("{$item->type}s/{$item->id}") . "][img]" . $item->thumb_url(true) . "[/img][/url]");
-      $linkArray[2] = array("Resized:", "[url=" . url::abs_site("{$item->type}s/{$item->id}") . "][img]" . $item->resize_url(true) . "[/img][/url]");
-      $linkTitles[0] = array("Link To This Page:", 3);  
+      $linkArray[0] = ["Text:", "[url=" . url::abs_site("{$item->type}s/{$item->id}") . "]Click Here[/url]"];
+      $linkArray[1] = ["Thumbnail:", "[url=" . url::abs_site("{$item->type}s/{$item->id}") . "][img]" . $item->thumb_url(true) . "[/img][/url]"];
+      $linkArray[2] = ["Resized:", "[url=" . url::abs_site("{$item->type}s/{$item->id}") . "][img]" . $item->resize_url(true) . "[/img][/url]"];
+      $linkTitles[0] = ["Link To This Page:", 3];  
 
       // Link to the "resized" version of the current image.
-      $linkArray[3] = array("Text:", "[url=" . $item->resize_url(true) . "]Click Here[/url]");
-      $linkArray[4] = array("Thumbnail:", "[url=" . $item->resize_url(true) . "][img]" . $item->thumb_url(true) . "[/img][/url]");
-      $linkArray[5] = array("Image:", "[img]" . $item->resize_url(true) . "[/img]");
-      $linkTitles[1] = array("Link To The Resized Image:", 3);  
+      $linkArray[3] = ["Text:", "[url=" . $item->resize_url(true) . "]Click Here[/url]"];
+      $linkArray[4] = ["Thumbnail:", "[url=" . $item->resize_url(true) . "][img]" . $item->thumb_url(true) . "[/img][/url]"];
+      $linkArray[5] = ["Image:", "[img]" . $item->resize_url(true) . "[/img]"];
+      $linkTitles[1] = ["Link To The Resized Image:", 3];  
 
       // If the visitor has suficient privlidges to see the fullsized
       //    version of the current image, then display links to it.
       if (access::can("view_full", $item)) {
-        $linkArray[6] = array("Text:", "[url=" . $item->file_url(true) . "]Click Here[/url]");
-        $linkArray[7] = array("Thumbnail:", "[url=" . $item->file_url(true) . "][img]" . $item->thumb_url(true) . "[/img][/url]");
-        $linkArray[8] = array("Resized:", "[url=" . $item->file_url(true) . "][img]" . $item->resize_url(true) . "[/img][/url]");
-        $linkTitles[2] = array("Link To The Full Size Image:", 3);        
+        $linkArray[6] = ["Text:", "[url=" . $item->file_url(true) . "]Click Here[/url]"];
+        $linkArray[7] = ["Thumbnail:", "[url=" . $item->file_url(true) . "][img]" . $item->thumb_url(true) . "[/img][/url]"];
+        $linkArray[8] = ["Resized:", "[url=" . $item->file_url(true) . "][img]" . $item->resize_url(true) . "[/img][/url]"];
+        $linkTitles[2] = ["Link To The Full Size Image:", 3];        
       }
     }
 
@@ -167,39 +167,39 @@ class EmbedLinks_Controller extends Controller {
 
     // If the current page is an album, only display a URL and thumnail fields.
     if ($item->is_album()) {
-      $linkArray[0] = array("Album URL:", url::abs_site("{$item->type}s/{$item->id}"));
-      $linkArray[1] = array("Thumbnail:", $item->thumb_url(true));
-      $linkTitles[0] = array("URLs:", 2); 
+      $linkArray[0] = ["Album URL:", url::abs_site("{$item->type}s/{$item->id}")];
+      $linkArray[1] = ["Thumbnail:", $item->thumb_url(true)];
+      $linkTitles[0] = ["URLs:", 2]; 
 
     // If the item is a movie, do not display the resize url.
     } elseif ($item->is_movie()) {
       // Link to the current page.    
-      $linkArray[0] = array("This Page:", url::abs_site("{$item->type}s/{$item->id}"));
-      $linkArray[1] = array("Thumbnail:", $item->thumb_url(true));
+      $linkArray[0] = ["This Page:", url::abs_site("{$item->type}s/{$item->id}")];
+      $linkArray[1] = ["Thumbnail:", $item->thumb_url(true)];
 
       // If the visitor has suficient privlidges to see the fullsized
       //    version of the current image, then display its URL.
       if (access::can("view_full", $item)) {
-        $linkArray[2] = array("Video File:", $item->file_url(true));
-        $linkTitles[0] = array("URLs:", 3);  
+        $linkArray[2] = ["Video File:", $item->file_url(true)];
+        $linkTitles[0] = ["URLs:", 3];  
       } else {
-        $linkTitles[0] = array("URLs:", 2);  
+        $linkTitles[0] = ["URLs:", 2];  
       }
 
     // Or else assume the item is a photo.
     } else {
       // Link to the current page.    
-      $linkArray[0] = array("This Page:", url::abs_site("{$item->type}s/{$item->id}"));
-      $linkArray[1] = array("Thumbnail:", $item->thumb_url(true));
-      $linkArray[2] = array("Resized:", $item->resize_url(true));
+      $linkArray[0] = ["This Page:", url::abs_site("{$item->type}s/{$item->id}")];
+      $linkArray[1] = ["Thumbnail:", $item->thumb_url(true)];
+      $linkArray[2] = ["Resized:", $item->resize_url(true)];
 
       // If the visitor has suficient privlidges to see the fullsized
       //    version of the current image, then display its URL.
       if (access::can("view_full", $item)) {
-        $linkArray[3] = array("Full Size:", $item->file_url(true));
-        $linkTitles[0] = array("URLs:", 4);  
+        $linkArray[3] = ["Full Size:", $item->file_url(true)];
+        $linkTitles[0] = ["URLs:", 4];  
       } else {
-        $linkTitles[0] = array("URLs:", 3);  
+        $linkTitles[0] = ["URLs:", 3];  
       }
     }
 

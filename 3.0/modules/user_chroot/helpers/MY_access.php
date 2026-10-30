@@ -23,7 +23,7 @@ class access extends access_Core {
   /**
    * If the user is chrooted, deny access outside of the chroot.
    */
-  static function user_can($user, $perm_name, $item) {
+  public static function user_can($user, $perm_name, $item) {
     if( $user->id == identity::active_user()->id && user_chroot::album() ) {
       if( $item->left_ptr < user_chroot::album()->left_ptr || user_chroot::album()->right_ptr < $item->right_ptr ) {
         return false;
@@ -36,14 +36,14 @@ class access extends access_Core {
   /**
    * Copied from modules/gallery/helpers/access.php because of the usage of self::
    */
-  static function can($perm_name, $item) {
+  public static function can($perm_name, $item) {
     return self::user_can(identity::active_user(), $perm_name, $item);
   }
 
   /**
    * Copied from modules/gallery/helpers/access.php because of the usage of self::
    */
-  static function required($perm_name, $item) {
+  public static function required($perm_name, $item) {
     if (!self::can($perm_name, $item)) {
       if ($perm_name == "view") {
         // Treat as if the item didn't exist, don't leak any information.

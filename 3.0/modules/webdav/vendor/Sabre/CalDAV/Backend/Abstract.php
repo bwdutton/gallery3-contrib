@@ -28,7 +28,7 @@ abstract class Sabre_CalDAV_Backend_Abstract {
      * @param string $principalUri 
      * @return array 
      */
-    abstract function getCalendarsForUser($principalUri);
+    abstract public function getCalendarsForUser($principalUri);
 
     /**
      * Creates a new calendar for a principal.
@@ -44,7 +44,7 @@ abstract class Sabre_CalDAV_Backend_Abstract {
      * @param array $properties
      * @return string|int 
      */
-    abstract function createCalendar($principalUri,$calendarUri,array $properties); 
+    abstract public function createCalendar($principalUri,$calendarUri,array $properties); 
 
     /**
      * Updates properties on this node,
@@ -94,7 +94,7 @@ abstract class Sabre_CalDAV_Backend_Abstract {
      * @param string $calendarId 
      * @return void
      */
-    abstract function deleteCalendar($calendarId);
+    abstract public function deleteCalendar($calendarId);
 
     /**
      * Returns all calendar objects within a calendar object.
@@ -108,7 +108,7 @@ abstract class Sabre_CalDAV_Backend_Abstract {
      * @param string $calendarId 
      * @return array 
      */
-    abstract function getCalendarObjects($calendarId);
+    abstract public function getCalendarObjects($calendarId);
 
     /**
      * Returns information from a single calendar object, based on it's object uri. 
@@ -117,7 +117,7 @@ abstract class Sabre_CalDAV_Backend_Abstract {
      * @param string $objectUri 
      * @return array 
      */
-    abstract function getCalendarObject($calendarId,$objectUri);
+    abstract public function getCalendarObject($calendarId,$objectUri);
 
     /**
      * Creates a new calendar object. 
@@ -127,7 +127,7 @@ abstract class Sabre_CalDAV_Backend_Abstract {
      * @param string $calendarData 
      * @return void
      */
-    abstract function createCalendarObject($calendarId,$objectUri,$calendarData);
+    abstract public function createCalendarObject($calendarId,$objectUri,$calendarData);
 
     /**
      * Updates an existing calendarobject, based on it's uri. 
@@ -137,7 +137,7 @@ abstract class Sabre_CalDAV_Backend_Abstract {
      * @param string $calendarData 
      * @return void
      */
-    abstract function updateCalendarObject($calendarId,$objectUri,$calendarData);
+    abstract public function updateCalendarObject($calendarId,$objectUri,$calendarData);
 
     /**
      * Deletes an existing calendar object. 
@@ -146,6 +146,6 @@ abstract class Sabre_CalDAV_Backend_Abstract {
      * @param string $objectUri 
      * @return void
      */
-    abstract function deleteCalendarObject($calendarId,$objectUri);
+    abstract public function deleteCalendarObject($calendarId,$objectUri);
 
 }

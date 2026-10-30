@@ -19,7 +19,7 @@
  */
  
 class latestupdates_theme_Core {
-  static function head($theme) {
+  public static function head($theme) {
     // Load CSS and JS for jCarouselLite.
     return $theme->script("jcarousellite_1.0.1.js") . 
            $theme->css("latestupdates_jcarousel.css");

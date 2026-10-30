@@ -66,10 +66,10 @@ class Admin_DownloadFullsize_Controller extends Admin_Controller {
   private function _get_admin_form() {
     // Make a new Form.
     $form = new Forge("admin/downloadfullsize/saveprefs", "", "post",
-                      array("id" => "g-download-fullsize-adminForm"));
+                      ["id" => "g-download-fullsize-adminForm"]);
 
     // Make an array for the different types of download links.
-    $linkOptions["fButton"] = array(t("Show Floppy Disk Picture Link"), module::get_var("downloadfullsize", "fButton"));
+    $linkOptions["fButton"] = [t("Show Floppy Disk Picture Link"), module::get_var("downloadfullsize", "fButton")];
 
     // Setup a few checkboxes on the form.
     $add_links = $form->group("DownloadLinks");
@@ -77,7 +77,7 @@ class Admin_DownloadFullsize_Controller extends Admin_Controller {
       ->options($linkOptions);
 
     if (module::is_active("keeporiginal")) {
-      $KeepOriginalOptions["DownloadOriginalImage"] = array(t("Allow visitors to download the original image when available?"), module::get_var("downloadfullsize", "DownloadOriginalImage"));
+      $KeepOriginalOptions["DownloadOriginalImage"] = [t("Allow visitors to download the original image when available?"), module::get_var("downloadfullsize", "DownloadOriginalImage")];
       $keeporiginal_group = $form->group("KeepOriginalPrefs")
                                ->label(t("KeepOriginal Preferences"));
       $keeporiginal_group->checklist("DownloadOriginalOptions")

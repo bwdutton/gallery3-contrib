@@ -4,11 +4,11 @@ require('../fpdf.php');
 class PDF extends FPDF
 {
 // Current column
-var $col = 0;
+public $col = 0;
 // Ordinate of column start
-var $y0;
+public $y0;
 
-function Header()
+public function Header()
 {
 	// Page header
 	global $title;
@@ -26,7 +26,7 @@ function Header()
 	$this->y0 = $this->GetY();
 }
 
-function Footer()
+public function Footer()
 {
 	// Page footer
 	$this->SetY(-15);
@@ -35,7 +35,7 @@ function Footer()
 	$this->Cell(0,10,'Page '.$this->PageNo(),0,0,'C');
 }
 
-function SetCol($col)
+public function SetCol($col)
 {
 	// Set position at a given column
 	$this->col = $col;
@@ -44,7 +44,7 @@ function SetCol($col)
 	$this->SetX($x);
 }
 
-function AcceptPageBreak()
+public function AcceptPageBreak()
 {
 	// Method accepting or not automatic page break
 	if($this->col<2)
@@ -65,7 +65,7 @@ function AcceptPageBreak()
 	}
 }
 
-function ChapterTitle($num, $label)
+public function ChapterTitle($num, $label)
 {
 	// Title
 	$this->SetFont('Arial','',12);
@@ -76,7 +76,7 @@ function ChapterTitle($num, $label)
 	$this->y0 = $this->GetY();
 }
 
-function ChapterBody($file)
+public function ChapterBody($file)
 {
 	// Read text file
 	$txt = file_get_contents($file);
@@ -92,7 +92,7 @@ function ChapterBody($file)
 	$this->SetCol(0);
 }
 
-function PrintChapter($num, $title, $file)
+public function PrintChapter($num, $title, $file)
 {
 	// Add chapter
 	$this->AddPage();

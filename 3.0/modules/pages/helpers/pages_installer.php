@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class pages_installer {
-  static function install() {
+  public static function install() {
     // Create a table to store pages in.
     $db = Database::instance();
     $db->query("CREATE TABLE IF NOT EXISTS {static_pages} (
@@ -38,7 +38,7 @@ class pages_installer {
     // Set the module version number.
     module::set_version("pages", 3);
   }
-  static function upgrade($version) {
+  public static function upgrade($version) {
     $db = Database::instance();
     if ($version == 1) {
       $db->query("ALTER TABLE {static_pages} ADD COLUMN `display_menu` boolean default 0");

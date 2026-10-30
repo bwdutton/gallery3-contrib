@@ -106,7 +106,7 @@ class Embedded_videos_Controller extends Controller {
           $file = fopen($temp_filename, "wb");
           fwrite($file, $content);
           fclose($file);
-          gallery_graphics::composite($temp_filename, $temp_filename, array("file" => "modules/embed_videos/images/embed_video_icon.png", "position" => "center", "transparency" => 95));
+          gallery_graphics::composite($temp_filename, $temp_filename, ["file" => "modules/embed_videos/images/embed_video_icon.png", "position" => "center", "transparency" => 95]);
           $item->set_data_file($temp_filename);
           $item->name = basename($itemname);
           $item->title = $title;
@@ -151,7 +151,7 @@ class Embedded_videos_Controller extends Controller {
     batch::stop();
     if ($valid) {
       //print json_encode(array("result" => "success"));
-      json::reply(array("result" => "success", "location" => $item->url()));
+      json::reply(["result" => "success", "location" => $item->url()]);
     } else {
       //json::reply(array("result" => "error", "form" => (string)$form));
       print $form;

@@ -39,7 +39,7 @@ You can style the html emails with the CSS code in setting 'Email Template Style
         <th><?= t("Name") ?></th>
         <th><?= t("Actions") ?></th>
       </tr>
-    <?php foreach ($email_templates as $i => $email_template): ?>
+    <?php foreach ($email_templates as $email_template): ?>
       <tr id="gEmailTemplate-<?= $email_template->id ?>" class="<?= text::alternate("gOddRow", "gEvenRow") ?>">
         <td id="email_template-<?= $email_template->id ?>" class="core-info ">
           <?= html::clean($email_template->name) ?></td>

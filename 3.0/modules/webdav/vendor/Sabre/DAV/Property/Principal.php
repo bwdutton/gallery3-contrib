@@ -30,15 +30,6 @@ class Sabre_DAV_Property_Principal extends Sabre_DAV_Property implements Sabre_D
     const HREF = 3;
 
     /**
-     * Principal-type
-     *
-     * Must be one of the UNAUTHENTICATED, AUTHENTICATED or HREF constants.
-     * 
-     * @var int 
-     */
-    private $type;
-
-    /**
      * Url to principal
      *
      * This value is only used for the HREF principal type.
@@ -58,11 +49,14 @@ class Sabre_DAV_Property_Principal extends Sabre_DAV_Property implements Sabre_D
      * @param string $href 
      * @return void
      */
-    public function __construct($type, $href = null) {
+    public function __construct(/**
+     * Principal-type
+     *
+     * Must be one of the UNAUTHENTICATED, AUTHENTICATED or HREF constants.
+     */
+    private $type, $href = null) {
 
-        $this->type = $type;
-
-        if ($type===self::HREF && is_null($href)) {
+        if ($this->type===self::HREF && is_null($href)) {
             throw new Sabre_DAV_Exception('The href argument must be specified for the HREF principal type.');
         }
         $this->href = $href;

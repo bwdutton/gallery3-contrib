@@ -37,7 +37,7 @@
         <th><?= t("Total Amount") ?></th>
       </tr>     
     <?php $total = 0;
-			foreach ($orders as $i => $order){
+			foreach ($orders as $order){
       ?>
       <tr class="order-status-<?=$order->status?>">
         <td class="order-status-<?=$order->status?>"><a href="javascript:loadOrder(<?=$order->id?>)"><?=basket_plus::getBasketVar(ORDER_PREFIX).$order->id?></a></td>

@@ -18,8 +18,8 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 class wordpress_auth_installer {
-    static function can_activate() {
-        $messages = array();
+    public static function can_activate() {
+        $messages = [];
         try {
             // load config
             require MODPATH . 'wordpress_auth/config/identity.php';
@@ -40,11 +40,11 @@ class wordpress_auth_installer {
         return $messages;
     }
     
-    static function install() {
+    public static function install() {
         IdentityProvider::change_provider('wordpress_auth');
     }
 
-    static function initialize() {
+    public static function initialize() {
         module::set_version('wordpress_auth', 1);
         $root = item::root();
         foreach (IdentityProvider::instance()->groups() as $group) {
@@ -54,7 +54,7 @@ class wordpress_auth_installer {
         }
     }
 
-    static function uninstall() {
+    public static function uninstall() {
         // Delete all groups so that we give other modules an opportunity to clean up
         $wordpress_auth_provider = new IdentityProvider("wordpress_auth");
         foreach ($wordpress_auth_provider->groups() as $group) {
