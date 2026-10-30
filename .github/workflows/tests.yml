@@ -21,19 +21,19 @@ jobs:
           ini-values: post_max_size=256M, max_execution_time=180
           tools: composer:v2
 
-      - name: Create cache dir
-        run: |
-          mkdir -p .cache
-          echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-
-      - name: Cache dependencies
-        uses: actions/cache@v6
-        with:
-          path: |
-            path: ${{ steps.composer-cache.outputs.dir }}
-            ~/.cache
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
+#      - name: Create cache dir
+#        run: |
+#          mkdir -p .cache
+#          echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+#
+#      - name: Cache dependencies
+#        uses: actions/cache@v6
+#        with:
+#          path: |
+#            path: ${{ steps.composer-cache.outputs.dir }}
+#            ~/.cache
+#          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+#          restore-keys: ${{ runner.os }}-composer-
 
       - name: Install dependencies
         run: composer install
