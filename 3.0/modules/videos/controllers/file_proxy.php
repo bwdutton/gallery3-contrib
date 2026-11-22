@@ -66,7 +66,7 @@ class File_Proxy_Controller extends Controller {
       if (preg_match('/.jpg$/', $path)) {
         // rWatcher Mod:   look for videos with file extensions supported by the videos module in addition to flv mp4 and m4v
         // Original Line:  foreach (array("flv", "mp4", "m4v") as $ext) {
-        foreach (array_merge(["flv", "mp4", "m4v"], unserialize(module::get_var("videos", "allowed_extensions"))) as $ext) {
+        foreach (array_merge(["flv", "mp4", "m4v"], unserialize(module::get_var("videos", "allowed_extensions", "a:0:{}"))) as $ext) {
           $movie_path = preg_replace('/.jpg$/', ".$ext", $path);
           $item = item::find_by_path($movie_path);
           if ($item->loaded()) {

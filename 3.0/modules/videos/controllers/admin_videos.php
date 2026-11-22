@@ -64,7 +64,7 @@ class Admin_Videos_Controller extends Admin_Controller {
     access::verify_csrf();
 
     $path = Input::instance()->get("path");
-    $paths = unserialize(module::get_var("videos", "authorized_paths"));
+    $paths = unserialize(module::get_var("videos", "authorized_paths", "a:0:{}"));
     if (isset($paths[$path])) {
       unset($paths[$path]);
       message::success(t("Removed path %path", ["path" => $path]));

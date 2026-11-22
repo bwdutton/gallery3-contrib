@@ -253,8 +253,8 @@ class Item_Model_Core extends ORM_MPTT {
              ->order_by("left_ptr", "ASC")
              ->execute() as $row) {
       // Don't encode the names segment
-      $names[] = rawurlencode($row->name);
-      $slugs[] = rawurlencode($row->slug);
+      $names[] = rawurlencode((string)$row->name);
+      $slugs[] = rawurlencode((string)$row->slug);
     }
     $this->relative_path_cache = implode('/', $names);
     $this->relative_url_cache = implode('/', $slugs);
@@ -788,7 +788,7 @@ class Item_Model_Core extends ORM_MPTT {
         }
 
 		// rWatcher EDIT:  Include other video file types.
-        if ($this->is_movie() && !preg_match("/^(flv|mp4|m4v|" . implode("|", unserialize(module::get_var("videos", "allowed_extensions"))) . ")$/i", $ext)) {
+        if ($this->is_movie() && !preg_match("/^(flv|mp4|m4v|" . implode("|", unserialize(module::get_var("videos", "allowed_extensions", "a:0:{}"))) . ")$/i", $ext)) {
           $v->add_error("name", "illegal_data_file_extension");
         } else if ($this->is_photo() && !preg_match("/^(gif|jpg|jpeg|png)$/i", $ext)) {
           $v->add_error("name", "illegal_data_file_extension");

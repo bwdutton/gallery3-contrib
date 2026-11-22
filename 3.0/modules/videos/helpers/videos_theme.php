@@ -46,14 +46,12 @@ class videos_theme_Core {
   public static function admin_head($theme) {
     $buf = "";
     if (str_contains(Router::$current_uri, "admin/videos")) {
-      $buf .= $theme->css("videos.css")
-        . $theme->css("jquery.autocomplete.css");
+      $buf .= $theme->css("videos.css");
       $base = url::site("__ARGS__");
       $csrf = access::csrf_token();
       $buf .= "<script type=\"text/javascript\"> var base_url = \"$base\"; var csrf = \"$csrf\";</script>";
 
-      $buf .= $theme->script("jquery.autocomplete.js")
-        . $theme->script("admin_videos.js"); // rWatcher edit.
+      $buf .= $theme->script("admin_videos.js"); // rWatcher edit.
     }
 
     return $buf;
