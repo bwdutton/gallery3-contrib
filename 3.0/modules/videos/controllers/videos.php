@@ -25,7 +25,7 @@
 
 class Videos_Controller extends Admin_Controller {
   public function browse($id) {
-    $paths = unserialize(module::get_var("videos", "authorized_paths"));
+    $paths = unserialize(module::get_var("videos", "authorized_paths", "a:0:{}"));
     foreach (array_keys($paths) as $path) {
       $files[] = $path;
     }
@@ -69,7 +69,7 @@ class Videos_Controller extends Admin_Controller {
           $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
           // rWatcher Edit
           //if (!in_array($ext, array("gif", "jpeg", "jpg", "png", "flv", "mp4", "m4v"))) {
-          if (!in_array($ext, unserialize(module::get_var("videos", "allowed_extensions")))) {
+          if (!in_array($ext, unserialize(module::get_var("videos", "allowed_extensions", "a:0:{}")))) {
             continue;
           }
         }
@@ -78,7 +78,7 @@ class Videos_Controller extends Admin_Controller {
       }
     } else {
       // Missing or invalid path; print out the list of authorized path
-      $paths = unserialize(module::get_var("videos", "authorized_paths"));
+      $paths = unserialize(module::get_var("videos", "authorized_paths", "a:0:{}"));
       foreach (array_keys($paths) as $path) {
         $tree->files[] = $path;
       }
@@ -157,7 +157,7 @@ class Videos_Controller extends Admin_Controller {
       // We can't fit an arbitrary number of paths in a task, so store them in a separate table.
       // Don't use an iterator here because we can't get enough control over it when we're dealing
       // with a deep hierarchy and we don't want to go over our time quota.
-      $paths = unserialize(module::get_var("videos", "authorized_paths"));
+      $paths = unserialize(module::get_var("videos", "authorized_paths", "a:0:{}"));
       $dirs_scanned = $task->get("dirs_scanned");
       while (microtime(true) - $start < 0.5) {
         // Process every directory that doesn't yet have a parent id, these are the
@@ -180,7 +180,7 @@ class Videos_Controller extends Admin_Controller {
               // rWatcher Edit.
               //if (!in_array($ext, array("gif", "jpeg", "jpg", "png", "flv", "mp4", "m4v")) ||
               //    !filesize($child_path)) {
-              if (!in_array($ext, unserialize(module::get_var("videos", "allowed_extensions"))) ||
+              if (!in_array($ext, unserialize(module::get_var("videos", "allowed_extensions", "a:0:{}"))) ||
                   !filesize($child_path)) {
                 // Not importable, skip it.
                 continue;
@@ -279,7 +279,7 @@ class Videos_Controller extends Admin_Controller {
               $entry->item_id = $photo->id;
             // rWatcher EDIT
             //} else if (in_array($extension, array("flv", "mp4", "m4v"))) {
-            } else if (in_array($extension, unserialize(module::get_var("videos", "allowed_extensions")))) {
+            } else if (in_array($extension, unserialize(module::get_var("videos", "allowed_extensions", "a:0:{}")))) {
               $movie = ORM::factory("item");
               $movie->type = "movie";
               $movie->parent_id = $parent->id;
