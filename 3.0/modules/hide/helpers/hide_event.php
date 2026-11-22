@@ -73,6 +73,7 @@ class hide_event_Core {
     }
 
     $item_type_label = match ($item->type) {
+        "album" => "album",
         "movie" => "movie",
         default => "photo",
     };
