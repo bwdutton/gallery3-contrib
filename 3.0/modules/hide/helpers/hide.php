@@ -64,14 +64,10 @@ class hide_Core {
    * @return bool
    */
   public static function can_be_hidden(Item_Model $item) {
-    if (empty($item)) {
+    if (empty($item) || $item->id == 1) {
       return false;
     }
 
-    if ($item->type == "album") {
-      return false;
-    }
-    
     return true;
   }
 
