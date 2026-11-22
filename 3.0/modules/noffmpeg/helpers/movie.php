@@ -63,11 +63,29 @@ class movie_Core {
   }
 
   /**
+   * Check if movie uploads are allowed (added in Gallery 3.1.x).
+   */
+  public static function allow_uploads() {
+    switch (module::get_var("gallery", "movie_allow_uploads", "autodetect")) {
+      case "always":
+        return true;
+      case "never":
+        return false;
+      default:
+        return !empty(movie::find_ffmpeg());
+    }
+  }
+
+  /**
    * Return the path to the ffmpeg binary if one exists and is executable, or null.
    */
   public static function find_ffmpeg() {
     // rWatcher Edit:  Return true to trick the system into thinking ffmpeg is present.
     return true;
+  }
+
+  public static function get_ffmpeg_version() {
+    return null;
   }
 
   /**
@@ -91,5 +109,17 @@ class movie_Core {
       }
     }
     return [$vid_width, $vid_height, $mime_type, $extension];
+  }
+
+  public static function seconds_to_hhmmssdd($seconds) {
+    $h = floor($seconds / 3600);
+    $m = floor(($seconds - ($h * 3600)) / 60);
+    $s = $seconds - ($h * 3600) - ($m * 60);
+    return sprintf("%02d:%02d:%05.2f", $h, $m, $s);
+  }
+
+  public static function hhmmssdd_to_seconds($hhmmssdd) {
+    list($h, $m, $s) = explode(":", $hhmmssdd);
+    return ($h * 3600) + ($m * 60) + $s;
   }
 }
