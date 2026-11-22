@@ -45,13 +45,9 @@ class hide_Core {
    * @return Hidden_Item_Model  the related hidden_item model
    */
   public static function get_hidden_item_model(Item_Model $item) {
-    try {
-      $model = model_cache::get("item", $id);
-    }
-    catch (Exception) {
-      $model = ORM::factory("hidden_item");
+    $model = ORM::factory("hidden_item")->where("item_id", "=", $item->id)->find();
+    if (!$model->loaded()) {
       $model->item_id = $item->id;
-      $model->validate();
     }
 
     return $model;
